@@ -1,0 +1,11 @@
+(() => {
+  class ImageConstants {
+    
+    get logos() {
+      return {
+        orange: "<%= asset_path("logo/logo_orange.png") %>"
+      };
+    }
+  }
+  this.ImageConstants = new ImageConstants();
+})();
