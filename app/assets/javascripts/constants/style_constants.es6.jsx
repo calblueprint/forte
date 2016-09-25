@@ -24,6 +24,22 @@
         },
       };
     }
+
+    get wrappers() {
+      return {
+        center: {
+          display: 'flex',
+          minHeight: '100vh',
+          justifyContent: 'center',
+        },
+        default: {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          minHeight: '100vh',
+        },
+      };
+    }
   }
   this.StyleConstants = new StyleConstants();
 })();

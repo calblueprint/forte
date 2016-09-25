@@ -1,7 +1,7 @@
 class HomePage extends React.Component {
   render () {
     return (
-      <div>
+      <div style={StyleConstants.wrappers.default}>
         <Header />
         <Footer />
       </div>
