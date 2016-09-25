@@ -3,10 +3,10 @@
 
     get colors() {
       return {
-        grey: '#5D5D5D',
-        greyLight:'#5D5D5D',
-        orange: '#E48E1E',
-        orangeLight: '#E48E1E',
+        grey: '#5D5E5E',
+        greyLight: '#BEBFBF',
+        orange: '#E48E28',
+        orangeLight: '#ECB067',
         white: '#FFFFFF',
       };
     }

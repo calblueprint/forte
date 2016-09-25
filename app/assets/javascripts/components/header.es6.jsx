@@ -1,17 +1,12 @@
 class Header extends React.Component {
 
-  static get propTypes() {
-    return {
-    };
-  }
-
   get styles() {
     return {
       logo: {
         padding: 0,
       },
       navBar: {
-        backgroundColor: 'white',
+        backgroundColor: StyleConstants.colors.white,
       },
     };
   }
@@ -19,9 +14,9 @@ class Header extends React.Component {
   render () {
     return (
     <div>
-      <Navbar 
-        fixedTop={true} 
-        style={this.styles.navBar} >
+      <Navbar
+        fixedTop={true}
+        style={this.styles.navBar}>
         <Navbar.Header>
             <Navbar.Brand>
               <img style={this.styles.logo} src={ImageConstants.logos.orange} href="#" />
@@ -34,11 +29,10 @@ class Header extends React.Component {
             <NavItem>OUR PROGRAM</NavItem>
             <NavItem>GET INVOLVED</NavItem>
             <NavItem>LOG IN</NavItem>
-          </Nav>  
+          </Nav>
         </Navbar.Collapse>
       </Navbar>
-    </div>    
+    </div>
     );
   }
 }
-
