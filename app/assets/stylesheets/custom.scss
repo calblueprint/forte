@@ -1,7 +1,7 @@
-$grey: #5D5D5D;
-$grey-light:#5D5D5D;
-$orange: #E48E1E;
-$orange-light: #E48E1E;
+$grey: #5D5E5E;
+$grey-light: #BEBFBF;
+$orange: #E48E28;
+$orange-light: #ECB067;
 $white: #FFFFFF;
 
 $font-family: 'Open Sans', sans-serif;
@@ -16,5 +16,51 @@ $font-size-smallest: 12px;
 
 * {
   font-family: $font-family !important;
-  color: $grey !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  display: inline-block;
+  font-family: $font-family;
+  font-weight: $font-weight-large;
+}
+
+h1 {
+  font-size: $font-size-larger;
+  line-height: $font-size-largest;
+  letter-spacing: 1px;
+}
+
+h2 {
+  font-size: $font-size-large;
+  line-height: $font-size-larger;
+  letter-spacing: 1px;
+}
+
+h3 {
+  font-size: $font-size-medium;
+  line-height: $font-size-large;
+  letter-spacing: 0.5px;
+}
+
+h4 {
+  font-size: $font-size-small;
+  line-height: $font-size-large;
+  letter-spacing: 0.5px;
+}
+
+h5 {
+  font-size: $font-size-smaller;
+  line-height: $font-size-large;
+  letter-spacing: 0.5px;
+}
+
+h6 {
+  font-size: $font-size-smallest;
+  line-height: $font-size-large;
+  letter-spacing: 0.5px;
 }
