@@ -25,18 +25,28 @@
       };
     }
 
-    get wrappers() {
+    get heights() {
       return {
-        center: {
-          display: 'flex',
-          minHeight: '100vh',
-          justifyContent: 'center',
-        },
+        header: '50px',
+        footer: '80px',
+      };
+    }
+
+    get widths() {
+      return {
+        sidebar: '172px',
+      };
+    }
+
+    get pages() {
+      return {
         default: {
-          display: 'flex',
+          display: 'flex',  
           flexDirection: 'column',
           alignItems: 'center',
           minHeight: '100vh',
+          paddingTop: this.heights.header,
+          paddingBottom: this.heights.footer,
         },
       };
     }
