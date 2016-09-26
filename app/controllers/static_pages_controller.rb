@@ -5,4 +5,3 @@ class StaticPagesController < ApplicationController
   def program
   end
 end
- 
