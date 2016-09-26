@@ -3,7 +3,8 @@ class ProgramPage extends React.Component {
   get styles() {
     return {
       bodycontent: {
-      	padding: '100px',
+      	padding: '50px',
+      	maxWidth: '900px',
         backgroundColor: StyleConstants.colors.white,
       },
     };
