@@ -2,10 +2,6 @@ class ProgramPage extends React.Component {
 
   get styles() {
     return {
-      container: {
-        padding: '0 70px',
-        backgroundColor: StyleConstants.colors.white,
-      },
       topic: {
         color: StyleConstants.colors.orange,
       },
@@ -17,9 +13,9 @@ class ProgramPage extends React.Component {
 
   render () {
     return (
-      <div style={StyleConstants.pages.default}>
+      <div style={StyleConstants.pages.wrapper}>
         <Header />
-        <div style={this.styles.container}>
+        <div style={StyleConstants.pages.content}>
           <h1 style={this.styles.topic}> How Forte Works </h1>
           <h3 style={this.styles.text}> 
           We connect aspiring musicians with instructions to offer 

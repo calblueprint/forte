@@ -40,13 +40,16 @@
 
     get pages() {
       return {
-        default: {
+        wrapper: {
           display: 'flex',  
           flexDirection: 'column',
           alignItems: 'center',
           minHeight: '100vh',
           paddingTop: this.heights.header,
-          paddingBottom: this.heights.footer,
+        },
+        content: {
+          flex: 1,
+          maxWidth: '900px',
         },
       };
     }

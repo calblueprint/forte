@@ -2,15 +2,14 @@ class Footer extends React.Component {
 
   get styles() {
     return {
-      navBar: {
-        backgroundColor: StyleConstants.colors.grey,
-      },
-      content: {
+      container: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: "20px 0px",
+        height: '60px',
+        width: '100%',
+        backgroundColor: StyleConstants.colors.grey,
       },
       linksContainer: {
         color: StyleConstants.colors.white,
@@ -28,23 +27,17 @@ class Footer extends React.Component {
   
   render () {
     return (
-      <div>
-      <Navbar 
-        fixedBottom={true}
-        style={this.styles.navBar}>
-        <div style={this.styles.content}>
-          <div style={this.styles.linksContainer}>
-            <span>© 2016 Forte Academy, Inc.</span>
-            <span>    ·    </span>
-            <a style={this.styles.link} href="#">Terms & Privacy</a>
-            <span>    ·    </span>
-            <a style={this.styles.link} href="#">Contact Us</a>
-          </div>
-          <div style={this.styles.nonprofitLabel}>
-            <span>Forte academy, Inc. is a 501(c)(3) nonprofit organization.</span>
-          </div>
+      <div style={this.styles.container}>
+        <div style={this.styles.linksContainer}>
+          <span>© 2016 Forte Academy, Inc.</span>
+          <span>    ·    </span>
+          <a style={this.styles.link} href="#">Terms & Privacy</a>
+          <span>    ·    </span>
+          <a style={this.styles.link} href="#">Contact Us</a>
         </div>
-      </Navbar>
+        <div style={this.styles.nonprofitLabel}>
+          <span>Forte academy, Inc. is a 501(c)(3) nonprofit organization.</span>
+        </div>
       </div>
     );
   }
