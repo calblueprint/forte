@@ -1,0 +1,25 @@
+/* Footer Styles */
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  width: 100%;
+  background-color: $grey;
+  color: $white;
+}
+  
+.footer__links-container {
+  color: $white;
+  font-size: $font-size-xs;
+
+  .link {
+    color: $white;
+  }
+}
+
+.footer__nonprofit-label {
+  font-size: $font-size-xxs;
+}

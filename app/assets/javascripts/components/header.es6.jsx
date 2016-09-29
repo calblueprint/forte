@@ -1,25 +1,14 @@
 class Header extends React.Component {
 
-  get styles() {
-    return {
-      logo: {
-        padding: 0,
-      },
-      navBar: {
-        backgroundColor: StyleConstants.colors.white,
-      },
-    };
-  }
-
   render () {
     return (
     <div>
       <Navbar
         fixedTop={true}
-        style={this.styles.navBar}>
+        className="header">
         <Navbar.Header>
             <Navbar.Brand>
-              <img style={this.styles.logo} src={ImageConstants.logos.orange} href="#" />
+              <img className="header__logo" src={ImageConstants.logos.orange} href="#" />
             </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>

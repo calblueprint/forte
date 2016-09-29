@@ -1,0 +1,49 @@
+* {
+  font-family: $font-family;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font-family;
+  font-weight: $font-weight-large;
+}
+
+h1 {
+  font-size: $font-size-l;
+  line-height: $font-size-xxl;
+  letter-spacing: 1px;
+}
+
+h2 {
+  font-size: $font-size-l;
+  line-height: $font-size-xl;
+  letter-spacing: 1px;
+}
+
+h3 {
+  font-size: $font-size-m;
+  line-height: $font-size-l;
+  letter-spacing: 0.5px;
+}
+
+h4 {
+  font-size: $font-size-s;
+  line-height: $font-size-l;
+  letter-spacing: 0.5px;
+}
+
+h5 {
+  font-size: $font-size-xs;
+  line-height: $font-size-l;
+  letter-spacing: 0.5px;
+}
+
+h6 {
+  font-size: $font-size-xxs;
+  line-height: $font-size-l;
+  letter-spacing: 0.5px;
+}

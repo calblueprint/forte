@@ -1,9 +1,9 @@
 class HomePage extends React.Component {
   render () {
     return (
-      <div style={StyleConstants.pages.wrapper}>
+      <div className="page-wrapper">
         <Header />
-          <div style={StyleConstants.pages.content}>
+          <div className="content-wrapper">
           </div>
         <Footer />
       </div>
