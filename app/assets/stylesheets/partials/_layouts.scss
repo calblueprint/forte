@@ -1,0 +1,13 @@
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding-top: $header-height;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}

@@ -1,7 +1,11 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
-@import "custom";
-
+@import "partials/_variables";
+@import "partials/_layouts";
+@import "partials/_mixins";
+@import "general";
+@import "components/*";
+@import "pages/*"
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.

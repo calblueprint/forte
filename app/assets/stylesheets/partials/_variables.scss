@@ -1,0 +1,36 @@
+/* COLORS */
+$grey       : #5D5E5E;
+$grey80     : rgba($grey, 0.8);
+$grey60     : rgba($grey, 0.6);
+$grey40     : rgba($grey, 0.4);
+$grey20     : rgba($grey, 0.2);
+
+$orange     : #E48E25;
+$orange80   : rgba($orange, 0.8);
+$orange60   : rgba($orange, 0.6);
+$orange40   : rgba($orange, 0.4);
+$orange20   : rgba($orange, 0.2);
+
+$white      : #FFFFFF;
+$white80    : rgba($white, 0.8);
+$white60    : rgba($white, 0.6);
+$white40    : rgba($white, 0.4);
+$white20    : rgba($white, 0.2);
+
+/* FONTS */
+$font-size-xxl   : 48px;
+$font-size-xl    : 30px;
+$font-size-l     : 24px;
+$font-size-m     : 18px;
+$font-size-s     : 16px;
+$font-size-xs    : 14px;
+$font-size-xxs   : 12px;
+
+$font-weight-large   : 700;
+$font-weight-medium  : 400;
+
+$font-family: 'Open Sans', sans-serif;
+
+/* STATIC SIZES */
+$header-height  : 50px;
+$footer-height  : 80px;

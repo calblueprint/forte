@@ -1,0 +1,58 @@
+.button {
+  border-radius: 2px;
+
+  &:active {
+    box-shadow: none;
+  }
+}
+
+.button--white {
+  color: $white;
+  border-color: $white60;
+  background-color: transparent;
+
+  &:hover, &:focus {
+    color: $white;
+    border-color: $white;
+    background-color: transparent;
+    box-shadow: 0 2px 8px $white60;
+  }
+
+  &:active {
+    color: $white;
+    border-color: $white;
+    background-color: $white60;
+    box-shadow: none;
+  }
+}
+
+.button--orange {
+  color: $orange;
+  border-color: $orange60;
+  background-color: $white;
+
+  &:hover, &:focus {
+    color: $orange;
+    border-color: $orange;
+    background-color: $white;
+    box-shadow: 0 2px 8px $orange20;
+  }
+
+  &:active {
+    color: $orange;
+    border-color: $orange;
+    background-color: $orange20;
+    box-shadow: none;
+  }
+}
+
+.button--lg {
+  outline: none;
+  font-size: 16px;
+  padding: 12px 25px;
+}
+
+.button--sm {
+  font-size: 12px;
+  padding: 5px 14px;
+}
