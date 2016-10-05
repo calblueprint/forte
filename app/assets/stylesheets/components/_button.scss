@@ -46,6 +46,26 @@
   }
 }
 
+.button--solid {
+  color: $white;
+  border-color: $orange;
+  background-color: $orange;
+
+  &:hover, &:focus {
+    color: $white;
+    border-color: $orange;
+    background-color: $orange;
+    box-shadow: 0 2px 8px $grey40;
+  }
+
+  &:active {
+    color: $white;
+    border-color: $orange40;
+    background-color: $orange40;
+    box-shadow: none;
+  }
+}
+
 .button--lg {
   outline: none;
   font-size: 16px;
