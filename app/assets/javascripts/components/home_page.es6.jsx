@@ -42,7 +42,7 @@ class HomePage extends React.Component {
               {this.renderInstrument('guitar')}
               {this.renderInstrument('clarinet')}
             </div>
-            <div className="homepage__line-break">
+            <div className="home-page__line-break">
             </div>
             <div className="information-wrapper">
               <div className="information-block">

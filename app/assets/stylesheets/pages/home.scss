@@ -36,6 +36,7 @@
   .instruments-wrapper {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     margin-top: 60px;
 
   }
@@ -45,7 +46,7 @@
     justify-content: center;
     height: 200px;
     width: 300px;
-    margin: 0px 30px;
+    margin: 20px 20px 0px 20px;
     position: relative;
     img {  
       width: auto;
@@ -68,23 +69,24 @@
     background-color: $orange60;
   }
 
-  .homepage__line-break {
+  .home-page__line-break {
     margin-top: 60px;
     border-top: 1px solid $grey80;
-    width: 1020px;
+    width: 70vw;
   }
 
   .information-wrapper {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    flex-wrap: wrap;
     margin-top: 50px;
   }
 
   .information-block {
     height: 200px;
     width: 300px;
-    margin: 0px 30px;
+    margin: 20px 20px 0px 20px;
   }
 
   .information-block__title {
