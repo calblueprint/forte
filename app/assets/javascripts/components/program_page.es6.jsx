@@ -2,9 +2,9 @@ class ProgramPage extends React.Component {
 
   render () {
     return (
-      <div className="programpage page-wrapper">
+      <div className="page-wrapper">
         <Header />
-        <div className="content-wrapper">
+        <div className="program-page content-wrapper">
           <h1> How Forte Works </h1>
           <h3> 
           We connect aspiring musicians with instructions to offer 

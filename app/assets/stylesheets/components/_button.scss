@@ -1,5 +1,11 @@
 .button {
+  @include appearance(none);
   border-radius: 2px;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-large;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  outline: none;
 
   &:active {
     box-shadow: none;
@@ -8,7 +14,7 @@
 
 .button--white {
   color: $white;
-  border-color: $white60;
+  border: 1px solid $white;
   background-color: transparent;
 
   &:hover, &:focus {
@@ -28,7 +34,7 @@
 
 .button--orange {
   color: $orange;
-  border-color: $orange60;
+  border: 1px solid $orange60;
   background-color: $white;
 
   &:hover, &:focus {
@@ -48,7 +54,7 @@
 
 .button--solid {
   color: $white;
-  border-color: $orange;
+  border: 1px solid $orange;
   background-color: $orange;
 
   &:hover, &:focus {
@@ -68,11 +74,12 @@
 
 .button--lg {
   outline: none;
-  font-size: 16px;
+  font-size: $font-size-s;
   padding: 12px 25px;
 }
 
 .button--sm {
-  font-size: 12px;
+  outline: none;
+  font-size: $font-size-xxs;
   padding: 5px 14px;
 }

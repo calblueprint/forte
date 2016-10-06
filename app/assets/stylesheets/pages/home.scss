@@ -1,0 +1,100 @@
+/* HomePage Styles */
+
+.home-page {
+  align-items: center;
+  width: 100%;
+
+  .title-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: $orange60;
+    background-image: url(asset-path('stencils/instrument_white.png'));
+    width: 100%;
+    background-size: 85vw auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 500px;
+    opacity: 50%;
+  } 
+
+  .title-text {
+    color: $white;
+    text-align: center;
+    width: 600px;
+    margin-top: 50px;
+  }
+
+  .button-container {
+    display: flex;
+    width: 300px;
+    margin-top: 20px;
+    justify-content: space-between;
+  }
+
+  .instruments-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+
+  }
+
+  .instrument {
+    display: flex;
+    justify-content: center;
+    height: 200px;
+    width: 300px;
+    margin: 0px 30px;
+    position: relative;
+    img {  
+      width: auto;
+      height: 100%;
+      text-align: center;
+    }
+  }
+
+  .instrument__description {
+    position: absolute;
+    margin: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $white;
+    font-size: $font-size-m;
+    width: 100%;
+    height: 40px;
+    background-color: $orange60;
+  }
+
+  .homepage__line-break {
+    margin-top: 60px;
+    border-top: 1px solid $grey80;
+    width: 1020px;
+  }
+
+  .information-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 50px;
+  }
+
+  .information-block {
+    height: 200px;
+    width: 300px;
+    margin: 0px 30px;
+  }
+
+  .information-block__title {
+    color: $orange;
+    font-size: $font-size-l;
+  }
+
+  .information-block__description {
+    color: $grey;
+    font-size: $font-size-s;
+    margin-top: 20px;
+  }
+}
