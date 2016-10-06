@@ -34,8 +34,8 @@ class HomePage extends React.Component {
                 musicians to provide access to affordable music lessons.
               </h1>
               <div className="button-container">
-                <button className="button button--white button--lg">Learn</button>
-                <button className="button button--white button--lg">Teach</button>
+                <button className="button button--solid-white button--lg">Learn</button>
+                <button className="button button--solid-white button--lg">Teach</button>
               </div>
             </div>
             <div className="instruments-wrapper">

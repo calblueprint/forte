@@ -12,7 +12,7 @@
   }
 }
 
-.button--white {
+.button--outline-white {
   color: $white;
   border: 1px solid $white;
   background-color: transparent;
@@ -32,7 +32,7 @@
   }
 }
 
-.button--orange {
+.button--outline-orange {
   color: $orange;
   border: 1px solid $orange60;
   background-color: $white;
@@ -52,7 +52,7 @@
   }
 }
 
-.button--solid {
+.button--solid-orange {
   color: $white;
   border: 1px solid $orange;
   background-color: $orange;
@@ -68,6 +68,26 @@
     color: $white;
     border-color: $orange40;
     background-color: $orange40;
+    box-shadow: none;
+  }
+}
+
+.button--solid-white {
+  color: $orange80;
+  border: 1px solid $white;
+  background-color: $white;
+
+  &:hover, &:focus {
+    color: $orange80;
+    border-color: $white;
+    background-color: $white;
+    box-shadow: 0 2px 8px $grey40;
+  }
+
+  &:active {
+    color: $orange;
+    border-color: $white;
+    background-color: $white;
     box-shadow: none;
   }
 }
