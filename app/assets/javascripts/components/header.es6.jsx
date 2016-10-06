@@ -14,9 +14,9 @@ class Header extends React.Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav pullRight>
-            <NavItem>ABOUT US</NavItem>
-            <NavItem>OUR PROGRAM</NavItem>
-            <NavItem>GET INVOLVED</NavItem>
+            <NavItem href={RouteConstants.staticPages.about}>ABOUT US</NavItem>
+            <NavItem href={RouteConstants.staticPages.program}>OUR PROGRAM</NavItem>
+            <NavItem href={RouteConstants.staticPages.involvement}>GET INVOLVED</NavItem>
             <NavItem>LOG IN</NavItem>
           </Nav>
         </Navbar.Collapse>

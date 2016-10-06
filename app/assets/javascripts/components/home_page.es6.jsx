@@ -22,6 +22,7 @@ class HomePage extends React.Component {
       </div>
     )
   }
+  
   render () {
     return (
       <div className="page-wrapper">
