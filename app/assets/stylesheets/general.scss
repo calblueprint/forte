@@ -13,7 +13,7 @@ h6 {
 }
 
 h1 {
-  font-size: $font-size-l;
+  font-size: $font-size-xl;
   line-height: $font-size-xxl;
   letter-spacing: 1px;
 }
@@ -61,6 +61,6 @@ label:focus,
 .btn:active,
 .btn.active
 {
-    outline:0px !important;
-    @include appearance(none);
+  outline:0px !important;
+  @include appearance(none);
 }

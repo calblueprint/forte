@@ -6,6 +6,14 @@
         orange: "<%= asset_path("logo/logo_orange.png") %>"
       };
     }
+
+    get instruments() {
+      return {
+        piano: "<%= asset_path("instruments/piano.png") %>",
+        guitar: "<%= asset_path("instruments/guitar.png") %>",
+        clarinet: "<%= asset_path("instruments/clarinet.png") %>",
+      }
+    }
   }
   this.ImageConstants = new ImageConstants();
 })();

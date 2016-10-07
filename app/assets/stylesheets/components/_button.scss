@@ -1,14 +1,20 @@
 .button {
+  @include appearance(none);
   border-radius: 2px;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-large;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  outline: none;
 
   &:active {
     box-shadow: none;
   }
 }
 
-.button--white {
+.button--outline-white {
   color: $white;
-  border-color: $white60;
+  border: 1px solid $white;
   background-color: transparent;
 
   &:hover, &:focus {
@@ -26,9 +32,9 @@
   }
 }
 
-.button--orange {
+.button--outline-orange {
   color: $orange;
-  border-color: $orange60;
+  border: 1px solid $orange60;
   background-color: $white;
 
   &:hover, &:focus {
@@ -46,13 +52,54 @@
   }
 }
 
+.button--solid-orange {
+  color: $white;
+  border: 1px solid $orange;
+  background-color: $orange;
+
+  &:hover, &:focus {
+    color: $white;
+    border-color: $orange;
+    background-color: $orange;
+    box-shadow: 0 2px 8px $grey40;
+  }
+
+  &:active {
+    color: $white;
+    border-color: $orange40;
+    background-color: $orange40;
+    box-shadow: none;
+  }
+}
+
+.button--solid-white {
+  color: $orange80;
+  border: 1px solid $white;
+  background-color: $white;
+
+  &:hover, &:focus {
+    color: $orange80;
+    border-color: $white;
+    background-color: $white;
+    box-shadow: 0 2px 8px $grey40;
+  }
+
+  &:active {
+    color: $orange;
+    border-color: $white;
+    background-color: $white;
+    box-shadow: none;
+  }
+}
+
 .button--lg {
   outline: none;
-  font-size: 16px;
+  font-size: $font-size-s;
   padding: 12px 25px;
 }
 
 .button--sm {
-  font-size: 12px;
+  outline: none;
+  font-size: $font-size-xxs;
   padding: 5px 14px;
 }
