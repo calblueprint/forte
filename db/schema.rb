@@ -16,12 +16,24 @@ ActiveRecord::Schema.define(version: 20161007031306) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "interests", force: :cascade do |t|
+    t.integer  "student_id"
+    t.integer  "matching_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "instrument"
+  end
+
+  add_index "interests", ["matching_id"], name: "index_interests_on_matching_id", using: :btree
+  add_index "interests", ["student_id"], name: "index_interests_on_student_id", using: :btree
+
   create_table "lessons", force: :cascade do |t|
     t.datetime "time",                       null: false
     t.boolean  "is_paid",    default: false, null: false
     t.text     "feedback"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
+  end
 
   create_table "matchings", force: :cascade do |t|
     t.integer  "instrument",               null: false

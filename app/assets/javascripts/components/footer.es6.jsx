@@ -8,7 +8,7 @@ class Footer extends React.Component {
           <span>    ·    </span>
           <a className="link" href="#">Terms & Privacy</a>
           <span>    ·    </span>
-          <a className="link" href="#">Contact Us</a>
+          <a className="link" href={RouteConstants.staticPages.contact}>Contact Us</a>
         </div>
         <div className="footer__nonprofit-label">
           <span>Forte academy, Inc. is a 501(c)(3) nonprofit organization.</span>

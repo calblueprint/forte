@@ -1,0 +1,45 @@
+/*Contact Styles */
+
+.contact-page {
+
+  .questions {
+    color: $orange;
+    font-size: $font-size-l;
+    font-weight: $font-weight-large;
+    text-align: center;
+  }
+
+  .input-field {
+    padding: 12px 20px;
+    margin: 12px 0;
+    box-sizing: border-box;
+    border: solid 1px $grey;
+  }
+
+  .half-width-input {
+    width: 48%;
+  }
+
+  .full-width-input {
+    width: 100%;
+  }
+
+  .last-name-input {
+    float: right;
+  }
+
+  .subject-input {
+    margin-bottom: 0px;
+  }
+
+  .message-input {
+    margin-top: 0px;
+    height: 150px;
+    border-top: none;
+  }
+
+  .contact-form {
+    margin: 100px 250px 100px 200px;
+    min-width: 400px;
+  }
+}
