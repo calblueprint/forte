@@ -1,9 +1,16 @@
 (() => {
   class ImageConstants {
-    
+
     get logos() {
       return {
         orange: "<%= asset_path("logo/logo_orange.png") %>"
+      };
+    }
+
+    get roles() {
+      return {
+        donor: "<%= asset_path("roles/donor.png") %>",
+        student: "<%= asset_path("roles/student.png") %>"
       };
     }
 
