@@ -26,7 +26,7 @@ class HomePage extends React.Component {
   render () {
     return (
       <div className="page-wrapper">
-        <Header />
+        <AdminHeader />
           <div className="home-page content-wrapper">
             <div className="title-wrapper">
               <h1 className="title-text">
