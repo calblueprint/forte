@@ -11,21 +11,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161007031306) do
+ActiveRecord::Schema.define(version: 20161008211126) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "interests", force: :cascade do |t|
-    t.integer  "student_id"
-    t.integer  "matching_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.integer  "instrument"
+  create_table "admins", force: :cascade do |t|
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet     "current_sign_in_ip"
+    t.inet     "last_sign_in_ip"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
   end
 
-  add_index "interests", ["matching_id"], name: "index_interests_on_matching_id", using: :btree
-  add_index "interests", ["student_id"], name: "index_interests_on_student_id", using: :btree
+  add_index "admins", ["email"], name: "index_admins_on_email", unique: true, using: :btree
+  add_index "admins", ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true, using: :btree
 
   create_table "lessons", force: :cascade do |t|
     t.datetime "time",                       null: false
@@ -40,6 +51,16 @@ ActiveRecord::Schema.define(version: 20161007031306) do
     t.text     "lesson_time", default: [], null: false, array: true
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
+  end
+
+  create_table "students", force: :cascade do |t|
+    t.text     "availability", default: [],              array: true
+    t.string   "city",                      null: false
+    t.string   "first_name",                null: false
+    t.string   "instrument",                null: false
+    t.string   "last_name",                 null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
 end
