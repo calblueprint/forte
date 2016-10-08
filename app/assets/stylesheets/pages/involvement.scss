@@ -1,0 +1,89 @@
+/* Involvement Styles */
+
+.involvement-page {
+
+  .container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 0 180px;
+    margin-top: 25px;
+  }
+
+  .title {
+    color: $orange;
+    font-size: $font-size-l;
+  }
+
+  .options-container {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+  }
+
+  .option {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+  }
+
+  .middle {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+
+  .option-icon {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    height: 75px;
+    position: relative;
+    margin-top: 30px;
+    margin-bottom: 50px;
+    img {
+      height: 100px;
+    }
+  }
+
+  .option-title {
+    color: $orange;
+    font-size: $font-size-s;
+  }
+
+  .separator {
+    border-bottom: 1px $orange solid;
+  }
+
+  .option-description {
+    margin-top: 15px;
+  }
+
+  .option-button {
+    align-self: center;
+    margin-top: auto;
+  }
+}
+
+  /* Footer */
+
+.involvement-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  width: 100%;
+  background-color: $orange;
+  color: $white;
+
+  .involvement-footer__links-container {
+    color: $white;
+    font-size: $font-size-xs;
+
+    .link {
+      color: $white;
+      font-weight: $font-weight-large;
+    }
+  }
+}
