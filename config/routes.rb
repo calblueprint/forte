@@ -4,7 +4,8 @@ Rails.application.routes.draw do
   controller :static_pages do
     get :home
     get :involvement
-    get :progam
+    get :program
+    get :contact
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
