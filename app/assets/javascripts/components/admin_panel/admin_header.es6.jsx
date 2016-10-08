@@ -19,8 +19,8 @@ class AdminHeader extends React.Component {
               <MenuItem>Paired</MenuItem>
               <MenuItem>Un-Paired</MenuItem>
             </NavDropdown>
-            <NavItem>LESSONS</NavItem>
-            <NavItem>ROSTER</NavItem>
+            <NavItem href={RouteConstants.adminPages.lessons}>LESSONS</NavItem>
+            <NavItem href={RouteConstants.adminPages.roster}>ROSTER</NavItem>
           </Nav>
           <Nav pullRight>
             <NavItem>LOG IN</NavItem>

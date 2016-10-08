@@ -8,6 +8,14 @@
         contact: '/contact',
       }
     }
+
+    get adminPages() {
+      return {
+        matching: 'admin/matching',
+        lessons: 'admin/lessons',
+        roster: 'admin/roster',
+      }
+    }
   }
 this.RouteConstants = new RouteConstants();
 })();

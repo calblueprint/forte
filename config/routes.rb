@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  get 'admin', to: 'admin#matching'
+
+  get 'admin/matching'
+
+  get 'admin/lessons'
+
+  get 'admin/roster'
+
   root "static_pages#home"
 
   controller :static_pages do
