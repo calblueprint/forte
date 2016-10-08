@@ -1,4 +1,4 @@
 class Student < ActiveRecord::Base
-  has_many :lessons
-  has_many :matchings
+  #has_many :lessons
+  #has_many :matchings
 end
