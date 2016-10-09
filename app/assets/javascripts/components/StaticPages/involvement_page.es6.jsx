@@ -32,7 +32,7 @@ class InvolvementPage extends React.Component {
         <h2 className="option-title">{optionTitle}</h2>
         <div className="separator"/>
         <div className="option-description">
-          <h5>{optionDescription}</h5>
+          <p>{optionDescription}</p>
         </div>
         <div className="option-button">
           <Button className="button button--outline-orange">{buttonText}</Button>
