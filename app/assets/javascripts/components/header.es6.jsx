@@ -18,7 +18,9 @@ class Header extends React.Component {
         className="header">
         <Navbar.Header>
             <Navbar.Brand>
-              <img className="header__logo" src={ImageConstants.logos.orange} href="/" />
+              <a className="header__logo" href="/">
+                <img src={ImageConstants.logos.orange} />
+              </a>
             </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
