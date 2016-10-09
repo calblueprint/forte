@@ -1,13 +1,12 @@
 Rails.application.routes.draw do
   root "static_pages#home"
-  get 'program', to: 'static_pages#program'
-  get 'about', to: 'static_pages#about'
 
   controller :static_pages do
     get :home
     get :involvement
     get :program
     get :contact
+    get :about
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

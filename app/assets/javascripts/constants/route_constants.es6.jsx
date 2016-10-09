@@ -6,6 +6,7 @@
         program: '/program',
         involvement: '/involvement',
         contact: '/contact',
+        about: '/about',
       }
     }
   }

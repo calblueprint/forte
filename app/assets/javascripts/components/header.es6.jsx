@@ -8,7 +8,7 @@ class Header extends React.Component {
         className="header">
         <Navbar.Header>
             <Navbar.Brand>
-              <img className="header__logo" src={ImageConstants.logos.orange} href="#" />
+              <img className="header__logo" src={ImageConstants.logos.orange} href="/" />
             </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
