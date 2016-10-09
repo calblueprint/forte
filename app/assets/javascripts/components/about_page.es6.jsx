@@ -45,18 +45,18 @@ class AboutPage extends React.Component {
                 <h2 className="section__title">
                   Forte |&#8217;fôr,t&#x0101;|
                 </h2>
-                <h5 className="section__subtitle">
+                <h4 className="section__subtitle">
                   adj. loudly, with passion and energy<br></br>
                   n. one's strength, talent or skill
-                </h5>
+                </h4>
               </div>
               <div className="section">
                 <h2 className="section__title">
                   What is our mission?
                 </h2>
-                <h5 className="section__subtitle">
+                <h4 className="section__subtitle">
                   It is to empower underserved youth to discover, learn and love music performance.
-                </h5>
+                </h4>
                 <p className="section__text">
                   Music is a universal language. It provides an outlet for artistic expression and evokes<br></br>
                   emotions connecting audiences worldwide. It is a craft meant to be learned, appreciated<br></br>
@@ -80,9 +80,9 @@ class AboutPage extends React.Component {
                 <h2 className="section__title">
                   How did we start?
                 </h2>
-                <h5 className="section__subtitle">
+                <h4 className="section__subtitle">
                   We are deeply rooted in the tradition of using music to serve our community.
-                </h5>
+                </h4>
                 <p className="section__text">
                   Forte's roots trace back to 2008, when our CEO formed a service organization at Homestead<br></br>
                   High School allowing student musicians to collaborate via small ensembles. Ranging from<br></br>
