@@ -25,6 +25,7 @@
     font-weight: $font-weight-large;
     letter-spacing: 0px;
     line-height: 130%;
+    color: $grey;
   }
 
   .section__text {
@@ -59,6 +60,7 @@
   }
 
   .section__name {
+    color: $grey;
     font-weight: bold;
     text-align: center;
     padding: 0px;
@@ -66,6 +68,7 @@
   }
 
   .section__position {
+    color: $grey;
     text-align: center;
     font-weight: normal;
     padding: 0px;
