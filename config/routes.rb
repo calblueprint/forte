@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  # devise_for :teachers
+  devise_for :admins
+  # devise_for :students
   root "static_pages#home"
   get 'program', to: 'static_pages#program'
   get 'about', to: 'static_pages#about'
@@ -10,6 +13,18 @@ Rails.application.routes.draw do
     get :contact
   end
 
+  devise_for :students, controllers: {
+    sessions: 'students/sessions'
+  }
+
+  devise_for :teachers, controllers: {
+    sessions: 'teachers/sessions'
+  }
+
+  # devise_scope :student do
+  #   get "students/login" => "students/sessions#new"
+  #   post "students/login" => "students/sessions#create"
+  # end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
