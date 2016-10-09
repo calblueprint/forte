@@ -1,0 +1,74 @@
+/* About Page */
+
+.about-page {
+
+  .page-wrapper {
+    background-size: 650px;
+    background-image: url(asset-path('about/about_graphic.png'));
+    background-repeat: no-repeat;
+    background-position: 80% 45%;
+  }
+
+  .section {
+    margin-top: 30px;
+    align-self: flex-start;
+  }
+
+  .section__title {
+    color: $orange;
+    font-weight: bold;
+    margin-bottom: 3px;
+  }
+
+  .section__subtitle {
+    margin: 0px 0px 20px 0px;
+    font-weight: normal;
+    letter-spacing: 0px;
+    line-height: 130%;
+  }
+
+  .section__text {
+    color: $grey;
+    margin-bottom: 15px;
+  }
+
+  .section__headshots-container {
+    max-width: 700px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .section__individual-container {
+    display: flex;
+    flex-direction: column;
+    width: 175px;
+    height: auto;
+    margin: 40px 45px 40px 10px;
+  }
+
+  .section__image {
+    width: 175px;
+    height: auto;
+    border-radius: 50%;
+  }
+
+  .section__person-info {
+    margin-top: 10px;
+  }
+
+  .section__name {
+    font-weight: bold;
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+  }
+
+  .section__position {
+    text-align: center;
+    font-weight: normal;
+    padding: 0px;
+    margin: 0px;
+  }
+}

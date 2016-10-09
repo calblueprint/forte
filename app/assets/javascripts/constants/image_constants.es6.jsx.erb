@@ -7,6 +7,15 @@
       };
     }
 
+    get headshots() {
+      return {
+        daniel: "<%= asset_path("headshots/daniel_kim.png") %>",
+        richard: "<%= asset_path("headshots/richard_donahue.jpg") %>",
+        rocky: "<%= asset_path("headshots/rocky_yip.png") %>",
+        shain: "<%= asset_path("headshots/shain_lafazan.jpg") %>"
+      };
+    }
+
     get roles() {
       return {
         donor: "<%= asset_path("roles/donor.png") %>",
