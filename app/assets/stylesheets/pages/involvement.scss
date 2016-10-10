@@ -1,36 +1,37 @@
 /* Involvement Styles */
 
 .involvement-page {
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 
-  .container {
+  .content-container {
     display: flex;
-    flex: 1;
     flex-direction: column;
-    padding: 0px 180px;
     margin: 25px 0px;
   }
 
   .title {
     color: $orange;
-    font-size: $font-size-l;
   }
 
   .options-container {
     display: flex;
-    flex: 1;
     flex-direction: row;
+    justify-content: space-between;  
+    align-items: center;
+    margin-top: 20px;
   }
 
   .option {
-    flex: 1;
     display: flex;
     flex-direction: column;
     height: 400px;
+    width: 250px;
   }
 
   .middle {
-    margin-left: 15px;
-    margin-right: 15px;
+    margin: 0 30px;
   }
 
   .option-icon {
@@ -48,7 +49,6 @@
 
   .option-title {
     color: $orange;
-    font-size: $font-size-s;
   }
 
   .separator {
@@ -58,6 +58,7 @@
   .option-description {
     color: $grey;
     margin-top: 15px;
+    font-size: $font-size-s;
   }
 
   .option-button {
