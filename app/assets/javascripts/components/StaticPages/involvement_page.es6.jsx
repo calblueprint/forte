@@ -57,7 +57,7 @@ class InvolvementPage extends React.Component {
      <div className="page-wrapper">
       <Header />
       <div className="involvement-page content-wrapper">
-        <div className="container">
+        <div className="content-container">
           <div className="title-container">
             <h1 className="title">
               Get Involved with Forte Today!
