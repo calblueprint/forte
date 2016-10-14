@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
+  get 'admin' => redirect('admin/matched')
+  get 'admin/matched'
+  get 'admin/lessons'
+  get 'admin/roster'
+
   # devise_for :teachers
   devise_for :admins
+
   # devise_for :students
   root "static_pages#home"
 

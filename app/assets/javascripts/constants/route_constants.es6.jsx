@@ -24,6 +24,14 @@
         }
       }
     }
+
+    get adminPages() {
+      return {
+        matched: 'admin/matched',
+        lessons: 'admin/lessons',
+        roster: 'admin/roster',
+      }
+    }
   }
 this.RouteConstants = new RouteConstants();
 })();
