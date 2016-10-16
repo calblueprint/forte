@@ -1,4 +1,5 @@
 class Teachers::SessionsController < Devise::SessionsController
+  respond_to :json
 # before_filter :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
@@ -7,14 +8,16 @@ class Teachers::SessionsController < Devise::SessionsController
   # end
 
   # POST /resource/sign_in
-  # def create
-  #   super
-  # end
+  def create
+    super
+    cookies[:is_signed_in] = teacher_signed_in?
+  end
 
   # DELETE /resource/sign_out
-  # def destroy
-  #   super
-  # end
+  def destroy
+    super
+    cookies[:is_signed_in] = teacher_signed_in?
+  end
 
   # protected
 
