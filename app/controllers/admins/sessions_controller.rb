@@ -1,8 +1,8 @@
-class Teachers::SessionsController < Devise::SessionsController
+class Admins::SessionsController < Devise::SessionsController
   respond_to :json
 # before_filter :configure_sign_in_params, only: [:create]
 
-  # GET /resource/sign_in
+   # GET /resource/sign_in
   # def new
   #   super
   # end
@@ -10,17 +10,16 @@ class Teachers::SessionsController < Devise::SessionsController
   # POST /resource/sign_in
   def create
     super
-    cookies[:is_signed_in] = teacher_signed_in?
-    cookies[:signed_in_type] = 'teacher'
+    cookies[:is_signed_in] = admin_signed_in?
+    cookies[:signed_in_type] = 'admin'
   end
 
   # DELETE /resource/sign_out
   def destroy
     super
-    cookies[:is_signed_in] = teacher_signed_in?
+    cookies[:is_signed_in] = admin_signed_in?
     cookies.delete :signed_in_type
   end
-
   # protected
 
   # If you have extra params to permit, append them to the sanitizer.

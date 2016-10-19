@@ -8,9 +8,11 @@ class Students::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    super
+    cookies[:is_signed_in] = student_signed_in?
+    cookies[:signed_in_type] = 'student'
+  end
 
   # GET /resource/edit
   # def edit

@@ -1,10 +1,18 @@
 class Header extends React.Component {
 
   logout() {
+    var signed_in_type = getCookie('signed_in_type');
     var resolve = (response) => window.location = "/";
     var reject = (response) => console.log(response);
+    if (signed_in_type == 'student') {
+      var route = RouteConstants.authentication.logout.student;
+    } else if (signed_in_type == 'teacher') {
+      var route = RouteConstants.authentication.logout.teacher;
+    } else if (signed_in_type == 'admin') {
+      var route = RouteConstants.authentication.logout.admin;
+    }
     Requester.delete(
-      RouteConstants.authentication.logout.student,
+      route,
       resolve,
       reject,
     );
@@ -22,7 +30,7 @@ class Header extends React.Component {
           <MenuItem href={RouteConstants.authentication.login.student} eventKey={3.1}>Student</MenuItem>
           <MenuItem href={RouteConstants.authentication.login.teacher}>Teacher</MenuItem>
           <MenuItem divider />
-          <MenuItem>Admin</MenuItem>
+          <MenuItem href={RouteConstants.authentication.login.admin}>Admin</MenuItem>
         </NavDropdown>
       );
     }

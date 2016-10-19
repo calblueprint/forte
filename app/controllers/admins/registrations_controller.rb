@@ -1,17 +1,17 @@
-class Teachers::RegistrationsController < Devise::RegistrationsController
+class Admins::RegistrationsController < Devise::RegistrationsController
 # before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
-  # def new 
+  # def new
   #   super
   # end
 
   # POST /resource
-  def create #when new account is created, auto logged in
+  def create
     super
-    cookies[:is_signed_in] = teacher_signed_in?    
-    cookies[:signed_in_type] = 'teacher'
+    cookies[:is_signed_in] = admin_signed_in?    
+    cookies[:signed_in_type] = 'admin'
   end
 
   # GET /resource/edit

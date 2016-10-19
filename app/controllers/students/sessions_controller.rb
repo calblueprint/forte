@@ -12,12 +12,14 @@ class Students::SessionsController < Devise::SessionsController
   def create
     super
     cookies[:is_signed_in] = student_signed_in?
+    cookies[:signed_in_type] = 'student'
   end
 
   # DELETE /resource/sign_out
   def destroy
     super
     cookies[:is_signed_in] = student_signed_in?
+    cookies.delete :signed_in_type
   end
 
   # protected

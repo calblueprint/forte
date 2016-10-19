@@ -1,13 +1,10 @@
 Rails.application.routes.draw do
+
   get 'admin' => redirect('admin/matched')
   get 'admin/matched'
   get 'admin/lessons'
   get 'admin/roster'
 
-  # devise_for :teachers
-  devise_for :admins
-
-  # devise_for :students
   root "static_pages#home"
 
   controller :static_pages do
@@ -24,6 +21,10 @@ Rails.application.routes.draw do
 
   devise_for :teachers, controllers: {
     sessions: 'teachers/sessions'
+  }
+
+  devise_for :admins, controllers: {
+    sessions: 'admins/sessions'
   }
 
   # devise_scope :student do
