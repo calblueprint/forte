@@ -1,6 +1,8 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
+require 'active_support/core_ext/numeric/time.rb'
+
 $instruments_array = ["piano", "clarinet", "violin"]
 
 def create_single_teacher(is_searching, n)
@@ -51,7 +53,7 @@ end
 def create_single_matching(teacher, student)
   matching = Matching.create(
     instrument: student.instrument,
-    lesson_time: [student.availability[0], student.availability[1]],
+    lesson_time: [student.availability[0], student.availability[1], student.availability[2]],
     student_id: student.id,
     teacher_id: teacher.id,
   )
@@ -59,8 +61,11 @@ def create_single_matching(teacher, student)
 end
 
 def create_single_lesson(teacher, student, n)
+  start_time = (7*n).days.ago + (15 * student.availability[0].to_i).minutes
   lesson = Lesson.create(
-    time: Faker::Date.backward(7*n),
+    start_time: start_time,
+    end_time: start_time + 45.minutes,
+    price: 15.0,
     is_paid: true,
     feedback: Faker::Lorem.paragraph,
     student_id: student.id,
