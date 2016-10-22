@@ -8,4 +8,7 @@ class AdminController < ApplicationController
 
   def roster
   end
+
+  def matching
+  end
 end

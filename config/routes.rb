@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get 'admin/matched'
   get 'admin/lessons'
   get 'admin/roster'
+  get 'admin/matching'
 
   root "static_pages#home"
 
