@@ -1,7 +1,8 @@
-class Teachers::SessionsController < Devise::SessionsController
+class Authentication::Students::SessionsController < Devise::SessionsController
   respond_to :json
+  skip_filter :verify_signed_out_user, only: :destroy
 # before_filter :configure_sign_in_params, only: [:create]
-
+  
   # GET /resource/sign_in
   # def new
   #   super
@@ -10,14 +11,14 @@ class Teachers::SessionsController < Devise::SessionsController
   # POST /resource/sign_in
   def create
     super
-    cookies[:is_signed_in] = teacher_signed_in?
-    cookies[:signed_in_type] = 'teacher'
+    cookies[:is_signed_in] = student_signed_in?
+    cookies[:signed_in_type] = 'student'
   end
 
   # DELETE /resource/sign_out
   def destroy
     super
-    cookies[:is_signed_in] = teacher_signed_in?
+    cookies[:is_signed_in] = student_signed_in?
     cookies.delete :signed_in_type
   end
 

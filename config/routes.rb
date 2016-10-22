@@ -16,15 +16,18 @@ Rails.application.routes.draw do
   end
 
   devise_for :students, controllers: {
-    sessions: 'students/sessions'
+    sessions: 'authentication/students/sessions',
+    registrations: 'authentication/students/registrations'
   }
 
   devise_for :teachers, controllers: {
-    sessions: 'teachers/sessions'
+    sessions: 'authentication/teachers/sessions',
+    registrations: 'authentication/teachers/registrations'
   }
 
   devise_for :admins, controllers: {
-    sessions: 'admins/sessions'
+    sessions: 'authentication/admins/sessions',
+    registrations: 'authentication/admins/registrations'
   }
 
   # devise_scope :student do
