@@ -1,4 +1,4 @@
 class Matching < ActiveRecord::Base
-  belongs_to :student
-  belongs_to :teacher
+  belongs_to :student, :inverse_of => :matchings
+  belongs_to :teacher, :inverse_of => :matchings
 end
