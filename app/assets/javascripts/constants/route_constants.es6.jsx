@@ -27,11 +27,11 @@
       }
     }
 
-    get adminPages() {
+    get admin() {
       return {
-        matched: 'admin/matched',
-        lessons: 'admin/lessons',
-        roster: 'admin/roster',
+        matched: '/admin/matched',
+        lessons: '/admin/lessons',
+        roster: '/admin/roster',
       }
     }
   }
