@@ -18,8 +18,8 @@ class AdminHeader extends React.Component {
           <Nav pullLeft>
             <NavDropdown title="MATCHING">
               {/* TO-DO: add href={} for all items*/}
-              <MenuItem>Matched</MenuItem>
-              <MenuItem>Not Matched</MenuItem>
+              <MenuItem href={RouteConstants.admin.matched}>Matched</MenuItem>
+              <MenuItem href={RouteConstants.admin.unmatched}>Not Matched</MenuItem>
             </NavDropdown>
             <NavItem href={RouteConstants.admin.lessons}>LESSONS</NavItem>
             <NavItem href={RouteConstants.admin.roster}>ROSTER</NavItem>

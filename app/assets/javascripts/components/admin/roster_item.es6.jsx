@@ -1,4 +1,4 @@
-class PersonItem extends React.Component {
+class RosterItem extends React.Component {
 
   static get propTypes() {
     return {
@@ -8,7 +8,7 @@ class PersonItem extends React.Component {
 
   render () {
     return (
-      <div className="person-item">
+      <div className="roster-item">
         <div>Name: {this.props.person.first_name} {this.props.person.last_name}</div>
         <div>ID: {this.props.person.id}</div>
         <div>Email: {this.props.person.email}</div>

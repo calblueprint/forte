@@ -8,7 +8,7 @@ class RosterPage extends React.Component {
 
   renderPerson(person) {
     return (
-      <PersonItem person={person} />
+      <RosterItem person={person} />
     );
   }
 
