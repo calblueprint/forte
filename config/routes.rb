@@ -15,6 +15,12 @@ Rails.application.routes.draw do
     get :about
   end
 
+  resources :student, only: [] do
+    member do
+      get "my_lessons"
+    end
+  end
+
   devise_for :students, controllers: {
     sessions: 'authentication/students/sessions',
     registrations: 'authentication/students/registrations'
