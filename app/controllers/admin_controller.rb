@@ -14,16 +14,8 @@ class AdminController < ApplicationController
   end
 
   def roster
-  	students = Student.all
-  	teachers = Teacher.all
-  	@people = (students + teachers).sort_by &:first_name
   end
 
   def unmatched
-    matchings = Matching.all.includes(:student)
-    @students = []
-    for matching in matchings do
-      @students.push(matching.student)
-    end
   end
 end

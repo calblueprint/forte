@@ -13,42 +13,68 @@ class UnmatchedPage extends React.Component {
 
   renderStudentPart() {
     if (this.state.student_detail) {
-      return (
-        <div>
-          <p>STUDENT DETAIL</p>
-          <FullStudent student={this.state.student} />
-        </div>
-      );
+      if (this.state.student != null) {
+        return (
+          <div>
+            <p>STUDENT DETAIL</p>
+            <FullStudent student={this.state.student} />
+          </div>
+        );
+      } else {
+        return (
+          <div>
+          </div>
+        );
+      }
     } else {
-      return (
-        <div>
-          <p>STUDENT LIST</p>
-          <PersonList people={this.state.students} />
-        </div>
-      );
+      if (this.state.students != null) {
+        return (
+          <div>
+            <p>STUDENT LIST</p>
+            <PersonList people={this.state.students} />
+          </div>
+        );
+      } else {
+        return (
+          <div>
+          </div>
+        );
+      }
     }
   }
 
   renderTeacherPart() {
     if (this.state.teacher_detail) {
-      return (
-        <div>
-          <p>TEACHER DETAIL</p>
-          <FullTeacher teacher={this.state.teacher} />
-        </div>
-      );
+      if (this.state.teacher != null) {
+        return (
+          <div>
+            <p>TEACHER DETAIL</p>
+            <FullTeacher teacher={this.state.teacher} />
+          </div>
+        );
+      } else {
+        return (
+          <div>
+          </div>
+        );
+      }
     } else if (this.props.student_detail) {
-      return (
-        <div>
-          <p>TEACHER LIST</p>
-          <PersonList people={this.state.teachers} />
-        </div>
-      );
+      if (this.state.teachers != null) {
+        return (
+          <div>
+            <p>TEACHER LIST</p>
+            <PersonList people={this.state.teachers}/>
+          </div>
+        );
+      } else {
+        return (
+          <div>
+          </div>
+        );
+      }
     } else {
       return (
         <div>
-          <p>TEACHER BLANK LIST</p>
-          <PersonList people={[]} />
         </div>
       );
     }

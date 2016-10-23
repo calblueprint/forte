@@ -18,10 +18,21 @@ class Api::TeachersController < Api::BaseController
     render json: teacher
   end
 
-
   def show
     teacher = Teacher.find params[:id]
     render json: teacher
+  end
+
+  def possible_teachers
+    student = Student.find params[:id]
+    teachers = Teacher.all? { |teacher| is_valid_matching(teacher, student) }
+    render json: teachers
+  end
+
+  def is_valid_matching(teacher, student)
+    time_overlap = teacher.availability.intersect? student.availability
+    same_instrument = (teacher.instruments.include? student.instrument)
+    return (time_overlap and same_instrument)
   end
 
   def teacher_params
