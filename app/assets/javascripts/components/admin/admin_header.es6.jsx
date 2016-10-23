@@ -21,8 +21,8 @@ class AdminHeader extends React.Component {
               <MenuItem>Matched</MenuItem>
               <MenuItem>Not Matched</MenuItem>
             </NavDropdown>
-            <NavItem href={RouteConstants.adminPages.lessons}>LESSONS</NavItem>
-            <NavItem href={RouteConstants.adminPages.roster}>ROSTER</NavItem>
+            <NavItem href={RouteConstants.admin.lessons}>LESSONS</NavItem>
+            <NavItem href={RouteConstants.admin.roster}>ROSTER</NavItem>
           </Nav>
           <Nav pullRight>
             <NavItem>Log Out</NavItem>

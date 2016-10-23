@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get 'admin/matched'
   get 'admin/lessons'
   get 'admin/roster'
-  get 'admin/matching'
+  get 'admin/unmatched'
 
   root "static_pages#home"
 
@@ -17,16 +17,26 @@ Rails.application.routes.draw do
   end
 
   devise_for :students, controllers: {
-    sessions: 'students/sessions'
+    sessions: 'authentication/students/sessions',
+    registrations: 'authentication/students/registrations'
   }
 
   devise_for :teachers, controllers: {
-    sessions: 'teachers/sessions'
+    sessions: 'authentication/teachers/sessions',
+    registrations: 'authentication/teachers/registrations'
   }
 
   devise_for :admins, controllers: {
-    sessions: 'admins/sessions'
+    sessions: 'authentication/admins/sessions',
+    registrations: 'authentication/admins/registrations'
   }
+
+  namespace :api do
+    resources :students, only: [:index, :destroy, :show, :update]
+    resources :teachers, only: [:index, :destroy, :show, :update]
+    resources :lessons, only: [:index, :create, :destroy, :show, :update]
+    resources :matchings, only: [:index, :create, :destroy, :show, :update]
+  end
 
   # devise_scope :student do
   #   get "students/login" => "students/sessions#new"

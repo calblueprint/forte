@@ -1,4 +1,4 @@
-class Students::RegistrationsController < Devise::RegistrationsController
+class Authentication::Admins::RegistrationsController < Devise::RegistrationsController
 # before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
 
@@ -10,8 +10,8 @@ class Students::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
     super
-    cookies[:is_signed_in] = student_signed_in?
-    cookies[:signed_in_type] = 'student'
+    cookies[:is_signed_in] = admin_signed_in?    
+    cookies[:signed_in_type] = 'admin'
   end
 
   # GET /resource/edit

@@ -8,7 +8,9 @@ class PersonDescription extends React.Component {
 
   render () {
     return (
-      <div>
+      <div className="person-description">
+        <p>Name: { this.props.person.first_name } { this.props.person.last_name }</p>
+        <p>City: { this.props.person.city }</p>
       </div>
     );
   }
