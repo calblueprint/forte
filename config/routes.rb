@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   get 'admin/lessons'
   get 'admin/roster'
 
+  get 'form/student'
+  get 'form/teacher'
+
   root "static_pages#home"
 
   controller :static_pages do

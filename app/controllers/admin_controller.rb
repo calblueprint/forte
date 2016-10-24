@@ -10,7 +10,7 @@ class AdminController < ApplicationController
   end
 
   def lessons
-  	@lessons = Lesson.all.sort_by &:start_time
+    @lessons = Lesson.all.sort_by &:start_time
   end
 
   def roster
