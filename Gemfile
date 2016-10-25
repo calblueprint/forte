@@ -24,9 +24,10 @@ gem 'font-awesome-rails', '4.5.0'
 gem 'jquery-rails', '3.1.4'
 gem 'sass-rails', '5.0.6'
 gem 'uglifier', '2.7.2'
+gem 'faker'
+
 
 group :development, :staging, :test do
-  gem 'faker'
 end
 
 group :development, :test do
