@@ -1,14 +1,9 @@
 /* My Lessons Page Styles */
 
 .my-lessons-page {
-
-  .content-container {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    padding: 0 180px;
-    margin-top: 25px;
-  }
+  width: 100%;
+  padding: 0 400px;
+  margin-top: 25px;
 
   .title {
     color: $orange;
@@ -18,9 +13,5 @@
   .options-container {
     display: flex;
     flex-direction: row;
-  }
-
-
-  .option-button {
   }
 }

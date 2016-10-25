@@ -30,6 +30,16 @@
         clarinet: "<%= asset_path("instruments/clarinet.png") %>",
       }
     }
+
+    get icons() {
+      return {
+        cancel: "<%= asset_path("icons/cancel.png") %>",
+        location: "<%= asset_path("icons/location.png") %>",
+        modify: "<%= asset_path("icons/modify.png") %>",
+        person: "<%= asset_path("icons/person.png") %>",
+        time: "<%= asset_path("icons/time.png") %>",
+      }
+    }
   }
   this.ImageConstants = new ImageConstants();
 })();

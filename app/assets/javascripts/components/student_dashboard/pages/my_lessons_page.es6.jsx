@@ -42,20 +42,17 @@ class MyLessonsPage extends React.Component {
     return (
      <div className="page-wrapper">
       <Header />
-      <div className="content-wrapper">
-        <div className="my-lessons-page content-container">
-          <h2 className="title">
-            My Lessons
-          </h2>
-          <div className="options-container">
-            <ButtonGroup>
-              {this.renderOption("upcoming")}
-              {this.renderOption("recent")}
-            </ButtonGroup>
-          </div>
-          <div className="lessons-container">
-          </div>
+      <div className="my-lessons-page content-wrapper">
+        <h2 className="title">
+          My Lessons
+        </h2>
+        <div className="options-container">
+          <ButtonGroup>
+            {this.renderOption("upcoming")}
+            {this.renderOption("recent")}
+          </ButtonGroup>
         </div>
+        <LessonCard />
       </div>
     </div>
     );
