@@ -23,6 +23,10 @@
           student: '/students/sign_out',
           teacher: '/teachers/sign_out',
           admin: '/admins/sign_out',
+        },
+        signup:
+        {
+          student: '/students',
         }
       }
     }

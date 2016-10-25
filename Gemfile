@@ -8,7 +8,7 @@ gem 'rails', '4.2.4'
 # Core
 gem 'cancancan', '1.15.0'
 gem 'active_model_serializers', '0.9.4'
-gem 'devise', '3.5.2'
+gem 'devise', '4.1.1'
 gem 'figaro', '1.1.1'
 gem 'has_scope', '0.6.0'
 gem 'jbuilder', '~> 2.0'

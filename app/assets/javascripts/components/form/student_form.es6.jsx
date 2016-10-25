@@ -1,4 +1,42 @@
 class StudentForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { 
+      email: '',
+      password: '',
+      password_confirmation: '',
+      first_name: '', 
+      last_name: '', 
+      city: '',
+    };
+  }
+
+  handleChange(event) {
+    this.setState({ [$(event.target).attr("name")] : $(event.target).val() });
+  }
+
+  submitForm() {
+    var reject = (response) => console.log(response);
+    var resolve = (response) => {
+      window.location.href = "/";
+    };
+    var params = {
+      student: {
+        email: this.state.email,
+        password: this.state.password,
+        password_confirmation: this.state.password_confirmation,
+        first_name: this.state.first_name,
+        last_name: this.state.last_name,
+        city: this.state.city,
+      }
+    };
+    Requester.post(
+      RouteConstants.authentication.signup.student,
+      params,
+      resolve,
+      reject
+    );
+  }
 
   render () {
     return (
@@ -8,14 +46,20 @@ class StudentForm extends React.Component {
             <form>
               <FormGroup>
                 <ControlLabel>First Name</ControlLabel>
-                <FormControl type="text" 
-                placeholder="Enter first name"/>
+                <FormControl 
+                  type="text" 
+                  placeholder="Enter first name"
+                  name="first_name"
+                  onChange={(event) => this.handleChange(event)}/>
               </FormGroup>
 
               <FormGroup>
                 <ControlLabel>Last Name</ControlLabel>
-                <FormControl type="text" 
-                placeholder="Enter last name"/>
+                <FormControl 
+                  type="text" 
+                  placeholder="Enter last name"
+                  name="last_name"
+                  onChange={(event) => this.handleChange(event)}/>
               </FormGroup>
 
               <FormGroup>
@@ -150,16 +194,38 @@ class StudentForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Parent/Guardian Email</ControlLabel>
-                <FormControl type="text" 
-                placeholder="Email Address"/>
+                <FormControl 
+                  type="text" 
+                  placeholder="Email Address" 
+                  name="email"
+                  onChange={(event) => this.handleChange(event)}/>
+              </FormGroup>                
+              <FormGroup>
+                <ControlLabel>Password</ControlLabel>
+                <FormControl 
+                  type="text" 
+                  placeholder="Password"
+                  name="password"
+                  onChange={(event) => this.handleChange(event)}/>
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel>Password Confirmation</ControlLabel>
+                <FormControl 
+                  type="text" 
+                  placeholder="Password"
+                  name="password_confirmation"
+                  onChange={(event) => this.handleChange(event)}/>
               </FormGroup>
 
               <FormGroup>
-                <ControlLabel>Password</ControlLabel>
-                <FormControl type="text" 
-                placeholder="Password"/>
+                <ControlLabel>City</ControlLabel>
+                <FormControl 
+                  type="text" 
+                  placeholder="City"
+                  name="city"
+                  onChange={(event) => this.handleChange(event)}/>
               </FormGroup>
-
+              <Button className="button button--solid-orange login-card__button" onClick={() => this.submitForm()}>Submit</Button> 
               <FormControl.Feedback />
             </form>
           </div>
