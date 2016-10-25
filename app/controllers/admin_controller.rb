@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
- # before_action :authenticate_admin!
+ before_action :authenticate_admin!
  
   def matched
     matchings = Matching.all.includes(:student, :teacher)
