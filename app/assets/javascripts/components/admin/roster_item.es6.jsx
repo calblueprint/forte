@@ -9,11 +9,21 @@ class RosterItem extends React.Component {
   render () {
     return (
       <div className="roster-item">
-        <div>Name: {this.props.person.first_name} {this.props.person.last_name}</div>
-        <div>ID: {this.props.person.id}</div>
-        <div>Email: {this.props.person.email}</div>
+        <div className="roster-item__img"></div>
+        <div className="roster-item__header-description">
+          <div>
+            <div className="roster-item__header-name">
+            {this.props.person.first_name} {this.props.person.last_name}, 12</div>
+          </div>
+          <div>
+            <div>{this.props.person.city}, CA</div>
+            <div>{this.props.person.instrument}</div>
+          </div>
+        </div>
+      <div className="roster-item__description">
+        This is where the we will display a bit about the student's particular interests! :) 
+      </div>
       </div>
     );
   }
 }
-

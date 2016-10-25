@@ -1,5 +1,30 @@
 .roster-item {
-  background-color: $grey20;
-  padding: 10px 20px;
+  background-color: #FFFFFF;
+  padding: 0px 20px;
   margin: 10px 0px;
+  text-align: left;
+
+  .roster-item__img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: blue;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 15px;
+  }
+
+  .roster-item__header-description {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  .roster-item__header-name {
+    font-size: 19px;
+    font-weight: bold;
+}
+
+  .roster-item__description {
+    padding-top: 10px;
+  }
 }
