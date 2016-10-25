@@ -28,7 +28,17 @@ class Teacher < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+  
+  validates :instruments, presence: true
+  validates :email, presence: true, uniqueness: true
+  validates :city, presence: true
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  validates :is_searching, presence: true
+  validates :availability, presence: true
+
   has_many :matchings
   has_many :lessons
   has_many :students, through: :matchings
+
 end

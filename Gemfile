@@ -37,6 +37,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'rspec-rails'
   gem 'rubocop'
+  gem "date_validator"
 end
 
 group :development do
