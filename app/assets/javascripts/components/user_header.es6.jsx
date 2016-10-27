@@ -48,10 +48,7 @@ class UserHeader extends React.Component {
         <Navbar.Collapse>
           <Nav pullRight>
             <NavDropdown title="Welcome, NAME">
-              <MenuItem href={RouteConstants.authentication.login.student} eventKey={3.1}>Student</MenuItem>
-              <MenuItem href={RouteConstants.authentication.login.teacher}>Teacher</MenuItem>
-              <MenuItem divider />
-              <MenuItem href={RouteConstants.authentication.login.admin}>Admin</MenuItem>
+              <NavItem onClick={() => this.logout()}>LOG OUT</NavItem>
             </NavDropdown>
           </Nav>
           {this.renderLinks()}
