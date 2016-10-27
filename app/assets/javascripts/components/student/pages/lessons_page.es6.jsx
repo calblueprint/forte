@@ -41,7 +41,7 @@ class LessonsPage extends React.Component {
   render() {
     return (
      <div className="page-wrapper">
-      <StudentHeader />
+      <UserHeader />
       <div className="lessons-page content-wrapper">
         <h2 className="title">
           My Lessons

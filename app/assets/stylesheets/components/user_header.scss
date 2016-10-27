@@ -1,0 +1,19 @@
+/* Header Styles */
+
+.user-header > a {
+  background-color: $orange;
+  color: $white;
+
+  // .links {
+  //   color: $white;
+  //   padding-right: 90px;
+  // }
+}
+
+.header__logo {
+  padding: 0;
+
+  img {
+    height: 100%;
+  }
+}
