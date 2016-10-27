@@ -1,13 +1,10 @@
 /* Header Styles */
 
-.user-header > a {
+.user-header.navbar-default {
   background-color: $orange;
-  color: $white;
-
-  // .links {
-  //   color: $white;
-  //   padding-right: 90px;
-  // }
+  a {
+    color: $white;
+  }
 }
 
 .header__logo {
