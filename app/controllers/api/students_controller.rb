@@ -22,6 +22,9 @@ class Api::StudentsController < Api::BaseController
     render json: student
   end
 
+  def lessons
+  end
+
   def student_params
     params.require(:student).permit(
       :availability,
