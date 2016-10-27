@@ -1,15 +1,12 @@
 /* Lesson Card Styles */
 
 .lesson-card {
-
-  .card-container {
-    display: flex;
-    align-items: center;
-    border: 2px solid $orange60;
-    border-right: 0;
-    height: 100px;
-    padding: 60px 30px;
-  }
+  display: flex;
+  align-items: center;
+  border: 2px solid $orange60;
+  border-right: 0;
+  height: 100px;
+  padding: 60px 30px;
 
   .instrument-icon {
     img {

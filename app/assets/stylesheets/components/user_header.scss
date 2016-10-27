@@ -2,8 +2,17 @@
 
 .user-header.navbar-default {
   background-color: $orange;
-  a {
+
+  .navbar-nav > li > a {
     color: $white;
+  }
+
+  .navbar-nav > li > a:hover, a:focus, a:active {
+    color: $white60;
+  }
+
+  .link-container.navbar-right {
+    padding-right: 100px;
   }
 }
 

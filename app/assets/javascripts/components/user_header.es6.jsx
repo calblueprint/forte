@@ -21,7 +21,9 @@ class UserHeader extends React.Component {
   renderLinks() {
     // TODO(shimmy): Add check for user/teacher here.
     return(
-      <Nav pullRight>
+      <Nav
+        pullRight
+        className="link-container">
         <NavItem href={RouteConstants.student.dashboard}>Dashboard</NavItem>
         <NavItem href={RouteConstants.student.lessons}>My Lessons</NavItem>
         <NavItem href={RouteConstants.student.profile}>Profile</NavItem>
@@ -45,7 +47,12 @@ class UserHeader extends React.Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav pullRight>
-            <NavItem onClick={() => this.logout()}>LOG OUT</NavItem>
+            <NavDropdown title="Welcome, NAME">
+              <MenuItem href={RouteConstants.authentication.login.student} eventKey={3.1}>Student</MenuItem>
+              <MenuItem href={RouteConstants.authentication.login.teacher}>Teacher</MenuItem>
+              <MenuItem divider />
+              <MenuItem href={RouteConstants.authentication.login.admin}>Admin</MenuItem>
+            </NavDropdown>
           </Nav>
           {this.renderLinks()}
         </Navbar.Collapse>
