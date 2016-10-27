@@ -1,5 +1,23 @@
 class UserHeader extends React.Component {
 
+  logout() {
+    var signed_in_type = getCookie('signed_in_type');
+    var resolve = (response) => window.location = "/";
+    var reject = (response) => console.log(response);
+    if (signed_in_type == 'student') {
+      var route = RouteConstants.authentication.logout.student;
+    } else if (signed_in_type == 'teacher') {
+      var route = RouteConstants.authentication.logout.teacher;
+    } else if (signed_in_type == 'admin') {
+      var route = RouteConstants.authentication.logout.admin;
+    }
+    Requester.delete(
+      route,
+      resolve,
+      reject,
+    );
+  }
+
   renderLinks() {
     // TODO(shimmy): Add check for user/teacher here.
     return(
@@ -27,7 +45,7 @@ class UserHeader extends React.Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav pullRight>
-            <NavItem>Log Out</NavItem>
+            <NavItem onClick={() => this.logout()}>LOG OUT</NavItem>
           </Nav>
           {this.renderLinks()}
         </Navbar.Collapse>
