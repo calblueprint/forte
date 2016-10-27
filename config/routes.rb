@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   get 'admin/lessons'
   get 'admin/roster'
 
+  get 'student' => redirect('student/lessons')
+  get 'student/lessons'
+
   get 'form/student'
   get 'form/teacher'
 
@@ -16,12 +19,6 @@ Rails.application.routes.draw do
     get :program
     get :contact
     get :about
-  end
-
-  resources :student, only: [] do
-    member do
-      get "my_lessons"
-    end
   end
 
   devise_for :students, controllers: {
