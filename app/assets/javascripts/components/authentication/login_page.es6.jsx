@@ -2,7 +2,7 @@ class LoginPage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { email: '', password: '' }
+    this.state = { email: '', password: '' };
   }
 
   handleChange(event) {
@@ -11,9 +11,6 @@ class LoginPage extends React.Component {
 
   login() {
     var reject = (response) => console.log(response);
-    var resolve = (response) => {
-      window.location.href = "/";
-    };
     var paramsObject = {
       email: this.state.email,
       password: this.state.password,
@@ -22,12 +19,15 @@ class LoginPage extends React.Component {
     if (this.props.type == 'student') {
       var params = { student: paramsObject };
       var route = RouteConstants.authentication.login.student;
+      var resolve = (response) => { window.location.href = "/"; };
     } else if (this.props.type == 'teacher') {
       var params = { teacher: paramsObject };
       var route = RouteConstants.authentication.login.teacher;
+      var resolve = (response) => { window.location.href = "/"; };
     } else if (this.props.type == 'admin') {
       var params = { admin: paramsObject };
       var route = RouteConstants.authentication.login.admin;
+      var resolve = (response) => { window.location.href = "/admin/matched"; };
     }
     Requester.post(
       route,

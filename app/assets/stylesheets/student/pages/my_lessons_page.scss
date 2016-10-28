@@ -1,0 +1,17 @@
+/* My Lessons Page Styles */
+
+.my-lessons-page {
+  width: 100%;
+  padding: 0 400px;
+  margin-top: 25px;
+
+  .title {
+    color: $orange;
+    font-size: $font-size-l;
+  }
+
+  .options-container {
+    display: flex;
+    flex-direction: row;
+  }
+}

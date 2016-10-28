@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
- # before_action :authenticate_admin!
+ before_action :authenticate_admin!
  
   def matched
     matchings = Matching.all.includes(:student, :teacher)
@@ -10,10 +10,13 @@ class AdminController < ApplicationController
   end
 
   def lessons
-  	@lessons = Lesson.all.sort_by &:start_time
+    @lessons = Lesson.all.sort_by &:start_time
   end
 
   def roster
+    students = Student.all
+    teachers = Teacher.all
+    @people = (students + teachers).sort_by &:first_name
   end
 
   def unmatched

@@ -5,6 +5,14 @@ require 'active_support/core_ext/numeric/time.rb'
 
 $instruments_array = ["piano", "clarinet", "violin"]
 
+def create_single_admin(n)
+  admin = Admin.create(
+    email: "admin_#{n}@gmail.com",
+    password: "password"
+  )
+  admin
+end
+
 def create_single_teacher(is_searching, n)
   label = is_searching ? "searching" : "matched"
 
@@ -15,7 +23,7 @@ def create_single_teacher(is_searching, n)
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.first_name,
     city: Faker::Address.city,
-    password: "password",     
+    password: "password",
     availability: ["#{n}", "#{n+1}", "#{n+2}", "#{n+4}", "#{n+5}", "#{n+6}", "#{n+7}", "#{n+8}", "#{n+9}", "#{n+10}"],
   )
   teacher
@@ -86,7 +94,26 @@ def create_lessons_and_matchings_with_matched_teachers_and_students
     end
   end
 end
-          
-create_unmatched_teachers
-create_unmatched_students
-create_lessons_and_matchings_with_matched_teachers_and_students
+
+def create_admin_accounts
+  puts "creating admin accounts"
+  1.times do |n|
+    create_single_admin(n)
+  end
+end
+
+if Admin.count == 0
+  create_admin_accounts
+end
+
+if Teacher.count == 0
+  create_unmatched_teachers
+end
+
+if Student.count == 0
+  create_unmatched_students
+end
+
+if Lesson.count == 0 && Matching.count == 0
+  create_lessons_and_matchings_with_matched_teachers_and_students
+end

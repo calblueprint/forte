@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   get 'admin/roster'
   get 'admin/unmatched'
 
+  get 'form/student'
+  get 'form/teacher'
+
   root "static_pages#home"
 
   controller :static_pages do
@@ -14,6 +17,12 @@ Rails.application.routes.draw do
     get :program
     get :contact
     get :about
+  end
+
+  resources :student, only: [] do
+    member do
+      get "my_lessons"
+    end
   end
 
   devise_for :students, controllers: {
