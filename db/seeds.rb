@@ -14,12 +14,10 @@ def create_single_admin(n)
 end
 
 def create_single_teacher(is_searching, n)
-  label = is_searching ? "searching" : "matched"
-
   teacher = Teacher.create(
     is_searching: is_searching,
     instruments: [$instruments_array[n%3]],
-    email: "#{label}_teacher_#{n}@gmail.com",
+    email: Faker::Internet.email,
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.first_name,
     city: Faker::Address.city,
@@ -37,14 +35,12 @@ def create_unmatched_teachers
 end
 
 def create_single_student(is_searching, n)
-  label = is_searching ? "searching" : "matched"
-
   student = Student.create(
     availability: ["#{n}", "#{n+1}", "#{n+2}", "#{n+4}", "#{n+5}", "#{n+6}", "#{n+7}", "#{n+8}", "#{n+9}", "#{n+10}"],
     city: Faker::Address.city,
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.first_name,
-    email: "#{label}_student_#{n}@gmail.com",
+    email: Faker::Internet.email,
     instrument: $instruments_array[n%3],
     password: "password",
   )
