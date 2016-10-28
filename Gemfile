@@ -25,6 +25,8 @@ gem 'jquery-rails', '3.1.4'
 gem 'sass-rails', '5.0.6'
 gem 'uglifier', '2.7.2'
 gem 'faker'
+gem 'date_validator'
+
 
 
 group :development, :staging, :test do
@@ -37,7 +39,6 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'rspec-rails'
   gem 'rubocop'
-  gem "date_validator"
 end
 
 group :development do
