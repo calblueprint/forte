@@ -14,17 +14,15 @@ def create_single_admin(n)
 end
 
 def create_single_teacher(is_searching, n)
-  label = is_searching ? "searching" : "matched"
-
   teacher = Teacher.create(
     is_searching: is_searching,
     instruments: [$instruments_array[n%3]],
-    email: "#{label}_teacher_#{n}@gmail.com",
+    email: Faker::Internet.email,
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.first_name,
     city: Faker::Address.city,
     password: "password",
-    availability: ["#{n}", "#{n+1}", "#{n+2}", "#{n+4}", "#{n+5}", "#{n+6}", "#{n+7}", "#{n+8}", "#{n+9}", "#{n+10}"],
+    availability: [n, n+1, n+2, n+4, n+5, n+6, n+7, n+8, n+9, n+10],
   )
   teacher
 end
@@ -37,14 +35,12 @@ def create_unmatched_teachers
 end
 
 def create_single_student(is_searching, n)
-  label = is_searching ? "searching" : "matched"
-
   student = Student.create(
-    availability: ["#{n}", "#{n+1}", "#{n+2}", "#{n+4}", "#{n+5}", "#{n+6}", "#{n+7}", "#{n+8}", "#{n+9}", "#{n+10}"],
+    availability: [n, n+1, n+2, n+4, n+5, n+6, n+7, n+8, n+9, n+10],
     city: Faker::Address.city,
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.first_name,
-    email: "#{label}_student_#{n}@gmail.com",
+    email: Faker::Internet.email,
     instrument: $instruments_array[n%3],
     password: "password",
   )
@@ -102,7 +98,18 @@ def create_admin_accounts
   end
 end
 
-create_admin_accounts
-create_unmatched_teachers
-create_unmatched_students
-create_lessons_and_matchings_with_matched_teachers_and_students
+if Admin.count == 0
+  create_admin_accounts
+end
+
+if Teacher.count == 0
+  create_unmatched_teachers
+end
+
+if Student.count == 0
+  create_unmatched_students
+end
+
+if Lesson.count == 0 && Matching.count == 0
+  create_lessons_and_matchings_with_matched_teachers_and_students
+end

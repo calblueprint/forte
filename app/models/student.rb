@@ -25,9 +25,19 @@
 class Student < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+
+  validates :city, presence: true
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  validates :instrument, presence: true
+  validates :email, presence: true, uniqueness: true
+  validates :availability, presence: true
+
   has_many :lessons
   has_many :matchings
   has_many :teachers, through: :matchings
+
 end
