@@ -3,12 +3,13 @@ class PersonList extends React.Component {
   static get PropTypes() {
     return {
       people: React.PropTypes.array,
+      onPersonClick: React.PropTypes.func
     };
   }
 
   renderPerson(person) {
     return (
-      <PersonDescription person={person} />
+      <PersonDescription person={person} key={person.id} onClick={this.props.onPersonClick}/>
     );
   }
 

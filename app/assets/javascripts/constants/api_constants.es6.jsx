@@ -7,7 +7,7 @@
         delete: (id) => `/api/students/${id}`,
         update: (id) => `/api/students/${id}`,
         show: (id) => `/api/students/${id}`,
-        unmatched: '/api/students/unmatched'
+        unmatched: '/api/students/unmatched',
       };
     }
 
