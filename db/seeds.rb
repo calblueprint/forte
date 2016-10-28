@@ -102,7 +102,18 @@ def create_admin_accounts
   end
 end
 
-create_admin_accounts
-create_unmatched_teachers
-create_unmatched_students
-create_lessons_and_matchings_with_matched_teachers_and_students
+if Admin.count == 0
+  create_admin_accounts
+end
+
+if Teacher.count == 0
+  create_unmatched_teachers
+end
+
+if Student.count == 0
+  create_unmatched_students
+end
+
+if Lesson.count == 0 && Matching.count == 0
+  create_lessons_and_matchings_with_matched_teachers_and_students
+end
