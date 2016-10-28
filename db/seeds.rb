@@ -22,7 +22,7 @@ def create_single_teacher(is_searching, n)
     last_name: Faker::Name.first_name,
     city: Faker::Address.city,
     password: "password",
-    availability: ["#{n}", "#{n+1}", "#{n+2}", "#{n+4}", "#{n+5}", "#{n+6}", "#{n+7}", "#{n+8}", "#{n+9}", "#{n+10}"],
+    availability: [n, n+1, n+2, n+4, n+5, n+6, n+7, n+8, n+9, n+10],
   )
   teacher
 end
@@ -36,7 +36,7 @@ end
 
 def create_single_student(is_searching, n)
   student = Student.create(
-    availability: ["#{n}", "#{n+1}", "#{n+2}", "#{n+4}", "#{n+5}", "#{n+6}", "#{n+7}", "#{n+8}", "#{n+9}", "#{n+10}"],
+    availability: [n, n+1, n+2, n+4, n+5, n+6, n+7, n+8, n+9, n+10],
     city: Faker::Address.city,
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.first_name,
