@@ -1,38 +1,76 @@
 class AboutPage extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      people: [
+        'daniel', 'richard', 'shain', 'rocky', 
+        'rachel', 'sahil', 'lancy'
+      ], 
+    }
+  }
+
   renderIndividual(option) {
     switch (option) {
-      
       case 'daniel':
-        optionName = 'Daniel Kim';
-        optionPosition = 'Chief Executive Officer';
+        name = 'Daniel Kim';
+        position = 'Chief Executive Officer';
+        image = ImageConstants.headshots.daniel;
         break;
 
       case 'richard':
-        optionName = 'Richard Donahue';
-        optionPosition = 'Chief Financial Officer';
+        name = 'Richard Donahue';
+        position = 'Chief Financial Officer';
+        image = ImageConstants.headshots.richard;
         break;
 
       case 'shain':
-        optionName = 'Shain Lafazan';
-        optionPosition = 'Chief Technology Officer';
+        name = 'Shain Lafazan';
+        position = 'Chief Technology Officer';
+        image = ImageConstants.headshots.shain;
         break;
 
       case 'rocky':
-        optionName = 'Rocky Yip';
-        optionPosition = 'Director of Campus Recruitment';
+        name = 'Rocky Yip';
+        position = 'Director of Campus Recruitment';
+        image = ImageConstants.headshots.rocky;
+        break;
+
+      case 'rachel':
+        name = 'Rachel Ng';
+        position = 'Business Development';
+        image = ImageConstants.headshots.rachel;
+        break;
+
+      case 'sahil':
+        name = 'Sahil Patel';
+        position = 'Business Development';
+        image = ImageConstants.headshots.sahil;
+        break;
+
+      case 'lancy':
+        name = 'Lancy Zhang';
+        position = 'Design Advisor';
+        image = ImageConstants.headshots.lancy;
         break;
     }
     return (
-      <div className="section__person-info">
-        <h4 className="section__name">
-          {optionName}
-        </h4>
-        <h5 className="section__position">
-          {optionPosition}
-        </h5>
+      <div className="section__individual-container">
+        <img className="section__image" src={image} href="#" />
+        <div className="section__person-info">
+          <h4 className="section__name">
+            {name}
+          </h4>
+          <h5 className="section__position">
+            {position}
+          </h5>
+        </div>
       </div>
     );
+  }
+
+  renderIndividuals() {
+    return this.state.people.map((person) => this.renderIndividual(person));
   }
   
   render() {
@@ -43,7 +81,7 @@ class AboutPage extends React.Component {
             <div className="content-wrapper">
               <div className="section">
                 <h2 className="section__title">
-                  Forte |&#8217;fôr,t&#x0101;|
+                  for·te
                 </h2>
                 <h4 className="section__subtitle">
                   adj. loudly, with passion and energy<br></br>
@@ -55,7 +93,7 @@ class AboutPage extends React.Component {
                   What is our mission?
                 </h2>
                 <h4 className="section__subtitle">
-                  It is to empower underserved youth to discover, learn and love music performance.
+                  To democratize music education and empower youth to discover, learn and love music.
                 </h4>
                 <p className="section__text">
                   Music is a universal language. It provides an outlet for artistic expression and evokes<br></br>
@@ -103,30 +141,7 @@ class AboutPage extends React.Component {
                   Who are we?
                 </h2>
                 <div className="section__headshots-container">
-                  <div className="section__individual-container">
-                    <div>
-                      <img className="section__image" src={ImageConstants.headshots.daniel} href="#" />
-                    </div>
-                    {this.renderIndividual('daniel')}
-                  </div>
-                  <div className="section__individual-container">
-                    <div>
-                      <img className="section__image" src={ImageConstants.headshots.richard} href="#" />
-                    </div>
-                    {this.renderIndividual('richard')}
-                  </div>
-                  <div className="section__individual-container">
-                    <div>
-                      <img className="section__image" src={ImageConstants.headshots.shain} href="#" />
-                    </div>
-                    {this.renderIndividual('shain')}
-                  </div>
-                  <div className="section__individual-container">
-                    <div>
-                      <img className="section__image" src={ImageConstants.headshots.rocky} href="#" />
-                    </div>
-                    {this.renderIndividual('rocky')}
-                  </div>
+                  {this.renderIndividuals()}
                 </div>
               </div>
             </div>
