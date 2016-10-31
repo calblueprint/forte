@@ -8,8 +8,6 @@ class UserHeader extends React.Component {
       var route = RouteConstants.authentication.logout.student;
     } else if (signed_in_type == 'teacher') {
       var route = RouteConstants.authentication.logout.teacher;
-    } else if (signed_in_type == 'admin') {
-      var route = RouteConstants.authentication.logout.admin;
     }
     Requester.delete(
       route,
@@ -39,7 +37,7 @@ class UserHeader extends React.Component {
         className="user-header">
         <Navbar.Header>
             <Navbar.Brand>
-              <a className="header__logo" href="/">
+              <a className="user-header__logo" href="/">
                 <img src={ImageConstants.logos.white} />
               </a>
             </Navbar.Brand>

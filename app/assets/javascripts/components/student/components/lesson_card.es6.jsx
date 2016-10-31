@@ -1,6 +1,5 @@
 class LessonCard extends React.Component{
 
-
   render() {
     return (
       <div className="lesson-card">

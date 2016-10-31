@@ -47,7 +47,6 @@
         profile: '/student/profile',
       }
     }
-
   }
 this.RouteConstants = new RouteConstants();
 })();
