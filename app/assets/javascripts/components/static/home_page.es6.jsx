@@ -29,14 +29,16 @@ class HomePage extends React.Component {
         <Header />
           <div className="home-page content-wrapper">
             <div className="title-wrapper">
-              <h1 className="title-text">
-                We connect underserved youth with experienced 
-                musicians to provide access to affordable music lessons.
-              </h1>
-              <div className="button-container">
-                <button className="button button--solid-white button--lg">Learn</button>
-                <button className="button button--solid-white button--lg">Teach</button>
+              <div className="title-text">
+                Grab a chair. Take a stand.
               </div>
+              <div className="button-container">
+                <button className="button button--solid-orange button--lg">Apply to Learn</button>
+                <button className="button button--solid-orange button--lg">Apply to Teach</button>
+              </div>
+            </div>
+            <div className="forte-description">
+            Forte connects underserved youth with experienced musicians to provide access to affordable music lessons.
             </div>
             <div className="instruments-wrapper">
               {this.renderInstrument('piano')}
