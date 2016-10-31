@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(version: 20161028041514) do
 
   create_table "teachers", force: :cascade do |t|
     t.boolean  "is_searching",           default: false
+    t.text     "instruments",            default: [],                 array: true
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
     t.string   "email",                  default: "",    null: false
@@ -101,7 +102,6 @@ ActiveRecord::Schema.define(version: 20161028041514) do
     t.string   "city"
     t.string   "first_name"
     t.string   "last_name"
-    t.text     "instruments",            default: [],                 array: true
     t.integer  "availability",           default: [],                 array: true
   end
 
