@@ -8,6 +8,8 @@ class Api::LessonsController < Api::BaseController
     lesson = Lesson.new lesson_params
     if lesson.save
       render json: lesson
+    else
+      unprocessable_response lesson
     end
   end
 
@@ -15,13 +17,18 @@ class Api::LessonsController < Api::BaseController
     lesson = Lesson.find params[:id]
     if lesson.update_attributes lesson_params
       render json: lesson
+    else
+      unprocessable_response lesson
     end
   end
 
   def destroy
     lesson = Lesson.find params[:id]
-    lesson.destroy
-    render json: lesson
+    if lesson.destroy
+      render json: lesson
+    else
+      unprocessable_response lesson
+    end
   end
 
   def show
@@ -36,6 +43,9 @@ class Api::LessonsController < Api::BaseController
       :feedback,
       :student_id,
       :teacher_id,
+      :start_time,
+      :end_time,
+      :price,
     )
   end
 end

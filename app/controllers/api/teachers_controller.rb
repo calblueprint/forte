@@ -8,16 +8,19 @@ class Api::TeachersController < Api::BaseController
     teacher = Teacher.find params[:id]
     if teacher.update_attributes teacher_params
       render json: teacher
+    else
+      unprocessable_response teacher
     end
   end
 
-
   def destroy
     teacher = Teacher.find params[:id]
-    teacher.destroy
-    render json: teacher
+    if teacher.destroy
+      render json: teacher
+    else
+      unprocessable_response teacher
+    end
   end
-
 
   def show
     teacher = Teacher.find params[:id]
