@@ -8,13 +8,18 @@ class Api::StudentsController < Api::BaseController
     student = Student.find params[:id]
     if student.update_attributes student_params
       render json: student
+    else
+      unprocessable_response student
     end
   end
 
   def destroy
     student = Student.find params[:id]
-    student.destroy
-    render json: student
+    if student.destroy
+      render json: student
+    else
+      unprocessable_response student
+    end
   end
 
   def show

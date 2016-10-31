@@ -8,6 +8,8 @@ class Api::MatchingsController < Api::BaseController
     matching = Matching.new matching_params
     if matching.save
       render json: matching
+    else
+      unprocessable_response matching
     end
   end
 
@@ -15,13 +17,18 @@ class Api::MatchingsController < Api::BaseController
     matching = Matching.find params[:id]
     if matching.update_attributes matching_params
       render json: matching
+    else
+      unprocessable_response matching
     end
   end
 
   def destroy
     matching = Matching.find params[:id]
-    matching.destroy
-    render json: matching
+    if matching.destroy
+      render json: matching
+    else
+      unprocessable_response matching
+    end
   end
 
   def show
