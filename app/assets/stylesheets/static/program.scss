@@ -1,12 +1,33 @@
 /* ProgramPage Styles */
 
 .program-page {
-  max-width: 900px;
+  width: 80%;
+  min-width: 500px;
   text-align: left;
+  
   h1 {
     color: $orange;
   }
-  h3, p {
+
+  .description {
+    margin-top: 0px;
+  }
+
+  .question-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+
+  .question {
     color: $grey;
+    margin: 10px 0px;
+    font-size: $font-size-s;
+    font-weight: $font-weight-large;
+  }
+
+  .answer {
+    color: $grey80;
+    font-size: $font-size-s;
   }
 }

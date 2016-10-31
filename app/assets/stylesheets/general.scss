@@ -49,6 +49,10 @@ h6 {
   letter-spacing: 0.5px;
 }
 
+p {
+  line-height: $font-size-l;
+}
+
 textarea:hover,
 input:hover,
 textarea:active,
