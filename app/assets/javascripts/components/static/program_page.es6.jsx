@@ -1,70 +1,243 @@
 class ProgramPage extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      introduction: false,
+      teachers: false,
+      students: false,
+      underserved: false,
+      pricing: false,
+      payments: false,
+      reschedule: false,
+      instruments: false,
+      safety: false,
+      resources: false,
+    };
+  }
+
+  handleQuestion(topic) {
+    if (topic == 'introduction') {
+      this.setState({ introduction: !this.state.introduction });
+    } else if (topic == 'teachers') {
+      this.setState({ teachers: !this.state.teachers });
+    } else if (topic == 'students') {
+      this.setState({ students: !this.state.students });
+    } else if (topic == 'underserved') {
+      this.setState({ underserved: !this.state.underserved });
+    } else if (topic == 'pricing') {
+      this.setState({ pricing: !this.state.pricing });
+    } else if (topic == 'payments') {
+      this.setState({ payments: !this.state.payments });
+    } else if (topic == 'reschedule') {
+      this.setState({ reschedule: !this.state.reschedule });
+    } else if (topic == 'instruments') {
+      this.setState({ instruments: !this.state.instruments });
+    } else if (topic == 'safety') {
+      this.setState({ safety: !this.state.safety });
+    } else if (topic == 'resources') {
+      this.setState({ resources: !this.state.resources });
+    }
+  }
+
+  renderAnswer(topic) {
+    if (topic == "introduction" && this.state.introduction) {
+      return (
+        <p className="answer">
+          Forte's online platform matches eligible Bay Area middle school 
+          students with experienced musicians to facilitate affordable lessons, 
+          offering rates less than half that of standard private instruction.  
+          Prospective students and teachers apply for our program online via an 
+          application including their contact information, eligibility details, 
+          musical experience and goals.  Based on their personal preferences 
+          and needs, Forte proposes matches among accepted students and teachers 
+          with the aim of establishing weekly lessons typically held at either 
+          the student or teacher's home.
+        </p>
+      );
+    } else if (topic == "teachers" && this.state.teachers) {
+      return (
+        <div>
+          <p className="answer">
+            Most of our teachers are experienced non-professional musicians 
+            currently studying at undergraduate/graduate programs or working in 
+            the local community.  Forte offers teachers a rewarding opportunity 
+            to enrich the lives of underserved youth while leveraging their unique 
+            skill set.  Though many of our teachers are currently active in the 
+            music community outside of Forte, for some it provides an avenue to 
+            reconnect with their passion for music and share it with others.
+          </p>
+          <p className="answer">
+            Our teachers may elect to provide lessons as either unpaid volunteers 
+            or paid contractors.  Volunteers supporting Forte earn community 
+            service hours with all lesson proceeds contributed to the Forte 
+            nonprofit and used to maintain and expand our programs.  Those 
+            choosing to teach as paid contractors retain 75%+ of all lesson 
+            proceeds, making our program an attractive and flexible opportunity 
+            to earn supplemental income while making a positive impact.
+          </p>
+        </div>
+      );
+    } else if (topic == "students" && this.state.students) {
+      return (
+        <p className="answer">
+          We are currently piloting our program with underserved students 
+          enrolled at select middle school programs in the Bay Area.  Our goal 
+          is to serve students and their families by providing affordable access 
+          to quality private lessons that would otherwise be out of reach.  
+          We encourage all interested students to apply, but we prioritize 
+          acceptance for those who stand to benefit the most from our programs 
+          as evidenced by factors including family income, availability of 
+          quality instruction, prior musical experience and future goals.
+        </p>
+      );
+    } else if (topic == "underserved" && this.state.underserved) {
+      return (
+        <p className="answer">
+          To us, underserved students are those who lack the proper resources or 
+          funding to fully pursue their musical aspirations.  With public school 
+          budgets dramatically reduced in recent years, even traditionally 
+          affordable school music programs have inevitably declined in quality 
+          or, in some cases, been completely eliminated.  With traditional 
+          private instruction accessible to only a select few, we aim to bridge 
+          the gap for many students and their families by creating an affordable, 
+          high-quality alternative.
+        </p>
+      );
+    } else if (topic == "pricing" && this.state.pricing) {
+      return (
+        <div>
+          <p className="answer">
+            Our lessons are offered at $12 for 30 minutes, $16 for 45 minutes and 
+            $20 for one hour (compared to $60-80+ per hour for traditional private 
+            lessons).  Students opting to have their teacher travel to their 
+            location for lessons pay an additional $8 travel fee.
+          </p>
+          <p className="answer">
+            From the lesson proceeds, Forte retains $3 for 30-minute, $4 for 
+            45-minute and $5 for one-hour lessons to help fund and expand our 
+            nonprofit programs.  Our teachers receive the remainder of our lesson 
+            proceeds.
+          </p>
+        </div>
+      );
+    } else if (topic == "payments" && this.state.payments) {
+      return (
+        <p className="answer">
+          After lessons are held, we collect lesson fees from students and 
+          distribute teacher payments online via PayPal.  Payment processing is 
+          handled directly and securely by PayPal with no sensitive information 
+          stored by Forte.  We support all major credit and debit cards, but do 
+          not accept cash payment for lessons.
+        </p>
+      );
+    } else if (topic == "reschedule" && this.state.reschedule) {
+      return (
+        <p className="answer">
+          No problem!  As soon as possible, please contact your teacher or 
+          student and email us at contact@forteacademy.org to ensure billing is 
+          handled appropriately.  For late cancellations (within 24 hours of 
+          the scheduled lesson time) or no-shows, students will be charged $5.
+        </p>
+      );
+    } else if (topic == "instruments" && this.state.instruments) {
+      return (
+        <p className="answer">
+          We currently offer instruction for woodwinds (flute, clarinet, 
+          saxophone, oboe, bassoon), brass (trombone), strings (violin, viola), 
+          guitar, piano and voice.  This list is quickly expanding as teachers 
+          with experience in other instruments join our program.  If you play 
+          an instrument we don't currently support, we strongly encourage you 
+          to apply anyway.
+        </p>
+      );
+    } else if (topic == "safety" && this.state.safety) {
+      return (
+        <p className="answer">
+          We are deeply committed to ensuring the safety of our students as 
+          well as maintaining the quality of our instruction.  As such, we 
+          screen prospective teachers before inviting them to use our platform 
+          with a thorough application and national sex offender registry checks.  
+          For those interested, we also encourage (but do not require) parents 
+          to sit in and supervise lessons.
+        </p>
+      );
+    } else if (topic == "resources" && this.state.resources) {
+      return (
+        <p className="answer">
+          Unfortunately, we do not have the resources necessary to facilitate 
+          instrument access at this time.  In most cases, students and teachers 
+          will need to bring an instrument to each lesson.  For large instruments, 
+          including piano, we encourage students and teachers to coordinate in 
+          determining where lessons should take place given instrument 
+          availability.
+        </p>
+      );  
+    }
+  }
+
   render () {
     return (
       <div className="page-wrapper">
         <Header />
-        <div className="program-page content-wrapper">
-          <h1> How Forte Works </h1>
-          <h3> 
-          We connect aspiring musicians with instructions to offer 
-          lessons at deeply discounted rates.
-          </h3>
-          <p> 
-          Far too often, aspiring youth musicians are barred from pursuing their 
-          musical passions due to their financial situation. Forte’s online platform 
-          matches underprivileged youth with experienced musicians willing to provide 
-          deeply discounted music lessons. Our passionate teachers give back to the 
-          community by providing an opportunity that these students wouldn't otherwise 
-          have access to. While typical private instruction costs $30 - $60 per hour, 
-          our students are able to learn from quality instructors for only $15 per 
-          45-minute session. 
-          </p>
-          <p> 
-          Prospective students and teachers apply for out program online with a 
-          brief survey including personal details, instrument interest and mobility 
-          preferences. Selected individuals are then invited to register for our 
-          online platform where they can schedule weekly 45-minute lessons, provide 
-          feedback and access our educational resources. 
-          </p>
-          <p> 
-          Prospective students and teachers are thoroughly vetted by our team 
-          before being invited to use our platform. This includes detailed background 
-          checks for all instructors and strict eligibility requirements for students 
-          based on financial need. 
-          </p>
-          <h1> Our Teachers </h1>
-          <h3> 
-          We are deeply rooted in the tradition of using music to serve our 
-          community.
-          </h3>
-          <p> 
-          Forte’s roots trace back to 2008, when our CEO formed a service 
-          organization at Homestead High School allowing student musicians to 
-          collaborate via small ensembles. Ranging from duos to quintets, these 
-          intimate groups inspired levels of student independence and creativity 
-          greater than those typically afforded by school-wide bands, orchestras 
-          or, choirs. Through this organization, students connected with and 
-          enriched the local community via public performances for audiences 
-          including HCR ManorCare, the Santa Clara Valley Blind Center, and the 
-          J.W. House of Kaiser Permanente. 
-          </p>
-          <h1> Our Students </h1>
-          <h3> 
-          We are deeply rooted in the tradition of using music to serve our 
-          community.
-          </h3>
-          <p> 
-          Forte’s roots trace back to 2008, when our CEO formed a service 
-          organization at Homestead High School allowing student musicians to 
-          collaborate via small ensembles. Ranging from duos to quintets, these 
-          intimate groups inspired levels of student independence and creativity 
-          greater than those typically afforded by school-wide bands, orchestras 
-          or, choirs. Through this organization, students connected with and 
-          enriched the local community via public performances for audiences 
-          including HCR ManorCare, the Santa Clara Valley Blind Center, and the 
-          J.W. House of Kaiser Permanente. 
-          </p>
+        <div className="content-wrapper program-page">
+          <h1>Our Program</h1>
+          <h4 className="description">
+            Forte connects underserved youth with experienced musicians 
+            to provide access to affordable music lessons. 
+          </h4>
+          <div className="question-container">
+            <a className="question"
+               onClick={() => this.handleQuestion('introduction')}>
+                How does Forte work?
+            </a>
+            {this.state.introduction && this.renderAnswer('introduction')}
+            <a className="question"
+               onClick={() => this.handleQuestion('teachers')}>
+              Who are our teachers?
+            </a>
+            {this.state.teachers && this.renderAnswer('teachers')}
+            <a className="question"
+               onClick={() => this.handleQuestion('students')}>
+              Who are our students?
+            </a>
+            {this.state.students && this.renderAnswer('students')}
+            <a className="question" 
+               onClick={() => this.handleQuestion('underserved')}>
+              What do we mean by 'underserved'?
+            </a>
+            {this.state.underserved && this.renderAnswer('underserved')}
+            <a className="question"
+               onClick={() => this.handleQuestion('pricing')}>
+              How does our pricing work?
+            </a>
+            {this.state.pricing && this.renderAnswer('pricing')}
+            <a className="question"
+               onClick={() => this.handleQuestion('payments')}>
+              How do payments work?
+            </a>
+            {this.state.payments && this.renderAnswer('payments')}
+            <a className="question"
+               onClick={() => this.handleQuestion('reschedule')}>
+              What if I can't make it to a scheduled lesson?
+            </a>
+            {this.state.reschedule && this.renderAnswer('reschedule')}
+            <a className="question"
+               onClick={() => this.handleQuestion('instruments')}>
+              What instruments do we offer lessons for?
+            </a>
+            {this.state.instruments && this.renderAnswer('instruments')}
+            <a className="question"
+               onClick={() => this.handleQuestion('safety')}>
+              What safety standards do we maintain?
+            </a>
+            {this.state.safety && this.renderAnswer('safety')}
+            <a className="question"
+               onClick={() => this.handleQuestion('resources')}>
+              What if I don't have an instrument?
+            </a>
+            {this.state.resources && this.renderAnswer('resources')}
+          </div>
         </div>
         <Footer />
       </div>

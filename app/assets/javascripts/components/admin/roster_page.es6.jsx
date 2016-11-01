@@ -8,7 +8,10 @@ class RosterPage extends React.Component {
 
   renderPerson(person) {
     return (
-      <RosterItem person={person} />
+      <div>
+        <RosterItem person={person} />
+        <div className="item-separator" />
+      </div>
     );
   }
 
@@ -20,8 +23,11 @@ class RosterPage extends React.Component {
     return (
       <div className="page-wrapper">
         <AdminHeader />
-        <div className="content-wrapper">
-          {this.renderPeople()}
+        <div className="content-wrapper roster-page">
+          <h1 className="roster-title">Roster</h1>
+          <div className="roster-container">
+            {this.renderPeople()}
+          </div>
         </div>
       </div>
     );

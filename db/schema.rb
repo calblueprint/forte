@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161016210335) do
+ActiveRecord::Schema.define(version: 20161031233256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,19 +47,18 @@ ActiveRecord::Schema.define(version: 20161016210335) do
   add_index "lessons", ["teacher_id"], name: "index_lessons_on_teacher_id", using: :btree
 
   create_table "matchings", force: :cascade do |t|
-    t.integer  "instrument",               null: false
-    t.text     "lesson_time", default: [], null: false, array: true
+    t.string   "instrument",               null: false
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.integer  "student_id"
     t.integer  "teacher_id"
+    t.integer  "lesson_time", default: [], null: false, array: true
   end
 
   add_index "matchings", ["student_id"], name: "index_matchings_on_student_id", using: :btree
   add_index "matchings", ["teacher_id"], name: "index_matchings_on_teacher_id", using: :btree
 
   create_table "students", force: :cascade do |t|
-    t.text     "availability",           default: [],              array: true
     t.string   "city"
     t.string   "first_name"
     t.string   "instrument"
@@ -76,7 +75,7 @@ ActiveRecord::Schema.define(version: 20161016210335) do
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
-    t.string   "description"
+    t.integer  "availability",           default: [],              array: true
   end
 
   add_index "students", ["email"], name: "index_students_on_email", unique: true, using: :btree
@@ -100,8 +99,7 @@ ActiveRecord::Schema.define(version: 20161016210335) do
     t.string   "city"
     t.string   "first_name"
     t.string   "last_name"
-    t.text     "availability",           default: [],                 array: true
-    t.string   "description"
+    t.integer  "availability",           default: [],                 array: true
   end
 
   add_index "teachers", ["email"], name: "index_teachers_on_email", unique: true, using: :btree
