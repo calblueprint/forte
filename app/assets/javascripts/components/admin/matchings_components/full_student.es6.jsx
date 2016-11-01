@@ -9,8 +9,8 @@ class FullStudent extends React.Component {
   render () {
     return (
       <div className="full-student">
-        <p>Name: { this.props.student.first_name } { this.props.student.last_name }</p>
-        <p>City: { this.props.student.city }</p>
+        <p>Name: {this.props.student.first_name} {this.props.student.last_name}</p>
+        <p>City: {this.props.student.city}</p>
       </div>
     );
   }

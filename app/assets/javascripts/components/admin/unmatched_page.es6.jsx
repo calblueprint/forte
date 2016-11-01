@@ -3,57 +3,44 @@ class UnmatchedPage extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      student_detail: false,
-      teacher_detail: false,
+      fullStudent: false,
+      fullTeacher: false,
       students: null,
       teachers: null,
       student: null,
       teacher: null,
-    }
-
-    this.studentOnClick = this.studentOnClick.bind(this);
-    this.teacherOnClick = this.teacherOnClick.bind(this);
-    this.studentBackButton = this.studentBackButton.bind(this);
-    this.teacherBackButton = this.teacherBackButton.bind(this);
-    this.makeMatching = this.makeMatching.bind(this);
+    };
   }
 
   componentDidMount() {
-    this.loadStudents()
+    this.loadStudents();
   }
 
   loadStudents() {
-    var studentRoute = ApiConstants.students.unmatched;
-    var studentResolve = (response) => this.setState({students: response["students"]});
-    var studentReject = (response) => console.log(response);
-
+    var route = ApiConstants.students.unmatched;
+    var resolve = (response) => this.setState({ students: response["students"] });
+    var reject = (response) => console.log(response);
     Requester.get(
-      studentRoute,
-      studentResolve,
-      studentReject,
+      route,
+      resolve,
+      reject,
     );
   }
 
-  studentOnClick(student_id) {
-    var studentRoute = ApiConstants.students.show(student_id)
-
+  studentOnClick(studentId) {
+    var studentRoute = ApiConstants.students.show(studentId)
     var studentResolve = ((response) => {
-      this.setState({student_detail: true, student: response});
-
-      var teacherRoute = ApiConstants.teachers.possible_teachers(student_id);
+      this.setState({fullStudent: true, student: response});
+      var teacherRoute = ApiConstants.teachers.possible_teachers(studentId);
       var teacherResolve = (response) => this.setState({teachers: response["teachers"]});
       var teacherReject = (response) => console.log(response);
-
       Requester.get(
         teacherRoute,
         teacherResolve,
         teacherReject,
       );
     }).bind(this);
-
-
     var studentReject = (response) => console.log(response);
-
     Requester.get(
       studentRoute,
       studentResolve,
@@ -62,22 +49,22 @@ class UnmatchedPage extends React.Component {
   }
 
   teacherOnClick(teacher_id) {
-    var teacherRoute = ApiConstants.teachers.show(teacher_id)
-    var teacherResolve = (response) => this.setState({teacher_detail: true, teacher: response});
-    var teacherReject = (response) => console.log(response);
+    var route = ApiConstants.teachers.show(teacher_id)
+    var resolve = (response) => this.setState({fullTeacher: true, teacher: response});
+    var reject = (response) => console.log(response);
     Requester.get(
-      teacherRoute,
-      teacherResolve,
-      teacherReject
+      route,
+      resolve,
+      reject
     );
   }
 
   studentBackButton(event) {
-    this.setState({student_detail: false, teacher_detail: false});
+    this.setState({ fullStudent: false, fullTeacher: false });
   }
 
   teacherBackButton(event) {
-    this.setState({teacher_detail: false});
+    this.setState({ fullTeacher: false });
   }
 
   makeMatching(event) {
@@ -87,14 +74,11 @@ class UnmatchedPage extends React.Component {
       teacher_id: this.state.teacher.id, 
       instrument: this.state.student.instrument
     };
-
     var resolve = (response) => {
-      this.setState({student_detail: false, teacher_detail: false});
+      this.setState({ fullStudent: false, fullTeacher: false});
       this.loadStudents();
-    }
-
+    };
     var reject = (response) => console.log(response);
-    
     Requester.post(
       route,
       params,
@@ -104,19 +88,18 @@ class UnmatchedPage extends React.Component {
   }
 
   renderStudentPart() {
-    if (this.state.student_detail) {
+    if (this.state.fullStudent) {
       if (this.state.student != null) {
         return (
           <div>
             <p>STUDENT DETAIL</p>
-            <Button className="button button--outline-orange" onClick={this.studentBackButton}>Back</Button>
+            <Button className="button button--outline-orange" onClick={(event) => this.studentBackButton(event)}>Back</Button>
             <FullStudent student={this.state.student}/>
           </div>
         );
       } else {
         return (
-          <div>
-          </div>
+          <div/>
         );
       }
     } else {
@@ -124,53 +107,49 @@ class UnmatchedPage extends React.Component {
         return (
           <div>
             <p>STUDENT LIST</p>
-            <PersonList people={this.state.students} onPersonClick={this.studentOnClick}/>
+            <PersonList people={this.state.students} onPersonClick={(event) => this.studentOnClick(event)}/>
           </div>
         );
       } else {
         return (
-          <div>
-          </div>
+          <div/>
         );
       }
     }
   }
 
   renderTeacherPart() {
-    if (this.state.teacher_detail) {
+    if (this.state.fullTeacher) {
       if (this.state.teachers != null) {
         return (
           <div>
             <p>TEACHER DETAIL</p>
-            <Button className="button button--outline-orange" onClick={this.teacherBackButton}>Back</Button>
+            <Button className="button button--outline-orange" onClick={(event) => this.teacherBackButton(event)}>Back</Button>
             <FullTeacher teacher={this.state.teacher} />
-            <Button className="button button--outline-orange" onClick={this.makeMatching}>Match</Button>
+            <Button className="button button--outline-orange" onClick={(event) => this.makeMatching(event)}>Match</Button>
           </div>
         );
       } else {
         return (
-          <div>
-          </div>
+          <div/>
         );
       }
-    } else if (this.state.student_detail) {
+    } else if (this.state.fullStudent) {
       if (this.state.teachers != null) {
         return (
           <div>
             <p>TEACHER LIST</p>
-            <PersonList people={this.state.teachers} onPersonClick={this.teacherOnClick}/>
+            <PersonList people={this.state.teachers} onPersonClick={(event) => this.teacherOnClick(event)}/>
           </div>
         );
       } else {
         return (
-          <div>
-          </div>
+          <div/>
         );
       }
     } else {
       return (
-        <div>
-        </div>
+        <div/>
       );
     }
   }

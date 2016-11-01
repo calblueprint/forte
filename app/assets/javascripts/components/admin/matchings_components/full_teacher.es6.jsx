@@ -9,8 +9,8 @@ class FullTeacher extends React.Component {
   render () {
     return (
       <div className="full-teacher">
-        <p>Name: { this.props.teacher.first_name } { this.props.teacher.last_name }</p>
-        <p>City: { this.props.teacher.city }</p>
+        <p>Name: {this.props.teacher.first_name} {this.props.teacher.last_name}</p>
+        <p>City: {this.props.teacher.city}</p>
       </div>
     );
   }
