@@ -13,3 +13,5 @@ var ButtonGroup = ReactBootstrap.ButtonGroup;
 var FormGroup = ReactBootstrap.FormGroup;
 var FormControl = ReactBootstrap.FormControl;
 var ControlLabel = ReactBootstrap.ControlLabel;
+var Checkbox = ReactBootstrap.Checkbox;
+var Radio = ReactBootstrap.Radio;
