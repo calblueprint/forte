@@ -26,8 +26,7 @@ gem 'sass-rails', '5.0.6'
 gem 'uglifier', '2.7.2'
 gem 'faker'
 gem 'date_validator'
-
-
+gem 'fullcalendar-rails'
 
 group :development, :staging, :test do
 end
@@ -58,3 +57,10 @@ end
 group :production, :staging do
   gem 'rails_12factor'
 end
+
+
+source "https://rails-assets.org" do
+  gem 'rails-assets-react-datetime'
+  gem 'rails-assets-moment'
+end
+

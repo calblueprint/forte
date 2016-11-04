@@ -45,6 +45,7 @@ class StudentForm extends React.Component {
     var resolve = (response) => {
       window.location.href = "/";
     };
+    // $(calendar).clientevents returns all events
     var params = {
       student: {
         email: this.state.email,
@@ -127,95 +128,13 @@ class StudentForm extends React.Component {
                 </FormControl>
               </FormGroup>
 
-              {/*Waiting on this one
               <FormGroup>
-                <ControlLabel>Birth Day</ControlLabel>
-                <FormControl 
-                  componentClass="select" 
-                  name="birthday" 
-                  onChange={(event) => this.handleChange(event)}>
-                  <option value="" disabled selected>Select your birth day</option>
-                  <option value="Date">1</option>
-                  <option value="Date">2</option>
-                  <option value="Date">3</option>
-                  <option value="Date">4</option>
-                  <option value="Date">5</option>
-                  <option value="Date">6</option>
-                  <option value="Date">7</option>
-                  <option value="Date">8</option>
-                  <option value="Date">9</option>
-                  <option value="Date">10</option>
-                  <option value="Date">11</option>
-                  <option value="Date">12</option>
-                  <option value="Date">13</option>
-                  <option value="Date">14</option>
-                  <option value="Date">15</option>
-                  <option value="Date">16</option>
-                  <option value="Date">17</option>
-                  <option value="Date">18</option>
-                  <option value="Date">19</option>
-                  <option value="Date">20</option>
-                  <option value="Date">21</option>
-                  <option value="Date">22</option>
-                  <option value="Date">23</option>
-                  <option value="Date">24</option>
-                  <option value="Date">25</option>
-                  <option value="Date">26</option>
-                  <option value="Date">27</option>
-                  <option value="Date">28</option>
-                  <option value="Date">29</option>
-                  <option value="Date">30</option>
-                  <option value="Date">31</option>
-                </FormControl>
+                <ControlLabel>Birthday</ControlLabel>
+                <Datetime 
+                  dateFormat="MM/DD/YYYY"
+                  timeFormat={false}
+                  inputProps={{placeholder: "MM/DD/YYYY"}}/>
               </FormGroup>
-              */}
-
-              {/*Waiting on this one
-              <FormGroup>
-                <ControlLabel>Birth Month</ControlLabel>
-                <FormControl 
-                  componentClass="select" 
-                  name="birthmonth" 
-                  onChange={(event) => this.handleChange(event)}>
-                  <option value="" disabled selected>Select your birth month</option>
-                  <option value="Month">1</option>
-                  <option value="Month">2</option>
-                  <option value="Month">3</option>
-                  <option value="Month">4</option>
-                  <option value="Month">5</option>
-                  <option value="Month">6</option>
-                  <option value="Month">7</option>
-                  <option value="Month">8</option>
-                  <option value="Month">9</option>
-                  <option value="Month">10</option>
-                  <option value="Month">11</option>
-                  <option value="Month">12</option>
-                </FormControl>
-              </FormGroup>
-              */}
-
-              {/*Waiting on this one
-              <FormGroup>
-                <ControlLabel>Birth Year</ControlLabel>
-                <FormControl 
-                  componentClass="select" 
-                  name="birthyear" 
-                  onChange={(event) => this.handleChange(event)}>
-                  <option value="" disabled selected>Select your birth year</option>
-                  <option value="BYear">2002</option>
-                  <option value="BYear">2003</option>
-                  <option value="BYear">2004</option>
-                  <option value="BYear">2005</option>
-                  <option value="BYear">2006</option>
-                  <option value="BYear">2007</option>
-                  <option value="BYear">2008</option>
-                  <option value="BYear">2009</option>
-                  <option value="BYear">2010</option>
-                  <option value="BYear">2011</option>
-                  <option value="BYear">2012</option>
-                </FormControl>
-              </FormGroup>
-              */}
 
               <FormGroup>
                 <ControlLabel>School Name</ControlLabel>
@@ -424,6 +343,8 @@ class StudentForm extends React.Component {
                     I am willing to host lessons at my home ($20/lesson).
                   </Checkbox>
               </FormGroup>
+
+              <Calendar />
 
               <FormGroup>
                 <ControlLabel>Distance Willing to Travel</ControlLabel>
