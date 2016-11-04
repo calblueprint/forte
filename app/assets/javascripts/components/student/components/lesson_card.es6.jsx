@@ -3,9 +3,7 @@ class LessonCard extends React.Component{
   render() {
     return (
       <div className="lesson-card">
-        <div className="instrument-icon">
-          <img src={ImageConstants.instruments.clarinet} href="#" />
-        </div>
+        <img className="instrument-icon" src={ImageConstants.instruments.clarinet} href="#" />
         <div className="logistics">
           <h4> Piano Lesson </h4>
           <div className="info-row">
@@ -30,12 +28,8 @@ class LessonCard extends React.Component{
           </div>
         </div>
         <div className="actions">
-          <div className="cancel">
-            <img src={ImageConstants.icons.cancel} href="#" />
-          </div>
-          <div className="modify">
-            <img src={ImageConstants.icons.modify} href="#" />
-          </div>
+          <img src={ImageConstants.icons.cancel} href="#" />
+          <img src={ImageConstants.icons.modify} href="#" />
         </div>
       </div>
     );
