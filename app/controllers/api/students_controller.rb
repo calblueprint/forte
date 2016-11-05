@@ -29,6 +29,9 @@ class Api::StudentsController < Api::BaseController
     render json: student
   end
 
+  def lessons
+  end
+
   def unmatched
     matchings = Matching.all
     student_ids = Set.new
@@ -43,7 +46,7 @@ class Api::StudentsController < Api::BaseController
         students.push(student)
       end
     end
-    render json: students  
+    render json: students
   end
 
   def student_params

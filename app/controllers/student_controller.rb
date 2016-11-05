@@ -1,5 +1,5 @@
 class StudentController < ApplicationController
 
-  def my_lessons
+  def lessons
   end
 end

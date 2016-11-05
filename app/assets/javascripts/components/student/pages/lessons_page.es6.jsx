@@ -1,4 +1,4 @@
-class MyLessonsPage extends React.Component {
+class LessonsPage extends React.Component {
 
   constructor() {
     super();
@@ -41,8 +41,8 @@ class MyLessonsPage extends React.Component {
   render() {
     return (
      <div className="page-wrapper">
-      <Header />
-      <div className="my-lessons-page content-wrapper">
+      <UserHeader />
+      <div className="lessons-page content-wrapper">
         <h2 className="title">
           My Lessons
         </h2>

@@ -1,15 +1,24 @@
 Rails.application.routes.draw do
 
-  get 'admin' => redirect('admin/matched')
-  get 'admin/matched'
-  get 'admin/lessons'
-  get 'admin/roster'
-  get 'admin/unmatched'
-
-  get 'form/student'
-  get 'form/teacher'
-
   root "static_pages#home"
+
+  get 'admin', to: redirect('admin/matched')
+  namespace :admin do
+    get :matched
+    get :unmatched
+    get :lessons
+    get :roster
+  end
+
+  get 'student', to: redirect('student/lessons')
+  namespace :student do
+    get :lessons
+  end
+
+  namespace :form do
+    get :student
+    get :teacher
+  end
 
   controller :static_pages do
     get :home
@@ -17,12 +26,6 @@ Rails.application.routes.draw do
     get :program
     get :contact
     get :about
-  end
-
-  resources :student, only: [] do
-    member do
-      get "my_lessons"
-    end
   end
 
   devise_for :students, controllers: {
