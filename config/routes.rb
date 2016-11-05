@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get 'admin/matched'
   get 'admin/lessons'
   get 'admin/roster'
+  get 'admin/unmatched'
 
   get 'form/student'
   get 'form/teacher'
@@ -40,6 +41,8 @@ Rails.application.routes.draw do
   }
 
   namespace :api do
+    get '/students/unmatched', to: 'students#unmatched'
+    get '/teachers/possible_teachers/:id', to: 'teachers#possible_teachers'
     resources :students, only: [:index, :destroy, :show, :update]
     resources :teachers, only: [:index, :destroy, :show, :update]
     resources :lessons, only: [:index, :create, :destroy, :show, :update]

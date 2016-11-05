@@ -16,5 +16,8 @@
 //= require react_ujs
 //= require bootstrap-sprockets
 //= require react_bootstrap
+//= require moment
+//= require react-datetime
+//= require fullcalendar
 //= require components
 //= require_tree .

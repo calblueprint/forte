@@ -1,3 +1,5 @@
+require 'set'
+
 class Api::StudentsController < Api::BaseController
   def index
     students = Student.all
@@ -25,6 +27,23 @@ class Api::StudentsController < Api::BaseController
   def show
     student = Student.find params[:id]
     render json: student
+  end
+
+  def unmatched
+    matchings = Matching.all
+    student_ids = Set.new
+    for matching in matchings do
+      student_ids.add matching.student_id
+    end
+
+    all_students = Student.all
+    students = []
+    all_students.each do |student|
+      if (!(student_ids.include? student.id))
+        students.push(student)
+      end
+    end
+    render json: students  
   end
 
   def student_params

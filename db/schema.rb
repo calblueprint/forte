@@ -31,9 +31,6 @@ ActiveRecord::Schema.define(version: 20161031233256) do
     t.inet     "last_sign_in_ip"
   end
 
-  add_index "admins", ["email"], name: "index_admins_on_email", unique: true, using: :btree
-  add_index "admins", ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true, using: :btree
-
   create_table "lessons", force: :cascade do |t|
     t.boolean  "is_paid",    default: false, null: false
     t.text     "feedback"
