@@ -1,3 +1,5 @@
+require 'set'
+
 class Api::StudentsController < Api::BaseController
   def index
     students = Student.all
@@ -8,13 +10,18 @@ class Api::StudentsController < Api::BaseController
     student = Student.find params[:id]
     if student.update_attributes student_params
       render json: student
+    else
+      unprocessable_response student
     end
   end
 
   def destroy
     student = Student.find params[:id]
-    student.destroy
-    render json: student
+    if student.destroy
+      render json: student
+    else
+      unprocessable_response student
+    end
   end
 
   def show
@@ -23,6 +30,23 @@ class Api::StudentsController < Api::BaseController
   end
 
   def lessons
+  end
+
+  def unmatched
+    matchings = Matching.all
+    student_ids = Set.new
+    for matching in matchings do
+      student_ids.add matching.student_id
+    end
+
+    all_students = Student.all
+    students = []
+    all_students.each do |student|
+      if (!(student_ids.include? student.id))
+        students.push(student)
+      end
+    end
+    render json: students
   end
 
   def student_params

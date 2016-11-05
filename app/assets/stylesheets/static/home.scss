@@ -12,25 +12,31 @@
     background-color: $orange60;
     background-image: url(asset-path('stencils/instrument_white.png'));
     width: 100%;
-    background-size: 85vw auto;
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    height: 500px;
-    opacity: 50%;
+    height: 450px;
   } 
 
   .title-text {
     color: $white;
     text-align: center;
-    width: 600px;
+    font-weight: 200;
+    font-size: 62px;
+  }
+
+  .forte-description {
+    font-weight: 200;
+    font-size: $font-size-l;
     margin-top: 50px;
   }
 
   .button-container {
     display: flex;
-    width: 300px;
-    margin-top: 20px;
     justify-content: space-between;
+    width: 100%;
+    max-width: 500px;
+    margin-top: 50px;
   }
 
   .instruments-wrapper {
