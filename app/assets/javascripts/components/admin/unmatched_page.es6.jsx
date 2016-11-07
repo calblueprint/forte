@@ -68,7 +68,7 @@ class UnmatchedPage extends React.Component {
   }
 
   makeMatching(event) {
-    route = ApiConstants.matchings.create
+    var route = ApiConstants.matchings.create
     var params = { 
       student_id: this.state.student.id, 
       teacher_id: this.state.teacher.id, 
