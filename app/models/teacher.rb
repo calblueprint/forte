@@ -34,7 +34,7 @@ class Teacher < ActiveRecord::Base
   validates :city, presence: true
   validates :first_name, presence: true
   validates :last_name, presence: true
-  validates :is_searching, presence: true
+  validates :is_searching, :inclusion => { :in => [true, false] }
   validates :availability, presence: true
 
   has_many :matchings
