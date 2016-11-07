@@ -1,0 +1,25 @@
+/* Header Styles */
+
+.user-header.navbar-default {
+  background-color: $orange;
+
+  .navbar-nav > li > a {
+    color: $white80;
+  }
+
+  .navbar-nav > li > a:hover, a:focus, a:active {
+    color: $white40;
+  }
+
+  .link-container.navbar-right {
+    padding-right: 100px;
+  }
+}
+
+.user-header__logo {
+  padding: 0;
+
+  img {
+    height: 100%;
+  }
+}

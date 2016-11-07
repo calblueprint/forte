@@ -39,6 +39,14 @@
         roster: '/admin/roster',
       }
     }
+
+    get student() {
+      return {
+        dashboard: '/student/dashboard',
+        lessons: '/student/lessons',
+        profile: '/student/profile',
+      }
+    }
   }
 this.RouteConstants = new RouteConstants();
 })();
