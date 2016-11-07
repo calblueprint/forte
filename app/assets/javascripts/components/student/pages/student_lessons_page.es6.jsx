@@ -1,10 +1,33 @@
-class LessonsPage extends React.Component {
+class StudentLessonsPage extends React.Component {
+
+  static get propTypes() {
+    return {
+      studentId: React.PropTypes.number.isRequired,
+    };
+  }
 
   constructor() {
     super();
     this.state = {
       filter: "upcoming",
+      lessons: null,
     };
+  }
+
+  componentDidMount() {
+    this.fetchLessons();
+  }
+
+  fetchLessons() {
+    const { studentId } = this.props;
+    const route = ApiConstants.students.upcomingLessons(studentId);
+    const reject = (response) => console.log(response);
+    const resolve = (response) => this.setState({ lessons: response.lessons });
+    Requester.get(
+      route,
+      resolve,
+      reject,
+    );
   }
 
   handleClick(filter) {
@@ -42,7 +65,7 @@ class LessonsPage extends React.Component {
     return (
      <div className="page-wrapper">
       <UserHeader />
-      <div className="lessons-page content-wrapper">
+      <div className="student-lessons-page content-wrapper">
         <h2 className="title">
           My Lessons
         </h2>
@@ -52,7 +75,9 @@ class LessonsPage extends React.Component {
             {this.renderOption("recent")}
           </ButtonGroup>
         </div>
-        <LessonCard />
+        <LessonCard
+          lessons={this.state.lessons}
+        />
       </div>
     </div>
     );

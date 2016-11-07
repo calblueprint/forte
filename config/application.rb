@@ -27,6 +27,9 @@ module Forte
   # Do not swallow errors in after_commit/after_rollback callbacks.
   config.active_record.raise_in_transactional_callbacks = true
 
+  # Autoload all serializers within serializers directory
+  config.autoload_paths += Dir[Rails.root.join('app', 'serializers', '**/')]
+
   #Make custom authentication pages
   config.to_prepare do
     DeviseController.respond_to :html, :json

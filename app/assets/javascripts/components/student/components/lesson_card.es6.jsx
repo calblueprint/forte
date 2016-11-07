@@ -1,6 +1,19 @@
 class LessonCard extends React.Component{
 
-  render() {
+  static get propTypes() {
+    return {
+      lessons: React.PropTypes.array,
+    };
+  }
+
+  renderCard(lesson) {
+    const {
+      price,
+      start_time,
+      teacher,
+      student
+    } = lesson;
+
     return (
       <div className="lesson-card">
         <img className="instrument-icon" src={ImageConstants.instruments.clarinet} href="#" />
@@ -8,29 +21,44 @@ class LessonCard extends React.Component{
           <h4> Piano Lesson </h4>
           <div className="info-row">
             <img src={ImageConstants.icons.person} href="#" />
-            <h6>Lil Shim</h6>
+            <h6>{teacher.first_name}</h6>
           </div>
           <div className="info-row">
             <img src={ImageConstants.icons.time} href="#" />
-            <h6> Monday never o clock </h6>
+            <h6>{start_time}</h6>
           </div>
         </div>
         <div className="details">
           <div className="info-row">
             <img src={ImageConstants.icons.location} href="#" />
-            <h6> Home </h6>
+            <h6>Home</h6>
           </div>
-          <p> My address </p>
+          <p>{teacher.city}</p>
           <div className="cost">
             <div className="cost-icon">
             </div>
-            <p>$20</p>
+            <p>${price}</p>
           </div>
         </div>
         <div className="actions">
           <img src={ImageConstants.icons.cancel} href="#" />
           <img src={ImageConstants.icons.modify} href="#" />
         </div>
+      </div>
+    );
+  }
+
+  renderCards(lessons) {
+    if (lessons) {
+      return lessons.map((lesson) => this.renderCard(lesson));
+    }
+  }
+
+  render() {
+    const {lessons} = this.props;
+    return (
+      <div>
+        {this.renderCards(lessons)}
       </div>
     );
   }

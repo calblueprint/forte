@@ -1,0 +1,2 @@
+class LessonIndexSerializer < LessonShowSerializer
+end

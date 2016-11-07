@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
 
   root "static_pages#home"
-
   get 'admin', to: redirect('admin/matched')
   namespace :admin do
     get :matched
@@ -44,6 +43,7 @@ Rails.application.routes.draw do
   }
 
   namespace :api do
+    get '/students/upcoming_lessons/:id', to: 'students#upcoming_lessons'
     get '/students/unmatched', to: 'students#unmatched'
     get '/teachers/possible_teachers/:id', to: 'teachers#possible_teachers'
     resources :students, only: [:index, :destroy, :show, :update]

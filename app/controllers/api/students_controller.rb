@@ -29,7 +29,18 @@ class Api::StudentsController < Api::BaseController
     render json: student
   end
 
-  def lessons
+  def upcoming_lessons
+    if current_student
+      # TODO(shimmy): To make this endpoint accessible to admins, we should
+      # check if the user is simply logged in, not if they're a student.
+      # Also, for more validations, if the user is a student, we should check if params[:id] == current_user.id
+      lessons = Lesson.upcoming.where(student_id: params[:id])
+      render json: lessons,
+             each_serializer: LessonIndexSerializer,
+             root: "lessons"
+    else
+      redirect_to new_student_session_path
+    end
   end
 
   def unmatched

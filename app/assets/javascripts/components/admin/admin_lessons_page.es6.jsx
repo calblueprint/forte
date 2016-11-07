@@ -1,4 +1,4 @@
-class LessonsPage extends React.Component {
+class AdminLessonsPage extends React.Component {
 
   static get propTypes() {
     return {
@@ -20,7 +20,7 @@ class LessonsPage extends React.Component {
     return (
       <div className="page-wrapper">
         <AdminHeader />
-        <div className="content-wrapper lessons-page">
+        <div className="content-wrapper admin-lessons-page">
           <h1 className="lessons-title">Lessons</h1>
           <div className="lessons-container">
             {this.renderLessons()}

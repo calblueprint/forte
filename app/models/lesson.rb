@@ -15,6 +15,8 @@
 
 class Lesson < ActiveRecord::Base
 
+  scope :upcoming, -> { where("start_time > ?", Date.today) }
+
   validates :start_time, presence: true, date: true
   validates :end_time, presence: true, date: { after: :start_time }
   validates :is_paid, :inclusion => { :in => [true, false] }
@@ -23,5 +25,5 @@ class Lesson < ActiveRecord::Base
 
   belongs_to :student
   belongs_to :teacher
-  
+
 end

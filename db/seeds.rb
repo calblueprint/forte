@@ -74,8 +74,8 @@ def create_single_matching(teacher, student, instrument_name)
   matching
 end
 
-def create_single_lesson(teacher, student, n)
-  start_time = (7*n).days.ago + (15 * student.availability[0].to_i).minutes
+def create_single_lesson(teacher, student)
+  start_time = Date.beginning_of_week + (15 * student.availability[0].to_i).minutes
   lesson = Lesson.create(
     start_time: start_time,
     end_time: start_time + 45.minutes,
@@ -85,7 +85,7 @@ def create_single_lesson(teacher, student, n)
     student_id: student.id,
     teacher_id: teacher.id,
   )
-  lesson
+  lesson.save
 end
 
 def create_lessons_and_matchings_with_matched_teachers_and_students
@@ -111,7 +111,7 @@ def create_lessons_and_matchings_with_matched_teachers_and_students
     create_single_matching(teacher, student, instrument_name)
 
     15.times do |k|
-      create_single_lesson(teacher, student, k)
+      create_single_lesson(teacher, student)
     end
   end
 end

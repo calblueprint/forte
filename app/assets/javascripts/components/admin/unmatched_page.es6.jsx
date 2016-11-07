@@ -31,8 +31,8 @@ class UnmatchedPage extends React.Component {
     var studentRoute = ApiConstants.students.show(studentId)
     var studentResolve = ((response) => {
       this.setState({fullStudent: true, student: response});
-      var teacherRoute = ApiConstants.teachers.possible_teachers(studentId);
-      var teacherResolve = (response) => this.setState({teachers: response["teachers"]});
+      var teacherRoute = ApiConstants.teachers.possibleTeachers(studentId);
+      var teacherResolve = (response) => this.setState({ teachers: response["teachers"] });
       var teacherReject = (response) => console.log(response);
       Requester.get(
         teacherRoute,
@@ -68,14 +68,14 @@ class UnmatchedPage extends React.Component {
   }
 
   makeMatching(event) {
-    var route = ApiConstants.matchings.create
-    var params = { 
-      student_id: this.state.student.id, 
-      teacher_id: this.state.teacher.id, 
+    route = ApiConstants.matchings.create
+    var params = {
+      student_id: this.state.student.id,
+      teacher_id: this.state.teacher.id,
       instrument: this.state.student.instrument
     };
     var resolve = (response) => {
-      this.setState({ fullStudent: false, fullTeacher: false});
+      this.setState({ fullStudent: false, fullTeacher: false });
       this.loadStudents();
     };
     var reject = (response) => console.log(response);

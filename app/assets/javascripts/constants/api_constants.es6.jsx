@@ -1,13 +1,14 @@
 (() => {
   class ApiConstants {
-    
+
     get students() {
       return {
         index: '/api/students',
+        unmatched: '/api/students/unmatched',
         delete: (id) => `/api/students/${id}`,
         update: (id) => `/api/students/${id}`,
         show: (id) => `/api/students/${id}`,
-        unmatched: '/api/students/unmatched',
+        upcomingLessons: (id) => `/api/students/upcoming_lessons/${id}`,
       };
     }
 
@@ -17,7 +18,7 @@
         delete: (id) => `/api/teachers/${id}`,
         update: (id) => `/api/teachers/${id}`,
         show: (id) => `/api/teachers/${id}`,
-        possible_teachers: (id) => `/api/teachers/possible_teachers/${id}`
+        possibleTeachers: (id) => `/api/teachers/possible_teachers/${id}`
       };
     }
 
