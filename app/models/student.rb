@@ -6,7 +6,6 @@
 #  availability           :text             default([]), is an Array
 #  city                   :string
 #  first_name             :string
-#  instrument             :string
 #  last_name              :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
@@ -39,5 +38,6 @@ class Student < ActiveRecord::Base
   has_many :lessons
   has_many :matchings
   has_many :teachers, through: :matchings
+  has_many :instruments, as: :instrumentable
 
 end

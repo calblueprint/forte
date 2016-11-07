@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161031233256) do
+ActiveRecord::Schema.define(version: 20161103015720) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,22 @@ ActiveRecord::Schema.define(version: 20161031233256) do
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
   end
+
+  add_index "admins", ["email"], name: "index_admins_on_email", unique: true, using: :btree
+  add_index "admins", ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true, using: :btree
+
+  create_table "instruments", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "years_played"
+    t.integer  "experience_level"
+    t.boolean  "is_primary",          default: false, null: false
+    t.integer  "instrumentable_id"
+    t.string   "instrumentable_type"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
+
+  add_index "instruments", ["instrumentable_type", "instrumentable_id"], name: "index_instruments_on_instrumentable_type_and_instrumentable_id", using: :btree
 
   create_table "lessons", force: :cascade do |t|
     t.boolean  "is_paid",    default: false, null: false
@@ -61,7 +77,6 @@ ActiveRecord::Schema.define(version: 20161031233256) do
   create_table "students", force: :cascade do |t|
     t.string   "city"
     t.string   "first_name"
-    t.string   "instrument"
     t.string   "last_name"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
@@ -83,7 +98,6 @@ ActiveRecord::Schema.define(version: 20161031233256) do
 
   create_table "teachers", force: :cascade do |t|
     t.boolean  "is_searching",           default: false
-    t.text     "instruments",            default: [],                 array: true
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
     t.string   "email",                  default: "",    null: false
