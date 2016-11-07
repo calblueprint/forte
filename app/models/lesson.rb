@@ -16,6 +16,7 @@
 class Lesson < ActiveRecord::Base
 
   scope :upcoming, -> { where("start_time > ?", Date.today) }
+  scope :past, -> { where("start_time < ?", Date.today) }
 
   validates :start_time, presence: true, date: true
   validates :end_time, presence: true, date: { after: :start_time }
