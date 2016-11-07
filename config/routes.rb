@@ -50,6 +50,7 @@ Rails.application.routes.draw do
     resources :teachers, only: [:index, :destroy, :show, :update]
     resources :lessons, only: [:index, :create, :destroy, :show, :update]
     resources :matchings, only: [:index, :create, :destroy, :show, :update]
+    resources :instruments, only: [:index, :create, :destroy, :show, :update]
   end
 
   # devise_scope :student do

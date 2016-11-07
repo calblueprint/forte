@@ -16,7 +16,6 @@ end
 def create_single_teacher(is_searching, n)
   teacher = Teacher.create(
     is_searching: is_searching,
-    instruments: [$instruments_array[n%3]],
     email: Faker::Internet.email,
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.first_name,
@@ -30,7 +29,13 @@ end
 def create_unmatched_teachers
   puts  "Creating unmatched teachers"
   10.times do |n|
-    create_single_teacher(true, n)
+    teacher = create_single_teacher(true, n)
+    teacher.instruments.build(
+      name: $instruments_array[n%3],
+      years_played: n,
+      experience_level: n % 5,
+      is_primary: true,
+    ).save
   end
 end
 
@@ -41,7 +46,6 @@ def create_single_student(is_searching, n)
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.first_name,
     email: Faker::Internet.email,
-    instrument: $instruments_array[n%3],
     password: "password",
   )
   student
@@ -50,13 +54,19 @@ end
 def create_unmatched_students
   puts  "Creating unmatched students"
   10.times do |n|
-    create_single_student(true, n)
+    student = create_single_student(true, n)
+    student.instruments.build(
+      name: $instruments_array[n%3],
+      years_played: n,
+      experience_level: n % 5,
+      is_primary: true,
+    ).save
   end
 end
 
-def create_single_matching(teacher, student)
+def create_single_matching(teacher, student, instrument_name)
   matching = Matching.create(
-    instrument: student.instrument,
+    instrument: instrument_name,
     lesson_time: [student.availability[0], student.availability[1], student.availability[2]],
     student_id: student.id,
     teacher_id: teacher.id,
@@ -82,8 +92,23 @@ def create_lessons_and_matchings_with_matched_teachers_and_students
   puts "creating matchings and lessons"
   10.times do |n|
     teacher = create_single_teacher(false, n)
+    instrument_name = $instruments_array[n%3]
+    teacher.instruments.build(
+      name: instrument_name,
+      years_played: n,
+      experience_level: n % 5,
+      is_primary: true,
+    ).save
+
     student = create_single_student(false, n)
-    create_single_matching(teacher, student)
+    student.instruments.build(
+      name: instrument_name,
+      years_played: n,
+      experience_level: n % 5,
+      is_primary: true,
+    ).save
+
+    create_single_matching(teacher, student, instrument_name)
 
     15.times do |k|
       create_single_lesson(teacher, student, k)

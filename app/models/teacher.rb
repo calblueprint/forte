@@ -28,7 +28,6 @@ class Teacher < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   
-  validates :instruments, presence: true
   validates :email, presence: true, uniqueness: true
   validates :city, presence: true
   validates :first_name, presence: true

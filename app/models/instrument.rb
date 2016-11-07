@@ -14,6 +14,13 @@
 
 class Instrument < ActiveRecord::Base
 
+  validates :name, presence: true
+  validates :years_played, presence: true
+  validates :experience_level, presence: true
+  validates :is_primary, :inclusion => { :in => [true, false] }
+  validates :instrumentable_id, presence: true
+  validates :instrumentable_type, presence: true
+
   belongs_to :instrumentable, polymorphic: true
 
 end

@@ -31,7 +31,6 @@ class Student < ActiveRecord::Base
   validates :city, presence: true
   validates :first_name, presence: true
   validates :last_name, presence: true
-  validates :instrument, presence: true
   validates :email, presence: true, uniqueness: true
   validates :availability, presence: true
 
