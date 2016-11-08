@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161103015720) do
+ActiveRecord::Schema.define(version: 20161105204708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,6 +91,31 @@ ActiveRecord::Schema.define(version: 20161103015720) do
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
     t.integer  "availability",           default: [],              array: true
+    t.integer  "gender"
+    t.datetime "birthday"
+    t.string   "school"
+    t.integer  "school_level"
+    t.string   "guardian_first_name"
+    t.string   "guardian_last_name"
+    t.string   "guardian_phone"
+    t.text     "introduction"
+    t.text     "lesson_experience"
+    t.text     "performance_experience"
+    t.string   "student_email"
+    t.string   "student_phone"
+    t.string   "address"
+    t.string   "address_apt"
+    t.integer  "state"
+    t.integer  "zipcode"
+    t.boolean  "location_preference"
+    t.integer  "travel_distance"
+    t.integer  "income_range"
+    t.integer  "household_number"
+    t.boolean  "disciplinary_action"
+    t.boolean  "criminal_charges"
+    t.text     "criminal_explanation"
+    t.string   "waiver_signature"
+    t.datetime "waiver_date"
   end
 
   add_index "students", ["email"], name: "index_students_on_email", unique: true, using: :btree

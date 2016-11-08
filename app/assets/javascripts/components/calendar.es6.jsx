@@ -42,11 +42,11 @@ class Calendar extends React.Component {
           }
       },
       selectHelper: true,
-      selectConstraint:{
+      selectConstraint:{ //won't let you drag to the next day 
         start: '00:01', 
         end: '23:59', 
       },
-      eventConstraint: {
+      eventConstraint: { //can't drag events out of bound
         start: "08:00",
         end: "22:00",
       },
@@ -57,7 +57,6 @@ class Calendar extends React.Component {
       eventClick: function(calEvent, jsEvent, view) {
       if (jsEvent.target.id === 'Delete') {
         $(calendar).fullCalendar('removeEvents',calEvent._id);
-        
       }
     }
     });

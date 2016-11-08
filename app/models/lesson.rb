@@ -3,14 +3,15 @@
 # Table name: lessons
 #
 #  id         :integer          not null, primary key
-#  start_time :datetime         not null
-#  end_time   :datetime         not null
 #  is_paid    :boolean          default(FALSE), not null
 #  feedback   :text
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  student_id :integer
 #  teacher_id :integer
+#  start_time :datetime
+#  end_time   :datetime
+#  price      :decimal(, )
 #
 
 class Lesson < ActiveRecord::Base

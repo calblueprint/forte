@@ -20,7 +20,7 @@
 #  city                   :string
 #  first_name             :string
 #  last_name              :string
-#  availability           :text             default([]), is an Array
+#  availability           :integer          default([]), is an Array
 #
 
 FactoryGirl.define do
