@@ -19,7 +19,8 @@ class LoginPage extends React.Component {
     if (this.props.type == 'student') {
       var params = { student: paramsObject };
       var route = RouteConstants.authentication.login.student;
-      var resolve = (response) => { window.location.href = "/"; };
+      var resolve = (response) => { window.location.href = "/student/lessons";
+    };
     } else if (this.props.type == 'teacher') {
       var params = { teacher: paramsObject };
       var route = RouteConstants.authentication.login.teacher;
@@ -56,6 +57,7 @@ class LoginPage extends React.Component {
             <FormGroup className="login-card__field">
               <ControlLabel>Email</ControlLabel>
               <FormControl
+                componentClass="input"
                 type="text"
                 name="email"
                 onChange={(event) => this.handleChange(event)} />
@@ -63,7 +65,8 @@ class LoginPage extends React.Component {
             <FormGroup className="login-card__field">
               <ControlLabel>Password</ControlLabel>
               <FormControl
-                type="text"
+                componentClass="input"
+                type="password"
                 name="password" 
                 onChange={(event) => this.handleChange(event)} />
             </FormGroup>

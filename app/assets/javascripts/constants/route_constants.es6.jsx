@@ -47,6 +47,13 @@
         profile: '/student/profile',
       }
     }
+
+    get form() {
+      return {
+        student: '/form/student',
+        teacher: '/form/teacher',
+      }
+    }
   }
 this.RouteConstants = new RouteConstants();
 })();

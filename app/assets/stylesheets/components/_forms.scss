@@ -4,15 +4,15 @@
 }
 
 .form-control {
-  // @include appearance(none);
   height: 40px;
   outline-color: $orange;
   box-shadow: none;
   background-color: $blue-grey40;
-  border-color: $blue-grey60;
+  border: none;
   width: 100%;
+  transition: none;
 
-  &:focus {
+  &:focus, &:active {
     box-shadow: none;
     border: 1px solid $orange40;
     background-color: $white

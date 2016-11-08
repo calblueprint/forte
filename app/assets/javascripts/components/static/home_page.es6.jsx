@@ -33,8 +33,12 @@ class HomePage extends React.Component {
                 Grab a chair. Take a stand.
               </div>
               <div className="button-container">
-                <button className="button button--solid-orange button--lg">Apply to Learn</button>
-                <button className="button button--solid-orange button--lg">Apply to Teach</button>
+                <Button className="button button--solid-orange button--lg"
+                        onClick={() => window.location = RouteConstants.form.student}>
+                  Apply to Learn
+                </Button>
+                <Button className="button button--solid-orange button--lg">Apply
+                to Teach</Button>
               </div>
             </div>
             <div className="forte-description">
