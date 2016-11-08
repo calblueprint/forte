@@ -1,3 +1,4 @@
+/* Bootstrap form controls */
 .control-label {
   color: $grey;
 }
@@ -6,9 +7,18 @@
   @include appearance(none);
   height: 40px;
   outline-color: $orange;
+  box-shadow: none;
+  background-color: $blue-grey40;
+  border-color: $blue-grey60;
+  width: 100%;
 
   &:focus {
-    box-shadow: 0 2px 6px $orange60;
-    border: 1px solid $orange;
+    box-shadow: none;
+    border: 1px solid $orange40;
+    background-color: $white
   }
+}
+
+.form-group {
+  width: 100%
 }

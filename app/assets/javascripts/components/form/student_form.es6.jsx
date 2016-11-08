@@ -159,28 +159,30 @@ class StudentForm extends React.Component {
     return (
       <div className="page-wrapper">
         <Header />
-          <div className="content-wrapper">
+          <div className="content-wrapper form-page">
             <h1>Student Application</h1>
-            <form>
+            <div className="form-container">
+              <form>
               {/*Application Page 1*/}
-              <FormGroup>
-                <ControlLabel>First Name</ControlLabel>
-                <FormControl 
-                  componentClass="input"  
-                  placeholder="Enter first name"
-                  name="first_name"
-                  onChange={(event) => this.handleChange(event)}/>
-              </FormGroup>
+              <div className="form-row">
+                <FormGroup>
+                  <ControlLabel>First Name</ControlLabel>
+                  <FormControl 
+                    componentClass="input"  
+                    placeholder="Enter first name"
+                    name="first_name"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
 
-              <FormGroup>
-                <ControlLabel>Last Name</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
-                  placeholder="Enter last name"
-                  name="last_name"
-                  onChange={(event) => this.handleChange(event)}/>
-              </FormGroup>
-
+                <FormGroup>
+                  <ControlLabel>Last Name</ControlLabel>
+                  <FormControl 
+                    componentClass="input" 
+                    placeholder="Enter last name"
+                    name="last_name"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
+              </div>
               <FormGroup>
                 <ControlLabel>Gender</ControlLabel>
                 <FormControl 
@@ -392,7 +394,10 @@ class StudentForm extends React.Component {
                 </FormControl>
               </FormGroup>
 
-              <Calendar ref="availability"/>
+              <FormGroup>
+                <ControlLabel>Weekly Availability</ControlLabel>
+                <Calendar ref="availability"/>
+              </FormGroup>
 
               {/*Application Page 4*/}
               <FormGroup>
@@ -482,6 +487,7 @@ class StudentForm extends React.Component {
               onClick={() => this.submitForm()}>Submit</Button> 
               <FormControl.Feedback />
             </form>
+            </div>
           </div>
         <Footer />
       </div>

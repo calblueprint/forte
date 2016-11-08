@@ -1,0 +1,17 @@
+/* Form Pages 
+  Used for Student/Teacher form
+*/
+
+.form-page {
+  align-items: center;
+}
+
+.form-container {
+  width: 70%;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
