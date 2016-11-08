@@ -4,7 +4,7 @@
 }
 
 .form-control {
-  @include appearance(none);
+  // @include appearance(none);
   height: 40px;
   outline-color: $orange;
   box-shadow: none;
