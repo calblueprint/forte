@@ -9,6 +9,7 @@
         update: (id) => `/api/students/${id}`,
         show: (id) => `/api/students/${id}`,
         upcomingLessons: (id) => `/api/students/upcoming_lessons/${id}`,
+        recentLessons: (id) => `/api/students/recent_lessons/${id}`,
       };
     }
 

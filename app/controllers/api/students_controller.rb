@@ -43,6 +43,17 @@ class Api::StudentsController < Api::BaseController
     end
   end
 
+  def recent_lessons
+    if current_student
+      lessons = Lesson.recent.where(student_id: params[:id])
+      render json: lessons,
+             each_serializer: LessonIndexSerializer,
+             root: "lessons"
+    else
+      redirect_to new_student_session_path
+    end
+  end
+
   def unmatched
     matchings = Matching.all
     student_ids = Set.new

@@ -43,6 +43,7 @@ Rails.application.routes.draw do
   }
 
   namespace :api do
+    get '/students/recent_lessons/:id', to: 'students#recent_lessons'
     get '/students/upcoming_lessons/:id', to: 'students#upcoming_lessons'
     get '/students/unmatched', to: 'students#unmatched'
     get '/teachers/possible_teachers/:id', to: 'teachers#possible_teachers'

@@ -6,7 +6,7 @@ class LessonCard extends React.Component{
     };
   }
 
-  renderCard(lesson) {
+  renderLessonCard(lesson) {
     const {
       price,
       start_time,
@@ -48,9 +48,9 @@ class LessonCard extends React.Component{
     );
   }
 
-  renderCards(lessons) {
+  renderLessonCards(lessons) {
     if (lessons) {
-      return lessons.map((lesson) => this.renderCard(lesson));
+      return lessons.map((lesson) => this.renderLessonCard(lesson));
     }
   }
 
@@ -58,7 +58,7 @@ class LessonCard extends React.Component{
     const {lessons} = this.props;
     return (
       <div>
-        {this.renderCards(lessons)}
+        {this.renderLessonCards(lessons)}
       </div>
     );
   }

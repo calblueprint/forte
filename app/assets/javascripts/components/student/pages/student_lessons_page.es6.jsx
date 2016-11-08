@@ -10,19 +10,33 @@ class StudentLessonsPage extends React.Component {
     super();
     this.state = {
       filter: "upcoming",
-      lessons: null,
+      upcomingLessons: null,
+      recentLessons: null,
     };
   }
 
   componentDidMount() {
-    this.fetchLessons();
+    this.fetchUpcomingLessons();
+    this.fetchRecentLessons();
   }
 
-  fetchLessons() {
+  fetchUpcomingLessons() {
     const { studentId } = this.props;
     const route = ApiConstants.students.upcomingLessons(studentId);
+    const resolve = (response) => this.setState({ upcomingLessons: response.lessons });
     const reject = (response) => console.log(response);
-    const resolve = (response) => this.setState({ lessons: response.lessons });
+    Requester.get(
+      route,
+      resolve,
+      reject,
+    );
+  }
+
+  fetchRecentLessons() {
+    const { studentId } = this.props;
+    const route = ApiConstants.students.recentLessons(studentId);
+    const resolve = (response) => this.setState({ recentLessons: response.lessons });
+    const reject = (response) => console.log(response);
     Requester.get(
       route,
       resolve,
@@ -31,20 +45,21 @@ class StudentLessonsPage extends React.Component {
   }
 
   handleClick(filter) {
-   this.setState({ filter: filter });
+    this.setState({ filter: filter });
   }
 
   renderOption(option) {
+    const { filter } = this.state;
     switch (option) {
       case "upcoming":
-        style = (this.state.filter == "upcoming" ?
+        style = (filter === "upcoming" ?
                   "button button--lg button--solid-orange" :
                   "button button--lg button--solid-white"
                 );
         buttonText = "Upcoming Lessons";
         break;
       case "recent":
-        style = (this.state.filter == "recent" ?
+        style = (filter === "recent" ?
                   "button button--lg button--solid-orange" :
                   "button button--lg button--solid-white"
                 );
@@ -61,7 +76,28 @@ class StudentLessonsPage extends React.Component {
     );
   }
 
+
+  renderLessonCards(filter) {
+    const { upcomingLessons, recentLessons } = this.state;
+    console.log(recentLessons);
+
+    if (filter === "upcoming") {
+      return (
+        <LessonCard
+          lessons={upcomingLessons}
+        />
+      );
+    } else {
+      return (
+       <LessonCard
+          lessons={recentLessons}
+       />
+      );
+    }
+  }
+
   render() {
+    const { filter } = this.state;
     return (
      <div className="page-wrapper">
       <UserHeader />
@@ -75,9 +111,7 @@ class StudentLessonsPage extends React.Component {
             {this.renderOption("recent")}
           </ButtonGroup>
         </div>
-        <LessonCard
-          lessons={this.state.lessons}
-        />
+        {this.renderLessonCards(filter)}
       </div>
     </div>
     );
