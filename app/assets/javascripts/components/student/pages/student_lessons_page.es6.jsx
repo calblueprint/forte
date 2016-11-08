@@ -76,7 +76,6 @@ class StudentLessonsPage extends React.Component {
     );
   }
 
-
   renderLessonCards(filter) {
     const { upcomingLessons, recentLessons } = this.state;
     console.log(recentLessons);
