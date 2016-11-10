@@ -33,7 +33,7 @@ def create_unmatched_teachers
     teacher.instruments.build(
       name: $instruments_array[n%3],
       years_played: n,
-      experience_level: n % 5,
+      proficiency: n % 5,
       is_primary: true,
     ).save
   end
@@ -58,7 +58,7 @@ def create_unmatched_students
     student.instruments.build(
       name: $instruments_array[n%3],
       years_played: n,
-      experience_level: n % 5,
+      proficiency: n % 5,
       is_primary: true,
     ).save
   end
@@ -98,7 +98,7 @@ def create_lessons_and_matchings_with_matched_teachers_and_students
     teacher.instruments.build(
       name: instrument_name,
       years_played: n,
-      experience_level: n % 5,
+      proficiency: n % 5,
       is_primary: true,
     ).save
 
@@ -106,7 +106,7 @@ def create_lessons_and_matchings_with_matched_teachers_and_students
     student.instruments.build(
       name: instrument_name,
       years_played: n,
-      experience_level: n % 5,
+      proficiency: n % 5,
       is_primary: true,
     ).save
 

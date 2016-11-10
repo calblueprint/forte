@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161105204708) do
+ActiveRecord::Schema.define(version: 20161110092134) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,12 +37,12 @@ ActiveRecord::Schema.define(version: 20161105204708) do
   create_table "instruments", force: :cascade do |t|
     t.string   "name"
     t.integer  "years_played"
-    t.integer  "experience_level"
     t.boolean  "is_primary",          default: false, null: false
     t.integer  "instrumentable_id"
     t.string   "instrumentable_type"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.integer  "proficiency"
   end
 
   add_index "instruments", ["instrumentable_type", "instrumentable_id"], name: "index_instruments_on_instrumentable_type_and_instrumentable_id", using: :btree
