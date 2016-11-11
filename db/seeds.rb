@@ -32,7 +32,7 @@ def create_unmatched_teachers
     teacher = create_single_teacher(true, n)
     teacher.instruments.build(
       name: $instruments_array[n%3],
-      years_played: n,
+      years_played: n % 6,
       proficiency: n % 5,
       is_primary: true,
     ).save
@@ -57,7 +57,7 @@ def create_unmatched_students
     student = create_single_student(true, n)
     student.instruments.build(
       name: $instruments_array[n%3],
-      years_played: n,
+      years_played: n % 6,
       proficiency: n % 5,
       is_primary: true,
     ).save
@@ -97,7 +97,7 @@ def create_lessons_and_matchings_with_matched_teachers_and_students
     instrument_name = $instruments_array[n%3]
     teacher.instruments.build(
       name: instrument_name,
-      years_played: n,
+      years_played: n % 6,
       proficiency: n % 5,
       is_primary: true,
     ).save
@@ -105,7 +105,7 @@ def create_lessons_and_matchings_with_matched_teachers_and_students
     student = create_single_student(false, n)
     student.instruments.build(
       name: instrument_name,
-      years_played: n,
+      years_played: n % 6,
       proficiency: n % 5,
       is_primary: true,
     ).save
