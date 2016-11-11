@@ -1,3 +1,4 @@
+$form-control-bottom-margin : 30px;
 /* Bootstrap form controls */
 .control-label {
   color: $grey;
@@ -20,5 +21,6 @@
 }
 
 .form-group {
-  width: 100%
+  width: 100%;
+  margin-bottom: $form-control-bottom-margin;
 }

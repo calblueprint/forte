@@ -4,7 +4,6 @@
 #
 #  id                     :integer          not null, primary key
 #  is_searching           :boolean          default(FALSE)
-#  instruments            :text             default([]), is an Array
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  email                  :string           default(""), not null

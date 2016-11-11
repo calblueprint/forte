@@ -40,7 +40,7 @@ class Api::InstrumentsController < Api::BaseController
     params.require(:instrument).permit(
       :name,
       :years_played,
-      :experience_level,
+      :proficiency,
       :is_primary,
       :instrumentable_id,
       :instrumentable_type,

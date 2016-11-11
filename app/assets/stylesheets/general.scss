@@ -52,20 +52,3 @@ h6 {
 p {
   line-height: $font-size-l;
 }
-
-textarea:hover,
-input:hover,
-textarea:active,
-input:active,
-textarea:focus,
-input:focus,
-button:focus,
-button:active,
-button:hover,
-label:focus,
-.btn:active,
-.btn.active
-{
-  outline:0px !important;
-  @include appearance(none);
-}

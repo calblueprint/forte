@@ -1,17 +1,22 @@
-/* Form Pages 
-  Used for Student/Teacher form
-*/
+/* Form Pages - Used for Student/Teacher form*/
 
 .form-page {
   align-items: center;
 }
 
 .form-container {
-  width: 70%;
+  width: 65%;
+  max-width: 1200px;
 }
 
-.form-row {
+// use when more than one form control element in a row
+.form-row { 
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-bottom: $form-control-bottom-margin;
+
+  > * { margin: 0 10px; }    
+  > :first-child { margin-left: 0; }
+  > :last-child { margin-right: 0; }
 }

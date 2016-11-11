@@ -5,7 +5,6 @@
 #  id                     :integer          not null, primary key
 #  city                   :string
 #  first_name             :string
-#  instrument             :string
 #  last_name              :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
@@ -27,10 +26,10 @@
 #  guardian_first_name    :string
 #  guardian_last_name     :string
 #  guardian_phone         :string
-#  guardian_email         :string
 #  introduction           :text
 #  lesson_experience      :text
 #  performance_experience :text
+#  student_email          :string
 #  student_phone          :string
 #  address                :string
 #  address_apt            :string

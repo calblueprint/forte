@@ -35,7 +35,28 @@ class StudentForm extends React.Component {
       criminal_explanation: null,
       waiver_signature: null,
       waiver_date: null,
+      activeInstruments: [],
+      instruments: {},
     }
+  }
+
+  componentDidMount() {
+    // set up active instruments object
+    var activeInstruments = {}
+    for (var i = 0; i < INSTRUMENTS.length; i++) {
+      activeInstruments[INSTRUMENTS[i]] = false;
+    }
+    this.setState({ activeInstruments: activeInstruments });
+    
+    // set up instruments fields object
+    var instruments = {}
+    for (var i = 0; i < INSTRUMENTS.length; i++) {
+      instruments[INSTRUMENTS[i]] = {
+        proficiency: null,
+        years_played: null,
+      };
+    }
+    this.setState({ instruments: instruments });
   }
 
   handleChange(event) {
@@ -45,14 +66,14 @@ class StudentForm extends React.Component {
   }
 
   handleBooleanChange(event) {
-    var name = $(event.target).attr("name");
+    const name = $(event.target).attr("name");
     var value = $(event.target).val();
     value = (value == "true");
     this.setState({ [name] : value });
   }
 
   handleIntegerChange(event) {
-    var name = $(event.target).attr("name");
+    const name = $(event.target).attr("name");
     var value = $(event.target).val();
     value = parseInt(value);
     this.setState({ [name] : value });
@@ -64,6 +85,24 @@ class StudentForm extends React.Component {
     } else if (name == 'waiver_date') {
       this.setState({ waiver_date: moment.year() + '-' + moment.month() + '-' + moment.date() });
     }
+  }
+
+  handleInstrumentClick(event) {
+    const { instruments, activeInstruments } = this.state;
+    const instrument = event.target.textContent;
+    const currentState = activeInstruments[instrument];
+    this.setState({
+      activeInstruments: update(this.state.activeInstruments, {[instrument]: {$set: !currentState}}),
+    });
+  }
+
+  handleInstrumentFieldChange(event, instrument) {
+    const name = $(event.target).attr("name");
+    var value = $(event.target).val();
+    value = parseInt(value);
+    this.setState({
+      instruments: update(this.state.instruments, {[instrument]: {[name]: {$set: value}}}),
+    });
   }
 
   setAvailability(callback) {
@@ -102,8 +141,8 @@ class StudentForm extends React.Component {
         guardian_last_name: this.state.guardian_last_name,
         guardian_phone: this.state.guardian_phone,
         introduction: this.state.introduction,
-        lesson_experience: this.state.music_lesson_experience,
-        performance_experience: this.state.music_performance_experience,
+        lesson_experience: this.state.lesson_experience,
+        performance_experience: this.state.performance_experience,
         student_email: this.state.student_email,
         student_phone: this.state.student_phone,
         address: this.state.address,
@@ -135,24 +174,85 @@ class StudentForm extends React.Component {
     var retOptions = []
     switch(type) {
       case 'gender':
-        optionsArray = genders;
+        optionsArray = GENDERS;
         break;
       case 'school_level':
-        optionsArray = schoolLevels;
+        optionsArray = SCHOOL_LEVELS;
         break;
       case 'state':
-        optionsArray = states;
+        optionsArray = STATES;
         break;
       case 'travel_distance':
-        optionsArray = travelDistances;
+        optionsArray = TRAVEL_DISTANCES;
         break;
       case 'income_range':
-        optionsArray = incomeRanges;
+        optionsArray = INCOME_RANGES;
+        break;
+      case 'proficiency':
+        optionsArray = PROFICIENCY;
+        break;
+      case 'years_played':
+        optionsArray = YEARS_PLAYED;
+        break;
     }
     for (var i = 0; i < optionsArray.length; i++) {
       retOptions.push(<option value={i}>{optionsArray[i]}</option>);
     }
     return retOptions;
+  }
+
+  renderInstrumentButtons() {
+    const { activeInstruments } = this.state
+    var buttons = []
+    for (var i = 0; i < INSTRUMENTS.length; i++) {
+      var instrument = INSTRUMENTS[i]
+      var className = activeInstruments[instrument] ? 'button button--static-clicked button--sm':'button button--static button--sm';
+      buttons.push(<div className={className} onClick={(event) =>
+        this.handleInstrumentClick(event)}>{INSTRUMENTS[i]}</div>);
+    }
+    return buttons;
+  }
+
+  renderInstrumentFields(instrument) {
+    return (
+      <div key={instrument}>
+        <div>{instrument}</div>
+        <div className="form-row">
+          <FormGroup>
+            <ControlLabel>Proficiency</ControlLabel>
+            <FormControl 
+              componentClass="select" 
+              name="proficiency" 
+              onChange={(event) => this.handleInstrumentFieldChange(event, instrument)}>
+              <option value="" disabled selected>Select a value</option>
+              {this.renderOptions('proficiency')}
+            </FormControl>
+          </FormGroup>
+
+          <FormGroup>
+            <ControlLabel>Years Played</ControlLabel>
+            <FormControl 
+              componentClass="select" 
+              name="years_played" 
+              onChange={(event) => this.handleInstrumentFieldChange(event, instrument)}>
+              <option value="" disabled selected>Select a value</option>
+                {this.renderOptions('years_played')}
+            </FormControl>
+          </FormGroup>
+        </div>
+      </div>     
+    );
+  }
+
+  renderInstrumentsFields() {
+    var instrumentsFields = []
+    const { activeInstruments } = this.state
+    for (var i = 0; i < INSTRUMENTS.length; i++) {
+      if (activeInstruments[INSTRUMENTS[i]] == true) {
+        instrumentsFields.push(this.renderInstrumentFields(INSTRUMENTS[i]));
+      }
+    }
+    return instrumentsFields;
   }
 
   render () {
@@ -223,24 +323,26 @@ class StudentForm extends React.Component {
                 </FormControl>
               </FormGroup>
 
-              <FormGroup>
-                <ControlLabel>Parent/Guardian First Name</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
-                  placeholder="Enter first name"
-                  name="guardian_first_name"
-                  onChange={(event) => this.handleChange(event)}/>
-              </FormGroup>
+              <div className="form-row">
+                <FormGroup>
+                  <ControlLabel>Parent/Guardian First Name</ControlLabel>
+                  <FormControl 
+                    componentClass="input" 
+                    placeholder="Enter first name"
+                    name="guardian_first_name"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
 
-              <FormGroup>
-                <ControlLabel>Parent/Guardian Last Name</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
-                  placeholder="Enter last name"
-                  name="guardian_last_name"
-                  onChange={(event) => this.handleChange(event)}/>
-              </FormGroup>
-
+                <FormGroup>
+                  <ControlLabel>Parent/Guardian Last Name</ControlLabel>
+                  <FormControl 
+                    componentClass="input" 
+                    placeholder="Enter last name"
+                    name="guardian_last_name"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
+              </div>
+              
               <FormGroup>
                 <ControlLabel>Parent/Guardian Phone</ControlLabel>
                 <FormControl 
@@ -259,25 +361,40 @@ class StudentForm extends React.Component {
                   onChange={(event) => this.handleChange(event)}/>
               </FormGroup> 
 
-              <FormGroup>
-                <ControlLabel>Password</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
-                  placeholder="Password"
-                  name="password"
-                  onChange={(event) => this.handleChange(event)}/>
-              </FormGroup>
+              <div className="form-row">
+                <FormGroup>
+                  <ControlLabel>Password</ControlLabel>
+                  <FormControl 
+                    componentClass="input" 
+                    type="password"
+                    placeholder="Password"
+                    name="password"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
 
-              <FormGroup>
-                <ControlLabel>Password Confirmation</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
-                  placeholder="Password"
-                  name="password_confirmation"
-                  onChange={(event) => this.handleChange(event)}/>
-              </FormGroup>
+                <FormGroup>
+                  <ControlLabel>Password Confirmation</ControlLabel>
+                  <FormControl 
+                    componentClass="input" 
+                    type="password"
+                    placeholder="Password"
+                    name="password_confirmation"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
+              </div>
 
               {/*Application Page 2*/}
+              <div className="form-row">
+                {this.renderInstrumentButtons()}
+              </div>
+              <CSSTransitionGroup
+                transitionName="fade"
+                transitionEnter={true}
+                transitionLeave={true}
+                transitionEnterTimeout={500}
+                transitionLeaveTimeout={300}>
+                {this.renderInstrumentsFields()}
+              </CSSTransitionGroup>
               <FormGroup>
                 <ControlLabel>Let us know a little bit about yourself!</ControlLabel>
                 <FormControl 

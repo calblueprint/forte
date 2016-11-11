@@ -103,3 +103,19 @@
   font-size: $font-size-xxs;
   padding: 5px 14px;
 }
+
+/* static buttons should be used on divs */
+.button--static {
+  color: $orange;
+  border: 1px solid $orange;
+  background-color: $white;
+  cursor: pointer;
+}
+
+.button--static-clicked {
+  color: $white;
+  border: 1px solid $orange;
+  background-color: $orange;
+  box-shadow: none;
+  cursor: pointer;
+}

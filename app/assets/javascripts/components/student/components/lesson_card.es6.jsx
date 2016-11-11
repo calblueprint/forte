@@ -55,7 +55,7 @@ class LessonCard extends React.Component{
   }
 
   render() {
-    const {lessons} = this.props;
+    const { lessons } = this.props;
     return (
       <div>
         {this.renderLessonCards(lessons)}
