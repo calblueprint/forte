@@ -109,6 +109,7 @@ def create_lessons_and_matchings_with_matched_teachers_and_students
       proficiency: n % 5,
       is_primary: true,
     ).save
+    puts student.email
 
     create_single_matching(teacher, student, instrument_name)
 

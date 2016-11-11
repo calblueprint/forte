@@ -3,16 +3,16 @@ class HomePage extends React.Component {
   renderInstrument(option) {
     switch (option) {
       case 'piano':
-        image = ImageConstants.instruments.piano;
-        description = 'Piano';
+        var image = ImageConstants.instruments.piano;
+        var description = 'Piano';
         break;
       case 'guitar':
-        image = ImageConstants.instruments.guitar;
-        description = 'Guitar';
+        var image = ImageConstants.instruments.guitar;
+        var description = 'Guitar';
         break;
       case 'clarinet':
-        image = ImageConstants.instruments.clarinet;
-        description = 'Clarinet';
+        var image = ImageConstants.instruments.clarinet;
+        var description = 'Clarinet';
         break;
     }
     return (

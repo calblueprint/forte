@@ -3,6 +3,12 @@
 # Table name: students
 #
 #  id                     :integer          not null, primary key
+#  city                   :string
+#  first_name             :string
+#  last_name              :string
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  reset_password_token   :string
 #  reset_password_sent_at :datetime
@@ -12,10 +18,6 @@
 #  last_sign_in_at        :datetime
 #  current_sign_in_ip     :inet
 #  last_sign_in_ip        :inet
-#  city                   :string
-#  first_name             :string
-#  last_name              :string
-#  email                  :string           default(""), not null
 #  availability           :integer          default([]), is an Array
 #  gender                 :integer
 #  birthday               :datetime
@@ -24,10 +26,10 @@
 #  guardian_first_name    :string
 #  guardian_last_name     :string
 #  guardian_phone         :string
-#  guardian_email         :string
 #  introduction           :text
 #  lesson_experience      :text
 #  performance_experience :text
+#  student_email          :string
 #  student_phone          :string
 #  address                :string
 #  address_apt            :string
@@ -42,8 +44,7 @@
 #  criminal_explanation   :text
 #  waiver_signature       :string
 #  waiver_date            :datetime
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
+#
 
 class Student < ActiveRecord::Base
   # Include default devise modules. Others available are:
