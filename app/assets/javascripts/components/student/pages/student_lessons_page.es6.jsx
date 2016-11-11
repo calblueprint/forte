@@ -76,21 +76,21 @@ class StudentLessonsPage extends React.Component {
     );
   }
 
+  renderLessonCard(lesson) {
+    return (
+      <LessonCard lesson={lesson} />
+    );
+  }
+
   renderLessonCards(filter) {
     const { upcomingLessons, recentLessons } = this.state;
 
-    if (filter === "upcoming") {
-      return (
-        <LessonCard
-          lessons={upcomingLessons}
-        />
-      );
+    if (filter === "upcoming" && upcomingLessons) {
+      return upcomingLessons.map((lesson) => this.renderLessonCard(lesson));
     } else {
-      return (
-       <LessonCard
-          lessons={recentLessons}
-       />
-      );
+      if (recentLessons) {
+        return recentLessons.map((lesson) => this.renderLessonCard(lesson));
+      }
     }
   }
 

@@ -1,12 +1,13 @@
-class LessonCard extends React.Component{
+class LessonCard extends React.Component {
 
   static get propTypes() {
     return {
-      lessons: React.PropTypes.array,
+      lesson: React.PropTypes.object,
     };
   }
 
-  renderLessonCard(lesson) {
+  render() {
+    const { lesson } = this.props;
     const {
       price,
       start_time,
@@ -44,21 +45,6 @@ class LessonCard extends React.Component{
           <img src={ImageConstants.icons.cancel} href="#" />
           <img src={ImageConstants.icons.modify} href="#" />
         </div>
-      </div>
-    );
-  }
-
-  renderLessonCards(lessons) {
-    if (lessons) {
-      return lessons.map((lesson) => this.renderLessonCard(lesson));
-    }
-  }
-
-  render() {
-    const { lessons } = this.props;
-    return (
-      <div>
-        {this.renderLessonCards(lessons)}
       </div>
     );
   }
