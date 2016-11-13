@@ -14,9 +14,6 @@ class AdminController < ApplicationController
   end
 
   def roster
-    students = Student.all
-    teachers = Teacher.all
-    @people = (students + teachers).sort_by &:first_name
   end
 
   def unmatched

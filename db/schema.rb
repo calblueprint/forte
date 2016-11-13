@@ -31,9 +31,6 @@ ActiveRecord::Schema.define(version: 20161110092134) do
     t.inet     "last_sign_in_ip"
   end
 
-  add_index "admins", ["email"], name: "index_admins_on_email", unique: true, using: :btree
-  add_index "admins", ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true, using: :btree
-
   create_table "instruments", force: :cascade do |t|
     t.string   "name"
     t.integer  "years_played"
@@ -73,6 +70,16 @@ ActiveRecord::Schema.define(version: 20161110092134) do
 
   add_index "matchings", ["student_id"], name: "index_matchings_on_student_id", using: :btree
   add_index "matchings", ["teacher_id"], name: "index_matchings_on_teacher_id", using: :btree
+
+  create_table "pg_search_documents", force: :cascade do |t|
+    t.text     "content"
+    t.integer  "searchable_id"
+    t.string   "searchable_type"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "pg_search_documents", ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable_type_and_searchable_id", using: :btree
 
   create_table "students", force: :cascade do |t|
     t.string   "city"

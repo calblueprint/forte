@@ -43,6 +43,8 @@ Rails.application.routes.draw do
   }
 
   namespace :api do
+    get '/searchables/users/:prefix', to: 'searchables#users'
+    get '/searchables/roster', to: 'searchables#roster'
     get '/students/recent_lessons/:id', to: 'students#recent_lessons'
     get '/students/upcoming_lessons/:id', to: 'students#upcoming_lessons'
     get '/students/unmatched', to: 'students#unmatched'

@@ -23,6 +23,13 @@
       };
     }
 
+    get searchables() {
+      return {
+        users: (prefix) => `/api/searchables/users/${prefix}`,
+        roster: '/api/searchables/roster',
+      }
+    }
+
     get lessons() {
       return {
         create: '/api/lessons',
