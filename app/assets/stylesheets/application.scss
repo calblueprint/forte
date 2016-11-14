@@ -1,10 +1,10 @@
+@import "partials/_variables";
+@import "partials/_layouts";
+@import "partials/_mixins";
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "react-datetime";
 @import "fullcalendar";
-@import "partials/_variables";
-@import "partials/_layouts";
-@import "partials/_mixins";
 @import "general";
 @import "transitions";
 @import "components/*";

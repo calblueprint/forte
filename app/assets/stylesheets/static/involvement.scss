@@ -4,6 +4,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+  padding: 20px;
 
   .content-container {
     display: flex;
@@ -18,8 +19,9 @@
   .options-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;  
+    justify-content: center;  
     align-items: center;
+    flex-wrap: wrap;
     margin-top: 20px;
   }
 
@@ -28,6 +30,7 @@
     flex-direction: column;
     height: 400px;
     width: 250px;
+    margin: 20px;
   }
 
   .middle {

@@ -29,14 +29,21 @@
     font-weight: 200;
     font-size: $font-size-l;
     margin-top: 50px;
+    text-align: center;
+    padding: 0px 20px;
   }
 
   .button-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    flex-wrap: wrap;
     width: 100%;
     max-width: 500px;
     margin-top: 50px;
+
+    * {
+      margin: 10px 20px;
+    }
   }
 
   .instruments-wrapper {
