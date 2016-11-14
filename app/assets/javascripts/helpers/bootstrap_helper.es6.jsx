@@ -15,3 +15,6 @@ var FormControl = ReactBootstrap.FormControl;
 var ControlLabel = ReactBootstrap.ControlLabel;
 var Checkbox = ReactBootstrap.Checkbox;
 var Radio = ReactBootstrap.Radio;
+
+/* Modal Related */ 
+var Modal = ReactBootstrap.Modal;

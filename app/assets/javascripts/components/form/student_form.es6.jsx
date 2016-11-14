@@ -37,6 +37,7 @@ class StudentForm extends React.Component {
       waiver_date: null,
       activeInstruments: [],
       instruments: {},
+      showWaiverModal: false,
     }
   }
 
@@ -87,6 +88,15 @@ class StudentForm extends React.Component {
     }
   }
 
+  handleInstrumentFieldChange(event, instrument) {
+    const name = $(event.target).attr("name");
+    var value = $(event.target).val();
+    value = parseInt(value);
+    this.setState({
+      instruments: update(this.state.instruments, {[instrument]: {[name]: {$set: value}}}),
+    });
+  }
+
   handleInstrumentClick(event) {
     const { instruments, activeInstruments } = this.state;
     const instrument = event.target.textContent;
@@ -96,13 +106,12 @@ class StudentForm extends React.Component {
     });
   }
 
-  handleInstrumentFieldChange(event, instrument) {
-    const name = $(event.target).attr("name");
-    var value = $(event.target).val();
-    value = parseInt(value);
-    this.setState({
-      instruments: update(this.state.instruments, {[instrument]: {[name]: {$set: value}}}),
-    });
+  openWaiver() {
+    this.setState({ showWaiverModal: true });
+  }
+
+  closeWaiver() {
+    this.setState({ showWaiverModal: false });
   }
 
   setAvailability(callback) {
@@ -253,6 +262,15 @@ class StudentForm extends React.Component {
       }
     }
     return instrumentsFields;
+  }
+
+  renderWaiverModal() {
+    const { showWaiverModal } = this.state;
+    if (showWaiverModal == true) {
+      return (
+        <WaiverModal handleClose={() => this.closeWaiver()} />
+      );
+    }
   }
 
   render () {
@@ -582,6 +600,9 @@ class StudentForm extends React.Component {
               </FormGroup>
 
               {/*Application Page 5*/}
+              <a onClick={(event) => this.openWaiver(event)}>Click Here for Waiver</a>
+              {this.renderWaiverModal()}
+
               <FormGroup>
                 <ControlLabel>Signature</ControlLabel>
                 <FormControl 
