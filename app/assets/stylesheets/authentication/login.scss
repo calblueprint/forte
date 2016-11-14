@@ -10,8 +10,10 @@
     background-color: $white;
     border-radius: 4px;
     padding: 30px 50px;
-    width: 100%;
-    margin-top: 30%;
+    margin: 0px 10px;
+    margin-top: 10%;
+    width: 90%;
+    max-width: 500px;
   }
 
   .login-card__header {
@@ -20,7 +22,7 @@
   }
 
   .login-card__field {
-    width: 350px;
+    min-width: 250px;
   }
 
   .login-card__button {

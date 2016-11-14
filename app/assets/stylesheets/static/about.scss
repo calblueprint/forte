@@ -2,12 +2,12 @@
 
 .about-page {
 
-  .page-wrapper {
-    background-size: 650px;
-    background-image: url(asset-path('about/about_graphic.png'));
-    background-repeat: no-repeat;
-    background-position: 80% 45%;
-  }
+  // background-size: 650px;
+  // background-image: url(asset-path('about/about_graphic.png'));
+  // background-repeat: no-repeat;
+  // background-position: 80% 45%;
+  padding: 20px;
+  max-width: 800px;
 
   .section {
     margin-top: 30px;
@@ -34,11 +34,10 @@
   }
 
   .section__headshots-container {
-    max-width: 700px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-around;
   }
 
   .section__individual-container {
@@ -46,7 +45,7 @@
     flex-direction: column;
     width: 175px;
     height: auto;
-    margin: 40px 45px 40px 10px;
+    margin: 30px;
   }
 
   .section__image {

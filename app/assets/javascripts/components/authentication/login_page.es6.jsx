@@ -51,29 +51,28 @@ class LoginPage extends React.Component {
     <div className="page-wrapper">
       <Header />
       <div className="content-wrapper login-page">
-        <form>
-          <div className="login-card">
-            <h2 className="login-card__header">{typeText} Login</h2>
-            <FormGroup className="login-card__field">
-              <ControlLabel>Email</ControlLabel>
-              <FormControl
-                componentClass="input"
-                type="text"
-                name="email"
-                onChange={(event) => this.handleChange(event)} />
-            </FormGroup>
-            <FormGroup className="login-card__field">
-              <ControlLabel>Password</ControlLabel>
-              <FormControl
-                componentClass="input"
-                type="password"
-                name="password" 
-                onChange={(event) => this.handleChange(event)} />
-            </FormGroup>
-            <Button className="button button--solid-orange login-card__button" onClick={() => this.login()}>LOG IN</Button> 
-          </div>
+        <form className="login-card">
+          <h2 className="login-card__header">{typeText} Login</h2>
+          <FormGroup className="login-card__field">
+            <ControlLabel>Email</ControlLabel>
+            <FormControl
+              componentClass="input"
+              type="text"
+              name="email"
+              onChange={(event) => this.handleChange(event)} />
+          </FormGroup>
+          <FormGroup className="login-card__field">
+            <ControlLabel>Password</ControlLabel>
+            <FormControl
+              componentClass="input"
+              type="password"
+              name="password" 
+              onChange={(event) => this.handleChange(event)} />
+          </FormGroup>
+          <Button className="button button--solid-orange login-card__button" onClick={() => this.login()}>LOG IN</Button> 
         </form>
       </div>
+      <Footer />
     </div>
     )
   }

@@ -3,6 +3,7 @@
 
     get staticPages() {
       return {
+        home: '/',
         program: '/program',
         involvement: '/involvement',
         contact: '/contact',

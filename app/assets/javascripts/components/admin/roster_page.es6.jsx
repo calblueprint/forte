@@ -41,7 +41,7 @@ class RosterPage extends React.Component {
       this.fetchPeople();
     } else {
       const route = ApiConstants.searchables.users(input);
-      const resolve = (response) => this.setState({people: response.searchables });
+      const resolve = (response) => this.setState({ people: response.searchables });
       const reject = (response) => console.log(response);
       Requester.get(
         route,
