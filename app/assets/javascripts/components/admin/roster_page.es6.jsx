@@ -60,15 +60,20 @@ class RosterPage extends React.Component {
       return (
         <div className="page-wrapper">
           <AdminHeader />
-          <FormGroup>
-            <FormControl 
-              componentClass="input"  
-              placeholder="Search"
-              name="first_name"
-              onChange={(event) => this.onSearchChange(event)}/>
-          </FormGroup>
           <div className="content-wrapper roster-page">
             <h1 className="roster-title">Roster</h1>
+             <FormGroup className="searchbar">
+              <InputGroup>
+                <FormControl 
+                  componentClass="input"  
+                  placeholder="Search"
+                  name="first_name"
+                  onChange={(event) => this.onSearchChange(event)}/>
+                <InputGroup.Addon>
+                  <Glyphicon glyph="search" />
+                </InputGroup.Addon>
+              </InputGroup>
+            </FormGroup>
             <div className="roster-container">
               {this.renderPeople()}
             </div>

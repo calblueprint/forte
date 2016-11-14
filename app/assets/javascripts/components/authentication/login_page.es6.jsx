@@ -2,7 +2,12 @@ class LoginPage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { email: '', password: '' };
+    this.state = { 
+      email: '', 
+      password: '',
+      errors: '',
+      showAlert: false,
+     };
   }
 
   handleChange(event) {
@@ -10,7 +15,7 @@ class LoginPage extends React.Component {
   }
 
   login() {
-    var reject = (response) => console.log(response);
+    var reject = (response) => this.setState({ errors: response.error }); // why is this one just error?
     var paramsObject = {
       email: this.state.email,
       password: this.state.password,
@@ -38,6 +43,17 @@ class LoginPage extends React.Component {
     );
   }
 
+  renderErrors() {
+    const { errors } = this.state;
+    if (errors != '') {
+      return (
+        <Alert bsStyle="danger">
+          {errors}
+        </Alert>
+      )
+    };
+  }
+
   render () {
     if (this.props.type == 'student') {
       var typeText = 'Student';
@@ -48,32 +64,33 @@ class LoginPage extends React.Component {
     }
 
     return (
-    <div className="page-wrapper">
-      <Header />
-      <div className="content-wrapper login-page">
-        <form className="login-card">
-          <h2 className="login-card__header">{typeText} Login</h2>
-          <FormGroup className="login-card__field">
-            <ControlLabel>Email</ControlLabel>
-            <FormControl
-              componentClass="input"
-              type="text"
-              name="email"
-              onChange={(event) => this.handleChange(event)} />
-          </FormGroup>
-          <FormGroup className="login-card__field">
-            <ControlLabel>Password</ControlLabel>
-            <FormControl
-              componentClass="input"
-              type="password"
-              name="password" 
-              onChange={(event) => this.handleChange(event)} />
-          </FormGroup>
-          <Button className="button button--solid-orange login-card__button" onClick={() => this.login()}>LOG IN</Button> 
-        </form>
+      <div className="page-wrapper">
+        <Header />
+        <div className="content-wrapper login-page">
+          <form className="login-card">
+            <h2 className="login-card__header">{typeText} Login</h2>
+            <FormGroup className="login-card__field">
+              {this.renderErrors()}
+              <ControlLabel>Email</ControlLabel>
+              <FormControl
+                componentClass="input"
+                type="text"
+                name="email"
+                onChange={(event) => this.handleChange(event)} />
+            </FormGroup>
+            <FormGroup className="login-card__field">
+              <ControlLabel>Password</ControlLabel>
+              <FormControl
+                componentClass="input"
+                type="password"
+                name="password" 
+                onChange={(event) => this.handleChange(event)} />
+            </FormGroup>
+            <Button className="button button--solid-orange login-card__button" onClick={() => this.login()}>LOG IN</Button> 
+          </form>
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
     )
   }
 }
