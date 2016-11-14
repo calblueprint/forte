@@ -1,3 +1,12 @@
+html,body
+{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden; 
+}
+
 * {
   font-family: $font-family;
 }
@@ -51,4 +60,10 @@ h6 {
 
 p {
   line-height: $font-size-l;
+}
+
+textarea:hover,    
+input:not([type=checkbox]):not([type=radio]) {   
+  outline:0px !important;   
+  @include appearance(none);
 }
