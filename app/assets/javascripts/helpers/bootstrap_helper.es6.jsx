@@ -9,6 +9,9 @@ var MenuItem = ReactBootstrap.MenuItem;
 var Button = ReactBootstrap.Button;
 var ButtonGroup = ReactBootstrap.ButtonGroup;
 
+/* Modal Related */
+var Modal = ReactBootstrap.Modal;
+
 /* Form Related */
 var FormGroup = ReactBootstrap.FormGroup;
 var FormControl = ReactBootstrap.FormControl;

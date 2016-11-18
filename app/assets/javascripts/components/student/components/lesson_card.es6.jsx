@@ -1,9 +1,36 @@
 class LessonCard extends React.Component {
 
+  constructor() {
+    super();
+    this.state = {
+      showCancelModal: false,
+    };
+  }
+
   static get propTypes() {
     return {
       lesson: React.PropTypes.object,
+      handleCancelLesson: React.PropTypes.func.isRequired,
     };
+  }
+  
+  openCancelModal() {
+    this.setState({ showCancelModal: true });
+  }
+
+  closeCancelModal() {
+    this.setState({ showCancelModal: false });
+  }
+
+  renderCancelModal() {
+    const { lesson, handleCancelLesson } = this.props;
+    const { showCancelModal } = this.state;
+
+    if (showCancelModal) {
+      return (
+        <CancelModal lesson={lesson} handleClose={() => this.closeCancelModal()} handleCancelLesson={() => handleCancelLesson()}></CancelModal>
+      );
+    }
   }
 
   render() {
@@ -42,7 +69,8 @@ class LessonCard extends React.Component {
           </div>
         </div>
         <div className="actions">
-          <img src={ImageConstants.icons.cancel} href="#" />
+          <img src={ImageConstants.icons.cancel} onClick={() => this.openCancelModal()}/>
+          {this.renderCancelModal()}
           <img src={ImageConstants.icons.modify} href="#" />
         </div>
       </div>
