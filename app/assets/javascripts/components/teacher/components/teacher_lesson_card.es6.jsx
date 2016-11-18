@@ -1,4 +1,4 @@
-class LessonCard extends React.Component {
+class TeacherLessonCard extends React.Component {
 
   constructor() {
     super();
@@ -13,7 +13,7 @@ class LessonCard extends React.Component {
       handleCancelLesson: React.PropTypes.func.isRequired,
     };
   }
-  
+
   openCancelModal() {
     this.setState({ showCancelModal: true });
   }
@@ -28,7 +28,11 @@ class LessonCard extends React.Component {
 
     if (showCancelModal) {
       return (
-        <CancelModal lesson={lesson} handleClose={() => this.closeCancelModal()} handleCancelLesson={() => handleCancelLesson()}></CancelModal>
+        <TeacherCancelModal
+          lesson={lesson}
+          handleClose={() => this.closeCancelModal()}
+          handleCancelLesson={() => handleCancelLesson()}
+        />
       );
     }
   }
@@ -43,13 +47,13 @@ class LessonCard extends React.Component {
     } = lesson;
 
     return (
-      <div className="lesson-card">
+      <div className="teacher-lesson-card">
         <img className="instrument-icon" src={ImageConstants.instruments.clarinet} href="#" />
         <div className="logistics">
           <h4> Piano Lesson </h4>
           <div className="info-row">
             <img src={ImageConstants.icons.person} href="#" />
-            <h6>{teacher.first_name}</h6>
+            <h6>{student.first_name}</h6>
           </div>
           <div className="info-row">
             <img src={ImageConstants.icons.time} href="#" />

@@ -1,6 +1,15 @@
 Rails.application.routes.draw do
 
+  ##################################################
+  #
+  # Pages
+  #
+  ##################################################
   root "static_pages#home"
+
+  ##################################################
+  # Admin
+  ##################################################
   get 'admin', to: redirect('admin/matched')
   namespace :admin do
     get :matched
@@ -9,16 +18,33 @@ Rails.application.routes.draw do
     get :roster
   end
 
+  ##################################################
+  # Student
+  ##################################################
   get 'student', to: redirect('student/lessons')
   namespace :student do
     get :lessons
   end
 
+  ##################################################
+  # Teacher
+  ##################################################
+  get 'teacher', to: redirect('teacher/lessons')
+  namespace :teacher do
+    get :lessons
+  end
+
+  ##################################################
+  # Form
+  ##################################################
   namespace :form do
     get :student
     get :teacher
   end
 
+  ##################################################
+  # Home
+  ##################################################
   controller :static_pages do
     get :home
     get :involvement
@@ -27,6 +53,11 @@ Rails.application.routes.draw do
     get :about
   end
 
+  ##################################################
+  #
+  # Devise
+  #
+  ##################################################
   devise_for :students, controllers: {
     sessions: 'authentication/students/sessions',
     registrations: 'authentication/students/registrations'
@@ -42,76 +73,49 @@ Rails.application.routes.draw do
     registrations: 'authentication/admins/registrations'
   }
 
+  ##################################################
+  #
+  # API
+  #
+  ##################################################
   namespace :api do
+
+    ##################################################
+    # Instruments
+    ##################################################
+    resources :instruments, only: [:index, :create, :destroy, :show, :update]
+
+    ##################################################
+    # Lessons
+    ##################################################
+    resources :lessons, only: [:index, :create, :destroy, :show, :update]
+
+    ##################################################
+    # Matchings
+    ##################################################
+    resources :matchings, only: [:index, :create, :destroy, :show, :update]
+
+    ##################################################
+    # Search
+    ##################################################
     get '/searchables/users/:prefix', to: 'searchables#users'
     get '/searchables/roster', to: 'searchables#roster'
+
+    ##################################################
+    # Students
+    ##################################################
+    resources :students, only: [:index, :destroy, :show, :update]
     get '/students/recent_lessons/:id', to: 'students#recent_lessons'
     get '/students/upcoming_lessons/:id', to: 'students#upcoming_lessons'
     get '/students/unmatched', to: 'students#unmatched'
-    get '/teachers/possible_teachers/:id', to: 'teachers#possible_teachers'
-    resources :students, only: [:index, :destroy, :show, :update]
+
+    ##################################################
+    # Teachers
+    ##################################################
     resources :teachers, only: [:index, :destroy, :show, :update]
-    resources :lessons, only: [:index, :create, :destroy, :show, :update]
-    resources :matchings, only: [:index, :create, :destroy, :show, :update]
-    resources :instruments, only: [:index, :create, :destroy, :show, :update]
+    get '/teachers/possible_teachers/:id', to: 'teachers#possible_teachers'
+    get '/teachers/recent_lessons/:id', to: 'teachers#recent_lessons'
+    get '/teachers/upcoming_lessons/:id', to: 'teachers#upcoming_lessons'
+
   end
-
-  # devise_scope :student do
-  #   get "students/login" => "students/sessions#new"
-  #   post "students/login" => "students/sessions#create"
-  # end
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
-
-  # You can have the root of your site routed with "root"
-  # root 'welcome#index'
-
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
-
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
 end

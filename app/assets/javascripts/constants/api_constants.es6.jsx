@@ -19,7 +19,9 @@
         delete: (id) => `/api/teachers/${id}`,
         update: (id) => `/api/teachers/${id}`,
         show: (id) => `/api/teachers/${id}`,
-        possibleTeachers: (id) => `/api/teachers/possible_teachers/${id}`
+        possibleTeachers: (id) => `/api/teachers/possible_teachers/${id}`,
+        upcomingLessons: (id) => `/api/teachers/upcoming_lessons/${id}`,
+        recentLessons: (id) => `/api/teachers/recent_lessons/${id}`,
       };
     }
 

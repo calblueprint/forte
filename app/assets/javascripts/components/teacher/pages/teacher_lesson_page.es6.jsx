@@ -1,8 +1,8 @@
-class StudentLessonsPage extends React.Component {
+class TeacherLessonsPage extends React.Component {
 
   static get propTypes() {
     return {
-      studentId: React.PropTypes.number.isRequired,
+      teacherId: React.PropTypes.number.isRequired,
     };
   }
 
@@ -21,8 +21,8 @@ class StudentLessonsPage extends React.Component {
   }
 
   fetchUpcomingLessons() {
-    const { studentId } = this.props;
-    const route = ApiConstants.students.upcomingLessons(studentId);
+    const { teacherId } = this.props;
+    const route = ApiConstants.teachers.upcomingLessons(teacherId);
     const resolve = (response) => this.setState({ upcomingLessons: response.lessons });
     const reject = (response) => console.log(response);
     Requester.get(
@@ -33,8 +33,8 @@ class StudentLessonsPage extends React.Component {
   }
 
   fetchRecentLessons() {
-    const { studentId } = this.props;
-    const route = ApiConstants.students.recentLessons(studentId);
+    const { teacherId } = this.props;
+    const route = ApiConstants.teachers.recentLessons(teacherId);
     const resolve = (response) => this.setState({ recentLessons: response.lessons });
     const reject = (response) => console.log(response);
     Requester.get(
@@ -78,7 +78,7 @@ class StudentLessonsPage extends React.Component {
 
   renderLessonCard(lesson) {
     return (
-      <StudentLessonCard handleCancelLesson={() => this.fetchUpcomingLessons()} lesson={lesson} />
+      <TeacherLessonCard handleCancelLesson={() => this.fetchUpcomingLessons()} lesson={lesson} />
     );
   }
 
@@ -99,7 +99,7 @@ class StudentLessonsPage extends React.Component {
     return (
      <div className="page-wrapper">
       <UserHeader />
-      <div className="student-lessons-page content-wrapper">
+      <div className="teacher-lessons-page content-wrapper">
         <h2 className="title">
           My Lessons
         </h2>

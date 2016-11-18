@@ -4,6 +4,7 @@ ruby '2.2.5'
 
 # Rails
 gem 'rails', '4.2.4'
+gem 'byebug'
 
 # Core
 gem 'cancancan', '1.15.0'

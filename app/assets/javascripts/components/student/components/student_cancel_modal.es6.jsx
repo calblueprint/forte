@@ -1,4 +1,4 @@
-class CancelModal extends React.Component {
+class StudentCancelModal extends React.Component {
 
   constructor() {
     super();
