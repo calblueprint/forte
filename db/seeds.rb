@@ -39,7 +39,7 @@ def create_unmatched_teachers
   end
 end
 
-def create_single_student(is_searching, n)
+def create_single_student(n)
   student = Student.create(
     availability: [n, n+1, n+2, n+4, n+5, n+6, n+7, n+8, n+9, n+10],
     city: Faker::Address.city,
@@ -54,7 +54,7 @@ end
 def create_unmatched_students
   puts  "Creating unmatched students"
   10.times do |n|
-    student = create_single_student(true, n)
+    student = create_single_student(n)
     student.instruments.build(
       name: $instruments_array[n%3],
       years_played: n % 6,
@@ -102,7 +102,7 @@ def create_lessons_and_matchings_with_matched_teachers_and_students
       is_primary: true,
     ).save
 
-    student = create_single_student(false, n)
+    student = create_single_student(n)
     student.instruments.build(
       name: instrument_name,
       years_played: n % 6,
@@ -116,6 +116,22 @@ def create_lessons_and_matchings_with_matched_teachers_and_students
     7.times do |offset|
       create_single_lesson(teacher, student, upcoming=true, offset)
       create_single_lesson(teacher, student, upcoming=false, offset)
+    end
+  end
+end
+
+def create_multiple_student_lessons_and_matchings_for_teachers
+  matched_teachers = Teacher.where(is_searching: false)
+  matched_students = Student.limit(10)
+  instrument_name = $instruments_array[0] # Instrument doesn't matter for now
+
+  # Create a matching between every student and teacher
+
+  matched_students.each do |student|
+    matched_teachers.each do |teacher|
+      create_single_matching(teacher, student, instrument_name)
+      create_single_lesson(teacher, student, upcoming=true, offset=1) # Arbitrary offset
+      create_single_lesson(teacher, student, upcoming=false, offset=1)
     end
   end
 end
@@ -141,4 +157,5 @@ end
 
 if Lesson.count == 0 && Matching.count == 0
   create_lessons_and_matchings_with_matched_teachers_and_students
+  create_multiple_student_lessons_and_matchings_for_teachers
 end
