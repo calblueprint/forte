@@ -21,7 +21,7 @@
   .title-text {
     color: $white;
     text-align: center;
-    font-weight: 200;
+    font-weight: 300;
     font-size: 62px;
   }
 
@@ -71,6 +71,7 @@
   .instrument__description {
     position: absolute;
     margin: 0;
+    left: 0;
     bottom: 0;
     display: flex;
     justify-content: center;
