@@ -41,13 +41,38 @@ end
 
 def create_single_student(n)
   student = Student.create(
-    availability: [n, n+1, n+2, n+4, n+5, n+6, n+7, n+8, n+9, n+10],
     city: Faker::Address.city,
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.first_name,
     email: Faker::Internet.email,
     password: "password",
-  )
+    availability: [n, n+1, n+2, n+4, n+5, n+6, n+7, n+8, n+9, n+10],
+    gender: Faker::Number.between(0, 2),
+    birthday: Faker::Date.between(15.years.ago, 5.years.ago),
+    school: "#{Faker::Name.first_name} Middle School",
+    school_level: Faker::Number.between(0, 12),
+    guardian_first_name: Faker::Name.first_name,
+    guardian_last_name: Faker::Name.last_name,
+    guardian_phone: Faker::Base.numerify('###-###-####'),
+    introduction: Faker::Lorem.paragraph(4),
+    lesson_experience: Faker::Lorem.paragraph(4),
+    performance_experience: Faker::Lorem.paragraph(4),
+    student_email: Faker::Internet.email,
+    student_phone: Faker::Base.numerify('###-###-####'),
+    address: Faker::Address.street_address,
+    address_apt: Faker::Number.between(0, 12), #change
+    state: Faker::Number.between(0, 49),
+    zipcode: Faker::Address.zip_code,
+    location_preference: Faker::Boolean,
+    travel_distance: Faker::Number.between(0, 4),
+    income_range: Faker::Number.between(0, 4),
+    household_number: Faker::Number.between(0, 10),
+    disciplinary_action: Faker::Boolean,
+    criminal_charges: Faker::Boolean,
+    criminal_explanation: Faker::Lorem.paragraph(4),
+    waiver_signature: Faker::Name.first_name,
+    waiver_date: Faker::Date.between(2.days.ago, Date.today),
+  ) 
   student
 end
 
