@@ -22,10 +22,10 @@ class Lesson < ActiveRecord::Base
   validates :start_time, presence: true, date: true
   validates :end_time, presence: true, date: { after: :start_time }
   validates :is_paid, :inclusion => { :in => [true, false] }
-  validates :student_id, presence: true
-  validates :teacher_id, presence: true
+  validates :matching_id, presence: true
 
-  belongs_to :student
-  belongs_to :teacher
+  has_one :student, through: :matchings
+  has_one :teacher, through: :matchings
+  belongs_to :matchings
 
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161110092134) do
+ActiveRecord::Schema.define(version: 20161120214830) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,19 +48,17 @@ ActiveRecord::Schema.define(version: 20161110092134) do
   add_index "instruments", ["instrumentable_type", "instrumentable_id"], name: "index_instruments_on_instrumentable_type_and_instrumentable_id", using: :btree
 
   create_table "lessons", force: :cascade do |t|
-    t.boolean  "is_paid",    default: false, null: false
+    t.boolean  "is_paid",     default: false, null: false
     t.text     "feedback"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.integer  "student_id"
-    t.integer  "teacher_id"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.datetime "start_time"
     t.datetime "end_time"
     t.decimal  "price"
+    t.integer  "matching_id"
   end
 
-  add_index "lessons", ["student_id"], name: "index_lessons_on_student_id", using: :btree
-  add_index "lessons", ["teacher_id"], name: "index_lessons_on_teacher_id", using: :btree
+  add_index "lessons", ["matching_id"], name: "index_lessons_on_matching_id", using: :btree
 
   create_table "matchings", force: :cascade do |t|
     t.string   "instrument",               null: false
@@ -154,8 +152,7 @@ ActiveRecord::Schema.define(version: 20161110092134) do
   add_index "teachers", ["email"], name: "index_teachers_on_email", unique: true, using: :btree
   add_index "teachers", ["reset_password_token"], name: "index_teachers_on_reset_password_token", unique: true, using: :btree
 
-  add_foreign_key "lessons", "students"
-  add_foreign_key "lessons", "teachers"
+  add_foreign_key "lessons", "matchings"
   add_foreign_key "matchings", "students"
   add_foreign_key "matchings", "teachers"
 end

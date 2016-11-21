@@ -19,6 +19,7 @@ class Matching < ActiveRecord::Base
   validates :teacher_id, presence: true
   validate :valid_lesson_array
 
+  has_many :lessons
   belongs_to :student, :inverse_of => :matchings
   belongs_to :teacher, :inverse_of => :matchings
 

@@ -74,18 +74,17 @@ def create_single_matching(teacher, student, instrument_name)
   matching
 end
 
-def create_single_lesson(teacher, student, upcoming=true, month_offset)
+def create_single_lesson(matching, upcoming=true, month_offset)
   start_time = upcoming ?
-      (Date.today + (15 * student.availability[0].to_i).minutes) :
-      (Date.today.months_ago(month_offset) + (15 * student.availability[0].to_i).minutes)
+      (Date.today + (15 * matching.student.availability[0].to_i).minutes) :
+      (Date.today.months_ago(month_offset) + (15 * matching.student.availability[0].to_i).minutes)
   lesson = Lesson.create(
     start_time: start_time,
     end_time: start_time + 45.minutes,
     price: 15.0,
     is_paid: true,
     feedback: Faker::Lorem.paragraph,
-    student_id: student.id,
-    teacher_id: teacher.id,
+    matching_id: matching.id,
   )
   lesson.save
 end
@@ -111,11 +110,11 @@ def create_lessons_and_matchings_with_matched_teachers_and_students
     ).save
     puts student.email
 
-    create_single_matching(teacher, student, instrument_name)
+    matching = create_single_matching(teacher, student, instrument_name)
 
     7.times do |offset|
-      create_single_lesson(teacher, student, upcoming=true, offset)
-      create_single_lesson(teacher, student, upcoming=false, offset)
+      create_single_lesson(matching, upcoming=true, offset)
+      create_single_lesson(matching, upcoming=false, offset)
     end
   end
 end
