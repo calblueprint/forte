@@ -61,7 +61,6 @@ class Student < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true
   validates :availability, presence: true
   validates :password, presence: true
-  validates :availability, presence: true
   validates :gender, presence: true
   validates :birthday, presence: true
   validates :school, presence: true
@@ -72,8 +71,6 @@ class Student < ActiveRecord::Base
   validates :introduction, presence: true
   validates :lesson_experience, presence: true
   validates :performance_experience, presence: true
-  validates :student_email, presence: true
-  validates :student_phone, presence: true
   validates :address, presence: true
   validates :state, presence: true
   validates :zipcode, presence: true
@@ -90,8 +87,10 @@ class Student < ActiveRecord::Base
   has_many :matchings
   has_many :lessons, through: :matchings 
   has_many :teachers, through: :matchings
-  has_many :instruments, as: :instrumentable
+  has_many :instruments, as: :instrumentable, dependent: :destroy
 
+  accepts_nested_attributes_for :instruments
+  
   # If any of the enums here change, make sure to change constants.es6.jsx file
   # too
   enum school_level: [ :kindergarten, :'1st grade', :'2nd grade', :'3rd grade',

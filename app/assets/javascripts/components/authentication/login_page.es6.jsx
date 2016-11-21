@@ -23,16 +23,16 @@ class LoginPage extends React.Component {
     };
     if (this.props.type == 'student') {
       var params = { student: paramsObject };
-      var route = RouteConstants.authentication.login.student;
+      var route = ApiConstants.authentication.login.student;
       var resolve = (response) => { window.location.href = "/student/lessons";
     };
     } else if (this.props.type == 'teacher') {
       var params = { teacher: paramsObject };
-      var route = RouteConstants.authentication.login.teacher;
+      var route = ApiConstants.authentication.login.teacher;
       var resolve = (response) => { window.location.href = "/"; };
     } else if (this.props.type == 'admin') {
       var params = { admin: paramsObject };
-      var route = RouteConstants.authentication.login.admin;
+      var route = ApiConstants.authentication.login.admin;
       var resolve = (response) => { window.location.href = "/admin/matched"; };
     }
     Requester.post(
