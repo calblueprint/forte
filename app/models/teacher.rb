@@ -40,7 +40,7 @@ class Teacher < ActiveRecord::Base
   validates :availability, presence: true
 
   has_many :matchings
-  has_many :lessons
+  has_many :lessons, through: :matchings
   has_many :students, through: :matchings
   has_many :instruments, as: :instrumentable
 

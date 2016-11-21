@@ -134,9 +134,7 @@ def create_lessons_and_matchings_with_matched_teachers_and_students
       is_primary: true,
     ).save
     puts student.email
-
     matching = create_single_matching(teacher, student, instrument_name)
-
     7.times do |offset|
       create_single_lesson(matching, upcoming=true, offset)
       create_single_lesson(matching, upcoming=false, offset)
