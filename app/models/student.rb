@@ -55,39 +55,39 @@ class Student < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  validates :city, presence: true
-  validates :first_name, presence: true
-  validates :last_name, presence: true
-  validates :email, presence: true, uniqueness: true
-  validates :availability, presence: true
-  validates :password, presence: true
-  validates :availability, presence: true
-  validates :gender, presence: true
-  validates :birthday, presence: true
-  validates :school, presence: true
-  validates :school_level, presence: true
-  validates :guardian_first_name, presence: true
-  validates :guardian_last_name, presence: true
-  validates :guardian_phone, presence: true 
-  validates :introduction, presence: true
-  validates :lesson_experience, presence: true
-  validates :performance_experience, presence: true
-  validates :student_email, presence: true
-  validates :student_phone, presence: true
-  validates :address, presence: true
-  validates :state, presence: true
-  validates :zipcode, presence: true
-  validates :location_preference, presence: true
-  validates :travel_distance, presence: true
-  validates :income_range, presence: true
-  validates :household_number, presence: true
-  validates :disciplinary_action, presence: true
-  validates :criminal_charges, presence: true
-  validates :criminal_explanation, presence: true
-  validates :waiver_signature, presence: true
-  validates :waiver_date, presence: true
+  # validates :city, presence: true
+  # validates :first_name, presence: true
+  # validates :last_name, presence: true
+  # validates :email, presence: true, uniqueness: true
+  # validates :availability, presence: true
+  # validates :password, presence: true
+  # validates :availability, presence: true
+  # validates :gender, presence: true
+  # validates :birthday, presence: true
+  # validates :school, presence: true
+  # validates :school_level, presence: true
+  # validates :guardian_first_name, presence: true
+  # validates :guardian_last_name, presence: true
+  # validates :guardian_phone, presence: true 
+  # validates :introduction, presence: true
+  # validates :lesson_experience, presence: true
+  # validates :performance_experience, presence: true
+  # validates :student_email, presence: true
+  # validates :student_phone, presence: true
+  # validates :address, presence: true
+  # validates :state, presence: true
+  # validates :zipcode, presence: true
+  # validates :location_preference, presence: true
+  # validates :travel_distance, presence: true
+  # validates :income_range, presence: true
+  # validates :household_number, presence: true
+  # validates :disciplinary_action, presence: true
+  # validates :criminal_charges, presence: true
+  # validates :criminal_explanation, presence: true
+  # validates :waiver_signature, presence: true
+  # validates :waiver_date, presence: true
   
-  has_many :lessons
+  has_many :lessons, through: :matchings 
   has_many :matchings
   has_many :teachers, through: :matchings
   has_many :instruments, as: :instrumentable
