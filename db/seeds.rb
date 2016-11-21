@@ -128,9 +128,9 @@ def create_multiple_student_lessons_and_matchings_for_teachers
 
   matched_students.each do |student|
     matched_teachers.each do |teacher|
-      create_single_matching(teacher, student, instrument_name)
-      create_single_lesson(teacher, student, upcoming=true, offset=1) # Arbitrary offset
-      create_single_lesson(teacher, student, upcoming=false, offset=1)
+      matching = create_single_matching(teacher, student, instrument_name)
+      create_single_lesson(matching, upcoming=true, offset=1) # Arbitrary offset
+      create_single_lesson(matching, upcoming=false, offset=1)
     end
   end
 end
