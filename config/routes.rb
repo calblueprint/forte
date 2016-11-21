@@ -50,6 +50,7 @@ Rails.application.routes.draw do
     get :involvement
     get :program
     get :contact
+    post :send_email
     get :about
   end
 
