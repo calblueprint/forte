@@ -5,9 +5,9 @@ class UserHeader extends React.Component {
     var resolve = (response) => window.location = "/";
     var reject = (response) => console.log(response);
     if (signed_in_type == 'student') {
-      var route = RouteConstants.authentication.logout.student;
+      var route = ApiConstants.authentication.logout.student;
     } else if (signed_in_type == 'teacher') {
-      var route = RouteConstants.authentication.logout.teacher;
+      var route = ApiConstants.authentication.logout.teacher;
     }
     Requester.delete(
       route,

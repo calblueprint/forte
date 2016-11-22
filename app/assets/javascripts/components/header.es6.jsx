@@ -5,11 +5,11 @@ class Header extends React.Component {
     var resolve = (response) => window.location = "/";
     var reject = (response) => console.log(response);
     if (signed_in_type == 'student') {
-      var route = RouteConstants.authentication.logout.student;
+      var route = ApiConstants.authentication.logout.student;
     } else if (signed_in_type == 'teacher') {
-      var route = RouteConstants.authentication.logout.teacher;
+      var route = ApiConstants.authentication.logout.teacher;
     } else if (signed_in_type == 'admin') {
-      var route = RouteConstants.authentication.logout.admin;
+      var route = ApiConstants.authentication.logout.admin;
     }
     Requester.delete(
       route,
@@ -27,10 +27,10 @@ class Header extends React.Component {
     } else {
       return (
         <NavDropdown title="LOG IN">
-          <MenuItem href={RouteConstants.authentication.login.student} eventKey={3.1}>Student</MenuItem>
-          <MenuItem href={RouteConstants.authentication.login.teacher}>Teacher</MenuItem>
+          <MenuItem href={ApiConstants.authentication.login.student} eventKey={3.1}>Student</MenuItem>
+          <MenuItem href={ApiConstants.authentication.login.teacher}>Teacher</MenuItem>
           <MenuItem divider />
-          <MenuItem href={RouteConstants.authentication.login.admin}>Admin</MenuItem>
+          <MenuItem href={ApiConstants.authentication.login.admin}>Admin</MenuItem>
         </NavDropdown>
       );
     }

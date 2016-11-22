@@ -1,6 +1,27 @@
 (() => {
   class ApiConstants {
 
+    get authentication() {
+      return {
+        login:
+        {
+          student: '/students/sign_in',
+          teacher: '/teachers/sign_in',
+          admin: '/admins/sign_in',
+        },
+        logout:
+        {
+          student: '/students/sign_out',
+          teacher: '/teachers/sign_out',
+          admin: '/admins/sign_out',
+        },
+        signup:
+        {
+          student: '/students',
+        }
+      }
+    }
+
     get students() {
       return {
         index: '/api/students',

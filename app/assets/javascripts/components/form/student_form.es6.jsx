@@ -35,8 +35,9 @@ class StudentForm extends React.Component {
       criminal_explanation: null,
       waiver_signature: null,
       waiver_date: null,
-      activeInstruments: [],
+      activeInstruments: {},
       instruments: {},
+      instruments_attributes: [],
       showWaiverModal: false,
     }
   }
@@ -55,6 +56,7 @@ class StudentForm extends React.Component {
       instruments[INSTRUMENTS[i]] = {
         proficiency: null,
         years_played: null,
+        is_primary: false,
       };
     }
     this.setState({ instruments: instruments });
@@ -125,15 +127,25 @@ class StudentForm extends React.Component {
     this.setState({ availability: availabilityArray }, callback)
   }
 
-  submitForm() {
-    this.setAvailability(this.sendRequest);
+  setInstruments() {
+    const { instruments, activeInstruments } = this.state;
+    var instrumentsObj = [];
+    for (let [instrumentName, active] of Object.entries(activeInstruments)) {  
+      if (active == true) {
+        var instrument = Object.assign({}, {name: instrumentName}, instruments[instrumentName]);
+        instrumentsObj.push(instrument);
+      } 
+    }
+    this.setState({ instruments_attributes: instrumentsObj }, this.createStudent);
   }
 
-  sendRequest() {
-    var reject = (response) => console.log(response);
-    var resolve = (response) => {
-      window.location.href = "/";
-    };
+  submitForm() {
+    this.setAvailability(this.setInstruments);
+  }
+
+  createStudent() {
+    var reject = (response) => { console.log(response) };
+    var resolve = (response) => { window.location = "/" };
     var params = {
       student: {
         email: this.state.email,
@@ -168,10 +180,11 @@ class StudentForm extends React.Component {
         criminal_explanation: this.state.criminal_explanation,
         waiver_signature: this.state.waiver_signature,
         waiver_date: this.state.waiver_date,
-      }
+        instruments_attributes: this.state.instruments_attributes,
+      }, 
     };
     Requester.post(
-      RouteConstants.authentication.signup.student,
+      ApiConstants.authentication.signup.student,
       params,
       resolve,
       reject
