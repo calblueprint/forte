@@ -1,13 +1,13 @@
 class StudentForm extends React.Component {
-  
+
   constructor() {
     super();
     this.state = {
       email: null,
       password: null,
       password_confirmation: null,
-      first_name: null, 
-      last_name: null, 
+      first_name: null,
+      last_name: null,
       city: null,
       gender: null,
       birthday: null,
@@ -48,7 +48,7 @@ class StudentForm extends React.Component {
       activeInstruments[INSTRUMENTS[i]] = false;
     }
     this.setState({ activeInstruments: activeInstruments });
-    
+
     // set up instruments fields object
     var instruments = {}
     for (var i = 0; i < INSTRUMENTS.length; i++) {
@@ -177,7 +177,7 @@ class StudentForm extends React.Component {
       reject
     );
   }
-  
+
   renderOptions(type) {
     var optionsArray = []
     var retOptions = []
@@ -229,9 +229,9 @@ class StudentForm extends React.Component {
         <div className="form-row">
           <FormGroup>
             <ControlLabel>Proficiency</ControlLabel>
-            <FormControl 
-              componentClass="select" 
-              name="proficiency" 
+            <FormControl
+              componentClass="select"
+              name="proficiency"
               onChange={(event) => this.handleInstrumentFieldChange(event, instrument)}>
               <option value="" disabled selected>Select a value</option>
               {this.renderOptions('proficiency')}
@@ -240,16 +240,16 @@ class StudentForm extends React.Component {
 
           <FormGroup>
             <ControlLabel>Years Played</ControlLabel>
-            <FormControl 
-              componentClass="select" 
-              name="years_played" 
+            <FormControl
+              componentClass="select"
+              name="years_played"
               onChange={(event) => this.handleInstrumentFieldChange(event, instrument)}>
               <option value="" disabled selected>Select a value</option>
                 {this.renderOptions('years_played')}
             </FormControl>
           </FormGroup>
         </div>
-      </div>     
+      </div>
     );
   }
 
@@ -280,13 +280,13 @@ class StudentForm extends React.Component {
           <div className="content-wrapper form-page">
             <h1>Student Application</h1>
             <div className="form-container">
-              <form>
+              <form action="">
               {/*Application Page 1*/}
               <div className="form-row">
                 <FormGroup>
                   <ControlLabel>First Name</ControlLabel>
-                  <FormControl 
-                    componentClass="input"  
+                  <FormControl
+                    componentClass="input"
                     placeholder="Enter first name"
                     name="first_name"
                     onChange={(event) => this.handleChange(event)}/>
@@ -294,8 +294,8 @@ class StudentForm extends React.Component {
 
                 <FormGroup>
                   <ControlLabel>Last Name</ControlLabel>
-                  <FormControl 
-                    componentClass="input" 
+                  <FormControl
+                    componentClass="input"
                     placeholder="Enter last name"
                     name="last_name"
                     onChange={(event) => this.handleChange(event)}/>
@@ -303,9 +303,9 @@ class StudentForm extends React.Component {
               </div>
               <FormGroup>
                 <ControlLabel>Gender</ControlLabel>
-                <FormControl 
-                  componentClass="select" 
-                  name="gender" 
+                <FormControl
+                  componentClass="select"
+                  name="gender"
                   onChange={(event) => this.handleIntegerChange(event)}>
                   <option value="" disabled selected>Select your gender</option>
                   {this.renderOptions('gender')}
@@ -314,7 +314,7 @@ class StudentForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Birthday</ControlLabel>
-                <Datetime 
+                <Datetime
                   dateFormat="MM/DD/YYYY"
                   timeFormat={false}
                   inputProps={{placeholder: "MM/DD/YYYY"}}
@@ -323,8 +323,8 @@ class StudentForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>School Name</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
+                <FormControl
+                  componentClass="input"
                   placeholder="School"
                   name="school"
                   onChange={(event) => this.handleChange(event)}/>
@@ -332,9 +332,9 @@ class StudentForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Class Level</ControlLabel>
-                <FormControl 
+                <FormControl
                   componentClass="select"
-                  name="school_level" 
+                  name="school_level"
                   onChange={(event) => this.handleIntegerChange(event)}>
                   <option value="" disabled selected>Select your class level</option>
                   {this.renderOptions('school_level')}
@@ -344,8 +344,8 @@ class StudentForm extends React.Component {
               <div className="form-row">
                 <FormGroup>
                   <ControlLabel>Parent/Guardian First Name</ControlLabel>
-                  <FormControl 
-                    componentClass="input" 
+                  <FormControl
+                    componentClass="input"
                     placeholder="Enter first name"
                     name="guardian_first_name"
                     onChange={(event) => this.handleChange(event)}/>
@@ -353,18 +353,18 @@ class StudentForm extends React.Component {
 
                 <FormGroup>
                   <ControlLabel>Parent/Guardian Last Name</ControlLabel>
-                  <FormControl 
-                    componentClass="input" 
+                  <FormControl
+                    componentClass="input"
                     placeholder="Enter last name"
                     name="guardian_last_name"
                     onChange={(event) => this.handleChange(event)}/>
                 </FormGroup>
               </div>
-              
+
               <FormGroup>
                 <ControlLabel>Parent/Guardian Phone</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
+                <FormControl
+                  componentClass="input"
                   placeholder="Enter phone number"
                   name="guardian_phone"
                   onChange={(event) => this.handleChange(event)}/>
@@ -372,18 +372,18 @@ class StudentForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Parent/Guardian Email</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
-                  placeholder="Email Address" 
+                <FormControl
+                  componentClass="input"
+                  placeholder="Email Address"
                   name="email"
                   onChange={(event) => this.handleChange(event)}/>
-              </FormGroup> 
+              </FormGroup>
 
               <div className="form-row">
                 <FormGroup>
                   <ControlLabel>Password</ControlLabel>
-                  <FormControl 
-                    componentClass="input" 
+                  <FormControl
+                    componentClass="input"
                     type="password"
                     placeholder="Password"
                     name="password"
@@ -392,8 +392,8 @@ class StudentForm extends React.Component {
 
                 <FormGroup>
                   <ControlLabel>Password Confirmation</ControlLabel>
-                  <FormControl 
-                    componentClass="input" 
+                  <FormControl
+                    componentClass="input"
                     type="password"
                     placeholder="Password"
                     name="password_confirmation"
@@ -415,7 +415,7 @@ class StudentForm extends React.Component {
               </CSSTransitionGroup>
               <FormGroup>
                 <ControlLabel>Let us know a little bit about yourself!</ControlLabel>
-                <FormControl 
+                <FormControl
                   componentClass="input"
                   componentClass="textarea"
                   placeholder="Enter text"
@@ -425,7 +425,7 @@ class StudentForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>What kind of experience do you have learning music?</ControlLabel>
-                <FormControl 
+                <FormControl
                   componentClass="input"
                   componentClass="textarea"
                   placeholder="Enter text"
@@ -435,7 +435,7 @@ class StudentForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>What kind of experience do you have performing?</ControlLabel>
-                <FormControl 
+                <FormControl
                   componentClass="input"
                   componentClass="textarea"
                   placeholder="Enter text"
@@ -446,8 +446,8 @@ class StudentForm extends React.Component {
               {/*Application Page 3*/}
               <FormGroup>
                 <ControlLabel>Student Email (optional)</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
+                <FormControl
+                  componentClass="input"
                   placeholder="Enter Email"
                   name="student_email"
                   onChange={(event) => this.handleChange(event)}/>
@@ -455,8 +455,8 @@ class StudentForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Student Phone (optional)</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
+                <FormControl
+                  componentClass="input"
                   placeholder="Enter Phone Number"
                   name="student_phone"
                   onChange={(event) => this.handleChange(event)}/>
@@ -464,8 +464,8 @@ class StudentForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Address</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
+                <FormControl
+                  componentClass="input"
                   placeholder="Address"
                   name="address"
                   onChange={(event) => this.handleChange(event)}/>
@@ -473,8 +473,8 @@ class StudentForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Apt # (optional)</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
+                <FormControl
+                  componentClass="input"
                   placeholder="Apt #"
                   name="address_apt"
                   onChange={(event) => this.handleChange(event)}/>
@@ -482,8 +482,8 @@ class StudentForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>City</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
+                <FormControl
+                  componentClass="input"
                   placeholder="City"
                   name="city"
                   onChange={(event) => this.handleChange(event)}/>
@@ -491,9 +491,9 @@ class StudentForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>State</ControlLabel>
-                <FormControl 
-                  componentClass="select" 
-                  name="state" 
+                <FormControl
+                  componentClass="select"
+                  name="state"
                   onChange={(event) => this.handleIntegerChange(event)}>
                   <option value="" disabled selected>Select your state</option>
                   {this.renderOptions('state')}
@@ -502,8 +502,8 @@ class StudentForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Zip Code</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
+                <FormControl
+                  componentClass="input"
                   placeholder="Zip Code"
                   name="zipcode"
                   onChange={(event) => this.handleChange(event)}/>
@@ -511,8 +511,8 @@ class StudentForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Location Preference</ControlLabel>
-                  <Checkbox 
-                    name="location_preference" 
+                  <Checkbox
+                    name="location_preference"
                     onChange={(event) => this.handleBooleanChange(event)}>
                     I am willing to host lessons at my home ($20/lesson).
                   </Checkbox>
@@ -520,9 +520,9 @@ class StudentForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Distance Willing to Travel</ControlLabel>
-                <FormControl 
-                  componentClass="select" 
-                  name="travel_distance" 
+                <FormControl
+                  componentClass="select"
+                  name="travel_distance"
                   onChange={(event) => this.handleIntegerChange(event)}>
                   <option value="" disabled selected>Select distance</option>
                   {this.renderOptions('travel_distance')}
@@ -537,9 +537,9 @@ class StudentForm extends React.Component {
               {/*Application Page 4*/}
               <FormGroup>
                 <ControlLabel>Income Estimate</ControlLabel>
-                <FormControl 
-                  componentClass="select" 
-                  name="income_range" 
+                <FormControl
+                  componentClass="select"
+                  name="income_range"
                   onChange={(event) => this.handleIntegerChange(event)}>
                   <option value="" disabled selected>Enter income range</option>
                   {this.renderOptions('income_range')}
@@ -548,7 +548,7 @@ class StudentForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Household Number</ControlLabel>
-                <FormControl 
+                <FormControl
                   componenClass="input"
                   placeholder="Number of members in household"
                   name="household_number"
@@ -556,7 +556,7 @@ class StudentForm extends React.Component {
               </FormGroup>
 
               <FormGroup>
-                <ControlLabel>Has your student ever been subject to 
+                <ControlLabel>Has your student ever been subject to
                 disciplinary action?</ControlLabel>
                 <Radio
                   name="disciplinary_action"
@@ -565,7 +565,7 @@ class StudentForm extends React.Component {
                   Yes
                 </Radio>
                 <Radio
-                  name="disciplinary_action" 
+                  name="disciplinary_action"
                   value={false}
                   onChange={(event) => this.handleBooleanChange(event)}>
                   No
@@ -573,16 +573,16 @@ class StudentForm extends React.Component {
               </FormGroup>
 
               <FormGroup>
-                <ControlLabel>Has your student ever been convicted or plead 
+                <ControlLabel>Has your student ever been convicted or plead
                 guilty to a crime (other than minor traffic offences)?</ControlLabel>
-                <Radio 
-                  name="criminal_charges" 
+                <Radio
+                  name="criminal_charges"
                   value={Boolean("true")}
                   onChange={(event) => this.handleBooleanChange(event)}>
                   Yes
                 </Radio>
-                <Radio 
-                  name="criminal_charges" 
+                <Radio
+                  name="criminal_charges"
                   value={Boolean("false")}
                   onChange={(event) => this.handleBooleanChange(event)}>
                   No
@@ -591,7 +591,7 @@ class StudentForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Explanation of Criminal Charges If Any</ControlLabel>
-                <FormControl 
+                <FormControl
                   componentClass="input"
                   componentClass="textarea"
                   placeholder="Enter text"
@@ -605,8 +605,8 @@ class StudentForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Signature</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
+                <FormControl
+                  componentClass="input"
                   placeholder="Enter name"
                   name="waiver_signature"
                   onChange={(event) => this.handleChange(event)}/>
@@ -614,15 +614,19 @@ class StudentForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Date</ControlLabel>
-                 <Datetime 
+                 <Datetime
                   dateFormat="MM/DD/YYYY"
                   timeFormat={false}
                   inputProps={{placeholder: "MM/DD/YYYY"}}
                   onChange={(moment) => this.handleDatetimeChange(moment, 'waiver_date')}/>
               </FormGroup>
 
-              <Button className="button button--solid-orange login-card__button" 
-              onClick={() => this.submitForm()}>Submit</Button> 
+              <Button
+                className="button button--solid-orange login-card__button"
+                onClick={() => this.submitForm()}
+                type="submit">
+                  Submit
+                </Button>
               <FormControl.Feedback />
             </form>
             </div>

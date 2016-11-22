@@ -4,7 +4,7 @@ class Contact extends React.Component {
       <div className="page-wrapper">
         <Header />
           <div className="contact-page content-wrapper">
-            <form className="contact-form" action="/send_email" method="post">
+            <form className="contact-form" action="/send_contact_email" method="post">
               <p className="questions">Any questions, concerns or suggestions?  We're all ears.</p>
               <input type="text" className="input-field half-width-input" name="first_name" placeholder="First Name"></input>
               <input type="text" className="input-field half-width-input last-name-input" name="last_name" placeholder="Last Name"></input>

@@ -1,4 +1,7 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "fortemailer@gmail.com"
+
   layout 'mailer'
+
+  default from: ENV['smtp_username']
+
 end

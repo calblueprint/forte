@@ -54,9 +54,9 @@ class Student < ActiveRecord::Base
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-  
+
   has_many :matchings
-  has_many :lessons, through: :matchings 
+  has_many :lessons, through: :matchings
   has_many :teachers, through: :matchings
   has_many :instruments, as: :instrumentable
 
@@ -72,9 +72,19 @@ class Student < ActiveRecord::Base
                 :NM, :NY, :NC, :ND, :OH, :OK, :OR, :PA, :RI, :SC,
                 :SD, :TN, :TX, :UT, :VT, :VA, :WA, :WV, :WI, :WY ]
   enum gender: [ :female, :male, :other ]
-  enum travel_distance: [ :'I am not willing to travel', :'Up to 5 miles', 
-                          :'Up to 10 miles', :'Up to 20 miles', 
+  enum travel_distance: [ :'I am not willing to travel', :'Up to 5 miles',
+                          :'Up to 10 miles', :'Up to 20 miles',
                           :'20 miles or more']
   enum income_range: [:'$0 - $10,000', :'$10,001 - $20,000', :'$20,001 - 30,000', :'$30,001 - 40,000', :'$40,001 - $50,000']
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
+  def submit_signup
+    ForteMailer.submit_admin(self).deliver_now
+    ForteMailer.submit_student(self).deliver_now
+    ForteMailer.submit_parent(self).deliver_now
+  end
 
 end

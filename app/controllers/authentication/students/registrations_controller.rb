@@ -10,6 +10,10 @@ before_filter :configure_sign_up_params, only: [:create]
   # POST /resource
   def create
     super
+    if @student.persisted?
+      @student.submit_signup
+    end
+
     cookies[:is_signed_in] = student_signed_in?
     cookies[:signed_in_type] = 'student'
   end
@@ -42,12 +46,12 @@ before_filter :configure_sign_up_params, only: [:create]
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, 
+    devise_parameter_sanitizer.permit(:sign_up,
       keys: [
-        :city, 
+        :city,
         :first_name,
         :last_name,
-        :email, 
+        :email,
         {:availability => []},
         :gender,
         :birthday,
@@ -56,9 +60,9 @@ before_filter :configure_sign_up_params, only: [:create]
         :guardian_first_name,
         :guardian_last_name,
         :guardian_phone,
-        :email, 
+        :email,
         :introduction,
-        :lesson_experience, 
+        :lesson_experience,
         :performance_experience,
         :student_email,
         :student_phone,
@@ -72,7 +76,7 @@ before_filter :configure_sign_up_params, only: [:create]
         :household_number,
         :disciplinary_action,
         :criminal_charges,
-        :criminal_explanation, 
+        :criminal_explanation,
         :waiver_signature,
         :waiver_date
       ]
