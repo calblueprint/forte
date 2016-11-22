@@ -1,5 +1,4 @@
-class StudentForm extends React.Component {
-  
+class StudentForm extends React.Component {  
   constructor() {
     super();
     this.state = {
@@ -344,6 +343,7 @@ class StudentForm extends React.Component {
               </FormGroup>
 
               <FormGroup>
+
                 <ControlLabel>Class Level</ControlLabel>
                 <FormControl 
                   componentClass="select"
@@ -447,6 +447,7 @@ class StudentForm extends React.Component {
               </FormGroup>
 
               <FormGroup>
+
                 <ControlLabel>What kind of experience do you have performing?</ControlLabel>
                 <FormControl 
                   componentClass="input"
@@ -615,7 +616,6 @@ class StudentForm extends React.Component {
               {/*Application Page 5*/}
               <a onClick={(event) => this.openWaiver(event)}>Click Here for Waiver</a>
               {this.renderWaiverModal()}
-
               <FormGroup>
                 <ControlLabel>Signature</ControlLabel>
                 <FormControl 

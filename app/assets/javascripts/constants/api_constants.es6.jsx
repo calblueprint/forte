@@ -18,6 +18,7 @@
         signup:
         {
           student: '/students',
+          teacher: '/teachers',
         }
       }
     }
