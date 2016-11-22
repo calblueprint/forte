@@ -3,8 +3,7 @@ class LessonBaseSerializer < BaseSerializer
              :is_paid,
              :price,
              :feedback,
-             :student_id,
-             :teacher_id,
+             :matching_id,
              :start_time,
              :end_time
 end
