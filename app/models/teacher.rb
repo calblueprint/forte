@@ -42,6 +42,7 @@ class Teacher < ActiveRecord::Base
   has_many :matchings
   has_many :lessons, through: :matchings
   has_many :students, through: :matchings
-  has_many :instruments, as: :instrumentable
+  has_many :instruments, as: :instrumentable, dependent: :destroy
 
+  accepts_nested_attributes_for :instruments
 end

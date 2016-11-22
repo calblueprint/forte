@@ -74,8 +74,9 @@ before_filter :configure_sign_up_params, only: [:create]
         :criminal_charges,
         :criminal_explanation, 
         :waiver_signature,
-        :waiver_date
-      ]
+        :waiver_date,
+        :instruments_attributes => [:id, :name, :years_played, :proficiency, :is_primary]
+      ],
     )
   end
 
