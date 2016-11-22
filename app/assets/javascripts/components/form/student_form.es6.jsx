@@ -129,7 +129,7 @@ class StudentForm extends React.Component {
 
   setInstruments() {
     const { instruments, activeInstruments } = this.state;
-    var instrumentsObj = []
+    var instrumentsObj = [];
     for (let [instrumentName, active] of Object.entries(activeInstruments)) {  
       if (active == true) {
         var instrument = Object.assign({}, {name: instrumentName}, instruments[instrumentName]);
@@ -180,7 +180,7 @@ class StudentForm extends React.Component {
         criminal_explanation: this.state.criminal_explanation,
         waiver_signature: this.state.waiver_signature,
         waiver_date: this.state.waiver_date,
-        instruments_attributes: this.state.instruments_attributes, //make sure only active ones 
+        instruments_attributes: this.state.instruments_attributes,
       }, 
     };
     Requester.post(
