@@ -13,7 +13,6 @@ before_filter :configure_sign_up_params, only: [:create]
     if @student.persisted?
       @student.submit_signup
     end
-
     cookies[:is_signed_in] = student_signed_in?
     cookies[:signed_in_type] = 'student'
   end

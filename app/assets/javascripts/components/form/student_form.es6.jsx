@@ -130,11 +130,11 @@ class StudentForm extends React.Component {
   setInstruments() {
     const { instruments, activeInstruments } = this.state;
     var instrumentsObj = [];
-    for (let [instrumentName, active] of Object.entries(activeInstruments)) {  
+    for (let [instrumentName, active] of Object.entries(activeInstruments)) {
       if (active == true) {
         var instrument = Object.assign({}, {name: instrumentName}, instruments[instrumentName]);
         instrumentsObj.push(instrument);
-      } 
+      }
     }
     this.setState({ instruments_attributes: instrumentsObj }, this.createStudent);
   }
@@ -181,7 +181,7 @@ class StudentForm extends React.Component {
         waiver_signature: this.state.waiver_signature,
         waiver_date: this.state.waiver_date,
         instruments_attributes: this.state.instruments_attributes,
-      }, 
+      },
     };
     Requester.post(
       ApiConstants.authentication.signup.student,
@@ -293,7 +293,7 @@ class StudentForm extends React.Component {
           <div className="content-wrapper form-page">
             <h1>Student Application</h1>
             <div className="form-container">
-              <form action="">
+              <form>
               {/*Application Page 1*/}
               <div className="form-row">
                 <FormGroup>
@@ -636,8 +636,7 @@ class StudentForm extends React.Component {
 
               <Button
                 className="button button--solid-orange login-card__button"
-                onClick={() => this.submitForm()}
-                type="submit">
+                onClick={() => this.submitForm()}>
                   Submit
                 </Button>
               <FormControl.Feedback />

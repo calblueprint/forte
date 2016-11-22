@@ -1,6 +1,5 @@
 class ForteMailer < ApplicationMailer
 
-
   def send_contact_email(subject, first_name, last_name, email, message)
     @first_name = first_name
     @last_name = last_name
@@ -29,5 +28,4 @@ class ForteMailer < ApplicationMailer
     mail subject: "Forte Student Registration Confirmation | #{name}",
          to: "fortemailer@gmail.com"
   end
-
 end
