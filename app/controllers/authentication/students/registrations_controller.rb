@@ -1,6 +1,5 @@
 class Authentication::Students::RegistrationsController < Devise::RegistrationsController
 before_filter :configure_sign_up_params, only: [:create]
-
 # before_filter :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
@@ -76,7 +75,6 @@ before_filter :configure_sign_up_params, only: [:create]
         :criminal_explanation, 
         :waiver_signature,
         :waiver_date,
-        :instrumentable,
         :instruments_attributes => [:id, :name, :years_played, :proficiency, :is_primary]
       ],
     )

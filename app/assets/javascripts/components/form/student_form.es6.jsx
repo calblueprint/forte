@@ -117,7 +117,6 @@ class StudentForm extends React.Component {
   }
 
   setAvailability(callback) {
-    console.log('beggining');
     const { calendar } = this.refs.availability.refs
     //TODO: not ideal way to do this.. figure out some other way
     var eventArray = $(calendar).fullCalendar('clientEvents');
@@ -126,13 +125,10 @@ class StudentForm extends React.Component {
       availabilityArray = availabilityArray.concat(range_to_array(eventArray[i]['start'], eventArray[i]['end']));
     }
     this.setState({ availability: availabilityArray }, callback)
-    console.log('whatup');
-    return true;
   }
 
   setInstruments() {
     const { instruments, activeInstruments } = this.state;
-    console.log(activeInstruments);
     var instrumentsObj = []
     for (let [instrumentName, active] of Object.entries(activeInstruments)) {  
       if (active == true) {
@@ -140,27 +136,16 @@ class StudentForm extends React.Component {
         instrumentsObj.push(instrument);
       } 
     }
-    console.log(instrumentsObj);
     this.setState({ instruments_attributes: instrumentsObj }, this.createStudent);
   }
 
   submitForm() {
-    console.log('helllllloo');
     this.setAvailability(this.setInstruments);
-    // console.log(something)
-    // while (something != true) {
-    //   console.log('hellllldloo')
-    // }
   }
 
   createStudent() {
-    console.log(this.state.instruments);
     var reject = (response) => { console.log(response) };
-    var resolve = (response) => {
-      console.log(response);
-      var student = response;
-      // this.createInstruments(response.id);
-    }
+    var resolve = (response) => { window.location = "/" };
     var params = {
       student: {
         email: this.state.email,
@@ -206,36 +191,6 @@ class StudentForm extends React.Component {
     );
   }
 
-//   createInstruments(studentId) {
-//     var reject = (response) => {
-//       Requester.delete(
-//         ApiConstants.students.delete(studentId),
-//         null,
-//         null
-//       );
-//     }
-//     var resolve = (response) => {
-//       // window.location = "/";
-//     };
-//     var params = {
-
-//     };
-
-//     id                  :integer          not null, primary key
-// #  name                :string
-// #  years_played        :integer
-// #  is_primary          :boolean          default(FALSE), not null
-// #  instrumentable_id   :integer
-// #  instrumentable_type :string
-// #  created_at          :datetime         not null
-// #  updated_at          :datetime         not null
-// #  proficiency         :integer
-//     const { activeInstruments } = this.props;
-//     for (var i = 0; i < activeInstruments.length; i++) {
-
-//     }
-//   }
-  
   renderOptions(type) {
     var optionsArray = []
     var retOptions = []
