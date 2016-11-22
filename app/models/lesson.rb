@@ -24,8 +24,8 @@ class Lesson < ActiveRecord::Base
   validates :is_paid, :inclusion => { :in => [true, false] }
   validates :matching_id, presence: true
 
+  belongs_to :matching
   has_one :student, through: :matching
   has_one :teacher, through: :matching
-  belongs_to :matching
 
 end
