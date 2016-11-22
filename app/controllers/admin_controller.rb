@@ -2,15 +2,20 @@ class AdminController < ApplicationController
  before_action :authenticate_admin!
  
   def matched
-    matchings = Matching.all.includes(:student, :teacher)
+    matchings = Matching.all
     @matching_info = []
-    for matching in matchings do
+    matchings.each do |matching|
       @matching_info.push({"matching": matching, "teacher": matching.teacher, "student": matching.student})
     end
   end
 
   def lessons
-    @lessons = Lesson.all.sort_by &:start_time
+    lessons = Lesson.all
+    @lessons_info = []
+    lessons.each do |lesson|
+      matching = Matching.find(lesson.matching_id)
+      @lessons_info.push({"lesson": lesson, "teacher": matching.teacher, "student": matching.student})
+    end
   end
 
   def roster

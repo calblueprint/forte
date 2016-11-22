@@ -6,10 +6,36 @@ class AdminLessonsPage extends React.Component {
     };
   }
 
+  constructor(props) {
+    super();
+    this.state = {
+      showPersonModal: false,
+      person: null,
+    };
+  }
+
   renderLesson(lesson) {
     return (
-      <LessonItem lesson={lesson} />
+      <LessonItem lesson={lesson} onPersonClick={(person) => this.onPersonClick(person)}/>
     );
+  }
+
+  onPersonClick(student) {
+    console.log(student)
+    this.setState({ showPersonModal: true, person: student })
+  }
+
+  closePersonModal() {
+    this.setState({ showPersonModal: false, person: null });
+  }
+
+  renderPersonModal() {
+    const { showPersonModal } = this.state;
+    if (showPersonModal == true) {
+      return (
+        <PersonModal handleClose={() => this.closePersonModal()} person={this.state.person} />
+      );
+    }
   }
 
   renderLessons() {
@@ -26,6 +52,7 @@ class AdminLessonsPage extends React.Component {
             {this.renderLessons()}
           </div>
         </div>
+        {this.renderPersonModal()}
       </div>
     );
   }
