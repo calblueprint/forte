@@ -20,6 +20,7 @@ def create_single_teacher(is_searching, n)
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.first_name,
     city: Faker::Address.city,
+    phone: Faker::Base.numerify('###-###-####'),
     password: "password",
     availability: [n, n+1, n+2, n+4, n+5, n+6, n+7, n+8, n+9, n+10],
   )
@@ -72,7 +73,7 @@ def create_single_student(n)
     criminal_explanation: Faker::Lorem.paragraph(4),
     waiver_signature: Faker::Name.first_name,
     waiver_date: Faker::Date.between(2.days.ago, Date.today),
-  ) 
+  )
   student
 end
 

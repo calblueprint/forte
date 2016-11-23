@@ -5,7 +5,7 @@ class LessonMailer < ApplicationMailer
     @matching = lesson.matching
     @student = lesson.student
     @teacher = lesson.teacher
-    instrument = matching.instrument
+    instrument = @matching.instrument
     mail subject: "Forte Lesson Cancelation | (#{instrument})",
          to: @teacher.email
   end
@@ -15,7 +15,7 @@ class LessonMailer < ApplicationMailer
     @matching = lesson.matching
     @student = lesson.student
     @teacher = lesson.teacher
-    instrument = matching.instrument
+    instrument = @matching.instrument
     mail subject: "Forte Lesson Cancelation | #{instrument}",
          to: @student.student_email
   end
@@ -25,7 +25,7 @@ class LessonMailer < ApplicationMailer
     @matching = lesson.matching
     @student = lesson.student
     @teacher = lesson.teacher
-    instrument = matching.instrument
+    instrument = @matching.instrument
     mail subject: "Forte Lesson Cancelation | #{instrument}",
          to: @student.email
   end
