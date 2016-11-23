@@ -8,24 +8,39 @@ class ForteMailer < ApplicationMailer
     mail(to: "fortemailer@gmail.com", subject: subject)
   end
 
-  def submit_student(student)
+  def student_signup_notify_student(student)
     @student = student
     name = student.full_name
     mail subject: "Forte Student Registration Confirmation | #{name}",
          to: student.student_email
   end
 
-  def submit_parent(student)
+  def student_signup_notify_parent(student)
     @student = student
     name = student.full_name
     mail subject: "Forte Student Registration Confirmation | #{name}",
          to: student.email
   end
 
-  def submit_admin(student)
+  def student_signup_notify_admin(student)
     @student = student
     name = student.full_name
     mail subject: "Forte Student Registration Confirmation | #{name}",
          to: "fortemailer@gmail.com"
   end
+
+  def teacher_signup_notify_teacher(teacher)
+    @teacher = teacher
+    name = teacher.full_name
+    mail subject: "Forte Teacher Registration Confirmation | #{name}",
+         to: teacher.email
+  end
+
+  def teacher_signup_notify_admin(teacher)
+    @teacher = teacher
+    name = teacher.full_name
+    mail subject: "Forte Teacher Registration Confirmation | #{name}",
+         to: "fortemailer@gmail.com"
+  end
+
 end
