@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161120214830) do
+ActiveRecord::Schema.define(version: 20161120231306) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -147,6 +147,38 @@ ActiveRecord::Schema.define(version: 20161120214830) do
     t.string   "first_name"
     t.string   "last_name"
     t.integer  "availability",           default: [],                 array: true
+    t.integer  "gender"
+    t.datetime "birthday"
+    t.string   "school"
+    t.integer  "school_level"
+    t.string   "phone"
+    t.text     "introduction"
+    t.text     "lesson_experience"
+    t.text     "teaching_experience"
+    t.text     "training_experience"
+    t.text     "performance_experience"
+    t.string   "address"
+    t.string   "address_apt"
+    t.integer  "state"
+    t.integer  "zipcode"
+    t.boolean  "location_preference"
+    t.integer  "travel_distance"
+    t.boolean  "background_check"
+    t.string   "reference1_first_name"
+    t.string   "reference1_last_name"
+    t.string   "reference1_relation"
+    t.string   "reference1_email"
+    t.string   "reference1_phone"
+    t.string   "reference2_first_name"
+    t.string   "reference2_last_name"
+    t.string   "reference2_relation"
+    t.string   "reference2_email"
+    t.string   "reference2_phone"
+    t.boolean  "criminal_charges"
+    t.boolean  "youth_participation"
+    t.text     "criminal_explanation"
+    t.string   "waiver_signature"
+    t.datetime "waiver_date"
   end
 
   add_index "teachers", ["email"], name: "index_teachers_on_email", unique: true, using: :btree

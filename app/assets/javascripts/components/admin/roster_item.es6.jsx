@@ -3,12 +3,13 @@ class RosterItem extends React.Component {
   static get propTypes() {
     return {
       person: React.PropTypes.object, 
+      onPersonClick: React.PropTypes.func,
     };
   }
 
   render () {
     return (
-      <div className="roster-item">
+      <div className="roster-item" onClick={(event)=>this.props.onPersonClick(this.props.person)}>
         <div className="roster-item__header-container">
           <img src="https://scontent.fsnc1-1.fna.fbcdn.net/v/t1.0-9/13165842_1183891474954721_718305460416707014_n.jpg?oh=2b5107bc7b58111974103e90899f31a2&oe=588B68F5
           " className="roster-item__img"></img>

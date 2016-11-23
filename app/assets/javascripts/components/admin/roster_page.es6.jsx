@@ -4,6 +4,8 @@ class RosterPage extends React.Component {
     super();
     this.state = {
       people: null,
+      showPersonModal: false,
+      person: null,
     };
   }
 
@@ -22,10 +24,27 @@ class RosterPage extends React.Component {
     );
   }
 
+  onPersonClick(person) {
+    this.setState({ showPersonModal: true, person:person });
+  }
+
+  closePersonModal() {
+    this.setState({ showPersonModal: false, person: null });
+  }
+
+  renderPersonModal() {
+    const { showPersonModal } = this.state;
+    if (showPersonModal == true) {
+      return (
+        <PersonModal handleClose={() => this.closePersonModal()} person={this.state.person} />
+      );
+    }
+  }
+
   renderPerson(person) {
     return (
       <div>
-        <RosterItem person={person} />
+        <RosterItem person={person} onPersonClick={(person)=>this.onPersonClick(person)} />
         <div className="item-separator" />
       </div>
     );
@@ -77,6 +96,7 @@ class RosterPage extends React.Component {
             <div className="roster-container">
               {this.renderPeople()}
             </div>
+            {this.renderPersonModal()}
           </div>
         </div>
       );
