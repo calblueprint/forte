@@ -1,0 +1,12 @@
+<div style="width: 100%; background-color: #ebeef2;">
+  <div style="width: 600px; padding: 24px; margin: auto; background-color: #ffffff;">
+    <h4>Hi @student.guardian_first_name,</h4>
+
+    <p>Your student's <%= @matching.instrument %> lesson with <%= @teacher.full_name %> at <%= @lesson.start_time %> - <%= @lesson.end_time %> has been canceled.</p>
+
+    <p>If this is not correct, please contact the teacher <%= @teacher.full_name %> at <%= @teacher.phone %>.</p>
+
+    <p>Sincereley,</p>
+    <h4>The Forte Team</h4>
+  </div>
+</div>
