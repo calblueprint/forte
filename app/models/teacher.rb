@@ -32,12 +32,12 @@ class Teacher < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  # validates :email, presence: true, uniqueness: true
-  # validates :city, presence: true
-  # validates :first_name, presence: true
-  # validates :last_name, presence: true
-  # validates :is_searching, :inclusion => { :in => [true, false] }
-  # validates :availability, presence: true
+  validates :email, presence: true, uniqueness: true
+  validates :city, presence: true
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  validates :is_searching, :inclusion => { :in => [true, false] }
+  validates :availability, presence: true
 
   has_many :matchings
   has_many :lessons, through: :matchings
