@@ -1,16 +1,19 @@
 class Authentication::Teachers::RegistrationsController < Devise::RegistrationsController
-# before_filter :configure_sign_up_params, only: [:create]
+before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
-  # def new 
+  # def new
   #   super
   # end
 
   # POST /resource
-  def create #when new account is created, auto logged in
+  def create
     super
-    cookies[:is_signed_in] = teacher_signed_in?    
+    if @teacher.persisted?
+      @teacher.submit_signup
+    end
+    cookies[:is_signed_in] = teacher_signed_in?
     cookies[:signed_in_type] = 'teacher'
   end
 
@@ -39,6 +42,54 @@ class Authentication::Teachers::RegistrationsController < Devise::RegistrationsC
   # end
 
   # protected
+
+  # If you have extra params to permit, append them to the sanitizer.
+  def configure_sign_up_params
+    devise_parameter_sanitizer.permit(:sign_up,
+      keys: [
+        :city,
+        :first_name,
+        :last_name,
+        :email,
+        {:availability => []},
+        :gender,
+        :birthday,
+        :school,
+        :school_level,
+        :phone,
+        :email,
+        :introduction,
+        :lesson_experience,
+        :teaching_experience,
+        :training_experience,
+        :performance_experience,
+        :address,
+        :address_apt,
+        :state,
+        :zipcode,
+        :city,
+        :location_preference,
+        :travel_distance,
+        :background_check,
+        :reference1_first_name,
+        :reference1_last_name,
+        :reference1_relation,
+        :reference1_email,
+        :reference1_phone,
+        :reference2_first_name,
+        :reference2_last_name,
+        :reference2_relation,
+        :reference2_email,
+        :reference2_phone,
+        :youth_participation,
+        :criminal_charges,
+        :criminal_explanation,
+        :waiver_signature,
+        :waiver_date,
+      ],
+    )
+  end
+
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_sign_up_params

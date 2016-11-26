@@ -5,8 +5,8 @@ class TeacherForm extends React.Component {
       email: null,
       password: null,
       password_confirmation: null,
-      first_name: null, 
-      last_name: null, 
+      first_name: null,
+      last_name: null,
       city: null,
       gender: null,
       birthday: null,
@@ -55,7 +55,7 @@ class TeacherForm extends React.Component {
       activeInstruments[INSTRUMENTS[i]] = false;
     }
     this.setState({ activeInstruments: activeInstruments });
-    
+
     // set up instruments fields object
     var instruments = {}
     for (var i = 0; i < INSTRUMENTS.length; i++) {
@@ -192,7 +192,7 @@ class TeacherForm extends React.Component {
       reject
     );
   }
-  
+
   renderOptions(type) {
     var optionsArray = []
     var retOptions = []
@@ -238,9 +238,9 @@ class TeacherForm extends React.Component {
         <div className="form-row">
           <FormGroup>
             <ControlLabel>Proficiency</ControlLabel>
-            <FormControl 
-              componentClass="select" 
-              name="proficiency" 
+            <FormControl
+              componentClass="select"
+              name="proficiency"
               onChange={(event) => this.handleInstrumentFieldChange(event, instrument)}>
               <option value="" disabled selected>Select a value</option>
               {this.renderOptions('proficiency')}
@@ -249,16 +249,16 @@ class TeacherForm extends React.Component {
 
           <FormGroup>
             <ControlLabel>Years Played</ControlLabel>
-            <FormControl 
-              componentClass="select" 
-              name="years_played" 
+            <FormControl
+              componentClass="select"
+              name="years_played"
               onChange={(event) => this.handleInstrumentFieldChange(event, instrument)}>
               <option value="" disabled selected>Select a value</option>
                 {this.renderOptions('years_played')}
             </FormControl>
           </FormGroup>
         </div>
-      </div>     
+      </div>
     );
   }
 
@@ -294,8 +294,8 @@ class TeacherForm extends React.Component {
               <div className="form-row">
                 <FormGroup>
                   <ControlLabel>First Name</ControlLabel>
-                  <FormControl 
-                    componentClass="input"  
+                  <FormControl
+                    componentClass="input"
                     placeholder="First Name"
                     name="first_name"
                     onChange={(event) => this.handleChange(event)}/>
@@ -303,8 +303,8 @@ class TeacherForm extends React.Component {
 
                 <FormGroup>
                   <ControlLabel>Last Name</ControlLabel>
-                  <FormControl 
-                    componentClass="input" 
+                  <FormControl
+                    componentClass="input"
                     placeholder="Last Name"
                     name="last_name"
                     onChange={(event) => this.handleChange(event)}/>
@@ -312,9 +312,9 @@ class TeacherForm extends React.Component {
               </div>
               <FormGroup>
                 <ControlLabel>Gender</ControlLabel>
-                <FormControl 
-                  componentClass="select" 
-                  name="gender" 
+                <FormControl
+                  componentClass="select"
+                  name="gender"
                   onChange={(event) => this.handleIntegerChange(event)}>
                   <option value="" disabled selected>Select your gender</option>
                   {this.renderOptions('gender')}
@@ -323,7 +323,7 @@ class TeacherForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Birthday</ControlLabel>
-                <Datetime 
+                <Datetime
                   dateFormat="MM/DD/YYYY"
                   timeFormat={false}
                   inputProps={{placeholder: "MM/DD/YYYY"}}
@@ -332,8 +332,8 @@ class TeacherForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>School Name</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
+                <FormControl
+                  componentClass="input"
                   placeholder="School"
                   name="school"
                   onChange={(event) => this.handleChange(event)}/>
@@ -354,7 +354,7 @@ class TeacherForm extends React.Component {
               <FormGroup>
                 <ControlLabel>Tell us a little bit about yourself and the impact
                 you hope to make with Forte!</ControlLabel>
-                <FormControl 
+                <FormControl
                   componentClass="input"
                   componentClass="textarea"
                   placeholder="Enter text"
@@ -364,7 +364,7 @@ class TeacherForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Please describe your teaching experience.</ControlLabel>
-                <FormControl 
+                <FormControl
                   componentClass="input"
                   componentClass="textarea"
                   placeholder="Enter text"
@@ -375,7 +375,7 @@ class TeacherForm extends React.Component {
               <FormGroup>
                 <ControlLabel>Please describe your musical training including
                 experience receiving music lessons.</ControlLabel>
-                <FormControl 
+                <FormControl
                   componentClass="input"
                   componentClass="textarea"
                   placeholder="Enter text"
@@ -386,7 +386,7 @@ class TeacherForm extends React.Component {
               <FormGroup>
                 <ControlLabel>Please describe your experience performing
                 with any musical groups or ensembles.</ControlLabel>
-                <FormControl 
+                <FormControl
                   componentClass="input"
                   componentClass="textarea"
                   placeholder="Enter text"
@@ -397,17 +397,39 @@ class TeacherForm extends React.Component {
               {/*Application Page 3*/}
               <FormGroup>
                 <ControlLabel>Email</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
+                <FormControl
+                  componentClass="input"
                   placeholder="Email"
                   name="email"
                   onChange={(event) => this.handleChange(event)}/>
               </FormGroup>
 
+              <div className="form-row">
+                <FormGroup>
+                  <ControlLabel>Password</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    type="password"
+                    placeholder="Password"
+                    name="password"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
+
+                <FormGroup>
+                  <ControlLabel>Password Confirmation</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    type="password"
+                    placeholder="Password"
+                    name="password_confirmation"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
+              </div>
+
               <FormGroup>
                 <ControlLabel>Phone</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
+                <FormControl
+                  componentClass="input"
                   placeholder="Phone Number"
                   name="phone"
                   onChange={(event) => this.handleChange(event)}/>
@@ -415,8 +437,8 @@ class TeacherForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Address</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
+                <FormControl
+                  componentClass="input"
                   placeholder="Address"
                   name="address"
                   onChange={(event) => this.handleChange(event)}/>
@@ -424,8 +446,8 @@ class TeacherForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Apt # (optional)</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
+                <FormControl
+                  componentClass="input"
                   placeholder="Apt #"
                   name="address_apt"
                   onChange={(event) => this.handleChange(event)}/>
@@ -433,8 +455,8 @@ class TeacherForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>City</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
+                <FormControl
+                  componentClass="input"
                   placeholder="City"
                   name="city"
                   onChange={(event) => this.handleChange(event)}/>
@@ -442,9 +464,9 @@ class TeacherForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>State</ControlLabel>
-                <FormControl 
-                  componentClass="select" 
-                  name="state" 
+                <FormControl
+                  componentClass="select"
+                  name="state"
                   onChange={(event) => this.handleIntegerChange(event)}>
                   <option value="" disabled selected>Select your state</option>
                   {this.renderOptions('state')}
@@ -453,8 +475,8 @@ class TeacherForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Zip Code</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
+                <FormControl
+                  componentClass="input"
                   placeholder="Zip Code"
                   name="zipcode"
                   onChange={(event) => this.handleChange(event)}/>
@@ -462,8 +484,8 @@ class TeacherForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Location Preference</ControlLabel>
-                  <Checkbox 
-                    name="location_preference" 
+                  <Checkbox
+                    name="location_preference"
                     onChange={(event) => this.handleBooleanChange(event)}>
                     I am willing to host lessons at my home (earn $10/lesson
                       if hosting; $15 if traveling).
@@ -472,9 +494,9 @@ class TeacherForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Distance Willing to Travel</ControlLabel>
-                <FormControl 
-                  componentClass="select" 
-                  name="travel_distance" 
+                <FormControl
+                  componentClass="select"
+                  name="travel_distance"
                   onChange={(event) => this.handleIntegerChange(event)}>
                   <option value="" disabled selected>Select distance</option>
                   {this.renderOptions('travel_distance')}
@@ -488,8 +510,8 @@ class TeacherForm extends React.Component {
 
               {/*Application Page 4*/}
               <FormGroup>
-                <ControlLabel>Do you authorize Forte to conduct a 
-                background and personal reference checks in accordance 
+                <ControlLabel>Do you authorize Forte to conduct a
+                background and personal reference checks in accordance
                 with our saftey policy?</ControlLabel>
                 <Radio
                   name="background_check"
@@ -498,7 +520,7 @@ class TeacherForm extends React.Component {
                   Yes
                 </Radio>
                 <Radio
-                  name="background_check" 
+                  name="background_check"
                   value={false}
                   onChange={(event) => this.handleBooleanChange(event)}>
                   No
@@ -508,8 +530,8 @@ class TeacherForm extends React.Component {
               <div className="form-row">
                 <FormGroup>
                   <ControlLabel>Reference #1</ControlLabel>
-                  <FormControl 
-                    componentClass="input"  
+                  <FormControl
+                    componentClass="input"
                     placeholder="First Name"
                     name="reference1_first_name"
                     onChange={(event) => this.handleChange(event)}/>
@@ -517,8 +539,8 @@ class TeacherForm extends React.Component {
 
                 <FormGroup>
                   <ControlLabel></ControlLabel>
-                  <FormControl 
-                    componentClass="input" 
+                  <FormControl
+                    componentClass="input"
                     placeholder="Last Name"
                     name="reference1_last_name"
                     onChange={(event) => this.handleChange(event)}/>
@@ -526,8 +548,8 @@ class TeacherForm extends React.Component {
 
                 <FormGroup>
                   <ControlLabel></ControlLabel>
-                  <FormControl 
-                    componentClass="input" 
+                  <FormControl
+                    componentClass="input"
                     placeholder="Relationship"
                     name="reference1_relation"
                     onChange={(event) => this.handleChange(event)}/>
@@ -537,8 +559,8 @@ class TeacherForm extends React.Component {
               <div className="form-row">
                 <FormGroup>
                   <ControlLabel></ControlLabel>
-                  <FormControl 
-                    componentClass="input"  
+                  <FormControl
+                    componentClass="input"
                     placeholder="Email"
                     name="reference1_email"
                     onChange={(event) => this.handleChange(event)}/>
@@ -546,8 +568,8 @@ class TeacherForm extends React.Component {
 
                 <FormGroup>
                   <ControlLabel></ControlLabel>
-                  <FormControl 
-                    componentClass="input" 
+                  <FormControl
+                    componentClass="input"
                     placeholder="Phone"
                     name="reference1_phone"
                     onChange={(event) => this.handleChange(event)}/>
@@ -557,8 +579,8 @@ class TeacherForm extends React.Component {
               <div className="form-row">
                 <FormGroup>
                   <ControlLabel>Reference #2</ControlLabel>
-                  <FormControl 
-                    componentClass="input"  
+                  <FormControl
+                    componentClass="input"
                     placeholder="First Name"
                     name="reference2_first_name"
                     onChange={(event) => this.handleChange(event)}/>
@@ -566,8 +588,8 @@ class TeacherForm extends React.Component {
 
                 <FormGroup>
                   <ControlLabel></ControlLabel>
-                  <FormControl 
-                    componentClass="input" 
+                  <FormControl
+                    componentClass="input"
                     placeholder="Last Name"
                     name="reference2_last_name"
                     onChange={(event) => this.handleChange(event)}/>
@@ -575,8 +597,8 @@ class TeacherForm extends React.Component {
 
                 <FormGroup>
                   <ControlLabel></ControlLabel>
-                  <FormControl 
-                    componentClass="input" 
+                  <FormControl
+                    componentClass="input"
                     placeholder="Relationship"
                     name="reference2_relation"
                     onChange={(event) => this.handleChange(event)}/>
@@ -586,8 +608,8 @@ class TeacherForm extends React.Component {
               <div className="form-row">
                 <FormGroup>
                   <ControlLabel></ControlLabel>
-                  <FormControl 
-                    componentClass="input"  
+                  <FormControl
+                    componentClass="input"
                     placeholder="Email"
                     name="reference2_email"
                     onChange={(event) => this.handleChange(event)}/>
@@ -595,8 +617,8 @@ class TeacherForm extends React.Component {
 
                 <FormGroup>
                   <ControlLabel></ControlLabel>
-                  <FormControl 
-                    componentClass="input" 
+                  <FormControl
+                    componentClass="input"
                     placeholder="Phone"
                     name="reference2_phone"
                     onChange={(event) => this.handleChange(event)}/>
@@ -604,17 +626,17 @@ class TeacherForm extends React.Component {
               </div>
 
               <FormGroup>
-                <ControlLabel>Have you ever been convicted or plead 
-                guilty to a crime (other than minor traffic offences) or 
+                <ControlLabel>Have you ever been convicted or plead
+                guilty to a crime (other than minor traffic offences) or
                 are any criminal charges now pending against you?</ControlLabel>
-                <Radio 
-                  name="criminal_charges" 
+                <Radio
+                  name="criminal_charges"
                   value={Boolean("true")}
                   onChange={(event) => this.handleBooleanChange(event)}>
                   Yes
                 </Radio>
-                <Radio 
-                  name="criminal_charges" 
+                <Radio
+                  name="criminal_charges"
                   value={Boolean("false")}
                   onChange={(event) => this.handleBooleanChange(event)}>
                   No
@@ -622,16 +644,16 @@ class TeacherForm extends React.Component {
               </FormGroup>
 
               <FormGroup>
-                <ControlLabel>Have you ever been refused participation in 
+                <ControlLabel>Have you ever been refused participation in
                 any other youth program?</ControlLabel>
-                <Radio 
-                  name="youth_participation" 
+                <Radio
+                  name="youth_participation"
                   value={Boolean("true")}
                   onChange={(event) => this.handleBooleanChange(event)}>
                   Yes
                 </Radio>
-                <Radio 
-                  name="youth_participation" 
+                <Radio
+                  name="youth_participation"
                   value={Boolean("false")}
                   onChange={(event) => this.handleBooleanChange(event)}>
                   No
@@ -640,7 +662,7 @@ class TeacherForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>If yes to either of the above, please explain.</ControlLabel>
-                <FormControl 
+                <FormControl
                   componentClass="input"
                   componentClass="textarea"
                   placeholder="Enter text"
@@ -653,8 +675,8 @@ class TeacherForm extends React.Component {
               {this.renderWaiverModal()}
               <FormGroup>
                 <ControlLabel>Signature</ControlLabel>
-                <FormControl 
-                  componentClass="input" 
+                <FormControl
+                  componentClass="input"
                   placeholder="Full Name"
                   name="waiver_signature"
                   onChange={(event) => this.handleChange(event)}/>
@@ -662,15 +684,15 @@ class TeacherForm extends React.Component {
 
               <FormGroup>
                 <ControlLabel>Date</ControlLabel>
-                 <Datetime 
+                 <Datetime
                   dateFormat="MM/DD/YYYY"
                   timeFormat={false}
                   inputProps={{placeholder: "MM/DD/YYYY"}}
                   onChange={(moment) => this.handleDatetimeChange(moment, 'waiver_date')}/>
               </FormGroup>
 
-              <Button className="button button--solid-orange login-card__button" 
-              onClick={() => this.submitForm()}>Submit</Button> 
+              <Button className="button button--solid-orange login-card__button"
+              onClick={() => this.submitForm()}>Submit</Button>
               <FormControl.Feedback />
             </form>
             </div>

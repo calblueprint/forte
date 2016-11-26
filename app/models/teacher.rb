@@ -31,7 +31,7 @@ class Teacher < ActiveRecord::Base
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-  
+
   validates :email, presence: true, uniqueness: true
   validates :city, presence: true
   validates :first_name, presence: true
@@ -45,4 +45,14 @@ class Teacher < ActiveRecord::Base
   has_many :instruments, as: :instrumentable, dependent: :destroy
 
   accepts_nested_attributes_for :instruments
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
+  def submit_signup
+    ForteMailer.teacher_signup_notify_admin(self).deliver_now
+    ForteMailer.teacher_signup_notify_teacher(self).deliver_now
+  end
+
 end
