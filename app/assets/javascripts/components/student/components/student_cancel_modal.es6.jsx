@@ -35,7 +35,7 @@ class StudentCancelModal extends React.Component {
     );
   }
 
-  renderRescheduleModal() {
+  renderCancelModal() {
     const { handleClose, lesson } = this.props;
     const {
       price,
@@ -84,7 +84,7 @@ class StudentCancelModal extends React.Component {
           <Modal.Header closeButton>
             <Modal.Title>Reschedule Lesson</Modal.Title>
           </Modal.Header>
-          {this.renderRescheduleModal()}
+          {this.renderCancelModal()}
         </Modal>
       </div>
     );

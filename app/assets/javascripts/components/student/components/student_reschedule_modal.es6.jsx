@@ -18,8 +18,8 @@ class StudentRescheduleModal extends React.Component {
   }
 
   handleNext() {
-    this.setState({ showNextScreen: true });
     this.setLessonTime();
+    this.setState({ showNextScreen: true });
   }
 
   handleBack() {
@@ -28,16 +28,9 @@ class StudentRescheduleModal extends React.Component {
 
   setLessonTime() {
     const { calendar } = this.refs.rescheduler.refs
-    //TODO: not ideal way to do this.. figure out some other way
     var eventArray = $(calendar).fullCalendar('clientEvents');
     this.setState({ lessonStartTime: eventArray[0]['start'].format() });
     this.setState({ lessonEndTime: eventArray[0]['end'].format() });
-
-    // var availabilityArray = []
-    // for (var i = 0; i < eventArray.length; i++) {
-    //   availabilityArray = availabilityArray.concat(range_to_array(eventArray[i]['start'], eventArray[i]['end']));
-    // }
-    // this.setState({ lessonTime: availabilityArray[0] })
   }
 
   handleRescheduleLesson() {

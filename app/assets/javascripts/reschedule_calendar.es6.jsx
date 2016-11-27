@@ -25,7 +25,6 @@ class RescheduleCalendar extends React.Component {
       defaultView: 'agendaWeek',
       columnFormat: 'ddd M/D',
       editable: true, // can't reschedule how long the lesson is
-      // selectable: true, // can create events 
       eventDurationEditable: false, // can't make lesson longer/shorter
       minTime: "08:00",
       maxTime: "22:00",
@@ -56,17 +55,9 @@ class RescheduleCalendar extends React.Component {
         end: "22:00",
       },
       snapMinutes: 15,
-      // eventRender: function(event, element) {
-      //   console.log(event);
-      //   element.find("div.fc-content").prepend('<span class="removeEvent glyphicon glyphicon-trash pull-right" id="Delete"></span>');
-      // },
-      // eventClick: function(calEvent, jsEvent, view) {
-      //   if (jsEvent.target.id === 'Delete') {
-      //     $(calendar).fullCalendar('removeEvents',calEvent._id);
-      //   }
-      // },
       events: [
-        {
+        { 
+          title: 'Lesson',
           start: lesson['start_time'],
           end: lesson['end_time'],
         },
@@ -81,7 +72,3 @@ class RescheduleCalendar extends React.Component {
     );
   }
 }
-
-/** 
-Use this as an availability tool 
-**/
