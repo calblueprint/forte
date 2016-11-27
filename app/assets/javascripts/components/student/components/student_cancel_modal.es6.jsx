@@ -82,7 +82,7 @@ class StudentCancelModal extends React.Component {
       <div>
         <Modal show={true} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Reschedule Lesson</Modal.Title>
+            <Modal.Title>Cancel Lesson</Modal.Title>
           </Modal.Header>
           {this.renderCancelModal()}
         </Modal>

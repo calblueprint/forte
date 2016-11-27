@@ -27,7 +27,7 @@ class StudentRescheduleModal extends React.Component {
   }
 
   setLessonTime() {
-    const { calendar } = this.refs.rescheduler.refs
+    const { calendar } = this.refs.rescheduler.refs;
     var eventArray = $(calendar).fullCalendar('clientEvents');
     this.setState({ lessonStartTime: eventArray[0]['start'].format() });
     this.setState({ lessonEndTime: eventArray[0]['end'].format() });
@@ -43,11 +43,11 @@ class StudentRescheduleModal extends React.Component {
         start_time: lessonStartTime,
         end_time: lessonEndTime,
       }
-    }
+    };
     const resolve = (response) => {
       handleClose();
       fetchLessons();
-    }
+    };
     const reject = (response) => console.log(response);
     Requester.update(
       route,
@@ -97,7 +97,7 @@ class StudentRescheduleModal extends React.Component {
       <div>
         <Modal show={true} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Cancel Lesson</Modal.Title>
+            <Modal.Title>Reschedule Lesson</Modal.Title>
           </Modal.Header>
           {this.renderRescheduleModal()}
         </Modal>

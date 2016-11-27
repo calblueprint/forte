@@ -18,7 +18,7 @@ class RescheduleCalendar extends React.Component {
   componentDidMount() {
     const { calendar } = this.refs;
     const { lesson } = this.props;
-    var day = new Date(lesson['start_time'])
+    var startTime = new Date(lesson['start_time'])
     $(calendar).fullCalendar({
       header: false,
       defaultDate: lesson['start_time'],
@@ -63,7 +63,7 @@ class RescheduleCalendar extends React.Component {
         },
       ],
       snapDuration: '00:15:00',
-      firstDay: (day.getDay() + 4) % 7, // make sure that the first day of the week is always 3 days before the lesson day
+      firstDay: (startTime.getDay() + 4) % 7, // make sure that the first day of the week is always 3 days before the lesson day
     });
   }
   render () {
