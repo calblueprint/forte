@@ -4,13 +4,14 @@ class StudentLessonCard extends React.Component {
     super();
     this.state = {
       showCancelModal: false,
+      showRescheduleModal: false,
     };
   }
 
   static get propTypes() {
     return {
       lesson: React.PropTypes.object,
-      handleCancelLesson: React.PropTypes.func.isRequired,
+      fetchLessons: React.PropTypes.func,
     };
   }
 
@@ -22,8 +23,16 @@ class StudentLessonCard extends React.Component {
     this.setState({ showCancelModal: false });
   }
 
+  openRescheduleModal() {
+    this.setState({ showRescheduleModal: true });
+  }
+
+  closeRescheduleModal() {
+    this.setState({ showRescheduleModal: false });
+  }
+
   renderCancelModal() {
-    const { lesson, handleCancelLesson } = this.props;
+    const { lesson, fetchLessons } = this.props;
     const { showCancelModal } = this.state;
 
     if (showCancelModal) {
@@ -31,7 +40,21 @@ class StudentLessonCard extends React.Component {
         <StudentCancelModal
           lesson={lesson}
           handleClose={() => this.closeCancelModal()}
-          handleCancelLesson={() => handleCancelLesson()}
+          fetchLessons={fetchLessons}
+        />
+      );
+    }
+  }
+
+  renderRescheduleModal() {
+    const { lesson, fetchLessons } = this.props;
+    const { showRescheduleModal } = this.state;
+    if (showRescheduleModal) {
+      return (
+        <StudentRescheduleModal 
+          lesson={lesson} 
+          handleClose={() => this.closeRescheduleModal()}
+          fetchLessons={fetchLessons}
         />
       );
     }
@@ -73,9 +96,10 @@ class StudentLessonCard extends React.Component {
           </div>
         </div>
         <div className="actions">
-          <img src={ImageConstants.icons.cancel} onClick={() => this.openCancelModal()}/>
+          <img src={ImageConstants.icons.cancel} onClick={() => this.openCancelModal()} />
           {this.renderCancelModal()}
-          <img src={ImageConstants.icons.modify} href="#" />
+          <img src={ImageConstants.icons.modify} onClick={() => this.openRescheduleModal()} />
+          {this.renderRescheduleModal()}
         </div>
       </div>
     );

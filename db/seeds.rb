@@ -21,7 +21,7 @@ def create_single_teacher(is_searching, n)
     last_name: Faker::Name.first_name,
     city: Faker::Address.city,
     password: "password",
-    availability: [n, n+1, n+2, n+4, n+5, n+6, n+7, n+8, n+9, n+10],
+    availability: [35, 36, 37, 38, 39, 42, 43, 44],
   )
   teacher
 end
@@ -46,7 +46,7 @@ def create_single_student(n)
     last_name: Faker::Name.first_name,
     email: Faker::Internet.email,
     password: "password",
-    availability: [n, n+1, n+2, n+4, n+5, n+6, n+7, n+8, n+9, n+10],
+    availability: [35, 36, 37, 38, 39, 42, 43, 44],
     gender: Faker::Number.between(0, 2),
     birthday: Faker::Date.between(15.years.ago, 5.years.ago),
     school: "#{Faker::Name.first_name} Middle School",
@@ -101,7 +101,7 @@ end
 
 def create_single_lesson(matching, upcoming=true, month_offset)
   start_time = upcoming ?
-      (Date.today + (15 * matching.student.availability[0].to_i).minutes) :
+      (Date.today + 1.month + (15 * matching.student.availability[0].to_i).minutes) :
       (Date.today.months_ago(month_offset) + (15 * matching.student.availability[0].to_i).minutes)
   lesson = Lesson.create(
     start_time: start_time,

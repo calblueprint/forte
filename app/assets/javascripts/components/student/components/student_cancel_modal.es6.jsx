@@ -10,7 +10,7 @@ class StudentCancelModal extends React.Component {
   static get propTypes() {
     return {
       handleClose: React.PropTypes.func.isRequired,
-      handleCancelLesson: React.PropTypes.func.isRequired,
+      fetchLessons: React.PropTypes.func.isRequired,
       lesson: React.PropTypes.object.isRequired,
     };
   }
@@ -25,7 +25,7 @@ class StudentCancelModal extends React.Component {
     const route = ApiConstants.lessons.delete(lesson.id);
     const resolve = (response) => {
       handleClose();
-      handleCancelLesson();
+      fetchLessons();
     }
     const reject = (response) => console.log(response);
     Requester.delete(
@@ -35,7 +35,7 @@ class StudentCancelModal extends React.Component {
     );
   }
 
-  renderCancelModal() {
+  renderRescheduleModal() {
     const { handleClose, lesson } = this.props;
     const {
       price,
@@ -82,9 +82,9 @@ class StudentCancelModal extends React.Component {
       <div>
         <Modal show={true} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Cancel Lesson</Modal.Title>
+            <Modal.Title>Reschedule Lesson</Modal.Title>
           </Modal.Header>
-          {this.renderCancelModal()}
+          {this.renderRescheduleModal()}
         </Modal>
       </div>
     );
