@@ -10,7 +10,7 @@ class StudentCancelModal extends React.Component {
   static get propTypes() {
     return {
       handleClose: React.PropTypes.func.isRequired,
-      handleCancelLesson: React.PropTypes.func.isRequired,
+      fetchLessons: React.PropTypes.func.isRequired,
       lesson: React.PropTypes.object.isRequired,
     };
   }
@@ -25,7 +25,7 @@ class StudentCancelModal extends React.Component {
     const route = ApiConstants.lessons.delete(lesson.id);
     const resolve = (response) => {
       handleClose();
-      handleCancelLesson();
+      fetchLessons();
     }
     const reject = (response) => console.log(response);
     Requester.delete(
