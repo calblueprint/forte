@@ -17,6 +17,7 @@
 //= require bootstrap-sprockets
 //= require react_bootstrap
 //= require moment
+//= require moment-timezone
 //= require react-datetime
 //= require fullcalendar
 //= require components

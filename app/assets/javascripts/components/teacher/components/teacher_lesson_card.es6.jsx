@@ -4,13 +4,14 @@ class TeacherLessonCard extends React.Component {
     super();
     this.state = {
       showCancelModal: false,
+      showRescheduleModal: false,
     };
   }
 
   static get propTypes() {
     return {
       lesson: React.PropTypes.object,
-      handleCancelLesson: React.PropTypes.func.isRequired,
+      fetchLessons: React.PropTypes.func.isRequired,
     };
   }
 
@@ -22,16 +23,40 @@ class TeacherLessonCard extends React.Component {
     this.setState({ showCancelModal: false });
   }
 
+  openRescheduleModal() {
+    this.setState({ showRescheduleModal: true });
+  }
+
+  closeRescheduleModal() {
+    this.setState({ showRescheduleModal: false });
+  }
+
   renderCancelModal() {
-    const { lesson, handleCancelLesson } = this.props;
+    const { lesson, handleCancelLesson, fetchLessons } = this.props;
     const { showCancelModal } = this.state;
 
     if (showCancelModal) {
       return (
-        <TeacherCancelModal
+        <CancelModal
           lesson={lesson}
           handleClose={() => this.closeCancelModal()}
-          handleCancelLesson={() => handleCancelLesson()}
+          fetchLessons={fetchLessons}
+          isStudent={false}
+        />
+      );
+    }
+  }
+
+  renderRescheduleModal() {
+    const { lesson, fetchLessons } = this.props;
+    const { showRescheduleModal } = this.state;
+    if (showRescheduleModal) {
+      return (
+        <RescheduleModal 
+          lesson={lesson} 
+          handleClose={() => this.closeRescheduleModal()}
+          fetchLessons={fetchLessons}
+          isStudent={false}
         />
       );
     }
@@ -43,21 +68,25 @@ class TeacherLessonCard extends React.Component {
       price,
       start_time,
       teacher,
-      student
+      student,
+      is_paid,
     } = lesson;
+
+    var startTime = moment(lesson['start_time']);
+    var paid = is_paid ? 'Paid' : 'Unpaid';
+    //TODO: Make sure right timezones and stuff
 
     return (
       <div className="teacher-lesson-card">
-        <img className="instrument-icon" src={ImageConstants.instruments.clarinet} href="#" />
+        <div className="lesson-time-container">
+          <h2>{startTime.format('MMM DD').toUpperCase()}</h2>
+          <h4>{startTime.format('hh:mm A').toUpperCase()}</h4>
+        </div>
         <div className="logistics">
           <h4> Piano Lesson </h4>
           <div className="info-row">
             <img src={ImageConstants.icons.person} href="#" />
-            <h6>{student.first_name}</h6>
-          </div>
-          <div className="info-row">
-            <img src={ImageConstants.icons.time} href="#" />
-            <h6>{start_time}</h6>
+            <h6>{student.first_name} {student.last_name}</h6>
           </div>
         </div>
         <div className="details">
@@ -72,10 +101,15 @@ class TeacherLessonCard extends React.Component {
             <p>${price}</p>
           </div>
         </div>
-        <div className="actions">
-          <img src={ImageConstants.icons.cancel} onClick={() => this.openCancelModal()}/>
+         <div className="actions">
+          <Button className="button button--outline-orange" onClick={() => this.openCancelModal()}>
+          Cancel
+          </Button>
           {this.renderCancelModal()}
-          <img src={ImageConstants.icons.modify} href="#" />
+          <Button className="button button--outline-orange" onClick={() => this.openRescheduleModal()}>
+          Reschedule
+          </Button>
+          {this.renderRescheduleModal()}
         </div>
       </div>
     );

@@ -37,10 +37,11 @@ class StudentLessonCard extends React.Component {
 
     if (showCancelModal) {
       return (
-        <StudentCancelModal
+        <CancelModal
           lesson={lesson}
           handleClose={() => this.closeCancelModal()}
           fetchLessons={fetchLessons}
+          isStudent={true}
         />
       );
     }
@@ -51,10 +52,11 @@ class StudentLessonCard extends React.Component {
     const { showRescheduleModal } = this.state;
     if (showRescheduleModal) {
       return (
-        <StudentRescheduleModal 
+        <RescheduleModal 
           lesson={lesson} 
           handleClose={() => this.closeRescheduleModal()}
           fetchLessons={fetchLessons}
+          isStudent={true}
         />
       );
     }
@@ -66,39 +68,46 @@ class StudentLessonCard extends React.Component {
       price,
       start_time,
       teacher,
-      student
+      student,
+      is_paid,
     } = lesson;
 
+    var startTime = moment(lesson['start_time']);
+    var paid = is_paid ? 'Paid' : 'Unpaid';
+    //TODO: Make sure right timezones and stuff
     return (
       <div className="student-lesson-card">
-        <img className="instrument-icon" src={ImageConstants.instruments.clarinet} href="#" />
+        <div className="lesson-time-container">
+          <h2>{startTime.format('MMM DD').toUpperCase()}</h2>
+          <h4>{startTime.format('hh:mm A').toUpperCase()}</h4>
+        </div>
         <div className="logistics">
-          <h4> Piano Lesson </h4>
+          <h4>Piano Lesson</h4>
           <div className="info-row">
             <img src={ImageConstants.icons.person} href="#" />
-            <h6>{teacher.first_name}</h6>
-          </div>
-          <div className="info-row">
-            <img src={ImageConstants.icons.time} href="#" />
-            <h6>{start_time}</h6>
+            <h5>{teacher.first_name} {teacher.last_name}</h5>
           </div>
         </div>
         <div className="details">
           <div className="info-row">
             <img src={ImageConstants.icons.location} href="#" />
-            <h6>Home</h6>
+            <h5>2320 Regent Street, Berkeley 94704</h5>
           </div>
           <p>{teacher.city}</p>
           <div className="cost">
             <div className="cost-icon">
             </div>
-            <p>${price}</p>
+            <h5>${price}-{paid}</h5>
           </div>
         </div>
         <div className="actions">
-          <img src={ImageConstants.icons.cancel} onClick={() => this.openCancelModal()} />
+          <Button className="button button--outline-orange" onClick={() => this.openCancelModal()}>
+          Cancel
+          </Button>
           {this.renderCancelModal()}
-          <img src={ImageConstants.icons.modify} onClick={() => this.openRescheduleModal()} />
+          <Button className="button button--outline-orange" onClick={() => this.openRescheduleModal()}>
+          Reschedule
+          </Button>
           {this.renderRescheduleModal()}
         </div>
       </div>

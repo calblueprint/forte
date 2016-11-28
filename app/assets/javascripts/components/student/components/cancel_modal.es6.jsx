@@ -1,4 +1,4 @@
-class TeacherCancelModal extends React.Component {
+class CancelModal extends React.Component {
 
   constructor() {
     super();
@@ -10,8 +10,9 @@ class TeacherCancelModal extends React.Component {
   static get propTypes() {
     return {
       handleClose: React.PropTypes.func.isRequired,
-      handleCancelLesson: React.PropTypes.func.isRequired,
+      fetchLessons: React.PropTypes.func.isRequired,
       lesson: React.PropTypes.object.isRequired,
+      isStudent: React.PropTypes.bool.isRequired,
     };
   }
 
@@ -20,12 +21,12 @@ class TeacherCancelModal extends React.Component {
   }
 
   handleConfirmClick() {
-    const { lesson, handleClose, handleCancelLesson } = this.props;
+    const { lesson, handleClose, fetchLessons } = this.props;
 
     const route = ApiConstants.lessons.delete(lesson.id);
     const resolve = (response) => {
       handleClose();
-      handleCancelLesson();
+      fetchLessons();
     }
     const reject = (response) => console.log(response);
     Requester.delete(
@@ -36,21 +37,22 @@ class TeacherCancelModal extends React.Component {
   }
 
   renderCancelModal() {
-    const { handleClose, lesson } = this.props;
+    const { handleClose, lesson, isStudent } = this.props;
     const {
       price,
       start_time,
       teacher,
-      student
+      student,
     } = lesson;
     const { showNextScreen } = this.state;
-
+    var startTime = moment(lesson['start_time']);
+    var name = isStudent ? `${teacher.first_name} ${teacher.last_name}` : `${student.first_name} ${student.last_name}`;
     if (showNextScreen) {
       return (
         <div>
           <Modal.Body>
             <p>
-              We will notify your student ({student.first_name} {student.last_name}) of this week's cancelled lesson upon confirmation.
+              We will notify {name} of this week's cancelled lesson upon confirmation.
             </p>
           </Modal.Body>
           <Modal.Footer>
@@ -64,7 +66,7 @@ class TeacherCancelModal extends React.Component {
       return (
         <div>
           <Modal.Body>
-            <p>Please confirm that you would like to cancel this lesson at {start_time}</p>
+            <p>Please confirm that you would like to cancel this lesson at {startTime.format('MMM Do hh:mm A')}</p>
           </Modal.Body>
           <Modal.Footer>
             <Button className="button button--outline-orange" onClick={handleClose}>Close</Button>

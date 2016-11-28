@@ -28,3 +28,6 @@ const YEARS_PLAYED = ['0', '1', '2', '3', '4', '5', '6+']
 
 const PROFICIENCY = ['No Experience', 'Beginner', 'Intermediate',
                        'Advanced', 'Professional']
+
+const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                      'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
