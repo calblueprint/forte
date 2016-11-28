@@ -198,7 +198,7 @@ class StudentForm extends React.Component {
         optionsArray = GENDERS;
         break;
       case 'school_level':
-        optionsArray = SCHOOL_LEVELS;
+        optionsArray = STUDENT_SCHOOL_LEVELS;
         break;
       case 'state':
         optionsArray = STATES;

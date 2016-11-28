@@ -1,9 +1,11 @@
 // If any of these constants change, make sure to change the ones on
 // student.rb/teacher.rb as well
-const SCHOOL_LEVELS = ['kindergarten', '1st grade', '2nd grade', '3rd grade',
+const STUDENT_SCHOOL_LEVELS = ['kindergarten', '1st grade', '2nd grade', '3rd grade',
                       '4th grade', '5th grade', '6th grade', '7th grade',
                       '8th grade', '9th grade', '10th grade', '11th grade',
                       '12th grade']
+
+const TEACHER_SCHOOL_LEVELS = ['High School', 'College']
 
 const STATES = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
                 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
