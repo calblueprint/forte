@@ -98,7 +98,7 @@ class Teacher < ActiveRecord::Base
   validates :reference2_email, presence: true
   validates :reference2_phone, presence: true
   validates :criminal_charges, :inclusion => { :in => [true, false] }
-  validates :youth_participation, presence: true
+  validates :youth_participation, :inclusion => { :in => [true, false] }
   validates :waiver_signature, presence: true
   validates :waiver_date, presence: true
 
