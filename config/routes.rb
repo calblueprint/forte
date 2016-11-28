@@ -78,9 +78,9 @@ Rails.application.routes.draw do
   # Stripe
   ##################################################
   namespace :stripe do
-    post '/customer', to: 'imports#create_customer'
-    post '/charge', to: 'imports#charge_customer'
-    post '/account', to: 'imports#create_account'
+    post '/customer', to: 'customers#create_customer'
+    post '/charge', to: 'charges#charge_customer'
+    post '/account', to: 'accounts#create_account'
   end
 
   ##################################################

@@ -1,4 +1,4 @@
-class Stripe::AccountController < Stripe::BaseController 
+class Stripe::AccountsController < Stripe::BaseController 
   def create_account
 
     token = params[:stripe_token]

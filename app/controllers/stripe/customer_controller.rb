@@ -1,4 +1,4 @@
-class Stripe::CustomerController < Stripe::BaseController 
+class Stripe::CustomersController < Stripe::BaseController 
   def create_customer
 
     token = params[:stripe_token]
