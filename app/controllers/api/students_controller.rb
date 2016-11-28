@@ -60,7 +60,7 @@ class Api::StudentsController < Api::BaseController
     students = Student.all.select do |student|
       student_instruments = student.instruments.map &:name
       matched_instruments = student.matchings.map &:instrument
-      (student_instruments - matched_instruments).empty?
+      !(student_instruments - matched_instruments).empty?
     end
     render json: students,
            each_serializer: StudentShowSerializer,

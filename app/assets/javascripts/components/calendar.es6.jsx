@@ -2,26 +2,27 @@ class Calendar extends React.Component {
   
   static get propTypes() {
     return {
-      onSelect: React.PropTypes.func,
       events: React.PropTypes.array,
+      isEditable: React.PropTypes.bool,
     };
   }
 
   static get defaultProps() {
     return {
-      onSelect: null,
       events: [],
+      isEditable: true,
     }
   }
 
   componentDidMount() {
     const { calendar } = this.refs;
+    const { events, isEditable } = this.props;
     $(calendar).fullCalendar({
       header: false,
       defaultView: 'agendaWeek',
       columnFormat: 'ddd',
-      editable: true, // can edit existing events
-      selectable: true, // can create events 
+      editable: isEditable, // can edit existing events
+      selectable: isEditable, // can create events 
       minTime: "08:00",
       maxTime: "22:00",
       allDaySlot: false,
@@ -37,9 +38,6 @@ class Calendar extends React.Component {
           };
           $(calendar).fullCalendar('renderEvent', eventData, true);
           $(calendar).fullCalendar('unselect');
-          if (this.props.onSelect != null) {
-            this.props.onSelect(start, end)
-          }
       },
       selectHelper: true,
       selectConstraint:{ //won't let you drag to the next day 
@@ -51,15 +49,19 @@ class Calendar extends React.Component {
         end: "22:00",
       },
       eventRender: function(event, element) {
-        console.log(event);
-        element.find("div.fc-content").prepend('<span class="removeEvent glyphicon glyphicon-trash pull-right" id="Delete"></span>');
+        if (isEditable) {
+          element.find("div.fc-content").prepend('<span class="removeEvent glyphicon glyphicon-trash pull-right" id="Delete"></span>');
+        }
       },
       eventClick: function(calEvent, jsEvent, view) {
-        if (jsEvent.target.id === 'Delete') {
-          $(calendar).fullCalendar('removeEvents',calEvent._id);
+        if (isEditable) {
+          if (jsEvent.target.id === 'Delete') {
+            $(calendar).fullCalendar('removeEvents',calEvent._id);
+          }
         }
       },
       snapDuration: '00:15:00',
+      events: events,
     });
   }
   render () {

@@ -22,7 +22,9 @@ class StudentDescription extends React.Component {
       <div className="person-description">
         <p>Name: {this.props.student.first_name} {this.props.student.last_name}</p>
         <p>City: {this.props.student.city}</p>
-        { this.renderInstrumentButtons() }
+        <div className="instruments-container">
+          {this.renderInstrumentButtons()}
+        </div>
       </div>
     );
   }

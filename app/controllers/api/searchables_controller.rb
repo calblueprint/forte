@@ -1,8 +1,6 @@
 class Api::SearchablesController < Api::BaseController
   def users
     results = PgSearch.multisearch(params[:prefix])
-    puts results
-    puts 'hi'
     people_array = []
     for result in results
       if result.searchable_type == "Teacher"

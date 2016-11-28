@@ -31,9 +31,11 @@ class UnmatchedPage extends React.Component {
   studentOnClick(studentId, instrument) {
     var studentRoute = ApiConstants.students.show(studentId)
     var studentResolve = ((response) => {
-      this.setState({fullStudent: true, 
-                         student: response,
-                      instrument: instrument.name});
+      this.setState({
+        fullStudent: true, 
+        student: response,
+        instrument: instrument.name,
+      });
       var teacherRoute = ApiConstants.teachers.possibleTeachers(studentId, instrument.name);
       var teacherResolve = (response) => this.setState({ teachers: response["teachers"] });
       var teacherReject = (response) => console.log(response);
@@ -94,28 +96,30 @@ class UnmatchedPage extends React.Component {
     if (this.state.fullStudent) {
       if (this.state.student != null) {
         return (
-          <div>
-            <p>STUDENT DETAIL</p>
-            <Button className="button button--outline-orange" onClick={(event) => this.studentBackButton(event)}>Back</Button>
+          <div className="list-pane">
+            <Glyphicon glyph="chevron-left" className="back-button" onClick={(event) => this.studentBackButton(event)} />
             <FullStudent student={this.state.student} instrument={this.state.instrument}/>
           </div>
         );
       } else {
         return (
-          <div/>
+          <div className="list-pane"/>
         );
       }
     } else {
       if (this.state.students != null) {
         return (
-          <div>
-            <p>STUDENT LIST</p>
-            <PersonList people={this.state.students} isStudent={true} onPersonClick={(student, instrument) => this.studentOnClick(student, instrument)}/>
+          <div className="list-pane">
+            <h2>Unmatched Students</h2>
+            <PersonList 
+              people={this.state.students}
+              isStudent={true} 
+              onPersonClick={(student, instrument) => this.studentOnClick(student, instrument)} />
           </div>
         );
       } else {
         return (
-          <div/>
+          <div className="list-pane"/>
         );
       }
     }
@@ -125,34 +129,36 @@ class UnmatchedPage extends React.Component {
     if (this.state.fullTeacher) {
       if (this.state.teachers != null) {
         return (
-          <div>
-            <p>TEACHER DETAIL</p>
-            <Button className="button button--outline-orange" onClick={(event) => this.teacherBackButton(event)}>Back</Button>
+          <div className="list-pane">
+            <Glyphicon glyph="chevron-left" className="back-button" onClick={(event) => this.teacherBackButton(event)} />
             <FullTeacher teacher={this.state.teacher} />
             <Button className="button button--outline-orange" onClick={(event) => this.makeMatching(event)}>Match</Button>
           </div>
         );
       } else {
         return (
-          <div/>
+          <div className="list-pane"/>
         );
       }
     } else if (this.state.fullStudent) {
       if (this.state.teachers != null) {
         return (
-          <div>
-            <p>TEACHER LIST</p>
-            <PersonList people={this.state.teachers} isStudent={false} onPersonClick={(teacher, instrument) => this.teacherOnClick(teacher, instrument)}/>
+          <div className="list-pane">
+            <h2>Suitable Teachers</h2>
+            <PersonList 
+              people={this.state.teachers}
+              isStudent={false}
+              onPersonClick={(teacher, instrument) => this.teacherOnClick(teacher, instrument)} />
           </div>
         );
       } else {
         return (
-          <div/>
+          <div className="list-pane"/>
         );
       }
     } else {
       return (
-        <div/>
+        <div className="list-pane"/>
       );
     }
   }
@@ -161,8 +167,9 @@ class UnmatchedPage extends React.Component {
     return (
       <div className="page-wrapper">
         <AdminHeader />
-        <div className="content-wrapper">
+        <div className="content-wrapper unmatched-page">
           {this.renderStudentPart()}
+          <div className="divider" />
           {this.renderTeacherPart()}
         </div>
       </div>

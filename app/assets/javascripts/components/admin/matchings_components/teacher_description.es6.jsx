@@ -8,11 +8,12 @@ class TeacherDescription extends React.Component {
   }
 
   render () {
+    const { teacher, onClick } = this.props;
     return (
       <div className="person-description">
-        <p>Name: { this.props.teacher.first_name } { this.props.teacher.last_name }</p>
-        <p>City: { this.props.teacher.city }</p>
-        <Button className="button button--outline-orange" onClick={(event) => this.props.onClick(this.props.teacher.id, null)}>See More</Button>
+        <p>Name: {teacher.first_name} {teacher.last_name}</p>
+        <p>City: {teacher.city}</p>
+        <Button className="button button--outline-orange" onClick={(event) => onClick(teacher.id, null)}>See More</Button>
       </div>
     );
   }
