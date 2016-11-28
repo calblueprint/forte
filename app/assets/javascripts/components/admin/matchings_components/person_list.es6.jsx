@@ -3,14 +3,21 @@ class PersonList extends React.Component {
   static get PropTypes() {
     return {
       people: React.PropTypes.array,
-      onPersonClick: React.PropTypes.func
+      onPersonClick: React.PropTypes.func,
+      isStudent: React.PropTypes.bool
     };
   }
 
   renderPerson(person) {
-    return (
-      <PersonDescription person={person} key={person.id} onClick={this.props.onPersonClick}/>
-    );
+    if (this.props.isStudent) {
+      return (
+        <StudentDescription student={person} key={person.id} onClick={this.props.onPersonClick} />
+      );
+    } else {
+      return (
+        <TeacherDescription teacher={person} key={person.id} onClick={this.props.onPersonClick} />
+      );
+    }
   }
 
   renderPeople() {

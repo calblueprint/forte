@@ -56,20 +56,26 @@ class Api::TeachersController < Api::BaseController
 
   def possible_teachers
     student = Student.find params[:id]
-    all_teachers = Teacher.all
+    instrument = params[:instrument]
+    all_teachers = Teacher.all.includes(:instruments)
     teachers = []
     all_teachers.each do |teacher|
-      if (is_valid_matching(teacher, student) && teacher.is_searching)
+      if (is_valid_matching(teacher, student, instrument) && teacher.is_searching)
         teachers.push(teacher)
       end
     end
     render json: teachers
   end
 
-  def is_valid_matching(teacher, student)
+  def is_valid_matching(teacher, student, instrument)
     time_overlap = (teacher.availability & student.availability).length != 0
-    same_instrument = (teacher.instruments.include? student.instrument)
-    return (time_overlap and same_instrument)
+    teacher_instrument_valid = false
+    teacher.instruments.each do |teacher_instrument|
+      if teacher_instrument.name == instrument
+        teacher_instrument_valid = true
+      end
+    end
+    return (time_overlap and teacher_instrument_valid)
   end
 
   def teacher_params

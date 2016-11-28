@@ -9,6 +9,7 @@ class UnmatchedPage extends React.Component {
       teachers: null,
       student: null,
       teacher: null,
+      instrument: null,
     };
   }
 
@@ -27,11 +28,13 @@ class UnmatchedPage extends React.Component {
     );
   }
 
-  studentOnClick(studentId) {
+  studentOnClick(studentId, instrument) {
     var studentRoute = ApiConstants.students.show(studentId)
     var studentResolve = ((response) => {
-      this.setState({fullStudent: true, student: response});
-      var teacherRoute = ApiConstants.teachers.possibleTeachers(studentId);
+      this.setState({fullStudent: true, 
+                         student: response,
+                      instrument: instrument.name});
+      var teacherRoute = ApiConstants.teachers.possibleTeachers(studentId, instrument.name);
       var teacherResolve = (response) => this.setState({ teachers: response["teachers"] });
       var teacherReject = (response) => console.log(response);
       Requester.get(
@@ -48,7 +51,7 @@ class UnmatchedPage extends React.Component {
     );
   }
 
-  teacherOnClick(teacher_id) {
+  teacherOnClick(teacher_id, instrument) {
     var route = ApiConstants.teachers.show(teacher_id)
     var resolve = (response) => this.setState({fullTeacher: true, teacher: response});
     var reject = (response) => console.log(response);
@@ -72,7 +75,7 @@ class UnmatchedPage extends React.Component {
     var params = {
       student_id: this.state.student.id,
       teacher_id: this.state.teacher.id,
-      instrument: this.state.student.instrument
+      instrument: this.state.instrument
     };
     var resolve = (response) => {
       this.setState({ fullStudent: false, fullTeacher: false });
@@ -94,7 +97,7 @@ class UnmatchedPage extends React.Component {
           <div>
             <p>STUDENT DETAIL</p>
             <Button className="button button--outline-orange" onClick={(event) => this.studentBackButton(event)}>Back</Button>
-            <FullStudent student={this.state.student}/>
+            <FullStudent student={this.state.student} instrument={this.state.instrument}/>
           </div>
         );
       } else {
@@ -107,7 +110,7 @@ class UnmatchedPage extends React.Component {
         return (
           <div>
             <p>STUDENT LIST</p>
-            <PersonList people={this.state.students} onPersonClick={(event) => this.studentOnClick(event)}/>
+            <PersonList people={this.state.students} isStudent={true} onPersonClick={(student, instrument) => this.studentOnClick(student, instrument)}/>
           </div>
         );
       } else {
@@ -139,7 +142,7 @@ class UnmatchedPage extends React.Component {
         return (
           <div>
             <p>TEACHER LIST</p>
-            <PersonList people={this.state.teachers} onPersonClick={(event) => this.teacherOnClick(event)}/>
+            <PersonList people={this.state.teachers} isStudent={false} onPersonClick={(teacher, instrument) => this.teacherOnClick(teacher, instrument)}/>
           </div>
         );
       } else {
