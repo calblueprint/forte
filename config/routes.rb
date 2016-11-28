@@ -75,6 +75,14 @@ Rails.application.routes.draw do
   }
 
   ##################################################
+  # Stripe
+  ##################################################
+  namespace :stripe do
+    post '/customer', to: 'imports#create_customer'
+    post '/charge', to: 'imports#charge_customer'
+  end
+
+  ##################################################
   #
   # API
   #
