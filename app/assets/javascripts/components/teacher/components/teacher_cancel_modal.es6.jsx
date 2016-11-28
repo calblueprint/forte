@@ -44,6 +44,7 @@ class TeacherCancelModal extends React.Component {
       student
     } = lesson;
     const { showNextScreen } = this.state;
+    var startTime = moment(lesson['start_time']);
 
     if (showNextScreen) {
       return (
@@ -64,7 +65,7 @@ class TeacherCancelModal extends React.Component {
       return (
         <div>
           <Modal.Body>
-            <p>Please confirm that you would like to cancel this lesson at {start_time}</p>
+            <p>Please confirm that you would like to cancel this lesson at {startTime.format('MMM Do hh:mm A')}</p>
           </Modal.Body>
           <Modal.Footer>
             <Button className="button button--outline-orange" onClick={handleClose}>Close</Button>

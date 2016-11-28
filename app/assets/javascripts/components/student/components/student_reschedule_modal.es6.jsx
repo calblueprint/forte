@@ -29,8 +29,8 @@ class StudentRescheduleModal extends React.Component {
   setLessonTime() {
     const { calendar } = this.refs.rescheduler.refs;
     var eventArray = $(calendar).fullCalendar('clientEvents');
-    this.setState({ lessonStartTime: eventArray[0]['start'].format() });
-    this.setState({ lessonEndTime: eventArray[0]['end'].format() });
+    this.setState({ lessonStartTime: moment(eventArray[0]['start']) });
+    this.setState({ lessonEndTime: moment(eventArray[0]['end']) });
   }
 
   handleRescheduleLesson() {
@@ -60,11 +60,12 @@ class StudentRescheduleModal extends React.Component {
   renderRescheduleModal() {
     const { handleClose, lesson } = this.props;
     const { showNextScreen, lessonStartTime } = this.state;
+    var lessonTime = moment(lessonStartTime);
     if (showNextScreen) {
       return (
         <div>
           <Modal.Body>
-            Are you sure you wish to reschedule this lesson to {lessonStartTime}
+            Are you sure you wish to reschedule this lesson to {lessonTime.format('MMM DD hh:mm A')}
           </Modal.Body>
           <Modal.Footer>
             <Button className="button button--outline-orange" onClick={() => this.handleBack()}>Back</Button>
