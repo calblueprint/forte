@@ -20,6 +20,8 @@
 #  first_name             :string
 #  last_name              :string
 #  availability           :integer          default([]), is an Array
+#  account_id             :string
+#  bank_id                :string
 #
 
 class Teacher < ActiveRecord::Base

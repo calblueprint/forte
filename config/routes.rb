@@ -80,6 +80,7 @@ Rails.application.routes.draw do
   namespace :stripe do
     post '/customer', to: 'imports#create_customer'
     post '/charge', to: 'imports#charge_customer'
+    post '/account', to: 'imports#create_account'
   end
 
   ##################################################
