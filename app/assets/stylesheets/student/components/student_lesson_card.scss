@@ -5,6 +5,7 @@
   align-items: center;
   justify-content: space-around;
   border: 2px solid $orange60;
+  border-bottom: 0px;
   padding: 10px 30px;
 
   .lesson-time-container {
@@ -43,9 +44,9 @@
   .actions {
     display: flex;
     flex-direction: column;
-    img {
-      height: 25px;
-      margin: 15px 0px;
+
+    * {
+      margin: 5px 10px;
     }
   }
 }

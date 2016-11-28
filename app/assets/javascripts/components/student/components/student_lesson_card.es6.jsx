@@ -107,9 +107,13 @@ class StudentLessonCard extends React.Component {
           </div>
         </div>
         <div className="actions">
-          <img src={ImageConstants.icons.cancel} onClick={() => this.openCancelModal()} />
+          <Button className="button button--outline-orange" onClick={() => this.openCancelModal()}>
+          Cancel
+          </Button>
           {this.renderCancelModal()}
-          <img src={ImageConstants.icons.modify} onClick={() => this.openRescheduleModal()} />
+          <Button className="button button--outline-orange" onClick={() => this.openCancelModal()}>
+          Reschedule
+          </Button>
           {this.renderRescheduleModal()}
         </div>
       </div>
