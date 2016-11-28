@@ -1,4 +1,4 @@
-class StudentRescheduleModal extends React.Component {
+class RescheduleModal extends React.Component {
 
   constructor() {
     super();
@@ -14,6 +14,7 @@ class StudentRescheduleModal extends React.Component {
       fetchLessons: React.PropTypes.func,
       handleClose: React.PropTypes.func,
       lesson: React.PropTypes.object.isRequired,
+      isStudent: React.PropTypes.bool.isRequired,
     };
   }
 
@@ -65,7 +66,7 @@ class StudentRescheduleModal extends React.Component {
       return (
         <div>
           <Modal.Body>
-            Are you sure you wish to reschedule this lesson to {lessonTime.format('MMM DD hh:mm A')}
+            Are you sure you wish to reschedule this lesson to {lessonTime.format('MMM DD hh:mm A')}?
           </Modal.Body>
           <Modal.Footer>
             <Button className="button button--outline-orange" onClick={() => this.handleBack()}>Back</Button>

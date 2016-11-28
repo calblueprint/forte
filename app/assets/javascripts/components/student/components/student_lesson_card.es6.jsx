@@ -37,10 +37,11 @@ class StudentLessonCard extends React.Component {
 
     if (showCancelModal) {
       return (
-        <StudentCancelModal
+        <CancelModal
           lesson={lesson}
           handleClose={() => this.closeCancelModal()}
           fetchLessons={fetchLessons}
+          isStudent={true}
         />
       );
     }
@@ -51,10 +52,11 @@ class StudentLessonCard extends React.Component {
     const { showRescheduleModal } = this.state;
     if (showRescheduleModal) {
       return (
-        <StudentRescheduleModal 
+        <RescheduleModal 
           lesson={lesson} 
           handleClose={() => this.closeRescheduleModal()}
           fetchLessons={fetchLessons}
+          isStudent={true}
         />
       );
     }
@@ -71,16 +73,8 @@ class StudentLessonCard extends React.Component {
     } = lesson;
 
     var startTime = moment(lesson['start_time']);
-    // console.log(startTime.getTimezoneOffset());
-    // var testDateUtc = moment.utc(startTime);
-    // var localDate = moment(testDateUtc).local();
-    // console.log(localDate);
-    // console.log(localDate.hour());
     var paid = is_paid ? 'Paid' : 'Unpaid';
     //TODO: Make sure right timezones and stuff
-
-    // startTime = (startTime).format('YYYY-MM-DD HH:mm:ss');
-    // console.log(startTime.tz('America/Los_Angeles').format('YYYY-MM-DD HH:mm'));
     return (
       <div className="student-lesson-card">
         <div className="lesson-time-container">
@@ -111,7 +105,7 @@ class StudentLessonCard extends React.Component {
           Cancel
           </Button>
           {this.renderCancelModal()}
-          <Button className="button button--outline-orange" onClick={() => this.openCancelModal()}>
+          <Button className="button button--outline-orange" onClick={() => this.openRescheduleModal()}>
           Reschedule
           </Button>
           {this.renderRescheduleModal()}

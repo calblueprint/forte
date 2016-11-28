@@ -34,7 +34,8 @@ class Api::TeachersController < Api::BaseController
       # TODO(shimmy): To make this endpoint accessible to admins, we should
       # check if the user is simply logged in, not if they're a teacher.
       # Also, for more validations, if the user is a teacher, we should check if params[:id] == current_user.id
-      lessons = Lesson.upcoming.where(teacher_id: params[:id])
+      teacher = Teacher.find params[:id]
+      lessons = teacher.lessons.upcoming
       render json: lessons,
              each_serializer: LessonIndexSerializer,
              root: "lessons"
@@ -45,7 +46,8 @@ class Api::TeachersController < Api::BaseController
 
   def recent_lessons
     if current_teacher
-      lessons = Lesson.recent.where(teacher_id: params[:id])
+      teacher = Teacher.find params[:id]
+      lessons = teacher.lessons.upcoming
       render json: lessons,
              each_serializer: LessonIndexSerializer,
              root: "lessons"

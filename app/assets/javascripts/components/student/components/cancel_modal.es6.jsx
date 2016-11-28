@@ -1,4 +1,4 @@
-class StudentCancelModal extends React.Component {
+class CancelModal extends React.Component {
 
   constructor() {
     super();
@@ -12,6 +12,7 @@ class StudentCancelModal extends React.Component {
       handleClose: React.PropTypes.func.isRequired,
       fetchLessons: React.PropTypes.func.isRequired,
       lesson: React.PropTypes.object.isRequired,
+      isStudent: React.PropTypes.bool.isRequired,
     };
   }
 
@@ -20,7 +21,7 @@ class StudentCancelModal extends React.Component {
   }
 
   handleConfirmClick() {
-    const { lesson, handleClose, handleCancelLesson } = this.props;
+    const { lesson, handleClose, fetchLessons } = this.props;
 
     const route = ApiConstants.lessons.delete(lesson.id);
     const resolve = (response) => {
@@ -36,22 +37,22 @@ class StudentCancelModal extends React.Component {
   }
 
   renderCancelModal() {
-    const { handleClose, lesson } = this.props;
+    const { handleClose, lesson, isStudent } = this.props;
     const {
       price,
       start_time,
       teacher,
-      student
+      student,
     } = lesson;
     const { showNextScreen } = this.state;
     var startTime = moment(lesson['start_time']);
-
+    var name = isStudent ? `${teacher.first_name} ${teacher.last_name}` : `${student.first_name} ${student.last_name}`;
     if (showNextScreen) {
       return (
         <div>
           <Modal.Body>
             <p>
-              We will notify your teacher ({teacher.first_name} {teacher.last_name}) of this week's cancelled lesson upon confirmation.
+              We will notify {name} of this week's cancelled lesson upon confirmation.
             </p>
           </Modal.Body>
           <Modal.Footer>
