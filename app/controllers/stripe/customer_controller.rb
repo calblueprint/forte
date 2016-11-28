@@ -8,7 +8,7 @@ class Stripe::CustomerController < Stripe::BaseController
       :description  => 'New Student Stripe Account',
     )
 
-    student = Student.find params[:id].to_i
+    student = Student.find params[:id]
     student.customer_id = customer.id
 
     if student.save
