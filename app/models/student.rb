@@ -68,7 +68,7 @@ class Student < ActiveRecord::Base
   validates :school_level, presence: true
   validates :guardian_first_name, presence: true
   validates :guardian_last_name, presence: true
-  validates :guardian_phone, presence: true 
+  validates :guardian_phone, presence: true
   validates :introduction, presence: true
   validates :lesson_experience, presence: true
   validates :performance_experience, presence: true
@@ -84,14 +84,13 @@ class Student < ActiveRecord::Base
   validates :waiver_signature, presence: true
   validates :waiver_date, presence: true
 
-  
   has_many :matchings
-  has_many :lessons, through: :matchings 
+  has_many :lessons, through: :matchings
   has_many :teachers, through: :matchings
   has_many :instruments, as: :instrumentable, dependent: :destroy
 
   accepts_nested_attributes_for :instruments
-  
+
   # If any of the enums here change, make sure to change constants.es6.jsx file
   # too
   enum school_level: [ :kindergarten, :'1st grade', :'2nd grade', :'3rd grade',
@@ -104,9 +103,19 @@ class Student < ActiveRecord::Base
                 :NM, :NY, :NC, :ND, :OH, :OK, :OR, :PA, :RI, :SC,
                 :SD, :TN, :TX, :UT, :VT, :VA, :WA, :WV, :WI, :WY ]
   enum gender: [ :female, :male, :other ]
-  enum travel_distance: [ :'I am not willing to travel', :'Up to 5 miles', 
-                          :'Up to 10 miles', :'Up to 20 miles', 
+  enum travel_distance: [ :'I am not willing to travel', :'Up to 5 miles',
+                          :'Up to 10 miles', :'Up to 20 miles',
                           :'20 miles or more']
   enum income_range: [:'$0 - $10,000', :'$10,001 - $20,000', :'$20,001 - 30,000', :'$30,001 - 40,000', :'$40,001 - $50,000']
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
+  def submit_signup
+    ForteMailer.student_signup_notify_admin(self).deliver_now
+    ForteMailer.student_signup_notify_student(self).deliver_now
+    ForteMailer.student_signup_notify_parent(self).deliver_now
+  end
 
 end

@@ -50,7 +50,7 @@ Rails.application.routes.draw do
     get :involvement
     get :program
     get :contact
-    post :send_email
+    post :send_contact_email
     get :about
   end
 
@@ -89,7 +89,6 @@ Rails.application.routes.draw do
   #
   ##################################################
   namespace :api do
-
     ##################################################
     # Instruments
     ##################################################
@@ -114,18 +113,20 @@ Rails.application.routes.draw do
     ##################################################
     # Students
     ##################################################
-    resources :students, only: [:index, :destroy, :show, :update]
     get '/students/recent_lessons/:id', to: 'students#recent_lessons'
     get '/students/upcoming_lessons/:id', to: 'students#upcoming_lessons'
     get '/students/unmatched', to: 'students#unmatched'
+    resources :students, only: [:index, :destroy, :show, :update]
+    
 
     ##################################################
     # Teachers
     ##################################################
-    resources :teachers, only: [:index, :destroy, :show, :update]
     get '/teachers/possible_teachers/:id', to: 'teachers#possible_teachers'
     get '/teachers/recent_lessons/:id', to: 'teachers#recent_lessons'
     get '/teachers/upcoming_lessons/:id', to: 'teachers#upcoming_lessons'
-
+    get '/teachers/possible_teachers', to: 'teachers#possible_teachers'
+    resources :teachers, only: [:index, :destroy, :show, :update]
+    
   end
 end

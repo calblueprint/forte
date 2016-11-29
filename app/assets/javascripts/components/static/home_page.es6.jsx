@@ -22,7 +22,7 @@ class HomePage extends React.Component {
       </div>
     )
   }
-  
+
   render () {
     return (
       <div className="page-wrapper">
@@ -37,8 +37,10 @@ class HomePage extends React.Component {
                         onClick={() => window.location = RouteConstants.form.student}>
                   Apply to Learn
                 </Button>
-                <Button className="button button--solid-orange button--lg">Apply
-                to Teach</Button>
+                <Button className="button button--solid-orange button--lg"
+                        onClick={() => window.location = RouteConstants.form.teacher}>
+                  Apply to Teach
+                </Button>
               </div>
             </div>
             <div className="forte-description">
@@ -62,7 +64,7 @@ class HomePage extends React.Component {
               <div className="information-block">
                 <h2 className="information-block__title">How it works</h2>
                 <p className="information-block__description">
-                  Our teachers provide deeply discounted private instruction to 
+                  Our teachers provide deeply discounted private instruction to
                   underserved youth in the Bay Area.
                 </p>
               </div>

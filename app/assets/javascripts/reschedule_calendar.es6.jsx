@@ -1,28 +1,32 @@
-class Calendar extends React.Component {
+class RescheduleCalendar extends React.Component {
   
   static get propTypes() {
     return {
+      onSelect: React.PropTypes.func,
       events: React.PropTypes.array,
-      isEditable: React.PropTypes.bool,
+      lesson: React.PropTypes.object,
     };
   }
 
   static get defaultProps() {
     return {
+      onSelect: null,
       events: [],
-      isEditable: true,
     }
   }
 
   componentDidMount() {
     const { calendar } = this.refs;
-    const { events, isEditable } = this.props;
+    const { lesson } = this.props;
+    var startTime = moment(lesson['start_time']);
+    var endTime = moment(lesson['end_time']);
     $(calendar).fullCalendar({
       header: false,
+      defaultDate: lesson['start_time'],
       defaultView: 'agendaWeek',
-      columnFormat: 'ddd',
-      editable: isEditable, // can edit existing events
-      selectable: isEditable, // can create events 
+      columnFormat: 'ddd M/D',
+      editable: true, // can't reschedule how long the lesson is
+      eventDurationEditable: false, // can't make lesson longer/shorter
       minTime: "08:00",
       maxTime: "22:00",
       allDaySlot: false,
@@ -38,6 +42,9 @@ class Calendar extends React.Component {
           };
           $(calendar).fullCalendar('renderEvent', eventData, true);
           $(calendar).fullCalendar('unselect');
+          if (this.props.onSelect != null) {
+            this.props.onSelect(start, end)
+          }
       },
       selectHelper: true,
       selectConstraint:{ //won't let you drag to the next day 
@@ -48,20 +55,16 @@ class Calendar extends React.Component {
         start: "08:00",
         end: "22:00",
       },
-      eventRender: function(event, element) {
-        if (isEditable) {
-          element.find("div.fc-content").prepend('<span class="removeEvent glyphicon glyphicon-trash pull-right" id="Delete"></span>');
-        }
-      },
-      eventClick: function(calEvent, jsEvent, view) {
-        if (isEditable) {
-          if (jsEvent.target.id === 'Delete') {
-            $(calendar).fullCalendar('removeEvents',calEvent._id);
-          }
-        }
-      },
+      snapMinutes: 15,
+      events: [
+        { 
+          title: 'Lesson',
+          start: startTime,
+          end: endTime,
+        },
+      ],
       snapDuration: '00:15:00',
-      events: events,
+      firstDay: (startTime.day() + 4) % 7, // make sure that the first day of the week is always 3 days before the lesson day
     });
   }
   render () {
@@ -70,7 +73,3 @@ class Calendar extends React.Component {
     );
   }
 }
-
-/** 
-Use this as an availability tool 
-**/

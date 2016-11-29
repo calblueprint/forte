@@ -1,0 +1,53 @@
+.unmatched-page {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+
+  .back-button {
+    align-self: flex-start;
+    color: $grey80;
+    cursor: pointer;
+  }
+
+  .divider {
+    border: 1px solid $grey20;
+    margin: 20px 0px;
+  }
+
+  .list-pane {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    padding: 20px;
+  }
+}
+
+.person-list {
+  width: 100%;
+}
+
+.person-description {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid $grey20;
+
+  .instruments-container {
+    display: flex;
+
+    * {
+      margin: 0px 10px;
+    }
+  }
+}
+
+.full-person {
+  display: flex;
+  flex-direction: column;
+
+  .name {
+    align-self: center;
+  }
+}

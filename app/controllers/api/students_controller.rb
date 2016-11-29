@@ -57,20 +57,14 @@ class Api::StudentsController < Api::BaseController
   end
 
   def unmatched
-    matchings = Matching.all
-    student_ids = Set.new
-    for matching in matchings do
-      student_ids.add matching.student_id
+    students = Student.all.select do |student|
+      student_instruments = student.instruments.map &:name
+      matched_instruments = student.matchings.map &:instrument
+      !(student_instruments - matched_instruments).empty?
     end
-
-    all_students = Student.all
-    students = []
-    all_students.each do |student|
-      if (!(student_ids.include? student.id))
-        students.push(student)
-      end
-    end
-    render json: students
+    render json: students,
+           each_serializer: StudentShowSerializer,
+           root: "students"
   end
 
   def student_params

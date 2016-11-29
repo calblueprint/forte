@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161128021307) do
+ActiveRecord::Schema.define(version: 20161123073611) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -151,7 +151,6 @@ ActiveRecord::Schema.define(version: 20161128021307) do
     t.integer  "gender"
     t.datetime "birthday"
     t.string   "school"
-    t.integer  "school_level"
     t.string   "phone"
     t.text     "introduction"
     t.text     "lesson_experience"
@@ -180,6 +179,7 @@ ActiveRecord::Schema.define(version: 20161128021307) do
     t.text     "criminal_explanation"
     t.string   "waiver_signature"
     t.datetime "waiver_date"
+    t.integer  "school_level"
     t.string   "account_id"
     t.string   "bank_id"
   end

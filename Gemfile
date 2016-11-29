@@ -64,5 +64,6 @@ end
 source "https://rails-assets.org" do
   gem 'rails-assets-react-datetime'
   gem 'rails-assets-moment'
+  gem 'rails-assets-moment-timezone'
 end
 

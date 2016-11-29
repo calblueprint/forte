@@ -203,6 +203,8 @@ GEM
       railties (= 4.2.4)
       sprockets-rails
     rails-assets-moment (2.15.2)
+    rails-assets-moment-timezone (0.5.10)
+      rails-assets-moment (>= 2.6.0)
     rails-assets-react-datetime (2.6.0)
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
@@ -342,6 +344,7 @@ DEPENDENCIES
   quiet_assets
   rails (= 4.2.4)
   rails-assets-moment!
+  rails-assets-moment-timezone!
   rails-assets-react-datetime!
   rails_12factor
   react-bootstrap-rails
