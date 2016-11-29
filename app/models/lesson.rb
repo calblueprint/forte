@@ -14,6 +14,7 @@
 #
 
 class Lesson < ActiveRecord::Base
+  after_initialize :init
 
   scope :upcoming, -> { where("start_time >= ?", Date.today) }
   scope :recent, -> { where("start_time < ?", Date.today) }
@@ -26,5 +27,9 @@ class Lesson < ActiveRecord::Base
   belongs_to :matching
   has_one :student, through: :matching
   has_one :teacher, through: :matching
+
+  def init
+    self.location = self.matching.location || 'Location has not been set'
+  end
 
 end

@@ -20,6 +20,38 @@
 #  first_name             :string
 #  last_name              :string
 #  availability           :integer          default([]), is an Array
+#  gender                 :integer
+#  birthday               :datetime
+#  school                 :string
+#  phone                  :string
+#  introduction           :text
+#  lesson_experience      :text
+#  teaching_experience    :text
+#  training_experience    :text
+#  performance_experience :text
+#  address                :string
+#  address_apt            :string
+#  state                  :integer
+#  zipcode                :integer
+#  location_preference    :boolean
+#  travel_distance        :integer
+#  background_check       :boolean
+#  reference1_first_name  :string
+#  reference1_last_name   :string
+#  reference1_relation    :string
+#  reference1_email       :string
+#  reference1_phone       :string
+#  reference2_first_name  :string
+#  reference2_last_name   :string
+#  reference2_relation    :string
+#  reference2_email       :string
+#  reference2_phone       :string
+#  criminal_charges       :boolean
+#  youth_participation    :boolean
+#  criminal_explanation   :text
+#  waiver_signature       :string
+#  waiver_date            :datetime
+#  school_level           :integer
 #
 
 FactoryGirl.define do

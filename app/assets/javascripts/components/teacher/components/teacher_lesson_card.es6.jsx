@@ -52,8 +52,8 @@ class TeacherLessonCard extends React.Component {
     const { showRescheduleModal } = this.state;
     if (showRescheduleModal) {
       return (
-        <RescheduleModal 
-          lesson={lesson} 
+        <RescheduleModal
+          lesson={lesson}
           handleClose={() => this.closeRescheduleModal()}
           fetchLessons={fetchLessons}
           isStudent={false}
@@ -92,7 +92,7 @@ class TeacherLessonCard extends React.Component {
         <div className="details">
           <div className="info-row">
             <img src={ImageConstants.icons.location} href="#" />
-            <h6>Home</h6>
+            <h6>{lesson.location}</h6>
           </div>
           <p>{teacher.city}</p>
           <div className="cost">
