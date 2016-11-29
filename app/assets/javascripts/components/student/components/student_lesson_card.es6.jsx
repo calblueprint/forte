@@ -52,8 +52,8 @@ class StudentLessonCard extends React.Component {
     const { showRescheduleModal } = this.state;
     if (showRescheduleModal) {
       return (
-        <RescheduleModal 
-          lesson={lesson} 
+        <RescheduleModal
+          lesson={lesson}
           handleClose={() => this.closeRescheduleModal()}
           fetchLessons={fetchLessons}
           isStudent={true}
@@ -69,6 +69,7 @@ class StudentLessonCard extends React.Component {
       start_time,
       teacher,
       student,
+      matching,
       is_paid,
     } = lesson;
 
@@ -82,7 +83,7 @@ class StudentLessonCard extends React.Component {
           <h4>{startTime.format('hh:mm A').toUpperCase()}</h4>
         </div>
         <div className="logistics">
-          <h4>Piano Lesson</h4>
+          <h4>{matching.instrument} Lesson</h4>
           <div className="info-row">
             <img src={ImageConstants.icons.person} href="#" />
             <h5>{teacher.first_name} {teacher.last_name}</h5>
