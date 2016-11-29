@@ -92,7 +92,7 @@ class StudentLessonCard extends React.Component {
         <div className="details">
           <div className="info-row">
             <img src={ImageConstants.icons.location} href="#" />
-            <h5>2320 Regent Street, Berkeley 94704</h5>
+            <h5>{lesson.location}</h5>
           </div>
           <p>{teacher.city}</p>
           <div className="cost">

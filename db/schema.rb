@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20161128021307) do
     t.datetime "end_time"
     t.decimal  "price"
     t.integer  "matching_id"
+    t.string   "location"
   end
 
   add_index "lessons", ["matching_id"], name: "index_lessons_on_matching_id", using: :btree
@@ -67,6 +68,7 @@ ActiveRecord::Schema.define(version: 20161128021307) do
     t.integer  "student_id"
     t.integer  "teacher_id"
     t.integer  "lesson_time", default: [], null: false, array: true
+    t.string   "location"
   end
 
   add_index "matchings", ["student_id"], name: "index_matchings_on_student_id", using: :btree

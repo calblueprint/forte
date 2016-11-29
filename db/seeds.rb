@@ -127,6 +127,7 @@ def create_single_matching(teacher, student, instrument_name)
     lesson_time: [student.availability[0], student.availability[1], student.availability[2]],
     student_id: student.id,
     teacher_id: teacher.id,
+    location: teacher.address,
   )
   matching
 end
