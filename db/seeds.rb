@@ -3,7 +3,7 @@
 #
 require 'active_support/core_ext/numeric/time.rb'
 
-$instruments_array = ["piano", "clarinet", "violin"]
+$instruments_array = ["Piano", "Clarinet", "Violin"]
 
 def create_single_admin(n)
   admin = Admin.create(

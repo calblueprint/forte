@@ -52,6 +52,8 @@
 #  waiver_signature       :string
 #  waiver_date            :datetime
 #  school_level           :integer
+#  account_id             :string
+#  bank_id                :string
 #
 
 class Teacher < ActiveRecord::Base
