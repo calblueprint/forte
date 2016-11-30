@@ -30,7 +30,6 @@ class RescheduleModal extends React.Component {
   setLessonTime() {
     const { calendar } = this.refs.rescheduler.refs;
     var eventArray = $(calendar).fullCalendar('clientEvents');
-    console.log(eventArray[0]['start']);
     this.setState({ lessonStartTime: moment(eventArray[0]['start']) });
     this.setState({ lessonEndTime: moment(eventArray[0]['end']) });
   }
