@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   get 'student', to: redirect('student/lessons')
   namespace :student do
     get :lessons
+    get :settings
   end
 
   ##################################################
@@ -117,7 +118,7 @@ Rails.application.routes.draw do
     get '/students/upcoming_lessons/:id', to: 'students#upcoming_lessons'
     get '/students/unmatched', to: 'students#unmatched'
     resources :students, only: [:index, :destroy, :show, :update]
-    
+
 
     ##################################################
     # Teachers
@@ -127,6 +128,6 @@ Rails.application.routes.draw do
     get '/teachers/upcoming_lessons/:id', to: 'teachers#upcoming_lessons'
     get '/teachers/possible_teachers', to: 'teachers#possible_teachers'
     resources :teachers, only: [:index, :destroy, :show, :update]
-    
+
   end
 end
