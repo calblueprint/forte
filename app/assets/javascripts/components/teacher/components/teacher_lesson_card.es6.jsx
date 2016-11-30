@@ -102,11 +102,11 @@ class TeacherLessonCard extends React.Component {
           </div>
         </div>
          <div className="actions">
-          <Button className="button button--outline-orange" onClick={() => this.openCancelModal()}>
+          <Button className="button button--outline-orange button--sm" onClick={() => this.openCancelModal()}>
           Cancel
           </Button>
           {this.renderCancelModal()}
-          <Button className="button button--outline-orange" onClick={() => this.openRescheduleModal()}>
+          <Button className="button button--outline-orange button--sm" onClick={() => this.openRescheduleModal()}>
           Reschedule
           </Button>
           {this.renderRescheduleModal()}
