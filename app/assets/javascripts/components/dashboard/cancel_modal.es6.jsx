@@ -21,6 +21,8 @@ class CancelModal extends React.Component {
   }
 
   handleConfirmClick() {
+    //TODO: Check difference of current time and lesson time and charge
+    //cancellation fee if necessary
     const { lesson, handleClose, fetchLessons } = this.props;
 
     const route = ApiConstants.lessons.delete(lesson.id);

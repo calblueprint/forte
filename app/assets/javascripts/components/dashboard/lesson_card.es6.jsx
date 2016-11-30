@@ -75,6 +75,7 @@ class LessonCard extends React.Component {
     } = lesson;
 
     var startTime = moment(lesson['start_time']);
+    console.log(startTime);
     //TODO: Make sure right timezones and stuff
     if (isStudent) {
       var name = `${teacher.first_name} ${teacher.last_name}`;
