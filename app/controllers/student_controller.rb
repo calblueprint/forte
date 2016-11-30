@@ -4,4 +4,9 @@ class StudentController < ApplicationController
   def lessons
     @student_id = current_student.id
   end
+
+  def settings
+    @student_id = current_student.id
+  end
+
 end

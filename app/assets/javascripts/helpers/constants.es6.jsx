@@ -15,14 +15,14 @@ const STATES = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
 
 const GENDERS = ['female', 'male', 'other']
 
-const TRAVEL_DISTANCES = ['I am not willing to travel', 'Up to 5 miles', 
-                          'Up to 10 miles', 'Up to 20 miles', 
+const TRAVEL_DISTANCES = ['I am not willing to travel', 'Up to 5 miles',
+                          'Up to 10 miles', 'Up to 20 miles',
                           '20 miles or more']
 
-const INCOME_RANGES = ['$0 - $10,000', '$10,001 - $20,000', '$20,001 - 30,000', 
+const INCOME_RANGES = ['$0 - $10,000', '$10,001 - $20,000', '$20,001 - 30,000',
                       '$30,001 - 40,000', '$40,001 - $50,000']
 
-const INSTRUMENTS = ['piano', 'clarinet', 'violin']
+const INSTRUMENTS = ['Piano', 'Clarinet', 'Violin']
 
 const YEARS_PLAYED = ['0', '1', '2', '3', '4', '5', '6+']
 

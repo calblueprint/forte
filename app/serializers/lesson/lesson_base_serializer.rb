@@ -5,5 +5,6 @@ class LessonBaseSerializer < BaseSerializer
              :feedback,
              :matching_id,
              :start_time,
-             :end_time
+             :end_time,
+             :location
 end

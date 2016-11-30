@@ -3,7 +3,7 @@
 #
 require 'active_support/core_ext/numeric/time.rb'
 
-$instruments_array = ["piano", "clarinet", "violin"]
+$instruments_array = ["Piano", "Clarinet", "Violin"]
 
 def create_single_admin(n)
   admin = Admin.create(
@@ -104,7 +104,7 @@ def create_single_student(n)
     criminal_explanation: Faker::Lorem.paragraph(4),
     waiver_signature: Faker::Name.first_name,
     waiver_date: Faker::Date.between(2.days.ago, Date.today),
-  ) 
+  )
   student
 end
 
@@ -127,6 +127,7 @@ def create_single_matching(teacher, student, instrument_name)
     lesson_time: [student.availability[0], student.availability[1], student.availability[2]],
     student_id: student.id,
     teacher_id: teacher.id,
+    location: teacher.address,
   )
   matching
 end
