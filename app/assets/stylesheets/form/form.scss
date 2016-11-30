@@ -16,6 +16,10 @@
   justify-content: space-between;
   margin-bottom: $form-control-bottom-margin;
 
+  .form-row-input {
+    margin-bottom: 0px;
+  }
+
   > * { margin: 0 10px; }    
   > :first-child { margin-left: 0; }
   > :last-child { margin-right: 0; }

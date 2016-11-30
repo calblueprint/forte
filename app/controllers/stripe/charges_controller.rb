@@ -9,7 +9,7 @@ class Stripe::ChargesController < Stripe::BaseController
       :amount => amount, # in cents
       :currency => "usd",
       :customer => student.customer_id,
-      :destination => teacher.account_id,
+      :destination => teacher.account_id
     )
     rescue Stripe::CardError => e
       unprocessable_response student      

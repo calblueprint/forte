@@ -73,6 +73,14 @@
         show: (id) => `/api/matchings/${id}`,
       };
     }
+
+    get stripe() {
+      return {
+        createCustomer: '/stripe/customer',
+        createAccount: '/stripe/account',
+        charge: '/stripe/charge',
+      }
+    }
   }
   this.ApiConstants = new ApiConstants();
 })();

@@ -34,6 +34,11 @@ class StudentForm extends React.Component {
       criminal_explanation: null,
       waiver_signature: null,
       waiver_date: null,
+      card_number: null,
+      cvc: null,
+      exp_month: null,
+      exp_year: null,
+      cardholder_name: null,
       activeInstruments: {},
       instruments: {},
       instruments_attributes: [],
@@ -144,7 +149,7 @@ class StudentForm extends React.Component {
 
   createStudent() {
     var reject = (response) => { console.log(response) };
-    var resolve = (response) => { window.location = "/" };
+    var resolve = (response) => { this.createStripeCustomer(response) };
     var params = {
       student: {
         email: this.state.email,
@@ -188,6 +193,37 @@ class StudentForm extends React.Component {
       resolve,
       reject
     );
+  }
+
+  createStripeCustomer(student) {
+    const { card_number, cvc, exp_month, exp_year, cardholder_name} = this.state;
+    const reject = (response) => { console.log(response) };
+    const resolve = (response) => { window.location = "/" };
+
+    function stripeResponseHandler(status, response) {
+      if (response.error) {
+        console.log(response.error);
+      } else {
+        var params = {
+          id: student.id,
+          stripe_token: response.id
+        };
+        Requester.post(
+          ApiConstants.stripe.createCustomer,
+          params,
+          resolve,
+          reject
+        );
+      }
+    }
+
+    Stripe.card.createToken({
+      number: card_number,
+      cvc: cvc,
+      exp_month: exp_month,
+      exp_year: exp_year,
+      name: cardholder_name
+    }, stripeResponseHandler);
   }
 
   renderOptions(type) {
@@ -550,6 +586,49 @@ class StudentForm extends React.Component {
 
               {/*Application Page 4*/}
               <FormGroup>
+                <ControlLabel>Card Number</ControlLabel>
+                <FormControl
+                  componenClass="input"
+                  placeholder="Enter Card Number"
+                  name="card_number"
+                  onChange={(event) => this.handleChange(event)}/>
+              </FormGroup>
+              <div className="form-row">
+                <FormGroup>
+                  <ControlLabel>Expiration Date</ControlLabel>
+                  <div className="form-row form-row-input">
+                    <FormControl
+                    componenClass="input"
+                    placeholder="MM"
+                    name="exp_month"
+                    onChange={(event) => this.handleIntegerChange(event)}/>
+                  <FormControl
+                    componenClass="input"
+                    placeholder="YYYY"
+                    name="exp_year"
+                    onChange={(event) => this.handleIntegerChange(event)}/>
+                  </div>
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>CVC</ControlLabel>
+                  <FormControl
+                    componenClass="input"
+                    placeholder="Enter CVC Code"
+                    name="cvc"
+                    onChange={(event) => this.handleIntegerChange(event)}/>
+                </FormGroup>
+              </div>
+              <FormGroup>
+                <ControlLabel>Cardholder Name</ControlLabel>
+                <FormControl
+                  componenClass="input"
+                  placeholder="Enter Cardholder Name"
+                  name="cardholder_name"
+                  onChange={(event) => this.handleChange(event)}/>
+              </FormGroup>
+
+              {/*Application Page 5*/}
+              <FormGroup>
                 <ControlLabel>Income Estimate</ControlLabel>
                 <FormControl
                   componentClass="select"
@@ -613,7 +692,7 @@ class StudentForm extends React.Component {
                   onChange={(event) => this.handleChange(event)}/>
               </FormGroup>
 
-              {/*Application Page 5*/}
+              {/*Application Page 6*/}
               <a onClick={(event) => this.openWaiver(event)}>Click Here for Waiver</a>
               {this.renderWaiverModal()}
               <FormGroup>
