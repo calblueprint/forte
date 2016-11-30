@@ -75,7 +75,6 @@ class LessonCard extends React.Component {
     } = lesson;
 
     var startTime = moment(lesson['start_time']);
-    console.log(startTime);
     //TODO: Make sure right timezones and stuff
     if (isStudent) {
       var name = `${teacher.first_name} ${teacher.last_name}`;
@@ -94,8 +93,6 @@ class LessonCard extends React.Component {
         <div className="logistics">
           <h4>{matching.instrument} Lesson</h4>
           <div className="cost">
-            <div className="cost-icon">
-            </div>
             <div className="info-row">
               <h5>${price}</h5>
               <Label bsStyle={paidLabelStyle}>{paidLabelText}</Label>
@@ -111,7 +108,6 @@ class LessonCard extends React.Component {
             <img src={ImageConstants.icons.location} href="#" />
             <h5>{lesson.location}</h5>
           </div>
-          <p>{teacher.city}</p>
         </div>
         <div className="actions">
           <Button className="button button--outline-orange button--sm" onClick={() => this.openCancelModal()}>
