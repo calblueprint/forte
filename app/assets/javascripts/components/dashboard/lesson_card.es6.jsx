@@ -1,4 +1,4 @@
-class StudentLessonCard extends React.Component {
+class LessonCard extends React.Component {
 
   constructor() {
     super();
@@ -10,6 +10,7 @@ class StudentLessonCard extends React.Component {
 
   static get propTypes() {
     return {
+      isStudent: React.PropTypes.bool,
       lesson: React.PropTypes.object,
       fetchLessons: React.PropTypes.func,
     };
@@ -32,7 +33,7 @@ class StudentLessonCard extends React.Component {
   }
 
   renderCancelModal() {
-    const { lesson, fetchLessons } = this.props;
+    const { isStudent, lesson, fetchLessons } = this.props;
     const { showCancelModal } = this.state;
 
     if (showCancelModal) {
@@ -41,14 +42,14 @@ class StudentLessonCard extends React.Component {
           lesson={lesson}
           handleClose={() => this.closeCancelModal()}
           fetchLessons={fetchLessons}
-          isStudent={true}
+          isStudent={isStudent}
         />
       );
     }
   }
 
   renderRescheduleModal() {
-    const { lesson, fetchLessons } = this.props;
+    const { isStudent, lesson, fetchLessons } = this.props;
     const { showRescheduleModal } = this.state;
     if (showRescheduleModal) {
       return (
@@ -56,14 +57,14 @@ class StudentLessonCard extends React.Component {
           lesson={lesson}
           handleClose={() => this.closeRescheduleModal()}
           fetchLessons={fetchLessons}
-          isStudent={true}
+          isStudent={isStudent}
         />
       );
     }
   }
 
   render() {
-    const { lesson } = this.props;
+    const { isStudent, lesson } = this.props;
     const {
       price,
       start_time,
@@ -74,11 +75,17 @@ class StudentLessonCard extends React.Component {
     } = lesson;
 
     var startTime = moment(lesson['start_time']);
-    var paid = is_paid ? 'Paid' : 'Unpaid';
-    var paidLabelStyle = is_paid ? 'success' : 'danger';
     //TODO: Make sure right timezones and stuff
+    if (isStudent) {
+      var name = `${teacher.first_name} ${teacher.last_name}`;
+    } else {
+      var name = `${student.first_name} ${student.last_name}`;
+    }
+    var paidLabelText = is_paid ? 'Paid' : 'Unpaid';
+    var paidLabelStyle = is_paid ? 'success' : 'danger';
+    
     return (
-      <div className="student-lesson-card">
+      <div className="lesson-card">
         <div className="lesson-time-container">
           <h2>{startTime.format('MMM DD').toUpperCase()}</h2>
           <h4>{startTime.format('hh:mm A').toUpperCase()}</h4>
@@ -90,14 +97,14 @@ class StudentLessonCard extends React.Component {
             </div>
             <div className="info-row">
               <h5>${price}</h5>
-              <Label bsStyle={paidLabelStyle}>{paid}</Label>
+              <Label bsStyle={paidLabelStyle}>{paidLabelText}</Label>
             </div>
           </div>
         </div>
         <div className="details">
           <div className="info-row">
             <img src={ImageConstants.icons.person} href="#" />
-            <h5>{teacher.first_name} {teacher.last_name}</h5>
+            <h5>{name}</h5>
           </div>
           <div className="info-row">
             <img src={ImageConstants.icons.location} href="#" />
