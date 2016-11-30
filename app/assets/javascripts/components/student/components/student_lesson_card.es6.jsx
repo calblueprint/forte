@@ -75,6 +75,7 @@ class StudentLessonCard extends React.Component {
 
     var startTime = moment(lesson['start_time']);
     var paid = is_paid ? 'Paid' : 'Unpaid';
+    var paidLabelStyle = is_paid ? 'success' : 'danger';
     //TODO: Make sure right timezones and stuff
     return (
       <div className="student-lesson-card">
@@ -84,22 +85,25 @@ class StudentLessonCard extends React.Component {
         </div>
         <div className="logistics">
           <h4>{matching.instrument} Lesson</h4>
+          <div className="cost">
+            <div className="cost-icon">
+            </div>
+            <div className="info-row">
+              <h5>${price}</h5>
+              <Label bsStyle={paidLabelStyle}>{paid}</Label>
+            </div>
+          </div>
+        </div>
+        <div className="details">
           <div className="info-row">
             <img src={ImageConstants.icons.person} href="#" />
             <h5>{teacher.first_name} {teacher.last_name}</h5>
           </div>
-        </div>
-        <div className="details">
           <div className="info-row">
             <img src={ImageConstants.icons.location} href="#" />
             <h5>{lesson.location}</h5>
           </div>
           <p>{teacher.city}</p>
-          <div className="cost">
-            <div className="cost-icon">
-            </div>
-            <h5>${price}-{paid}</h5>
-          </div>
         </div>
         <div className="actions">
           <Button className="button button--outline-orange button--sm" onClick={() => this.openCancelModal()}>
