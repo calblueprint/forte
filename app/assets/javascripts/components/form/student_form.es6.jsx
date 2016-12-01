@@ -39,11 +39,11 @@ class StudentForm extends React.Component {
       exp_month: null,
       exp_year: null,
       cardholder_name: null,
-      address_line1: null,
-      address_line2: null,
-      address_city: null,
-      address_state: null,
-      address_zip: null,
+      stripe_address_line1: null,
+      stripe_address_line2: null,
+      stripe_address_city: null,
+      stripe_address_state: null,
+      stripe_address_zip: null,
       activeInstruments: {},
       instruments: {},
       instruments_attributes: [],
@@ -208,11 +208,11 @@ class StudentForm extends React.Component {
       exp_month,
       exp_year,
       cardholder_name,
-      address_line1,
-      address_line2,
-      address_city,
-      address_state,
-      address_zip
+      stripe_address_line1,
+      stripe_address_line2,
+      stripe_address_city,
+      stripe_address_state,
+      stripe_address_zip
     } = this.state;
 
     Stripe.card.createToken({
@@ -221,11 +221,11 @@ class StudentForm extends React.Component {
       exp_month: exp_month,
       exp_year: exp_year,
       name: cardholder_name,
-      address_line1: address_line1,
-      address_line2: address_line2,
-      address_city: address_city,
-      address_state: address_state,
-      address_zip: address_zip
+      address_line1: stripe_address_line1,
+      address_line2: stripe_address_line2,
+      address_city: stripe_address_city,
+      address_state: stripe_address_state,
+      address_zip: stripe_address_zip
     }, this.stripeResponseHandler.bind(this));
   }
 
@@ -653,7 +653,7 @@ class StudentForm extends React.Component {
                 <FormControl
                   componenClass="input"
                   placeholder="Enter Billing Address Line 1"
-                  name="address_line1"
+                  name="stripe_address_line1"
                   onChange={(event) => this.handleChange(event)}/>
               </FormGroup>
               <div className="form-row">
@@ -662,7 +662,7 @@ class StudentForm extends React.Component {
                   <FormControl
                     componenClass="input"
                     placeholder="Enter Billing Address Line 2"
-                    name="address_line2"
+                    name="stripe_address_line2"
                     onChange={(event) => this.handleChange(event)}/>
                 </FormGroup>
                 <FormGroup>
@@ -670,7 +670,7 @@ class StudentForm extends React.Component {
                   <FormControl
                     componenClass="input"
                     placeholder="Enter Billing Zip Code"
-                    name="address_zip"
+                    name="stripe_address_zip"
                     onChange={(event) => this.handleChange(event)}/>
                 </FormGroup>
               </div>
@@ -680,14 +680,14 @@ class StudentForm extends React.Component {
                   <FormControl
                     componenClass="input"
                     placeholder="Enter Billing Address City"
-                    name="address_city"
+                    name="stripe_address_city"
                     onChange={(event) => this.handleChange(event)}/>
                 </FormGroup>
                 <FormGroup>
                   <ControlLabel>Billing Address State</ControlLabel>
                   <FormControl
                     componentClass="select"
-                    name="address_state"
+                    name="stripe_address_state"
                     onChange={(event) => this.handleChange(event)}>
                     <option value="" disabled selected>Select your state</option>
                     {this.renderOptions('state')}
