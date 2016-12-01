@@ -5,7 +5,7 @@ class Stripe::AccountsController < Stripe::BaseController
     email = params[:email]
 
     account = Stripe::Account.create(
-      :managed => false,
+      :managed => true,
       :country => 'US',
       :email => email
     )

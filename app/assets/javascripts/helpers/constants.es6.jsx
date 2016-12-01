@@ -31,3 +31,5 @@ const PROFICIENCY = ['No Experience', 'Beginner', 'Intermediate',
 
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                       'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+
+const ACCOUNT_HOLDER_TYPE = ['Individual', 'Company']

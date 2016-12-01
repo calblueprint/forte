@@ -611,7 +611,7 @@ class StudentForm extends React.Component {
               <FormGroup>
                 <ControlLabel>Cardholder Name</ControlLabel>
                 <FormControl
-                  componenClass="input"
+                  componentClass="input"
                   placeholder="Enter Cardholder Name"
                   name="cardholder_name"
                   onChange={(event) => this.handleChange(event)}/>
@@ -619,7 +619,7 @@ class StudentForm extends React.Component {
               <FormGroup>
                 <ControlLabel>Card Number</ControlLabel>
                 <FormControl
-                  componenClass="input"
+                  componentClass="input"
                   placeholder="Enter Card Number"
                   name="card_number"
                   onChange={(event) => this.handleChange(event)}/>
@@ -629,12 +629,12 @@ class StudentForm extends React.Component {
                   <ControlLabel>Expiration Date</ControlLabel>
                   <div className="form-row form-row-input">
                     <FormControl
-                    componenClass="input"
+                    componentClass="input"
                     placeholder="MM"
                     name="exp_month"
                     onChange={(event) => this.handleIntegerChange(event)}/>
                   <FormControl
-                    componenClass="input"
+                    componentClass="input"
                     placeholder="YYYY"
                     name="exp_year"
                     onChange={(event) => this.handleIntegerChange(event)}/>
@@ -643,7 +643,7 @@ class StudentForm extends React.Component {
                 <FormGroup>
                   <ControlLabel>CVC</ControlLabel>
                   <FormControl
-                    componenClass="input"
+                    componentClass="input"
                     placeholder="Enter CVC Code"
                     name="cvc"
                     onChange={(event) => this.handleIntegerChange(event)}/>
@@ -652,7 +652,7 @@ class StudentForm extends React.Component {
               <FormGroup>
                 <ControlLabel>Billing Address Line 1</ControlLabel>
                 <FormControl
-                  componenClass="input"
+                  componentClass="input"
                   placeholder="Enter Billing Address Line 1"
                   name="stripe_address_line1"
                   onChange={(event) => this.handleChange(event)}/>
@@ -661,7 +661,7 @@ class StudentForm extends React.Component {
                 <FormGroup>
                   <ControlLabel>Billing Address Line 2 (optional)</ControlLabel>
                   <FormControl
-                    componenClass="input"
+                    componentClass="input"
                     placeholder="Enter Billing Address Line 2"
                     name="stripe_address_line2"
                     onChange={(event) => this.handleChange(event)}/>
@@ -669,7 +669,7 @@ class StudentForm extends React.Component {
                 <FormGroup>
                   <ControlLabel>Billing Zip Code</ControlLabel>
                   <FormControl
-                    componenClass="input"
+                    componentClass="input"
                     placeholder="Enter Billing Zip Code"
                     name="stripe_address_zip"
                     onChange={(event) => this.handleChange(event)}/>
@@ -679,7 +679,7 @@ class StudentForm extends React.Component {
                 <FormGroup>
                   <ControlLabel>Billing Address City</ControlLabel>
                   <FormControl
-                    componenClass="input"
+                    componentClass="input"
                     placeholder="Enter Billing Address City"
                     name="stripe_address_city"
                     onChange={(event) => this.handleChange(event)}/>
@@ -711,7 +711,7 @@ class StudentForm extends React.Component {
               <FormGroup>
                 <ControlLabel>Household Number</ControlLabel>
                 <FormControl
-                  componenClass="input"
+                  componentClass="input"
                   placeholder="Number of members in household"
                   name="household_number"
                   onChange={(event) => this.handleIntegerChange(event)}/>

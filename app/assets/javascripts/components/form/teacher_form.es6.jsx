@@ -42,6 +42,12 @@ class TeacherForm extends React.Component {
       criminal_explanation: null,
       waiver_signature: null,
       waiver_date: null,
+      stripe_country: null,
+      stripe_currency: null,
+      stripe_routing_number: null,
+      stripe_account_number: null,
+      stripe_account_holder_name: null,
+      stripe_account_holder_type: null,
       activeInstruments: [],
       instruments: {},
       showWaiverModal: false,
@@ -102,6 +108,18 @@ class TeacherForm extends React.Component {
     this.setState({
       instruments: update(this.state.instruments, {[instrument]: {[name]: {$set: value}}}),
     });
+  }
+
+  handleCountryChange(event) {
+    const name = $(event.target).attr("name");
+    var value = $(event.target).val();
+    for (var i = 0; i < COUNTRY_CODES.length; i++) {
+      if (COUNTRY_CODES[i].name == value) {
+        value = COUNTRY_CODES[i].code
+        this.setState({ [name] : value})
+        return;
+      }
+    }
   }
 
   handleInstrumentClick(event) {
@@ -211,6 +229,17 @@ class TeacherForm extends React.Component {
         break;
       case 'years_played':
         optionsArray = YEARS_PLAYED;
+        break;
+      case 'account_holder_type':
+        optionsArray = ACCOUNT_HOLDER_TYPE;
+        break;
+      case 'country':
+        for (var i = 0; i < COUNTRY_CODES.length; i++) {
+          retOptions.push(<option value={i}>{COUNTRY_CODES[i].name}</option>);
+        }
+        return retOptions
+      case 'currency':
+        optionsArray = CURRENCIES;
         break;
     }
     for (var i = 0; i < optionsArray.length; i++) {
@@ -510,6 +539,66 @@ class TeacherForm extends React.Component {
 
               {/*Application Page 4*/}
               <FormGroup>
+                <ControlLabel>Bank Account Holder Name</ControlLabel>
+                <FormControl
+                  componentClass="input"
+                  placeholder="Enter Bank Account Holder Name"
+                  name="stripe_account_holder_name"
+                  onChange={(event) => this.handleChange(event)}/>
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel>Bank Account Holder Type</ControlLabel>
+                <FormControl
+                  componentClass="select"
+                  name="stripe_account_holder_type"
+                  onChange={(event) => this.handleChange(event)}>
+                  <option value="" disabled selected>Select Account Type</option>
+                  {this.renderOptions('account_holder_type')}
+                </FormControl>
+              </FormGroup>
+              <div className="form-row">
+                <FormGroup>
+                  <ControlLabel>Routing Number</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    placeholder="Enter Routing Number"
+                    name="stripe_routing_number"
+                    onChange={(event) => this.handleIntegerChange(event)}/>
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>Bank Account Number</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    placeholder="Enter Bank Account Number"
+                    name="stripe_account_number"
+                    onChange={(event) => this.handleIntegerChange(event)}/>
+                </FormGroup>
+              </div>
+              <div className="form-row">
+                <FormGroup>
+                  <ControlLabel>Bank Account Country</ControlLabel>
+                  <FormControl
+                    componentClass="select"
+                    name="stripe_country"
+                    onChange={(event) => this.handleCountryChange(event)}>
+                    <option value="" disabled selected>Select Bank Acount Country</option>
+                    {this.renderOptions('country')}
+                  </FormControl>
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>Currency</ControlLabel>
+                  <FormControl
+                    componentClass="select"
+                    name="stripe_currency"
+                    onChange={(event) => this.handleChange(event)}>
+                    <option value="" disabled selected>Select Currency</option>
+                    {this.renderOptions('currency')}
+                  </FormControl>
+                </FormGroup>
+              </div>
+
+              {/*Application Page 5*/}
+              <FormGroup>
                 <ControlLabel>Do you authorize Forte to conduct a
                 background and personal reference checks in accordance
                 with our saftey policy?</ControlLabel>
@@ -670,7 +759,7 @@ class TeacherForm extends React.Component {
                   onChange={(event) => this.handleChange(event)}/>
               </FormGroup>
 
-              {/*Application Page 5*/}
+              {/*Application Page 6*/}
               <a onClick={(event) => this.openWaiver(event)}>Click Here for Waiver</a>
               {this.renderWaiverModal()}
               <FormGroup>
