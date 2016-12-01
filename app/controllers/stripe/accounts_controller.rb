@@ -7,7 +7,7 @@ class Stripe::AccountsController < Stripe::BaseController
     account = Stripe::Account.create(
       :managed => false,
       :country => 'US',
-      :email => email,
+      :email => email
     )
 
     bank_account = account.external_accounts.create(
