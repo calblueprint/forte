@@ -32,6 +32,28 @@ class RosterPage extends React.Component {
     this.setState({ showPersonModal: false, person: null });
   }
 
+  filterByStudent() {
+    const route = ApiConstants.students.index;
+    const resolve = (response) => this.setState({ people: response.students });
+    const reject = (response) => console.log(response);
+    Requester.get(
+      route,
+      resolve,
+      reject,
+    );
+  }
+
+  filterByTeacher() {
+    const route = ApiConstants.teachers.index;
+    const resolve = (response) => this.setState({ people: response.teachers });
+    const reject = (response) => console.log(response);
+    Requester.get(
+      route,
+      resolve,
+      reject,
+    );
+  }
+
   renderPersonModal() {
     const { showPersonModal } = this.state;
     if (showPersonModal == true) {
@@ -93,6 +115,11 @@ class RosterPage extends React.Component {
                 </InputGroup.Addon>
               </InputGroup>
             </FormGroup>
+            <ButtonGroup className="filter-buttons">
+              <Button onClick={(event) => this.fetchPeople()}>All</Button>
+              <Button onClick={(event) => this.filterByStudent()}>Students</Button>
+              <Button onClick={(event) => this.filterByTeacher()}>Teachers</Button>
+            </ButtonGroup>
             <div className="roster-container">
               {this.renderPeople()}
             </div>

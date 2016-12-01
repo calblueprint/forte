@@ -14,7 +14,7 @@ class StudentDescription extends React.Component {
   }
 
   renderInstrumentButtons() {
-    return this.props.student.instruments.map((instrument) => this.renderInstrumentButton(instrument));
+    return this.props.student.unmatched_instruments.map((instrument) => this.renderInstrumentButton(instrument));
   }
 
   render () {

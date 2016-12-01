@@ -6,12 +6,28 @@ class FullTeacher extends React.Component {
     };
   }
 
+  renderProperty(property) {
+    var displayValue = property.replace("_", " ");
+    return (
+      <div><b>{displayValue}</b>: {this.props.teacher[property]}</div>
+    );
+  }
+  
+  renderProperties() {
+    var properties = [];
+    for (var property in this.props.teacher) {
+      if (this.props.teacher.hasOwnProperty(property)) {
+        properties.push(property);
+      }
+    }
+    return properties.map((property) => this.renderProperty(property));
+  }
+
   render () {
     const { teacher } = this.props
     return (
       <div className="full-person">
-        <h2 className="name">{teacher.first_name} {teacher.last_name}</h2>
-        <p>City: {teacher.city}</p>
+        {this.renderProperties()}
         <Calendar 
           isEditable={false}
           events={availability_to_events(teacher.availability)} />
