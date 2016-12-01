@@ -39,6 +39,11 @@ class StudentForm extends React.Component {
       exp_month: null,
       exp_year: null,
       cardholder_name: null,
+      address_line1: null,
+      address_line2: null,
+      address_city: null,
+      address_state: null,
+      address_zip: null,
       activeInstruments: {},
       instruments: {},
       instruments_attributes: [],
@@ -140,16 +145,16 @@ class StudentForm extends React.Component {
         instrumentsObj.push(instrument);
       }
     }
-    this.setState({ instruments_attributes: instrumentsObj }, this.createStudent);
+    this.setState({ instruments_attributes: instrumentsObj }, this.createStripeCustomer);
   }
 
   submitForm() {
     this.setAvailability(this.setInstruments);
   }
 
-  createStudent() {
+  createStudent(customer) {
     var reject = (response) => { console.log(response) };
-    var resolve = (response) => { this.createStripeCustomer(response) };
+    var resolve = (response) => { window.location = "/" };
     var params = {
       student: {
         email: this.state.email,
@@ -184,6 +189,7 @@ class StudentForm extends React.Component {
         criminal_explanation: this.state.criminal_explanation,
         waiver_signature: this.state.waiver_signature,
         waiver_date: this.state.waiver_date,
+        customer_id: customer.id,
         instruments_attributes: this.state.instruments_attributes,
       },
     };
@@ -195,35 +201,51 @@ class StudentForm extends React.Component {
     );
   }
 
-  createStripeCustomer(student) {
-    const { card_number, cvc, exp_month, exp_year, cardholder_name} = this.state;
-    const reject = (response) => { console.log(response) };
-    const resolve = (response) => { window.location = "/" };
-
-    function stripeResponseHandler(status, response) {
-      if (response.error) {
-        console.log(response.error);
-      } else {
-        var params = {
-          id: student.id,
-          stripe_token: response.id
-        };
-        Requester.post(
-          ApiConstants.stripe.createCustomer,
-          params,
-          resolve,
-          reject
-        );
-      }
-    }
+  createStripeCustomer() {
+    const {
+      card_number,
+      cvc,
+      exp_month,
+      exp_year,
+      cardholder_name,
+      address_line1,
+      address_line2,
+      address_city,
+      address_state,
+      address_zip
+    } = this.state;
 
     Stripe.card.createToken({
       number: card_number,
       cvc: cvc,
       exp_month: exp_month,
       exp_year: exp_year,
-      name: cardholder_name
-    }, stripeResponseHandler);
+      name: cardholder_name,
+      address_line1: address_line1,
+      address_line2: address_line2,
+      address_city: address_city,
+      address_state: address_state,
+      address_zip: address_zip
+    }, this.stripeResponseHandler.bind(this));
+  }
+
+  stripeResponseHandler(status, response) {
+    const reject = (response) => { console.log(response) };
+    const resolve = ((response) => { this.createStudent(response) });
+    
+    if (response.error) {
+      console.log(response.error);
+    } else {
+      var params = {
+        stripe_token: response.id
+      };
+      Requester.post(
+        ApiConstants.stripe.createCustomer,
+        params,
+        resolve,
+        reject
+      );
+    }
   }
 
   renderOptions(type) {
@@ -586,6 +608,14 @@ class StudentForm extends React.Component {
 
               {/*Application Page 4*/}
               <FormGroup>
+                <ControlLabel>Cardholder Name</ControlLabel>
+                <FormControl
+                  componenClass="input"
+                  placeholder="Enter Cardholder Name"
+                  name="cardholder_name"
+                  onChange={(event) => this.handleChange(event)}/>
+              </FormGroup>
+              <FormGroup>
                 <ControlLabel>Card Number</ControlLabel>
                 <FormControl
                   componenClass="input"
@@ -619,13 +649,51 @@ class StudentForm extends React.Component {
                 </FormGroup>
               </div>
               <FormGroup>
-                <ControlLabel>Cardholder Name</ControlLabel>
+                <ControlLabel>Billing Address Line 1</ControlLabel>
                 <FormControl
                   componenClass="input"
-                  placeholder="Enter Cardholder Name"
-                  name="cardholder_name"
+                  placeholder="Enter Billing Address Line 1"
+                  name="address_line1"
                   onChange={(event) => this.handleChange(event)}/>
               </FormGroup>
+              <div className="form-row">
+                <FormGroup>
+                  <ControlLabel>Billing Address Line 2 (optional)</ControlLabel>
+                  <FormControl
+                    componenClass="input"
+                    placeholder="Enter Billing Address Line 2"
+                    name="address_line2"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>Billing Zip Code</ControlLabel>
+                  <FormControl
+                    componenClass="input"
+                    placeholder="Enter Billing Zip Code"
+                    name="address_zip"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
+              </div>
+              <div className="form-row">
+                <FormGroup>
+                  <ControlLabel>Billing Address City</ControlLabel>
+                  <FormControl
+                    componenClass="input"
+                    placeholder="Enter Billing Address City"
+                    name="address_city"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>Billing Address State</ControlLabel>
+                  <FormControl
+                    componentClass="select"
+                    name="address_state"
+                    onChange={(event) => this.handleChange(event)}>
+                    <option value="" disabled selected>Select your state</option>
+                    {this.renderOptions('state')}
+                  </FormControl>
+                </FormGroup>
+              </div>
 
               {/*Application Page 5*/}
               <FormGroup>

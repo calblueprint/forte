@@ -7,14 +7,7 @@ class Stripe::CustomersController < Stripe::BaseController
       :description => 'New Student Stripe Account'
     )
 
-    student = Student.find params[:id]
-    student.customer_id = customer.id
-
-    if student.save
-      render json: student
-    else
-      unprocessable_response student
-    end
+    render json: customer, status: 201
 
   end
 end
