@@ -237,7 +237,8 @@ class StudentForm extends React.Component {
       console.log(response.error);
     } else {
       var params = {
-        stripe_token: response.id
+        stripe_token: response.id,
+        email: this.state.email,
       };
       Requester.post(
         ApiConstants.stripe.createCustomer,
