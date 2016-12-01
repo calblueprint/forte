@@ -22,7 +22,8 @@ class RescheduleCalendar extends React.Component {
     var endTime = moment(lesson['end_time']);
     $(calendar).fullCalendar({
       header: false,
-      defaultDate: lesson['start_time'],
+      timezone: 'local',
+      defaultDate: startTime,
       defaultView: 'agendaWeek',
       columnFormat: 'ddd M/D',
       editable: true, // can't reschedule how long the lesson is
