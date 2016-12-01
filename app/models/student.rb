@@ -83,6 +83,7 @@ class Student < ActiveRecord::Base
   validates :criminal_charges, :inclusion => { :in => [true, false] }
   validates :waiver_signature, presence: true
   validates :waiver_date, presence: true
+  validates :customer_id, presence: true
 
   has_many :matchings
   has_many :lessons, through: :matchings
