@@ -646,7 +646,7 @@ class StudentForm extends React.Component {
                     componentClass="input"
                     placeholder="Enter CVC Code"
                     name="cvc"
-                    onChange={(event) => this.handleIntegerChange(event)}/>
+                    onChange={(event) => this.handleChange(event)}/>
                 </FormGroup>
               </div>
               <FormGroup>

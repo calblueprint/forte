@@ -103,6 +103,8 @@ class Teacher < ActiveRecord::Base
   validates :youth_participation, :inclusion => { :in => [true, false] }
   validates :waiver_signature, presence: true
   validates :waiver_date, presence: true
+  validates :account_id, presence: true
+  validates :bank_id, presence: true
 
   has_many :matchings
   has_many :lessons, through: :matchings

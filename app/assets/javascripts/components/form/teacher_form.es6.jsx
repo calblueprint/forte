@@ -151,10 +151,10 @@ class TeacherForm extends React.Component {
   }
 
   submitForm() {
-    this.setAvailability(this.sendRequest);
+    this.setAvailability(this.createStripeAccount);
   }
 
-  sendRequest() {
+  createTeacher(accountResponse) {
     var reject = (response) => console.log(response);
     var resolve = (response) => {
       window.location.href = "/";
@@ -201,6 +201,8 @@ class TeacherForm extends React.Component {
         criminal_explanation: this.state.criminal_explanation,
         waiver_signature: this.state.waiver_signature,
         waiver_date: this.state.waiver_date,
+        account_id: accountResponse.account.id,
+        bank_id: accountResponse.bank_account.id,
       }
     };
     Requester.post(
@@ -209,6 +211,48 @@ class TeacherForm extends React.Component {
       resolve,
       reject
     );
+  }
+
+  createStripeAccount() {
+    const {
+      stripe_country,
+      stripe_currency,
+      stripe_routing_number,
+      stripe_account_number,
+      stripe_account_holder_name,
+      stripe_account_holder_type
+    } = this.state;
+
+    Stripe.bankAccount.createToken({
+      country: stripe_country,
+      currency: stripe_currency,
+      routing_number: stripe_routing_number,
+      account_number: stripe_account_number,
+      account_holder_name: stripe_account_holder_name,
+      account_holder_type: stripe_account_holder_type
+    }, this.stripeResponseHandler.bind(this));
+  }
+
+  stripeResponseHandler(status, response) {
+    const reject = (response) => { console.log(response) };
+    const resolve = ((response) => { this.createTeacher(response) });
+    
+    if (response.error) {
+      console.log(response.error);
+    } else {
+      console.log(response);
+      var params = {
+        stripe_token: response.id,
+        email: this.state.email,
+        country: this.state.stripe_country,
+      };
+      Requester.post(
+        ApiConstants.stripe.createAccount,
+        params,
+        resolve,
+        reject
+      );
+    }
   }
 
   renderOptions(type) {
@@ -231,16 +275,20 @@ class TeacherForm extends React.Component {
         optionsArray = YEARS_PLAYED;
         break;
       case 'account_holder_type':
-        optionsArray = ACCOUNT_HOLDER_TYPE;
-        break;
+        for (var i = 0; i < ACCOUNT_HOLDER_TYPE.length; i++) {
+          retOptions.push(<option value={ACCOUNT_HOLDER_TYPE[i]}>{ACCOUNT_HOLDER_TYPE[i]}</option>);
+        }
+        return retOptions
       case 'country':
         for (var i = 0; i < COUNTRY_CODES.length; i++) {
-          retOptions.push(<option value={i}>{COUNTRY_CODES[i].name}</option>);
+          retOptions.push(<option value={COUNTRY_CODES[i].name}>{COUNTRY_CODES[i].name}</option>);
         }
         return retOptions
       case 'currency':
-        optionsArray = CURRENCIES;
-        break;
+        for (var i = 0; i < CURRENCIES.length; i++) {
+          retOptions.push(<option value={CURRENCIES[i]}>{CURRENCIES[i]}</option>);
+        }
+        return retOptions
     }
     for (var i = 0; i < optionsArray.length; i++) {
       retOptions.push(<option value={i}>{optionsArray[i]}</option>);
@@ -563,7 +611,7 @@ class TeacherForm extends React.Component {
                     componentClass="input"
                     placeholder="Enter Routing Number"
                     name="stripe_routing_number"
-                    onChange={(event) => this.handleIntegerChange(event)}/>
+                    onChange={(event) => this.handleChange(event)}/>
                 </FormGroup>
                 <FormGroup>
                   <ControlLabel>Bank Account Number</ControlLabel>
@@ -571,7 +619,7 @@ class TeacherForm extends React.Component {
                     componentClass="input"
                     placeholder="Enter Bank Account Number"
                     name="stripe_account_number"
-                    onChange={(event) => this.handleIntegerChange(event)}/>
+                    onChange={(event) => this.handleChange(event)}/>
                 </FormGroup>
               </div>
               <div className="form-row">

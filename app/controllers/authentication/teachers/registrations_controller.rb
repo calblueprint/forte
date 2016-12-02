@@ -86,6 +86,8 @@ before_filter :configure_sign_up_params, only: [:create]
         :criminal_explanation,
         :waiver_signature,
         :waiver_date,
+        :account_id,
+        :bank_id,
       ],
     )
   end
