@@ -271,22 +271,18 @@ class TeacherForm extends React.Component {
   verifyStripeAccount(teacher) {
     const { stripe_account_holder_type, waiver_date } = this.state
     var dob = moment(teacher.birthday);
-    console.log(dob);
-    console.log(teacher.birthday);
-    console.log(stripe_account_holder_type);
     var params = {
       dob_day: dob.date(),
-      dob_month: dob.month(),
+      // moment month is zero indexed
+      dob_month: dob.month() + 1,
       dob_year: dob.year(),
       first_name: teacher.first_name,
       last_name: teacher.last_name,
       type: stripe_account_holder_type,
-      tos_acceptance_date: waiver_date,
-      tos_acceptance_ip: teacher.last_sign_in_ip,
+      tos_acceptance_date: waiver_date.unix(),
+      tos_acceptance_ip: teacher.sign_up_ip,
       account_id: teacher.account_id,
     };
-
-    console.log(params);
   }
 
   renderOptions(type) {

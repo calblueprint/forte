@@ -53,6 +53,7 @@
 #  school_level           :integer
 #  account_id             :string
 #  bank_id                :string
+#  sign_up_ip             :string
 #
 
 class Teacher < ActiveRecord::Base
