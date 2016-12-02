@@ -113,6 +113,11 @@ class Student < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  def full_address
+    "#{address} #{address_apt} #{city}, #{state} #{zipcode}"
+  end
+
+
   def submit_signup
     ForteMailer.student_signup_notify_admin(self).deliver_now
     ForteMailer.student_signup_notify_student(self).deliver_now

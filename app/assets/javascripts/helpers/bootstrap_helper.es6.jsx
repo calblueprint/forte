@@ -16,6 +16,7 @@ var Modal = ReactBootstrap.Modal;
 var FormGroup = ReactBootstrap.FormGroup;
 var FormControl = ReactBootstrap.FormControl;
 var ControlLabel = ReactBootstrap.ControlLabel;
+var HelpBlock = ReactBootstrap.HelpBlock;
 var Checkbox = ReactBootstrap.Checkbox;
 var Radio = ReactBootstrap.Radio;
 var InputGroup = ReactBootstrap.InputGroup;

@@ -1,5 +1,34 @@
 class StudentShowSerializer < StudentBaseSerializer
-  attributes :unmatched_instruments
+  attributes  :availability,
+              :gender,
+              :birthday,
+              :school,
+              :school_level,
+              :guardian_first_name,
+              :guardian_last_name,
+              :guardian_phone,
+              :introduction,
+              :lesson_experience,
+              :performance_experience,
+              :student_email,
+              :student_phone,
+              :address,
+              :address_apt,
+              :state,
+              :city,
+              :zipcode,
+              :location_preference,
+              :travel_distance,
+              :income_range,
+              :household_number,
+              :disciplinary_action,
+              :criminal_charges,
+              :criminal_explanation,
+              :waiver_signature,
+              :waiver_date,
+              :full_address,
+              :full_name,
+              :unmatched_instruments
 
   def unmatched_instruments
     student_instruments = object.instruments.map &:name

@@ -26,7 +26,7 @@ class Api::TeachersController < Api::BaseController
 
   def show
     teacher = Teacher.find params[:id]
-    render json: teacher
+    render json: teacher, serializer: TeacherShowSerializer
   end
 
   def upcoming_lessons
@@ -66,7 +66,9 @@ class Api::TeachersController < Api::BaseController
         teachers.push(teacher)
       end
     end
-    render json: teachers
+    render json: teachers,
+           each_serializer: TeacherShowSerializer,
+           root: "teachers"
   end
 
   def is_valid_matching(teacher, student, instrument)

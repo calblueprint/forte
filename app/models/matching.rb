@@ -14,10 +14,11 @@
 class Matching < ActiveRecord::Base
 
   validates :instrument, presence: true
-  validates :lesson_time, presence: true, :length => { :minimum => 2}
   validates :student_id, presence: true
   validates :teacher_id, presence: true
-  validate :valid_lesson_array
+  validates :lesson_time, presence: true, :length => { :minimum => 2 }
+  validates :location, presence: true
+  # validate :valid_lesson_array
 
   has_many :lessons
   belongs_to :student, :inverse_of => :matchings

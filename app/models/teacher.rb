@@ -25,7 +25,6 @@
 #  school                 :string
 #  phone                  :string
 #  introduction           :text
-#  lesson_experience      :text
 #  teaching_experience    :text
 #  training_experience    :text
 #  performance_experience :text
@@ -78,12 +77,10 @@ class Teacher < ActiveRecord::Base
   validates :school_level, presence: true
   validates :phone, presence: true
   validates :introduction, presence: true
-  validates :lesson_experience, presence: true
   validates :teaching_experience, presence: true
   validates :training_experience, presence: true
   validates :performance_experience, presence: true
   validates :address, presence: true
-  validates :address_apt, presence: true
   validates :state, presence: true
   validates :zipcode, presence: true
   validates :location_preference, :inclusion => { :in => [true, false] }
@@ -128,6 +125,10 @@ class Teacher < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  def full_address
+    "#{address} #{address_apt}, #{state} #{zipcode}"
+  end
+  
   def submit_signup
     ForteMailer.teacher_signup_notify_admin(self).deliver_now
     ForteMailer.teacher_signup_notify_teacher(self).deliver_now

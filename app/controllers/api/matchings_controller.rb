@@ -39,9 +39,10 @@ class Api::MatchingsController < Api::BaseController
   def matching_params
     params.require(:matching).permit(
       :instrument,
-      :lesson_time,
+      {:lesson_time => []},
       :student_id,
       :teacher_id,
+      :location
     )
   end
 end

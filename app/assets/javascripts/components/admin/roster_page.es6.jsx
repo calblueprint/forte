@@ -25,7 +25,7 @@ class RosterPage extends React.Component {
   }
 
   onPersonClick(person) {
-    this.setState({ showPersonModal: true, person:person });
+    this.setState({ showPersonModal: true, person: person });
   }
 
   closePersonModal() {

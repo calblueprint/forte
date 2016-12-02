@@ -22,3 +22,5 @@ config/application.yml
 
 # Ignore history files
 *.byebug_history
+
+node_modules/*
