@@ -7,21 +7,20 @@ class PersonModal extends React.Component {
     };
   }
 
-  renderProperty(property) {
-    var displayValue = property.replace("_", " ");
-    return (
-      <div>{displayValue}: {this.props.person[property]}</div>
-    );
-  }
-  
-  renderProperties() {
-    var properties = []
-    for (var property in this.props.person) {
-      if (this.props.person.hasOwnProperty(property)) {
-        properties.push(property)
-      }
+  renderInformation() {
+    const { person } = this.props;
+    //TODO: better way to check if person is student/teacher
+    if ('is_searching' in person) {
+      return (
+        <TeacherInformation
+          teacher={person} />
+      )
+    } else {
+      return (
+        <StudentInformation
+          student={person} />
+      )
     }
-    return properties.map((property) => this.renderProperty(property));
   }
 
   render () {
@@ -31,7 +30,7 @@ class PersonModal extends React.Component {
           <Modal.Title>{this.props.person.first_name} {this.props.person.last_name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {this.renderProperties()}
+          {this.renderInformation()}
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.props.handleClose}>Close</Button>

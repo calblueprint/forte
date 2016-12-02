@@ -59,7 +59,6 @@ before_filter :configure_sign_up_params, only: [:create]
         :phone,
         :email,
         :introduction,
-        :lesson_experience,
         :teaching_experience,
         :training_experience,
         :performance_experience,

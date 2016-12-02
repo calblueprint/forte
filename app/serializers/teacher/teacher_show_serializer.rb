@@ -9,7 +9,6 @@ class TeacherShowSerializer < TeacherBaseSerializer
               :school,
               :phone,
               :introduction,
-              :lesson_experience,
               :teaching_experience,
               :training_experience,
               :performance_experience,

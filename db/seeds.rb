@@ -28,7 +28,6 @@ def create_single_teacher(is_searching, n)
     school_level: Faker::Number.between(0, 1),
     phone: Faker::Base.numerify('###-###-####'),
     introduction: Faker::Lorem.paragraph(4),
-    lesson_experience: Faker::Lorem.paragraph(4),
     teaching_experience: Faker::Lorem.paragraph(4),
     training_experience: Faker::Lorem.paragraph(4),
     performance_experience: Faker::Lorem.paragraph(4),
@@ -36,9 +35,9 @@ def create_single_teacher(is_searching, n)
     address_apt: Faker::Number.between(0, 12), #change
     state: Faker::Number.between(0, 49),
     zipcode: Faker::Address.zip_code,
-    location_preference: Faker::Boolean,
+    location_preference: Faker::Boolean.boolean,
     travel_distance: Faker::Number.between(0, 4),
-    background_check: Faker::Boolean,
+    background_check: Faker::Boolean.boolean,
     reference1_first_name: Faker::Name.first_name,
     reference1_last_name: Faker::Name.last_name,
     reference1_relation: 'Former Student',
@@ -49,8 +48,8 @@ def create_single_teacher(is_searching, n)
     reference2_relation: 'Former Boss',
     reference2_email: Faker::Internet.email,
     reference2_phone: Faker::Base.numerify('###-###-####'),
-    criminal_charges: Faker::Boolean,
-    youth_participation: Faker::Boolean,
+    criminal_charges: Faker::Boolean.boolean,
+    youth_participation: Faker::Boolean.boolean,
     criminal_explanation: Faker::Lorem.paragraph(4),
     waiver_signature: Faker::Name.first_name,
     waiver_date: Faker::Date.between(2.days.ago, Date.today),
@@ -95,15 +94,16 @@ def create_single_student(n)
     address_apt: Faker::Number.between(0, 12), #change
     state: Faker::Number.between(0, 49),
     zipcode: Faker::Address.zip_code,
-    location_preference: Faker::Boolean,
+    location_preference: Faker::Boolean.boolean,
     travel_distance: Faker::Number.between(0, 4),
     income_range: Faker::Number.between(0, 4),
     household_number: Faker::Number.between(0, 10),
-    disciplinary_action: Faker::Boolean,
-    criminal_charges: Faker::Boolean,
+    disciplinary_action: Faker::Boolean.boolean,
+    criminal_charges: Faker::Boolean.boolean,
     criminal_explanation: Faker::Lorem.paragraph(4),
     waiver_signature: Faker::Name.first_name,
     waiver_date: Faker::Date.between(2.days.ago, Date.today),
+    customer_id: '', #TODO: point id to Stripe user id
   )
   student
 end

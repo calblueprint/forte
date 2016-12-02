@@ -58,7 +58,9 @@ class RosterPage extends React.Component {
     const { showPersonModal } = this.state;
     if (showPersonModal == true) {
       return (
-        <PersonModal handleClose={() => this.closePersonModal()} person={this.state.person} />
+        <PersonModal
+          handleClose={() => this.closePersonModal()}
+          person={this.state.person} />
       );
     }
   }

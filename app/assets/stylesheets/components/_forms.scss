@@ -23,4 +23,38 @@ $form-control-bottom-margin : 30px;
 .form-group {
   width: 100%;
   margin-bottom: $form-control-bottom-margin;
+
+  &.has-error {
+
+    .control-label {
+      color: $grey;
+    }
+
+    .help-block {
+      &.error-message {
+        font-weight: bold;
+        text-transform: capitalize;
+        margin-top: 5px;
+        color: $red;
+      }
+    }
+
+    .radio {
+      color: black;
+    }
+
+    .form-control {
+      @include box-shadow(none);
+      border: 2px solid $red;
+
+      &:focus, &:active {
+        @include box-shadow(none);
+        border-width: 1px;
+      }
+    }
+  }
+}
+
+.form-submit {
+  margin-bottom: $form-control-bottom-margin;
 }
