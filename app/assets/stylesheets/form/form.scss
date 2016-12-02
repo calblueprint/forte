@@ -2,11 +2,20 @@
 
 .form-page {
   align-items: center;
-}
 
-.form-container {
-  width: 65%;
-  max-width: 1200px;
+  .form-container {
+    width: 65%;
+    max-width: 1200px;
+  }
+
+  .section-title {
+    border-bottom: 1px solid $grey20;
+    margin-bottom: 20px;
+
+    * {
+      color: $orange80;
+    }
+  }
 }
 
 // use when more than one form control element in a row

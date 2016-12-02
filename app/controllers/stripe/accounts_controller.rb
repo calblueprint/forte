@@ -3,10 +3,11 @@ class Stripe::AccountsController < Stripe::BaseController
 
     token = params[:stripe_token]
     email = params[:email]
+    country = params[:country]
 
     account = Stripe::Account.create(
-      :managed => false,
-      :country => 'US',
+      :managed => true,
+      :country => country,
       :email => email
     )
 
@@ -14,15 +15,7 @@ class Stripe::AccountsController < Stripe::BaseController
       :external_account => token,
     )
 
-    teacher = Teacher.find params[:id]
-    teacher.account_id = account.id
-    teacher.bank_id = bank_account.id
-
-    if teacher.save
-      render json: teacher
-    else
-      unprocessable_response teacher
-    end
+    render json: { account: account, bank_account: bank_account }, status: 201
 
   end
 end
