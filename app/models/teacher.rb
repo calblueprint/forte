@@ -126,6 +126,10 @@ class Teacher < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  def full_address
+    "#{address} #{address_apt}, #{state} #{zipcode}"
+  end
+  
   def submit_signup
     ForteMailer.teacher_signup_notify_admin(self).deliver_now
     ForteMailer.teacher_signup_notify_teacher(self).deliver_now

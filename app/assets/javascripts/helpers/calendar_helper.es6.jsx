@@ -41,6 +41,19 @@ function number_to_moment(number) {
   var day = Math.floor(number/96);
   var hour = Math.floor((number%96)/4);
   var minute = ((number%96)%4)*15;
-  console.log(`${day}-${hour}-${minute}`);
   return moment().startOf('week').add(day, 'days').add(hour, 'hours').add(minute, 'minutes');
+}
+
+function get_unavailable_availability(availability) {
+  var unavailability = [];
+  for (var i = 0; i < 672; i++) {
+    unavailability.push(i);
+  }
+  for (var i = 0; i < availability.length; i++) {
+    var index = unavailability.indexOf(availability[i]);
+    if (index > -1) {
+      unavailability.splice(index, 1);
+    }
+  }
+  return unavailability;
 }

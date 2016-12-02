@@ -21,6 +21,7 @@ gem 'react-rails', '1.5.0'
 gem 'react-bootstrap-rails'
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
+gem 'browserify-rails'
 # Client
 gem 'font-awesome-rails', '4.5.0'
 gem 'jquery-rails', '3.1.4'

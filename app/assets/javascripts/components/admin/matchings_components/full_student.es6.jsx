@@ -17,7 +17,8 @@ class FullStudent extends React.Component {
   renderProperties() {
     var properties = [];
     for (var property in this.props.student) {
-      if (this.props.student.hasOwnProperty(property)) {
+      //TODO: Only display relevant information
+      if (this.props.student.hasOwnProperty(property) && property!="unmatched_instruments") {
         properties.push(property);
       }
     }

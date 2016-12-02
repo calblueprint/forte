@@ -10,6 +10,7 @@ class UnmatchedPage extends React.Component {
       student: null,
       teacher: null,
       instrument: null,
+      showMatchingModal: false,
     };
   }
 
@@ -33,7 +34,7 @@ class UnmatchedPage extends React.Component {
     var studentResolve = ((response) => {
       this.setState({
         fullStudent: true, 
-        student: response,
+        student: response.student,
         instrument: instrument.name,
       });
       var teacherRoute = ApiConstants.teachers.possibleTeachers(studentId, instrument.name);
@@ -55,7 +56,7 @@ class UnmatchedPage extends React.Component {
 
   teacherOnClick(teacher_id, instrument) {
     var route = ApiConstants.teachers.show(teacher_id)
-    var resolve = (response) => this.setState({fullTeacher: true, teacher: response});
+    var resolve = (response) => this.setState({fullTeacher: true, teacher: response.teacher});
     var reject = (response) => console.log(response);
     Requester.get(
       route,
@@ -72,24 +73,25 @@ class UnmatchedPage extends React.Component {
     this.setState({ fullTeacher: false });
   }
 
-  makeMatching(event) {
-    route = ApiConstants.matchings.create
-    var params = {
-      student_id: this.state.student.id,
-      teacher_id: this.state.teacher.id,
-      instrument: this.state.instrument
-    };
-    var resolve = (response) => {
-      this.setState({ fullStudent: false, fullTeacher: false });
-      this.loadStudents();
-    };
-    var reject = (response) => console.log(response);
-    Requester.post(
-      route,
-      params,
-      resolve,
-      reject,
-    );
+  openMatchingModal(person) {
+    this.setState({ showMatchingModal: true });
+  }
+
+  closeMatchingModal() {
+    this.setState({ showMatchingModal: false });
+  }
+
+  renderMatchingModal() {
+    const { showMatchingModal, student, teacher, instrument } = this.state;
+    if (showMatchingModal) {
+      return (
+        <MatchingModal
+          handleClose={() => this.closeMatchingModal()}
+          student={student}
+          teacher={teacher} 
+          instrument={instrument} />
+      );
+    }
   }
 
   renderStudentPart() {
@@ -132,7 +134,7 @@ class UnmatchedPage extends React.Component {
           <div className="list-pane">
             <Glyphicon glyph="chevron-left" className="back-button" onClick={(event) => this.teacherBackButton(event)} />
             <FullTeacher teacher={this.state.teacher} />
-            <Button className="button button--outline-orange" onClick={(event) => this.makeMatching(event)}>Match</Button>
+            <Button className="button button--outline-orange" onClick={() => this.openMatchingModal()}>Choose</Button>
           </div>
         );
       } else {
@@ -172,6 +174,7 @@ class UnmatchedPage extends React.Component {
           <div className="divider" />
           {this.renderTeacherPart()}
         </div>
+        {this.renderMatchingModal()}
       </div>
     );
   }
