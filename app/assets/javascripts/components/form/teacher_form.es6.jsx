@@ -171,7 +171,8 @@ class TeacherForm extends React.Component {
       this.setState({ errors: response.errors });
     }
     var resolve = (response) => {
-      window.location.href = "/";
+      this.verifyStripeAccount(response)
+      // window.location.href = "/";
     };
     var params = {
       teacher: {
@@ -265,6 +266,27 @@ class TeacherForm extends React.Component {
         reject
       );
     }
+  }
+
+  verifyStripeAccount(teacher) {
+    const { stripe_account_holder_type, waiver_date } = this.state
+    var dob = moment(teacher.birthday);
+    console.log(dob);
+    console.log(teacher.birthday);
+    console.log(stripe_account_holder_type);
+    var params = {
+      dob_day: dob.date(),
+      dob_month: dob.month(),
+      dob_year: dob.year(),
+      first_name: teacher.first_name,
+      last_name: teacher.last_name,
+      type: stripe_account_holder_type,
+      tos_acceptance_date: waiver_date,
+      tos_acceptance_ip: teacher.last_sign_in_ip,
+      account_id: teacher.account_id,
+    };
+
+    console.log(params);
   }
 
   renderOptions(type) {
