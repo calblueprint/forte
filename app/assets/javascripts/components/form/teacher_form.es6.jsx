@@ -41,6 +41,12 @@ class TeacherForm extends React.Component {
       criminal_explanation: null,
       waiver_signature: null,
       waiver_date: null,
+      stripe_country: null,
+      stripe_currency: null,
+      stripe_routing_number: null,
+      stripe_account_number: null,
+      stripe_account_holder_name: null,
+      stripe_account_holder_type: null,
       activeInstruments: [],
       instruments: {},
       showWaiverModal: false,
@@ -116,6 +122,18 @@ class TeacherForm extends React.Component {
     });
   }
 
+  handleCountryChange(event) {
+    const name = $(event.target).attr("name");
+    var value = $(event.target).val();
+    for (var i = 0; i < COUNTRY_CODES.length; i++) {
+      if (COUNTRY_CODES[i].name == value) {
+        value = COUNTRY_CODES[i].code
+        this.setState({ [name] : value})
+        return;
+      }
+    }
+  }
+
   handleInstrumentClick(event) {
     const { instruments, activeInstruments } = this.state;
     const instrument = event.target.textContent;
@@ -145,10 +163,10 @@ class TeacherForm extends React.Component {
   }
 
   submitForm() {
-    this.setAvailability(this.sendRequest);
+    this.setAvailability(this.createStripeAccount);
   }
 
-  sendRequest() {
+  createTeacher(accountResponse) {
     var reject = (response) => {
       this.setState({ errors: response.errors });
     }
@@ -196,6 +214,8 @@ class TeacherForm extends React.Component {
         criminal_explanation: this.state.criminal_explanation,
         waiver_signature: this.state.waiver_signature,
         waiver_date: this.state.waiver_date,
+        account_id: accountResponse.account.id,
+        bank_id: accountResponse.bank_account.id,
       }
     };
     Requester.post(
@@ -204,6 +224,47 @@ class TeacherForm extends React.Component {
       resolve,
       reject
     );
+  }
+
+  createStripeAccount() {
+    const {
+      stripe_country,
+      stripe_currency,
+      stripe_routing_number,
+      stripe_account_number,
+      stripe_account_holder_name,
+      stripe_account_holder_type
+    } = this.state;
+
+    Stripe.bankAccount.createToken({
+      country: stripe_country,
+      currency: stripe_currency,
+      routing_number: stripe_routing_number,
+      account_number: stripe_account_number,
+      account_holder_name: stripe_account_holder_name,
+      account_holder_type: stripe_account_holder_type
+    }, this.stripeResponseHandler.bind(this));
+  }
+
+  stripeResponseHandler(status, response) {
+    const reject = (response) => { console.log(response) };
+    const resolve = ((response) => { this.createTeacher(response) });
+    
+    if (response.error) {
+      console.log(response.error);
+    } else {
+      var params = {
+        stripe_token: response.id,
+        email: this.state.email,
+        country: this.state.stripe_country,
+      };
+      Requester.post(
+        ApiConstants.stripe.createAccount,
+        params,
+        resolve,
+        reject
+      );
+    }
   }
 
   renderOptions(type) {
@@ -228,6 +289,21 @@ class TeacherForm extends React.Component {
       case 'years_played':
         optionsArray = YEARS_PLAYED;
         break;
+      case 'account_holder_type':
+        for (var i = 0; i < ACCOUNT_HOLDER_TYPE.length; i++) {
+          retOptions.push(<option value={ACCOUNT_HOLDER_TYPE[i]}>{ACCOUNT_HOLDER_TYPE[i]}</option>);
+        }
+        return retOptions
+      case 'country':
+        for (var i = 0; i < COUNTRY_CODES.length; i++) {
+          retOptions.push(<option value={COUNTRY_CODES[i].name}>{COUNTRY_CODES[i].name}</option>);
+        }
+        return retOptions
+      case 'currency':
+        for (var i = 0; i < CURRENCIES.length; i++) {
+          retOptions.push(<option value={CURRENCIES[i]}>{CURRENCIES[i]}</option>);
+        }
+        return retOptions
     }
     for (var i = 0; i < optionsArray.length; i++) {
       retOptions.push(<option value={i}>{optionsArray[i]}</option>);
@@ -558,6 +634,66 @@ class TeacherForm extends React.Component {
               </FormGroup>
 
               {/*Application Page 4*/}
+              <FormGroup>
+                <ControlLabel>Bank Account Holder Name</ControlLabel>
+                <FormControl
+                  componentClass="input"
+                  placeholder="Enter Bank Account Holder Name"
+                  name="stripe_account_holder_name"
+                  onChange={(event) => this.handleChange(event)}/>
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel>Bank Account Holder Type</ControlLabel>
+                <FormControl
+                  componentClass="select"
+                  name="stripe_account_holder_type"
+                  onChange={(event) => this.handleChange(event)}>
+                  <option value="" disabled selected>Select Account Type</option>
+                  {this.renderOptions('account_holder_type')}
+                </FormControl>
+              </FormGroup>
+              <div className="form-row">
+                <FormGroup>
+                  <ControlLabel>Routing Number</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    placeholder="Enter Routing Number"
+                    name="stripe_routing_number"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>Bank Account Number</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    placeholder="Enter Bank Account Number"
+                    name="stripe_account_number"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
+              </div>
+              <div className="form-row">
+                <FormGroup>
+                  <ControlLabel>Bank Account Country</ControlLabel>
+                  <FormControl
+                    componentClass="select"
+                    name="stripe_country"
+                    onChange={(event) => this.handleCountryChange(event)}>
+                    <option value="" disabled selected>Select Bank Acount Country</option>
+                    {this.renderOptions('country')}
+                  </FormControl>
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>Currency</ControlLabel>
+                  <FormControl
+                    componentClass="select"
+                    name="stripe_currency"
+                    onChange={(event) => this.handleChange(event)}>
+                    <option value="" disabled selected>Select Currency</option>
+                    {this.renderOptions('currency')}
+                  </FormControl>
+                </FormGroup>
+              </div>
+
+              {/*Application Page 5*/}
               <FormGroup validationState={this.getValidationState("background_check")}>
                 <ControlLabel>Do you authorize Forte to conduct a
                 background and personal reference checks in accordance
@@ -733,7 +869,7 @@ class TeacherForm extends React.Component {
                 {this.displayErrorMessage("criminal_explanation")}
               </FormGroup>
 
-              {/*Application Page 5*/}
+              {/*Application Page 6*/}
               <a onClick={(event) => this.openWaiver(event)}>Please read the Waiver and sign below</a>
               {this.renderWaiverModal()}
               <FormGroup validationState={this.getValidationState("waiver_signature")}>
