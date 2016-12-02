@@ -24,6 +24,12 @@ $white60    : rgba($white, 0.6);
 $white40    : rgba($white, 0.4);
 $white20    : rgba($white, 0.2);
 
+$red        : #E74C3C;
+$red80      : rgba($red, 0.8);
+$red60      : rgba($red, 0.6);
+$red40      : rgba($red, 0.4);
+$red20      : rgba($red, 0.2);
+
 /* FONTS */
 $font-size-xxl   : 48px;
 $font-size-xl    : 30px;
@@ -47,3 +53,8 @@ $footer-height  : 80px;
 /* BOOTSTRAP OVERRIDING */
 $navbar-height: 75px;
 
+/* FUNCTIONS */
+@mixin box-shadow($value) {
+    box-shadow: $value;
+    -webkit-box-shadow: $value;
+}

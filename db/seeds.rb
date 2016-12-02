@@ -3,7 +3,7 @@
 #
 require 'active_support/core_ext/numeric/time.rb'
 
-$instruments_array = ["piano", "clarinet", "violin"]
+$instruments_array = ["Piano", "Clarinet", "Violin"]
 
 def create_single_admin(n)
   admin = Admin.create(
@@ -18,11 +18,42 @@ def create_single_teacher(is_searching, n)
     is_searching: is_searching,
     email: Faker::Internet.email,
     first_name: Faker::Name.first_name,
-    last_name: Faker::Name.first_name,
+    last_name: Faker::Name.last_name,
     city: Faker::Address.city,
     phone: Faker::Base.numerify('###-###-####'),
     password: "password",
-    availability: [n, n+1, n+2, n+4, n+5, n+6, n+7, n+8, n+9, n+10],
+    availability: [35, 36, 37, 38, 39, 42, 43, 44],
+    gender: Faker::Number.between(0, 2),
+    birthday: Faker::Date.between(35.years.ago, 15.years.ago),
+    school: "#{Faker::Name.first_name} College",
+    school_level: Faker::Number.between(0, 1),
+    phone: Faker::Base.numerify('###-###-####'),
+    introduction: Faker::Lorem.paragraph(4),
+    teaching_experience: Faker::Lorem.paragraph(4),
+    training_experience: Faker::Lorem.paragraph(4),
+    performance_experience: Faker::Lorem.paragraph(4),
+    address: Faker::Address.street_address,
+    address_apt: Faker::Number.between(0, 12), #change
+    state: Faker::Number.between(0, 49),
+    zipcode: Faker::Address.zip_code,
+    location_preference: Faker::Boolean.boolean,
+    travel_distance: Faker::Number.between(0, 4),
+    background_check: Faker::Boolean.boolean,
+    reference1_first_name: Faker::Name.first_name,
+    reference1_last_name: Faker::Name.last_name,
+    reference1_relation: 'Former Student',
+    reference1_email: Faker::Internet.email,
+    reference1_phone: Faker::Base.numerify('###-###-####'),
+    reference2_first_name: Faker::Name.first_name,
+    reference2_last_name: Faker::Name.last_name,
+    reference2_relation: 'Former Boss',
+    reference2_email: Faker::Internet.email,
+    reference2_phone: Faker::Base.numerify('###-###-####'),
+    criminal_charges: Faker::Boolean.boolean,
+    youth_participation: Faker::Boolean.boolean,
+    criminal_explanation: Faker::Lorem.paragraph(4),
+    waiver_signature: Faker::Name.first_name,
+    waiver_date: Faker::Date.between(2.days.ago, Date.today),
   )
   teacher
 end
@@ -47,7 +78,7 @@ def create_single_student(n)
     last_name: Faker::Name.first_name,
     email: Faker::Internet.email,
     password: "password",
-    availability: [n, n+1, n+2, n+4, n+5, n+6, n+7, n+8, n+9, n+10],
+    availability: [35, 36, 37, 38, 39, 42, 43, 44],
     gender: Faker::Number.between(0, 2),
     birthday: Faker::Date.between(15.years.ago, 5.years.ago),
     school: "#{Faker::Name.first_name} Middle School",
@@ -64,15 +95,16 @@ def create_single_student(n)
     address_apt: Faker::Number.between(0, 12), #change
     state: Faker::Number.between(0, 49),
     zipcode: Faker::Address.zip_code,
-    location_preference: Faker::Boolean,
+    location_preference: Faker::Boolean.boolean,
     travel_distance: Faker::Number.between(0, 4),
     income_range: Faker::Number.between(0, 4),
     household_number: Faker::Number.between(0, 10),
-    disciplinary_action: Faker::Boolean,
-    criminal_charges: Faker::Boolean,
+    disciplinary_action: Faker::Boolean.boolean,
+    criminal_charges: Faker::Boolean.boolean,
     criminal_explanation: Faker::Lorem.paragraph(4),
     waiver_signature: Faker::Name.first_name,
     waiver_date: Faker::Date.between(2.days.ago, Date.today),
+    customer_id: '', #TODO: point id to Stripe user id
   )
   student
 end
@@ -96,19 +128,21 @@ def create_single_matching(teacher, student, instrument_name)
     lesson_time: [student.availability[0], student.availability[1], student.availability[2]],
     student_id: student.id,
     teacher_id: teacher.id,
+    location: teacher.address,
   )
   matching
 end
 
 def create_single_lesson(matching, upcoming=true, month_offset)
   start_time = upcoming ?
-      (Date.today + (15 * matching.student.availability[0].to_i).minutes) :
-      (Date.today.months_ago(month_offset) + (15 * matching.student.availability[0].to_i).minutes)
+      (Date.today + month_offset.month + 9.hours + (15 * matching.student.availability[0].to_i).minutes) :
+      (Date.today.months_ago(month_offset) + 9.hours + (15 * matching.student.availability[0].to_i).minutes)
+  paid = upcoming ? false : true;
   lesson = Lesson.create(
     start_time: start_time,
     end_time: start_time + 45.minutes,
     price: 15.0,
-    is_paid: true,
+    is_paid: paid,
     feedback: Faker::Lorem.paragraph,
     matching_id: matching.id,
   )
@@ -134,7 +168,8 @@ def create_lessons_and_matchings_with_matched_teachers_and_students
       proficiency: n % 5,
       is_primary: true,
     ).save
-    puts student.email
+    puts 'Student Email:' + student.email
+    puts 'Teacher Email:' + teacher.email
     matching = create_single_matching(teacher, student, instrument_name)
     7.times do |offset|
       create_single_lesson(matching, upcoming=true, offset)

@@ -1,9 +1,10 @@
-/* Teacher Lessons Page Styles */
+/* Student Lessons Page Styles */
 
-.teacher-lessons-page {
+.student-lessons-page {
   width: 100%;
-  padding: 0 200px;
+  padding: 0 10px;
   margin-top: 25px;
+  max-width: 800px;
 
   .title {
     color: $orange;

@@ -14,6 +14,7 @@
 #
 
 class Lesson < ActiveRecord::Base
+  after_initialize :init
 
   scope :upcoming, -> { where("start_time >= ?", Date.today) }
   scope :recent, -> { where("start_time < ?", Date.today) }
@@ -31,6 +32,10 @@ class Lesson < ActiveRecord::Base
     LessonMailer.cancel_notify_teacher(self).deliver_now
     LessonMailer.cancel_notify_student(self).deliver_now
     LessonMailer.cancel_notify_parent(self).deliver_now
+  end
+
+  def init
+    self.location = self.matching.location || 'Location has not been set'
   end
 
 end

@@ -11,10 +11,9 @@
 @import "static/*";
 @import "authentication/*";
 @import "admin/*";
-@import "student/pages/*";
-@import "student/components/*";
-@import "teacher/pages/*";
-@import "teacher/components/*";
+@import "student/*";
+@import "teacher/*";
+@import "dashboard/*";
 @import "form/*";
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files

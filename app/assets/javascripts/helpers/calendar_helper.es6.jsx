@@ -20,6 +20,40 @@ function range_to_array(start, end) {
   return retArray
 }
 
-// function array_to_events(arr) {
-//   arr.sort()
-// }
+function availability_to_events(availability) {
+  var events = [], rstart, rend;
+  for (var i = 0; i < availability.length; i++) {
+    rstart = availability[i];
+    rend = rstart;
+    while (availability[i + 1] - availability[i] == 1) {
+      rend = availability[i + 1]; // increment the index if the numbers sequential
+      i++;
+    }
+    events.push({
+      start: number_to_moment(rstart),
+      end: number_to_moment(rend+1), // end of the last time slot
+    });
+  }
+  return events;
+}
+
+function number_to_moment(number) {
+  var day = Math.floor(number/96);
+  var hour = Math.floor((number%96)/4);
+  var minute = ((number%96)%4)*15;
+  return moment().startOf('week').add(day, 'days').add(hour, 'hours').add(minute, 'minutes');
+}
+
+function get_unavailable_availability(availability) {
+  var unavailability = [];
+  for (var i = 0; i < 672; i++) {
+    unavailability.push(i);
+  }
+  for (var i = 0; i < availability.length; i++) {
+    var index = unavailability.indexOf(availability[i]);
+    if (index > -1) {
+      unavailability.splice(index, 1);
+    }
+  }
+  return unavailability;
+}

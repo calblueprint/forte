@@ -20,10 +20,30 @@ class Header extends React.Component {
 
   renderButton() {
     var signed_in = getCookie('is_signed_in');
+    var signed_in_type = getCookie('signed_in_type');
     if (signed_in == 'true') {
-      return (
-        <NavItem onClick={() => this.logout()}>LOG OUT</NavItem>
-      );
+      if (signed_in_type == 'student') {
+        return (
+          <NavDropdown>
+            <MenuItem href={RouteConstants.student.lessons}>Dashboard</MenuItem>
+            <MenuItem onClick={() => this.logout()}>Log Out</MenuItem>
+          </NavDropdown>
+        );
+      } else if (signed_in_type == 'teacher') {
+        return (
+          <NavDropdown>
+            <MenuItem href={RouteConstants.teacher.lessons}>Dashboard</MenuItem>
+            <MenuItem onClick={() => this.logout()}>Log Out</MenuItem>
+          </NavDropdown>
+        );
+      } else if (signed_in_type == 'admin') {
+        return (
+          <NavDropdown>
+            <MenuItem href={RouteConstants.admin.unmatched}>Dashboard</MenuItem>
+            <MenuItem onClick={() => this.logout()}>Log Out</MenuItem>
+          </NavDropdown>
+        );
+      }
     } else {
       return (
         <NavDropdown title="LOG IN">

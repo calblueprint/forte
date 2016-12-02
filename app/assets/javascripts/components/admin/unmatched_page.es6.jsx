@@ -9,6 +9,8 @@ class UnmatchedPage extends React.Component {
       teachers: null,
       student: null,
       teacher: null,
+      instrument: null,
+      showMatchingModal: false,
     };
   }
 
@@ -27,11 +29,15 @@ class UnmatchedPage extends React.Component {
     );
   }
 
-  studentOnClick(studentId) {
+  studentOnClick(studentId, instrument) {
     var studentRoute = ApiConstants.students.show(studentId)
     var studentResolve = ((response) => {
-      this.setState({fullStudent: true, student: response});
-      var teacherRoute = ApiConstants.teachers.possibleTeachers(studentId);
+      this.setState({
+        fullStudent: true, 
+        student: response.student,
+        instrument: instrument.name,
+      });
+      var teacherRoute = ApiConstants.teachers.possibleTeachers(studentId, instrument.name);
       var teacherResolve = (response) => this.setState({ teachers: response["teachers"] });
       var teacherReject = (response) => console.log(response);
       Requester.get(
@@ -48,9 +54,9 @@ class UnmatchedPage extends React.Component {
     );
   }
 
-  teacherOnClick(teacher_id) {
+  teacherOnClick(teacher_id, instrument) {
     var route = ApiConstants.teachers.show(teacher_id)
-    var resolve = (response) => this.setState({fullTeacher: true, teacher: response});
+    var resolve = (response) => this.setState({fullTeacher: true, teacher: response.teacher});
     var reject = (response) => console.log(response);
     Requester.get(
       route,
@@ -67,89 +73,113 @@ class UnmatchedPage extends React.Component {
     this.setState({ fullTeacher: false });
   }
 
-  makeMatching(event) {
-    route = ApiConstants.matchings.create
-    var params = {
-      student_id: this.state.student.id,
-      teacher_id: this.state.teacher.id,
-      instrument: this.state.student.instrument
-    };
-    var resolve = (response) => {
-      this.setState({ fullStudent: false, fullTeacher: false });
-      this.loadStudents();
-    };
-    var reject = (response) => console.log(response);
-    Requester.post(
-      route,
-      params,
-      resolve,
-      reject,
-    );
+  openMatchingModal(person) {
+    this.setState({ showMatchingModal: true });
+  }
+
+  closeMatchingModal() {
+    this.setState({ showMatchingModal: false });
+  }
+
+  renderMatchingModal() {
+    const { showMatchingModal, student, teacher, instrument } = this.state;
+    if (showMatchingModal) {
+      return (
+        <MatchingModal
+          handleClose={() => this.closeMatchingModal()}
+          student={student}
+          teacher={teacher} 
+          instrument={instrument} />
+      );
+    }
   }
 
   renderStudentPart() {
-    if (this.state.fullStudent) {
-      if (this.state.student != null) {
+    const { fullStudent, student, students, instrument } = this.state;
+    if (fullStudent) {
+      if (student != null) {
         return (
-          <div>
-            <p>STUDENT DETAIL</p>
-            <Button className="button button--outline-orange" onClick={(event) => this.studentBackButton(event)}>Back</Button>
-            <FullStudent student={this.state.student}/>
+          <div className="list-pane">
+            <div className="pane-header">
+              <div className="back-button">
+                <Glyphicon glyph="chevron-left" className="back-button" onClick={(event) => this.studentBackButton(event)} />
+              </div>
+              <h2>{student.first_name} {student.last_name} - {instrument}</h2>
+            </div>
+            <FullStudent student={student} instrument={instrument}/>
           </div>
         );
       } else {
         return (
-          <div/>
+          <div className="list-pane"/>
         );
       }
     } else {
-      if (this.state.students != null) {
+      if (students != null) {
         return (
-          <div>
-            <p>STUDENT LIST</p>
-            <PersonList people={this.state.students} onPersonClick={(event) => this.studentOnClick(event)}/>
+          <div className="list-pane">
+            <div className="pane-header">
+              <h2>Unmatched Students</h2>
+            </div>
+            <PersonList 
+              people={students}
+              isStudent={true} 
+              onPersonClick={(student, instrument) => this.studentOnClick(student, instrument)} />
           </div>
         );
       } else {
         return (
-          <div/>
+          <div className="list-pane"/>
         );
       }
     }
   }
 
   renderTeacherPart() {
-    if (this.state.fullTeacher) {
-      if (this.state.teachers != null) {
+    const { fullTeacher, fullStudent, teacher, teachers, instrument } = this.state;
+
+    if (fullTeacher) {
+      if (teachers != null) {
         return (
-          <div>
-            <p>TEACHER DETAIL</p>
-            <Button className="button button--outline-orange" onClick={(event) => this.teacherBackButton(event)}>Back</Button>
-            <FullTeacher teacher={this.state.teacher} />
-            <Button className="button button--outline-orange" onClick={(event) => this.makeMatching(event)}>Match</Button>
+          <div className="list-pane">
+            <div className="pane-header">
+              <div className="back-button">
+                <Glyphicon glyph="chevron-left" className="back-button" onClick={(event) => this.teacherBackButton(event)} />
+              </div>
+              <h2>{teacher.first_name} {teacher.last_name}</h2>
+            </div>
+            <FullTeacher teacher={teacher} />
+            <div className="pane-footer">
+              <Button className="button button--outline-orange" onClick={() => this.openMatchingModal()}>Choose</Button>
+            </div>
           </div>
         );
       } else {
         return (
-          <div/>
+          <div className="list-pane"/>
         );
       }
-    } else if (this.state.fullStudent) {
-      if (this.state.teachers != null) {
+    } else if (fullStudent) {
+      if (teachers != null) {
         return (
-          <div>
-            <p>TEACHER LIST</p>
-            <PersonList people={this.state.teachers} onPersonClick={(event) => this.teacherOnClick(event)}/>
+          <div className="list-pane">
+            <div className="pane-header">
+              <h2>Suitable Teachers</h2>
+            </div>
+            <PersonList 
+              people={teachers}
+              isStudent={false}
+              onPersonClick={(teacher, instrument) => this.teacherOnClick(teacher, instrument)} />
           </div>
         );
       } else {
         return (
-          <div/>
+          <div className="list-pane"/>
         );
       }
     } else {
       return (
-        <div/>
+        <div className="list-pane"/>
       );
     }
   }
@@ -158,10 +188,12 @@ class UnmatchedPage extends React.Component {
     return (
       <div className="page-wrapper">
         <AdminHeader />
-        <div className="content-wrapper">
+        <div className="content-wrapper unmatched-page">
           {this.renderStudentPart()}
+          <div className="divider" />
           {this.renderTeacherPart()}
         </div>
+        {this.renderMatchingModal()}
       </div>
     );
   }

@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/stripe/stripe-ruby
+  revision: 58184c2039dae58bf7825863bd104749530ce26c
+  specs:
+    stripe (1.57.0)
+      rest-client (>= 1.4, < 4.0)
+
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
@@ -59,6 +66,10 @@ GEM
       debug_inspector (>= 0.0.1)
     bootstrap-sass (3.2.0.2)
       sass (~> 3.2)
+    browserify-rails (3.2.0)
+      addressable (>= 2.4.0)
+      railties (>= 4.0.0, < 5.1)
+      sprockets (>= 3.5.2)
     builder (3.2.2)
     byebug (9.0.6)
     cancancan (1.15.0)
@@ -83,6 +94,8 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    domain_name (0.5.20161021)
+      unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
     execjs (2.7.0)
     factory_girl (4.7.0)
@@ -120,6 +133,8 @@ GEM
     has_scope (0.6.0)
       actionpack (>= 3.2, < 5)
       activesupport (>= 3.2, < 5)
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
     i18n (0.7.0)
     jbuilder (2.6.0)
       activesupport (>= 3.0.0, < 5.1)
@@ -154,6 +169,7 @@ GEM
       railties (>= 3.1)
     multi_json (1.12.1)
     nenv (0.3.0)
+    netrc (0.11.0)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
@@ -191,6 +207,8 @@ GEM
       railties (= 4.2.4)
       sprockets-rails
     rails-assets-moment (2.15.2)
+    rails-assets-moment-timezone (0.5.10)
+      rails-assets-moment (>= 2.6.0)
     rails-assets-react-datetime (2.6.0)
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
@@ -226,6 +244,10 @@ GEM
       tilt
     responders (2.3.0)
       railties (>= 4.2.0, < 5.1)
+    rest-client (2.0.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     rspec (3.5.0)
       rspec-core (~> 3.5.0)
       rspec-expectations (~> 3.5.0)
@@ -280,6 +302,9 @@ GEM
     uglifier (2.7.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.2)
     unicode-display_width (1.1.1)
     warden (1.2.6)
       rack (>= 1.0)
@@ -300,6 +325,7 @@ DEPENDENCIES
   awesome_print
   better_errors
   bootstrap-sass (~> 3.2.0)
+  browserify-rails
   byebug
   cancancan (= 1.15.0)
   capybara (~> 2.4.4)
@@ -323,6 +349,7 @@ DEPENDENCIES
   quiet_assets
   rails (= 4.2.4)
   rails-assets-moment!
+  rails-assets-moment-timezone!
   rails-assets-react-datetime!
   rails_12factor
   react-bootstrap-rails
@@ -331,6 +358,7 @@ DEPENDENCIES
   rubocop
   sass-rails (= 5.0.6)
   spring
+  stripe!
   uglifier (= 2.7.2)
   web-console (~> 2.0)
 

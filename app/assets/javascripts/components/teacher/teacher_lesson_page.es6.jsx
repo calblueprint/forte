@@ -78,7 +78,10 @@ class TeacherLessonsPage extends React.Component {
 
   renderLessonCard(lesson) {
     return (
-      <TeacherLessonCard handleCancelLesson={() => this.fetchUpcomingLessons()} lesson={lesson} />
+      <LessonCard 
+        isStudent={false}
+        fetchLessons={() => this.fetchUpcomingLessons()}
+        lesson={lesson} />
     );
   }
 

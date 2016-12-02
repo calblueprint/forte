@@ -1,0 +1,100 @@
+$pane-header-height: 50px;
+$pane-footer-height: 50px;
+.unmatched-page {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+
+  .back-button {
+    align-self: flex-start;
+    color: $grey80;
+    cursor: pointer;
+  }
+
+  .divider {
+    border: 1px solid $grey20;
+    margin: 20px 0px;
+    z-index:100;
+  }
+
+  .list-pane {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    padding: 0px 20px 20px 20px;
+  }
+
+  .pane-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    height: $pane-header-height;
+    width: inherit;
+    padding: 10px;
+    background-color: $white;
+    border-bottom: 1px solid $grey20;
+    z-index: 10;
+
+    .back-button {
+      align-self: center;
+    }
+
+    h2 {
+      margin: 0px;
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  .pane-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    height: $pane-footer-height;
+    width: inherit;
+    padding: 10px;
+    background-color: $white;
+    border-top: 1px solid $grey20;
+    z-index: 10;
+    bottom: 0;
+  }
+  
+}
+
+.person-list {
+  width: 100%;
+  margin-top: $pane-header-height;
+  margin-bottom: $pane-footer-height;
+  padding-top: 30px;
+}
+
+.person-description {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid $grey20;
+
+  .instruments-container {
+    display: flex;
+
+    * {
+      margin: 0px 10px;
+    }
+  }
+}
+
+.full-person {
+  display: flex;
+  flex-direction: column;
+  margin-top: $pane-header-height;
+  margin-bottom: $pane-footer-height;
+  padding-top: 30px;
+
+  .name {
+    align-self: center;
+  }
+}

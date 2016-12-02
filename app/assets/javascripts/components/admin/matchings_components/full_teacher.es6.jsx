@@ -7,10 +7,14 @@ class FullTeacher extends React.Component {
   }
 
   render () {
+    const { teacher } = this.props
     return (
-      <div className="full-teacher">
-        <p>Name: {this.props.teacher.first_name} {this.props.teacher.last_name}</p>
-        <p>City: {this.props.teacher.city}</p>
+      <div className="full-person">
+        <TeacherInformation
+          teacher={teacher} />
+        <Calendar 
+          isEditable={false}
+          events={availability_to_events(teacher.availability)} />
       </div>
     );
   }

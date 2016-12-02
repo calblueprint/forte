@@ -25,6 +25,13 @@
         dashboard: '/student/dashboard',
         lessons: '/student/lessons',
         profile: '/student/profile',
+        settings: '/student/settings',
+      }
+    }
+
+    get teacher() {
+      return {
+        lessons: '/teacher/lessons',
       }
     }
 

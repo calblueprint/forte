@@ -1,0 +1,55 @@
+/* Lesson Card Styles */
+
+.lesson-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border: 1px solid $grey20;
+  border-bottom: 0px;
+  padding: 10px 30px;
+
+  .lesson-time-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    * {
+      margin: 0;
+      color: $grey80;
+    }
+  }
+
+  .info-row {
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+
+    img {
+      height: 15px;
+      width: auto;
+    }
+
+    > :first-child {
+      margin-right: 10px;
+    }
+  }
+
+  .logistics {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 10px;
+  }
+
+  .details {
+    padding: 0px 10px;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+
+    * {
+      margin: 5px 10px;
+    }
+  }
+}

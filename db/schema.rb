@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161123073611) do
+ActiveRecord::Schema.define(version: 20161202093344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20161123073611) do
     t.datetime "end_time"
     t.decimal  "price"
     t.integer  "matching_id"
+    t.string   "location"
   end
 
   add_index "lessons", ["matching_id"], name: "index_lessons_on_matching_id", using: :btree
@@ -67,6 +68,7 @@ ActiveRecord::Schema.define(version: 20161123073611) do
     t.integer  "student_id"
     t.integer  "teacher_id"
     t.integer  "lesson_time", default: [], null: false, array: true
+    t.string   "location"
   end
 
   add_index "matchings", ["student_id"], name: "index_matchings_on_student_id", using: :btree
@@ -124,6 +126,7 @@ ActiveRecord::Schema.define(version: 20161123073611) do
     t.text     "criminal_explanation"
     t.string   "waiver_signature"
     t.datetime "waiver_date"
+    t.string   "customer_id"
   end
 
   add_index "students", ["email"], name: "index_students_on_email", unique: true, using: :btree
@@ -152,7 +155,6 @@ ActiveRecord::Schema.define(version: 20161123073611) do
     t.string   "school"
     t.string   "phone"
     t.text     "introduction"
-    t.text     "lesson_experience"
     t.text     "teaching_experience"
     t.text     "training_experience"
     t.text     "performance_experience"
@@ -179,6 +181,8 @@ ActiveRecord::Schema.define(version: 20161123073611) do
     t.string   "waiver_signature"
     t.datetime "waiver_date"
     t.integer  "school_level"
+    t.string   "account_id"
+    t.string   "bank_id"
   end
 
   add_index "teachers", ["email"], name: "index_teachers_on_email", unique: true, using: :btree
