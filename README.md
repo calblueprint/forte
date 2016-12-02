@@ -43,8 +43,12 @@ If you want it to run automatically everytime at boot:
 **Fifth**, migrate the databases:
 
     rake db:migrate
+    
+**Sixth**, install all the npm packages:
 
-**Sixth**, start the server:
+    npm install
+
+**Last**, start the server:
 
     rails server
 
