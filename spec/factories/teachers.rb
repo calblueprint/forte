@@ -25,6 +25,7 @@
 #  school                 :string
 #  phone                  :string
 #  introduction           :text
+#  lesson_experience      :text
 #  teaching_experience    :text
 #  training_experience    :text
 #  performance_experience :text
@@ -55,6 +56,6 @@
 
 FactoryGirl.define do
   factory :teacher do
-    
+
   end
 end
