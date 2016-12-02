@@ -107,9 +107,9 @@ class TeacherForm extends React.Component {
 
   handleDatetimeChange(moment, name) {
     if (name == 'birthday') {
-      this.setState({ birthday: moment.year() + '-' + moment.month() + '-' + moment.date() });
+      this.setState({ birthday: moment });
     } else if (name == 'waiver_date') {
-      this.setState({ waiver_date: moment.year() + '-' + moment.month() + '-' + moment.date() });
+      this.setState({ waiver_date: moment });
     }
   }
 
