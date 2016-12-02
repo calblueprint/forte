@@ -253,7 +253,6 @@ class TeacherForm extends React.Component {
     if (response.error) {
       console.log(response.error);
     } else {
-      console.log(response);
       var params = {
         stripe_token: response.id,
         email: this.state.email,
