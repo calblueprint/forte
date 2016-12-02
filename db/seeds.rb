@@ -104,6 +104,7 @@ def create_single_student(n)
     criminal_explanation: Faker::Lorem.paragraph(4),
     waiver_signature: Faker::Name.first_name,
     waiver_date: Faker::Date.between(2.days.ago, Date.today),
+    customer_id: 0, #TODO: point id to Stripe user id
   )
   student
 end
