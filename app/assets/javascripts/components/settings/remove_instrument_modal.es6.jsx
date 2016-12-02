@@ -20,7 +20,7 @@ class RemoveInstrumentModal extends React.Component {
   }
 
   handleConfirmClick() {
-    const { instrument } = this.props;
+    const { instrument, handleClose} = this.props;
 
     const route = ApiConstants.instruments.delete(instrument.id);
     const resolve = (response) => {
