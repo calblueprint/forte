@@ -80,7 +80,7 @@ class StudentForm extends React.Component {
 
   displayErrorMessage(name) {
     if (this.state.errors[name]) {
-      return <ControlLabel className="error-message">{this.state.errors[name]}</ControlLabel>;
+      return <HelpBlock className="error-message">{this.state.errors[name]}</HelpBlock>;
     }
   }
 
