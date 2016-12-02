@@ -20,6 +20,7 @@ def create_single_teacher(is_searching, n)
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.last_name,
     city: Faker::Address.city,
+    phone: Faker::Base.numerify('###-###-####'),
     password: "password",
     availability: [35, 36, 37, 38, 39, 42, 43, 44],
     gender: Faker::Number.between(0, 2),

@@ -25,6 +25,7 @@
 #  school                 :string
 #  phone                  :string
 #  introduction           :text
+#  lesson_experience      :text
 #  teaching_experience    :text
 #  training_experience    :text
 #  performance_experience :text
@@ -51,8 +52,11 @@
 #  waiver_signature       :string
 #  waiver_date            :datetime
 #  school_level           :integer
+<<<<<<< HEAD
+=======
 #  account_id             :string
 #  bank_id                :string
+>>>>>>> master
 #
 
 class Teacher < ActiveRecord::Base
@@ -120,7 +124,7 @@ class Teacher < ActiveRecord::Base
   enum travel_distance: [ :'I am not willing to travel', :'Up to 5 miles',
                           :'Up to 10 miles', :'Up to 20 miles',
                           :'20 miles or more']
-                          
+
   def full_name
     "#{first_name} #{last_name}"
   end
@@ -128,7 +132,7 @@ class Teacher < ActiveRecord::Base
   def full_address
     "#{address} #{address_apt}, #{state} #{zipcode}"
   end
-  
+
   def submit_signup
     ForteMailer.teacher_signup_notify_admin(self).deliver_now
     ForteMailer.teacher_signup_notify_teacher(self).deliver_now
