@@ -25,14 +25,14 @@ class Header extends React.Component {
       if (signed_in_type == 'student') {
         return (
           <NavDropdown>
-            <MenuItem href={RouteConstants.students.lessons}>Dashboard</MenuItem>
+            <MenuItem href={RouteConstants.student.lessons}>Dashboard</MenuItem>
             <MenuItem onClick={() => this.logout()}>Log Out</MenuItem>
           </NavDropdown>
         );
       } else if (signed_in_type == 'teacher') {
         return (
           <NavDropdown>
-            <MenuItem href={RouteConstants.teachers.lessons}>Dashboard</MenuItem>
+            <MenuItem href={RouteConstants.teacher.lessons}>Dashboard</MenuItem>
             <MenuItem onClick={() => this.logout()}>Log Out</MenuItem>
           </NavDropdown>
         );
