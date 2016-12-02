@@ -170,7 +170,6 @@ def create_lessons_and_matchings_with_matched_teachers_and_students
     puts 'Student Email:' + student.email
     puts 'Teacher Email:' + teacher.email
     matching = create_single_matching(teacher, student, instrument_name)
-    byebug
     7.times do |offset|
       create_single_lesson(matching, upcoming=true, offset)
       create_single_lesson(matching, upcoming=false, offset)

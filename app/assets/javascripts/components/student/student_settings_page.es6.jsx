@@ -1,10 +1,25 @@
 class StudentSettingsPage extends React.Component {
 
+  constructor() {
+    super();
+    this.state = {
+      removeModalIsVisible: false,
+    };
+  }
+
   static get propTypes() {
     return {
       student: React.PropTypes.object.isRequired,
       instruments: React.PropTypes.array,
     };
+  }
+
+  openRemoveModal() {
+    this.setState({ removeModalIsVisible: true });
+  }
+
+  closeRemoveModal() {
+    this.setState({ removeModalIsVisible: false });
   }
 
   handleRemoveInstrument() {
@@ -13,6 +28,20 @@ class StudentSettingsPage extends React.Component {
 
   handleAddInstrument() {
     // TODO: Modal including proficiency level and years played.
+  }
+
+  renderRemoveModal(instrument) {
+    const { removeModalIsVisible } = this.state;
+    debugger;
+    if (removeModalIsVisible) {
+      return (
+        <RemoveInstrumentModal
+          isVisible={removeModalIsVisible}
+          handleClose={() => this.closeRemoveModal()}
+          instrument={instrument}
+        />
+      );
+    }
   }
 
   renderInstrument(instrument) {
@@ -24,15 +53,16 @@ class StudentSettingsPage extends React.Component {
         <div className="delete">
           <Button
             className="button button--outline-orange button--sm"
-            onClick={() => this.handleRemoveInstrument(instrument)}>
+            onClick={() => this.openRemoveModal()}>
             Remove
           </Button>
+          {this.renderRemoveModal(instrument)}
         </div>
       </div>
     );
   }
 
-  renderIntruments() {
+  renderInstruments() {
     const { instruments } = this.props;
     return  instruments.map((instrument) => this.renderInstrument(instrument));
   }
@@ -57,7 +87,7 @@ class StudentSettingsPage extends React.Component {
           Musical Experience
         </h3>
         <div className="instruments-container">
-          {this.renderIntruments()}
+          {this.renderInstruments()}
           <Button
             className="button button--outline-orange button--sm"
             onClick={() => this.handleAddInstrument()}>
