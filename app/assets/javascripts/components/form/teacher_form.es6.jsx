@@ -107,9 +107,9 @@ class TeacherForm extends React.Component {
 
   handleDatetimeChange(moment, name) {
     if (name == 'birthday') {
-      this.setState({ birthday: moment.year() + '-' + moment.month() + '-' + moment.date() });
+      this.setState({ birthday: moment });
     } else if (name == 'waiver_date') {
-      this.setState({ waiver_date: moment.year() + '-' + moment.month() + '-' + moment.date() });
+      this.setState({ waiver_date: moment });
     }
   }
 
@@ -383,6 +383,9 @@ class TeacherForm extends React.Component {
             <div className="form-container">
               <form>
               {/*Application Page 1*/}
+              <div className="section-title">
+                <h2>Basic Information</h2>
+              </div>
               <div className="form-row">
                 <FormGroup validationState={this.getValidationState("first_name")}>
                   <ControlLabel>First Name</ControlLabel>
@@ -448,67 +451,7 @@ class TeacherForm extends React.Component {
                 {this.displayErrorMessage("school_level")}
               </FormGroup>
 
-              {/*Application Page 2*/}
-              <div className="form-row">
-                {this.renderInstrumentButtons()}
-              </div>
-              <CSSTransitionGroup
-                transitionName="fade"
-                transitionEnter={true}
-                transitionLeave={true}
-                transitionEnterTimeout={500}
-                transitionLeaveTimeout={300}>
-                {this.renderInstrumentsFields()}
-              </CSSTransitionGroup>
-              <FormGroup validationState={this.getValidationState("introduction")}>
-                <ControlLabel>Tell us a little bit about yourself and the impact
-                you hope to make with Forte!</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  componentClass="textarea"
-                  placeholder="Enter text"
-                  name="introduction"
-                  onChange={(event) => this.handleChange(event)}/>
-                {this.displayErrorMessage("introduction")}
-              </FormGroup>
-
-              <FormGroup validationState={this.getValidationState("teaching_experience")}>
-                <ControlLabel>Please describe your teaching experience.</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  componentClass="textarea"
-                  placeholder="Enter text"
-                  name="teaching_experience"
-                  onChange={(event) => this.handleChange(event)}/>
-                {this.displayErrorMessage("teaching_experience")}
-              </FormGroup>
-
-              <FormGroup validationState={this.getValidationState("training_experience")}>
-                <ControlLabel>Please describe your musical training including
-                experience receiving music lessons.</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  componentClass="textarea"
-                  placeholder="Enter text"
-                  name="training_experience"
-                  onChange={(event) => this.handleChange(event)}/>
-                {this.displayErrorMessage("training_experience")}
-              </FormGroup>
-
-              <FormGroup validationState={this.getValidationState("performance_experience")}>
-                <ControlLabel>Please describe your experience performing
-                with any musical groups or ensembles.</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  componentClass="textarea"
-                  placeholder="Enter text"
-                  name="performance_experience"
-                  onChange={(event) => this.handleChange(event)}/>
-                {this.displayErrorMessage("performance_experience")}
-              </FormGroup>
-
-              {/*Application Page 3*/}
-              <FormGroup validationState={this.getValidationState("email")}>
+               <FormGroup validationState={this.getValidationState("email")}>
                 <ControlLabel>Email</ControlLabel>
                 <FormControl
                   componentClass="input"
@@ -603,7 +546,79 @@ class TeacherForm extends React.Component {
                   onChange={(event) => this.handleChange(event)}/>
                 {this.displayErrorMessage("zipcode")}
               </FormGroup>
+              {/*Application Page 2*/}
+              <div className="section-title">
+                <h2>Pick the instruments you would like to teach with Forte
+                </h2>
+              </div>
+              <div className="form-row">
+                {this.renderInstrumentButtons()}
+              </div>
+              <CSSTransitionGroup
+                transitionName="fade"
+                transitionEnter={true}
+                transitionLeave={true}
+                transitionEnterTimeout={500}
+                transitionLeaveTimeout={300}>
+                {this.renderInstrumentsFields()}
+              </CSSTransitionGroup>
+              <div className="section-title">
+                <h2>Musical Experience
+                </h2>
+              </div>
+              <FormGroup validationState={this.getValidationState("introduction")}>
+                <ControlLabel>Tell us a little bit about yourself and the impact
+                you hope to make with Forte!</ControlLabel>
+                <FormControl
+                  componentClass="input"
+                  componentClass="textarea"
+                  placeholder="Enter text"
+                  name="introduction"
+                  onChange={(event) => this.handleChange(event)}/>
+                {this.displayErrorMessage("introduction")}
+              </FormGroup>
 
+              <FormGroup validationState={this.getValidationState("teaching_experience")}>
+                <ControlLabel>Please describe your teaching experience.</ControlLabel>
+                <FormControl
+                  componentClass="input"
+                  componentClass="textarea"
+                  placeholder="Enter text"
+                  name="teaching_experience"
+                  onChange={(event) => this.handleChange(event)}/>
+                {this.displayErrorMessage("teaching_experience")}
+              </FormGroup>
+
+              <FormGroup validationState={this.getValidationState("training_experience")}>
+                <ControlLabel>Please describe your musical training including
+                experience receiving music lessons.</ControlLabel>
+                <FormControl
+                  componentClass="input"
+                  componentClass="textarea"
+                  placeholder="Enter text"
+                  name="training_experience"
+                  onChange={(event) => this.handleChange(event)}/>
+                {this.displayErrorMessage("training_experience")}
+              </FormGroup>
+
+              <FormGroup validationState={this.getValidationState("performance_experience")}>
+                <ControlLabel>Please describe your experience performing
+                with any musical groups or ensembles.</ControlLabel>
+                <FormControl
+                  componentClass="input"
+                  componentClass="textarea"
+                  placeholder="Enter text"
+                  name="performance_experience"
+                  onChange={(event) => this.handleChange(event)}/>
+                {this.displayErrorMessage("performance_experience")}
+              </FormGroup>
+
+              {/*Application Page 3*/}
+             
+              <div className="section-title">
+                <h2>Scheduling
+                </h2>
+              </div>
               <FormGroup validationState={this.getValidationState("location_preference")}>
                 <ControlLabel>Location Preference</ControlLabel>
                   <Checkbox
@@ -634,6 +649,10 @@ class TeacherForm extends React.Component {
               </FormGroup>
 
               {/*Application Page 4*/}
+              <div className="section-title">
+                <h2>Payment
+                </h2>
+              </div>
               <FormGroup>
                 <ControlLabel>Bank Account Holder Name</ControlLabel>
                 <FormControl
@@ -693,6 +712,10 @@ class TeacherForm extends React.Component {
                 </FormGroup>
               </div>
 
+              <div className="section-title">
+                <h2>Eligibility
+                </h2>
+              </div>
               {/*Application Page 5*/}
               <FormGroup validationState={this.getValidationState("background_check")}>
                 <ControlLabel>Do you authorize Forte to conduct a
@@ -870,6 +893,10 @@ class TeacherForm extends React.Component {
               </FormGroup>
 
               {/*Application Page 6*/}
+              <div className="section-title">
+                <h2>Waiver
+                </h2>
+              </div>
               <a onClick={(event) => this.openWaiver(event)}>Please read the Waiver and sign below</a>
               {this.renderWaiverModal()}
               <FormGroup validationState={this.getValidationState("waiver_signature")}>
