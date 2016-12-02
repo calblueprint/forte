@@ -10,6 +10,10 @@ First, clone the repo in a folder of your choice.
 Make sure you have the right Ruby version running (2.2.5). Use rvm to download or update if necessary. Run `gem install bundler` if you don't have bundler. Run command:
 
     bundle install
+
+Install all the npm packages as well:
+
+    npm install
     
 ### Setup
 
@@ -43,12 +47,8 @@ If you want it to run automatically everytime at boot:
 **Fifth**, migrate the databases:
 
     rake db:migrate
-    
-**Sixth**, install all the npm packages:
 
-    npm install
-
-**Last**, start the server:
+**Lastly**, start the server:
 
     rails server
 
