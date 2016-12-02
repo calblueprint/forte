@@ -47,6 +47,7 @@ class TeacherForm extends React.Component {
       stripe_account_number: null,
       stripe_account_holder_name: null,
       stripe_account_holder_type: null,
+      stripe_account_holder_dob: null,
       activeInstruments: [],
       instruments: {},
       showWaiverModal: false,
@@ -110,6 +111,8 @@ class TeacherForm extends React.Component {
       this.setState({ birthday: moment });
     } else if (name == 'waiver_date') {
       this.setState({ waiver_date: moment });
+    } else if (name == 'stripe_account_holder_dob') {
+      this.setState({ stripe_account_holder_dob: moment });
     }
   }
 
@@ -171,8 +174,7 @@ class TeacherForm extends React.Component {
       this.setState({ errors: response.errors });
     }
     var resolve = (response) => {
-      this.verifyStripeAccount(response)
-      // window.location.href = "/";
+      this.verifyStripeAccount(response);
     };
     var params = {
       teacher: {
@@ -269,20 +271,31 @@ class TeacherForm extends React.Component {
   }
 
   verifyStripeAccount(teacher) {
-    const { stripe_account_holder_type, waiver_date } = this.state
-    var dob = moment(teacher.birthday);
+    const { stripe_account_holder_type, waiver_date, stripe_account_holder_dob } = this.state
+    const reject = (response) => { console.log(response) };
+    const resolve = ((response) => { window.location.href = "/" });
+
     var params = {
-      dob_day: dob.date(),
+      dob_day: stripe_account_holder_dob.date(),
       // moment month is zero indexed
-      dob_month: dob.month() + 1,
-      dob_year: dob.year(),
+      dob_month: stripe_account_holder_dob.month() + 1,
+      dob_year: stripe_account_holder_dob.year(),
       first_name: teacher.first_name,
       last_name: teacher.last_name,
-      type: stripe_account_holder_type,
+      type: stripe_account_holder_type.toLowerCase(),
       tos_acceptance_date: waiver_date.unix(),
       tos_acceptance_ip: teacher.sign_up_ip,
       account_id: teacher.account_id,
     };
+
+    console.log(params);
+
+    Requester.post(
+      ApiConstants.stripe.verifyAccount,
+      params,
+      resolve,
+      reject
+    );
   }
 
   renderOptions(type) {
@@ -671,14 +684,25 @@ class TeacherForm extends React.Component {
                 <h2>Payment
                 </h2>
               </div>
-              <FormGroup>
-                <ControlLabel>Bank Account Holder Name</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  placeholder="Enter Bank Account Holder Name"
-                  name="stripe_account_holder_name"
-                  onChange={(event) => this.handleChange(event)}/>
-              </FormGroup>
+              <div className="form-row">
+                <FormGroup>
+                  <ControlLabel>Bank Account Holder Name</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    placeholder="Enter Bank Account Holder Name"
+                    name="stripe_account_holder_name"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
+                <FormGroup validationState={this.getValidationState("birthday")}>
+                  <ControlLabel>Bank Account Holder DOB</ControlLabel>
+                  <Datetime
+                    dateFormat="MM/DD/YYYY"
+                    timeFormat={false}
+                    inputProps={{placeholder: "MM/DD/YYYY"}}
+                    onChange={(moment) => this.handleDatetimeChange(moment, 'stripe_account_holder_dob')}/>
+                  {this.displayErrorMessage("birthday")}
+                </FormGroup>
+              </div>
               <FormGroup>
                 <ControlLabel>Bank Account Holder Type</ControlLabel>
                 <FormControl
