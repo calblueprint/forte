@@ -20,24 +20,21 @@ class RemoveInstrumentModal extends React.Component {
   }
 
   handleConfirmClick() {
-    //TODO: Check difference of current time and lesson time and charge
-    //cancellation fee if necessary
-    // const { instrument } = this.props;
+    const { instrument } = this.props;
 
-    // const route = ApiConstants.lessons.delete(instrument.id);
-    // const resolve = (response) => {
-    //   handleClose();
-    // }
-    // const reject = (response) => console.log(response);
-    // Requester.delete(
-    //   route,
-    //   resolve,
-    //   reject,
-    // );
+    const route = ApiConstants.instruments.delete(instrument.id);
+    const resolve = (response) => {
+      handleClose();
+    }
+    const reject = (response) => console.log(response);
+    Requester.delete(
+      route,
+      resolve,
+      reject,
+    );
   }
 
   renderRemoveModal() {
-    debugger;
     const { handleClose, instrument} = this.props;
     const { showNextScreen } = this.state;
     if (showNextScreen) {
@@ -59,7 +56,7 @@ class RemoveInstrumentModal extends React.Component {
       return (
         <div>
           <Modal.Body>
-            <p>Please confirm that you would like to cancel {instrument.name}</p>
+            <p>Please confirm that you would like to remove {instrument.name} as one of your instruments.</p>
           </Modal.Body>
           <Modal.Footer>
             <Button className="button button--outline-orange" onClick={handleClose}>Close</Button>

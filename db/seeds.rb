@@ -53,6 +53,8 @@ def create_single_teacher(is_searching, n)
     criminal_explanation: Faker::Lorem.paragraph(4),
     waiver_signature: Faker::Name.first_name,
     waiver_date: Faker::Date.between(2.days.ago, Date.today),
+    account_id: 'sdfsd',
+    bank_id: 'sdfsd',
   )
   teacher
 end
@@ -103,7 +105,7 @@ def create_single_student(n)
     criminal_explanation: Faker::Lorem.paragraph(4),
     waiver_signature: Faker::Name.first_name,
     waiver_date: Faker::Date.between(2.days.ago, Date.today),
-    customer_id: '', #TODO: point id to Stripe user id
+    customer_id: 'sdfsd', #TODO: point id to Stripe user id
   )
   student
 end

@@ -24,6 +24,7 @@ class Api::InstrumentsController < Api::BaseController
 
   def destroy
     instrument = Instrument.find params[:id]
+    destroy_matchings(instrument)
     if instrument.destroy
       render json: instrument
     else
@@ -34,6 +35,15 @@ class Api::InstrumentsController < Api::BaseController
   def show
     instrument = Instrument.find params[:id]
     render json: instrument
+  end
+
+  def destroy_matchings(instrument)
+    if instrumentable_type == 'Student'
+      Matching.where(student_id: instrumentable_id).destroy
+    else
+      # instrumentable_type == 'Teacher'
+      Matching.where(teacher_id: instrumentable_id).destroy
+    end
   end
 
   def instrument_params

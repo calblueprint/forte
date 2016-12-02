@@ -81,6 +81,13 @@
         charge: '/stripe/charge',
       }
     }
+
+    get instruments() {
+      return {
+        create: '/api/instruments',
+        delete: (id) => `/api/instruments/${id}`,
+      }
+    }
   }
   this.ApiConstants = new ApiConstants();
 })();

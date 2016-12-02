@@ -32,7 +32,6 @@ class StudentSettingsPage extends React.Component {
 
   renderRemoveModal(instrument) {
     const { removeModalIsVisible } = this.state;
-    debugger;
     if (removeModalIsVisible) {
       return (
         <RemoveInstrumentModal
@@ -82,18 +81,16 @@ class StudentSettingsPage extends React.Component {
         <h3>
           Availability
         </h3>
-          {this.renderAvailability()}
+        {this.renderAvailability()}
         <h3>
           Musical Experience
         </h3>
-        <div className="instruments-container">
-          {this.renderInstruments()}
-          <Button
-            className="button button--outline-orange button--sm"
-            onClick={() => this.handleAddInstrument()}>
-            Add
-          </Button>
-        </div>
+        {this.renderInstruments()}
+        <Button
+          className="button button--outline-orange button--sm"
+          onClick={() => this.handleAddInstrument()}>
+          Add
+        </Button>
       </div>
     </div>
     );
