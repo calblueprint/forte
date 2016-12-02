@@ -29,6 +29,12 @@
       }
     }
 
+    get teacher() {
+      return {
+        lessons: '/teacher/lessons',
+      }
+    }
+
     get form() {
       return {
         student: '/form/student',

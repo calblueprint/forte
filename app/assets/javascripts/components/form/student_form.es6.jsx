@@ -324,7 +324,6 @@ class StudentForm extends React.Component {
               {this.renderOptions('proficiency')}
             </FormControl>
           </FormGroup>
-
           <FormGroup>
             <ControlLabel>Years Played</ControlLabel>
             <FormControl

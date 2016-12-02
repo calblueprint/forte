@@ -95,12 +95,18 @@ class UnmatchedPage extends React.Component {
   }
 
   renderStudentPart() {
-    if (this.state.fullStudent) {
-      if (this.state.student != null) {
+    const { fullStudent, student, students, instrument } = this.state;
+    if (fullStudent) {
+      if (student != null) {
         return (
           <div className="list-pane">
-            <Glyphicon glyph="chevron-left" className="back-button" onClick={(event) => this.studentBackButton(event)} />
-            <FullStudent student={this.state.student} instrument={this.state.instrument}/>
+            <div className="pane-header">
+              <div className="back-button">
+                <Glyphicon glyph="chevron-left" className="back-button" onClick={(event) => this.studentBackButton(event)} />
+              </div>
+              <h2>{student.first_name} {student.last_name} - {instrument}</h2>
+            </div>
+            <FullStudent student={student} instrument={instrument}/>
           </div>
         );
       } else {
@@ -109,12 +115,14 @@ class UnmatchedPage extends React.Component {
         );
       }
     } else {
-      if (this.state.students != null) {
+      if (students != null) {
         return (
           <div className="list-pane">
-            <h2>Unmatched Students</h2>
+            <div className="pane-header">
+              <h2>Unmatched Students</h2>
+            </div>
             <PersonList 
-              people={this.state.students}
+              people={students}
               isStudent={true} 
               onPersonClick={(student, instrument) => this.studentOnClick(student, instrument)} />
           </div>
@@ -128,13 +136,22 @@ class UnmatchedPage extends React.Component {
   }
 
   renderTeacherPart() {
-    if (this.state.fullTeacher) {
-      if (this.state.teachers != null) {
+    const { fullTeacher, fullStudent, teacher, teachers, instrument } = this.state;
+
+    if (fullTeacher) {
+      if (teachers != null) {
         return (
           <div className="list-pane">
-            <Glyphicon glyph="chevron-left" className="back-button" onClick={(event) => this.teacherBackButton(event)} />
-            <FullTeacher teacher={this.state.teacher} />
-            <Button className="button button--outline-orange" onClick={() => this.openMatchingModal()}>Choose</Button>
+            <div className="pane-header">
+              <div className="back-button">
+                <Glyphicon glyph="chevron-left" className="back-button" onClick={(event) => this.teacherBackButton(event)} />
+              </div>
+              <h2>{teacher.first_name} {teacher.last_name}</h2>
+            </div>
+            <FullTeacher teacher={teacher} />
+            <div className="pane-footer">
+              <Button className="button button--outline-orange" onClick={() => this.openMatchingModal()}>Choose</Button>
+            </div>
           </div>
         );
       } else {
@@ -142,13 +159,15 @@ class UnmatchedPage extends React.Component {
           <div className="list-pane"/>
         );
       }
-    } else if (this.state.fullStudent) {
-      if (this.state.teachers != null) {
+    } else if (fullStudent) {
+      if (teachers != null) {
         return (
           <div className="list-pane">
-            <h2>Suitable Teachers</h2>
+            <div className="pane-header">
+              <h2>Suitable Teachers</h2>
+            </div>
             <PersonList 
-              people={this.state.teachers}
+              people={teachers}
               isStudent={false}
               onPersonClick={(teacher, instrument) => this.teacherOnClick(teacher, instrument)} />
           </div>
