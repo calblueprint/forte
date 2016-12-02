@@ -24,6 +24,8 @@ class RemoveInstrumentModal extends React.Component {
 
     const route = ApiConstants.instruments.delete(instrument.id);
     const resolve = (response) => {
+      // TODO: Force a rerender when resolve.
+      // TODO: Send emails when lessons are deleted.
       handleClose();
     }
     const reject = (response) => console.log(response);

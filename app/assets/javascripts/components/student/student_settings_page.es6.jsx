@@ -32,6 +32,7 @@ class StudentSettingsPage extends React.Component {
 
   renderRemoveModal(instrument) {
     const { removeModalIsVisible } = this.state;
+
     if (removeModalIsVisible) {
       return (
         <RemoveInstrumentModal
