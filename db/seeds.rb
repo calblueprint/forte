@@ -28,7 +28,6 @@ def create_single_teacher(is_searching, n)
     school_level: Faker::Number.between(0, 1),
     phone: Faker::Base.numerify('###-###-####'),
     introduction: Faker::Lorem.paragraph(4),
-    lesson_experience: Faker::Lorem.paragraph(4),
     teaching_experience: Faker::Lorem.paragraph(4),
     training_experience: Faker::Lorem.paragraph(4),
     performance_experience: Faker::Lorem.paragraph(4),
@@ -104,7 +103,7 @@ def create_single_student(n)
     criminal_explanation: Faker::Lorem.paragraph(4),
     waiver_signature: Faker::Name.first_name,
     waiver_date: Faker::Date.between(2.days.ago, Date.today),
-    customer_id: 0, #TODO: point id to Stripe user id
+    customer_id: '', #TODO: point id to Stripe user id
   )
   student
 end

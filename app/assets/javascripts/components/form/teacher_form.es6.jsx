@@ -15,7 +15,6 @@ class TeacherForm extends React.Component {
       phone: null,
       email: null,
       introduction: null,
-      lesson_experience: null,
       teaching_experience: null,
       training_experience: null,
       performance_experience: null,
@@ -45,6 +44,7 @@ class TeacherForm extends React.Component {
       activeInstruments: [],
       instruments: {},
       showWaiverModal: false,
+      errors: {}
     }
   }
 
@@ -65,6 +65,18 @@ class TeacherForm extends React.Component {
       };
     }
     this.setState({ instruments: instruments });
+  }
+
+  getValidationState(name) {
+    if (this.state.errors[name]) {
+      return 'error';
+    }
+  }
+
+  displayErrorMessage(name) {
+    if (this.state.errors[name]) {
+      return <HelpBlock className="error-message">{this.state.errors[name]}</HelpBlock>;
+    }
   }
 
   handleChange(event) {
@@ -137,7 +149,9 @@ class TeacherForm extends React.Component {
   }
 
   sendRequest() {
-    var reject = (response) => console.log(response);
+    var reject = (response) => {
+      this.setState({ errors: response.errors });
+    }
     var resolve = (response) => {
       window.location.href = "/";
     };
@@ -156,7 +170,6 @@ class TeacherForm extends React.Component {
         phone: this.state.phone,
         email:this.state.email,
         introduction: this.state.introduction,
-        lesson_experience: this.state.lesson_experience,
         teaching_experience: this.state.teaching_experience,
         training_experience: this.state.training_experience,
         performance_experience: this.state.performance_experience,
@@ -199,6 +212,9 @@ class TeacherForm extends React.Component {
     switch(type) {
       case 'gender':
         optionsArray = GENDERS;
+        break;
+      case 'school_level':
+        optionsArray = TEACHER_SCHOOL_LEVELS;
         break;
       case 'state':
         optionsArray = STATES;
@@ -292,25 +308,27 @@ class TeacherForm extends React.Component {
               <form>
               {/*Application Page 1*/}
               <div className="form-row">
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("first_name")}>
                   <ControlLabel>First Name</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="First Name"
                     name="first_name"
                     onChange={(event) => this.handleChange(event)}/>
+                    {this.displayErrorMessage("first_name")}
                 </FormGroup>
 
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("last_name")}>
                   <ControlLabel>Last Name</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Last Name"
                     name="last_name"
                     onChange={(event) => this.handleChange(event)}/>
+                    {this.displayErrorMessage("last_name")}
                 </FormGroup>
               </div>
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("gender")}>
                 <ControlLabel>Gender</ControlLabel>
                 <FormControl
                   componentClass="select"
@@ -319,24 +337,39 @@ class TeacherForm extends React.Component {
                   <option value="" disabled selected>Select your gender</option>
                   {this.renderOptions('gender')}
                 </FormControl>
+                {this.displayErrorMessage("gender")}
               </FormGroup>
 
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("birthday")}>
                 <ControlLabel>Birthday</ControlLabel>
                 <Datetime
                   dateFormat="MM/DD/YYYY"
                   timeFormat={false}
                   inputProps={{placeholder: "MM/DD/YYYY"}}
                   onChange={(moment) => this.handleDatetimeChange(moment, 'birthday')}/>
+                {this.displayErrorMessage("birthday")}
               </FormGroup>
 
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("school")}>
                 <ControlLabel>School Name</ControlLabel>
                 <FormControl
                   componentClass="input"
                   placeholder="School"
                   name="school"
                   onChange={(event) => this.handleChange(event)}/>
+                {this.displayErrorMessage("school")}
+              </FormGroup>
+
+              <FormGroup validationState={this.getValidationState("school_level")}>
+                <ControlLabel>Class Level</ControlLabel>
+                <FormControl
+                  componentClass="select"
+                  name="school_level"
+                  onChange={(event) => this.handleIntegerChange(event)}>
+                  <option value="" disabled selected>Select your class level</option>
+                  {this.renderOptions('school_level')}
+                </FormControl>
+                {this.displayErrorMessage("school_level")}
               </FormGroup>
 
               {/*Application Page 2*/}
@@ -351,7 +384,7 @@ class TeacherForm extends React.Component {
                 transitionLeaveTimeout={300}>
                 {this.renderInstrumentsFields()}
               </CSSTransitionGroup>
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("introduction")}>
                 <ControlLabel>Tell us a little bit about yourself and the impact
                 you hope to make with Forte!</ControlLabel>
                 <FormControl
@@ -360,9 +393,10 @@ class TeacherForm extends React.Component {
                   placeholder="Enter text"
                   name="introduction"
                   onChange={(event) => this.handleChange(event)}/>
+                {this.displayErrorMessage("introduction")}
               </FormGroup>
 
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("teaching_experience")}>
                 <ControlLabel>Please describe your teaching experience.</ControlLabel>
                 <FormControl
                   componentClass="input"
@@ -370,9 +404,10 @@ class TeacherForm extends React.Component {
                   placeholder="Enter text"
                   name="teaching_experience"
                   onChange={(event) => this.handleChange(event)}/>
+                {this.displayErrorMessage("teaching_experience")}
               </FormGroup>
 
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("training_experience")}>
                 <ControlLabel>Please describe your musical training including
                 experience receiving music lessons.</ControlLabel>
                 <FormControl
@@ -381,9 +416,10 @@ class TeacherForm extends React.Component {
                   placeholder="Enter text"
                   name="training_experience"
                   onChange={(event) => this.handleChange(event)}/>
+                {this.displayErrorMessage("training_experience")}
               </FormGroup>
 
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("performance_experience")}>
                 <ControlLabel>Please describe your experience performing
                 with any musical groups or ensembles.</ControlLabel>
                 <FormControl
@@ -392,20 +428,22 @@ class TeacherForm extends React.Component {
                   placeholder="Enter text"
                   name="performance_experience"
                   onChange={(event) => this.handleChange(event)}/>
+                {this.displayErrorMessage("performance_experience")}
               </FormGroup>
 
               {/*Application Page 3*/}
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("email")}>
                 <ControlLabel>Email</ControlLabel>
                 <FormControl
                   componentClass="input"
                   placeholder="Email"
                   name="email"
                   onChange={(event) => this.handleChange(event)}/>
+                {this.displayErrorMessage("email")}
               </FormGroup>
 
               <div className="form-row">
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("password")}>
                   <ControlLabel>Password</ControlLabel>
                   <FormControl
                     componentClass="input"
@@ -413,9 +451,10 @@ class TeacherForm extends React.Component {
                     placeholder="Password"
                     name="password"
                     onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("password")}
                 </FormGroup>
 
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("password_confirmation")}>
                   <ControlLabel>Password Confirmation</ControlLabel>
                   <FormControl
                     componentClass="input"
@@ -423,46 +462,51 @@ class TeacherForm extends React.Component {
                     placeholder="Password"
                     name="password_confirmation"
                     onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("password_confirmation")}
                 </FormGroup>
               </div>
 
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("phone")}>
                 <ControlLabel>Phone</ControlLabel>
                 <FormControl
                   componentClass="input"
                   placeholder="Phone Number"
                   name="phone"
                   onChange={(event) => this.handleChange(event)}/>
+                {this.displayErrorMessage("phone")}
               </FormGroup>
 
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("address")}>
                 <ControlLabel>Address</ControlLabel>
                 <FormControl
                   componentClass="input"
                   placeholder="Address"
                   name="address"
                   onChange={(event) => this.handleChange(event)}/>
+                {this.displayErrorMessage("address")}
               </FormGroup>
 
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("address_apt")}>
                 <ControlLabel>Apt # (optional)</ControlLabel>
                 <FormControl
                   componentClass="input"
                   placeholder="Apt #"
                   name="address_apt"
                   onChange={(event) => this.handleChange(event)}/>
+                {this.displayErrorMessage("address_apt")}
               </FormGroup>
 
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("city")}>
                 <ControlLabel>City</ControlLabel>
                 <FormControl
                   componentClass="input"
                   placeholder="City"
                   name="city"
                   onChange={(event) => this.handleChange(event)}/>
+                {this.displayErrorMessage("city")}
               </FormGroup>
 
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("state")}>
                 <ControlLabel>State</ControlLabel>
                 <FormControl
                   componentClass="select"
@@ -471,18 +515,20 @@ class TeacherForm extends React.Component {
                   <option value="" disabled selected>Select your state</option>
                   {this.renderOptions('state')}
                 </FormControl>
+              {this.displayErrorMessage("state")}
               </FormGroup>
 
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("zipcode")}>
                 <ControlLabel>Zip Code</ControlLabel>
                 <FormControl
                   componentClass="input"
                   placeholder="Zip Code"
                   name="zipcode"
                   onChange={(event) => this.handleChange(event)}/>
+                {this.displayErrorMessage("zipcode")}
               </FormGroup>
 
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("location_preference")}>
                 <ControlLabel>Location Preference</ControlLabel>
                   <Checkbox
                     name="location_preference"
@@ -490,9 +536,10 @@ class TeacherForm extends React.Component {
                     I am willing to host lessons at my home (earn $10/lesson
                       if hosting; $15 if traveling).
                   </Checkbox>
+                {this.displayErrorMessage("location_preference")}
               </FormGroup>
 
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("travel_distance")}>
                 <ControlLabel>Distance Willing to Travel</ControlLabel>
                 <FormControl
                   componentClass="select"
@@ -501,15 +548,17 @@ class TeacherForm extends React.Component {
                   <option value="" disabled selected>Select distance</option>
                   {this.renderOptions('travel_distance')}
                 </FormControl>
+                {this.displayErrorMessage("travel_distance")}
               </FormGroup>
 
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("availability")}>
                 <ControlLabel>Weekly Availability</ControlLabel>
                 <Calendar ref="availability"/>
+                {this.displayErrorMessage("availability")}
               </FormGroup>
 
               {/*Application Page 4*/}
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("background_check")}>
                 <ControlLabel>Do you authorize Forte to conduct a
                 background and personal reference checks in accordance
                 with our saftey policy?</ControlLabel>
@@ -525,107 +574,118 @@ class TeacherForm extends React.Component {
                   onChange={(event) => this.handleBooleanChange(event)}>
                   No
                 </Radio>
+                {this.displayErrorMessage("background_check")}
               </FormGroup>
 
               <div className="form-row">
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("reference1_first_name")}>
                   <ControlLabel>Reference #1</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="First Name"
                     name="reference1_first_name"
                     onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("reference1_first_name")}
                 </FormGroup>
 
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("reference1_last_name")}>
                   <ControlLabel></ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Last Name"
                     name="reference1_last_name"
                     onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("reference1_last_name")}
                 </FormGroup>
 
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("reference1_relation")}>
                   <ControlLabel></ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Relationship"
                     name="reference1_relation"
                     onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("reference1_relation")}
                 </FormGroup>
               </div>
 
               <div className="form-row">
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("reference1_email")}>
                   <ControlLabel></ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Email"
                     name="reference1_email"
                     onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("reference1_email")}
                 </FormGroup>
 
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("reference1_phone")}>
                   <ControlLabel></ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Phone"
                     name="reference1_phone"
                     onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("reference1_phone")}
                 </FormGroup>
               </div>
 
               <div className="form-row">
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("reference2_first_name")}>
                   <ControlLabel>Reference #2</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="First Name"
                     name="reference2_first_name"
                     onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("reference2_first_name")}
                 </FormGroup>
 
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("reference2_last_name")}>
                   <ControlLabel></ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Last Name"
                     name="reference2_last_name"
                     onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("reference2_last_name")}
                 </FormGroup>
 
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("reference2_relation")}>
                   <ControlLabel></ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Relationship"
                     name="reference2_relation"
                     onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("reference2_relation")}
                 </FormGroup>
               </div>
 
               <div className="form-row">
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("reference2_email")}>
                   <ControlLabel></ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Email"
                     name="reference2_email"
                     onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("reference2_email")}
                 </FormGroup>
 
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("reference2_phone")}>
                   <ControlLabel></ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Phone"
                     name="reference2_phone"
                     onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("reference2_phone")}
                 </FormGroup>
               </div>
 
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("criminal_charges")}>
                 <ControlLabel>Have you ever been convicted or plead
                 guilty to a crime (other than minor traffic offences) or
                 are any criminal charges now pending against you?</ControlLabel>
@@ -641,9 +701,10 @@ class TeacherForm extends React.Component {
                   onChange={(event) => this.handleBooleanChange(event)}>
                   No
                 </Radio>
+                {this.displayErrorMessage("criminal_charges")}
               </FormGroup>
 
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("youth_participation")}>
                 <ControlLabel>Have you ever been refused participation in
                 any other youth program?</ControlLabel>
                 <Radio
@@ -658,9 +719,10 @@ class TeacherForm extends React.Component {
                   onChange={(event) => this.handleBooleanChange(event)}>
                   No
                 </Radio>
+                {this.displayErrorMessage("youth_participation")}
               </FormGroup>
 
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("criminal_explanation")}>
                 <ControlLabel>If yes to either of the above, please explain.</ControlLabel>
                 <FormControl
                   componentClass="input"
@@ -668,30 +730,33 @@ class TeacherForm extends React.Component {
                   placeholder="Enter text"
                   name="criminal_explanation"
                   onChange={(event) => this.handleChange(event)}/>
+                {this.displayErrorMessage("criminal_explanation")}
               </FormGroup>
 
               {/*Application Page 5*/}
-              <a onClick={(event) => this.openWaiver(event)}>Click Here for Waiver</a>
+              <a onClick={(event) => this.openWaiver(event)}>Please read the Waiver and sign below</a>
               {this.renderWaiverModal()}
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("waiver_signature")}>
                 <ControlLabel>Signature</ControlLabel>
                 <FormControl
                   componentClass="input"
                   placeholder="Full Name"
                   name="waiver_signature"
                   onChange={(event) => this.handleChange(event)}/>
+                {this.displayErrorMessage("waiver_signature")}
               </FormGroup>
 
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("waiver_date")}>
                 <ControlLabel>Date</ControlLabel>
                  <Datetime
                   dateFormat="MM/DD/YYYY"
                   timeFormat={false}
                   inputProps={{placeholder: "MM/DD/YYYY"}}
                   onChange={(moment) => this.handleDatetimeChange(moment, 'waiver_date')}/>
+                {this.displayErrorMessage("waiver_date")}
               </FormGroup>
 
-              <Button className="button button--solid-orange login-card__button"
+              <Button className="button button--solid-orange login-card__button form-submit"
               onClick={() => this.submitForm()}>Submit</Button>
               <FormControl.Feedback />
             </form>
