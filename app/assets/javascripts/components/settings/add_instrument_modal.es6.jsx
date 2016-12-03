@@ -30,6 +30,7 @@ class AddInstrumentModal extends React.Component {
     } else {
       instrumentable_type = 'Teacher';
     }
+    // TODO: Validate that all fields are selected on submit.
 
     const params = {
       instrument: {
@@ -110,7 +111,6 @@ class AddInstrumentModal extends React.Component {
   renderAddModal() {
     const { handleClose } = this.props;
     const { instrumentToAdd, proficiency, yearsPlayed, isPrimary } = this.state;
-    // TODO: Render the isPrimary text correctly.
 
     return (
       <div>
