@@ -29,11 +29,11 @@ class LoginPage extends React.Component {
     } else if (this.props.type == 'teacher') {
       var params = { teacher: paramsObject };
       var route = ApiConstants.authentication.login.teacher;
-      var resolve = (response) => { window.location.href = "/"; };
+      var resolve = (response) => { window.location.href = "/teacher/lessons"; };
     } else if (this.props.type == 'admin') {
       var params = { admin: paramsObject };
       var route = ApiConstants.authentication.login.admin;
-      var resolve = (response) => { window.location.href = "/admin/matched"; };
+      var resolve = (response) => { window.location.href = "/admin/unmatched"; };
     }
     Requester.post(
       route,
