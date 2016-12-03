@@ -9,12 +9,35 @@ before_filter :configure_sign_up_params, only: [:create]
 
   # POST /resource
   def create
-    super
+    # Modified the super class to allow for ip address on sign_up
+    build_resource(sign_up_params)
+    resource.sign_up_ip = request.env['REMOTE_ADDR']
+    resource.save
+    yield resource if block_given?
+    if resource.persisted?
+      if resource.active_for_authentication?
+        set_flash_message! :notice, :signed_up
+        sign_up(resource_name, resource)
+        respond_with resource, location: after_sign_up_path_for(resource)
+      else
+        set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
+        expire_data_after_sign_in!
+        respond_with resource, location: after_inactive_sign_up_path_for(resource)
+      end
+    else
+      clean_up_passwords resource
+      set_minimum_password_length
+      respond_with resource
+    end
+
     if @teacher.persisted?
       @teacher.submit_signup
     end
     cookies[:is_signed_in] = teacher_signed_in?
     cookies[:signed_in_type] = 'teacher'
+    if teacher_signed_in?
+      cookies[:name] = current_teacher.first_name
+    end
   end
 
   # GET /resource/edit
@@ -87,6 +110,7 @@ before_filter :configure_sign_up_params, only: [:create]
         :waiver_date,
         :account_id,
         :bank_id,
+        :instruments_attributes => [:id, :name, :years_played, :proficiency, :is_primary]
       ],
     )
   end

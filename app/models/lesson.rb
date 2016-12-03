@@ -17,8 +17,8 @@ class Lesson < ActiveRecord::Base
   after_initialize :init
   before_destroy :send_cancel_emails
 
-  scope :upcoming, -> { where("start_time >= ?", Date.today) }
-  scope :recent, -> { where("start_time < ?", Date.today) }
+  scope :upcoming, -> { where("start_time >= ?", Date.today).order(:start_time) }
+  scope :recent, -> { where("start_time < ?", Date.today).order(start_time: :desc) }
 
   validates :start_time, presence: true, date: true
   validates :end_time, presence: true, date: { after: :start_time }

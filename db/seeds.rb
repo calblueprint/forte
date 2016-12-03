@@ -13,13 +13,90 @@ def create_single_admin(n)
   admin
 end
 
+def get_address
+  addresses = [
+      {
+        address: "2520 Regent Street",
+        city: "Berkeley",
+        address_2: "Apartment #5",
+        state: 4,
+        zip_code: "94704"
+      },
+      {
+        address: "1596 Bellemead Street",
+        city: "San Jose",
+        address_2: "",
+        state: 4,
+        zip_code: "95131"
+      },
+      {
+        address: "10225 Orange Avenue",
+        city: "Cupertino",
+        address_2: "",
+        state: 4,
+        zip_code: "95014"
+      },
+      {
+        address: "2220 Dwight Way",
+        city: "Berkeley",
+        address_2: "Apartment #101",
+        state: 4,
+        zip_code: "94704"
+      },
+      {
+        address: "2400 Durant Avenue",
+        city: "Berkeley",
+        address_2: "",
+        state: 4,
+        zip_code: "94704"
+      },
+      {
+        address: "225 Bush Street",
+        city: "San Francisco",
+        address_2: "",
+        state: 4,
+        zip_code: "94104"
+      },
+      {
+        address: "450 Serra Mall",
+        city: "Palo Alto",
+        address_2: "",
+        state: 4,
+        zip_code: "94305"
+      },
+      {
+        address: "21840 McClellan Road",
+        city: "Cupertino",
+        address_2: "",
+        state: 4,
+        zip_code: "95014"
+      },
+      {
+        address: "99 Grove Street",
+        city: "San Francisco",
+        address_2: "",
+        state: 4,
+        zip_code: "94102"
+      },
+      {
+        address: "1807 Telegraph Ave",
+        city: "Oakland",
+        address_2: "",
+        state: 4,
+        zip_code: "94612"
+      },
+    ]
+    return addresses.sample
+end
+
 def create_single_teacher(is_searching, n)
+  address = get_address
   teacher = Teacher.create(
     is_searching: is_searching,
     email: Faker::Internet.email,
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.last_name,
-    city: Faker::Address.city,
+    city: address[:city],
     phone: Faker::Base.numerify('###-###-####'),
     password: "password",
     availability: [35, 36, 37, 38, 39, 42, 43, 44],
@@ -32,10 +109,10 @@ def create_single_teacher(is_searching, n)
     teaching_experience: Faker::Lorem.paragraph(4),
     training_experience: Faker::Lorem.paragraph(4),
     performance_experience: Faker::Lorem.paragraph(4),
-    address: Faker::Address.street_address,
-    address_apt: Faker::Number.between(0, 12), #change
-    state: Faker::Number.between(0, 49),
-    zipcode: Faker::Address.zip_code,
+    address: address[:address],
+    address_apt: address[:address_2],
+    state: address[:state],
+    zipcode: address[:zip_code],
     location_preference: Faker::Boolean.boolean,
     travel_distance: Faker::Number.between(0, 4),
     background_check: Faker::Boolean.boolean,
@@ -54,8 +131,8 @@ def create_single_teacher(is_searching, n)
     criminal_explanation: Faker::Lorem.paragraph(4),
     waiver_signature: Faker::Name.first_name,
     waiver_date: Faker::Date.between(2.days.ago, Date.today),
-    account_id: 'sdfsd',
-    bank_id: 'sdfsd',
+    account_id: 'acct_19MVqrLZTzaZNknc',
+    bank_id: 'ba_19MVqrLZTzaZNknc3j6nq743',
   )
   teacher
 end
@@ -74,8 +151,9 @@ def create_unmatched_teachers
 end
 
 def create_single_student(n)
+  address = get_address
   student = Student.create(
-    city: Faker::Address.city,
+    city: address[:city],
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.first_name,
     email: Faker::Internet.email,
@@ -93,10 +171,10 @@ def create_single_student(n)
     performance_experience: Faker::Lorem.paragraph(4),
     student_email: Faker::Internet.email,
     student_phone: Faker::Base.numerify('###-###-####'),
-    address: Faker::Address.street_address,
-    address_apt: Faker::Number.between(0, 12), #change
-    state: Faker::Number.between(0, 49),
-    zipcode: Faker::Address.zip_code,
+    address: address[:address],
+    address_apt: address[:address_2],
+    state: address[:state],
+    zipcode: address[:zip_code],
     location_preference: Faker::Boolean.boolean,
     travel_distance: Faker::Number.between(0, 4),
     income_range: Faker::Number.between(0, 4),
@@ -106,7 +184,7 @@ def create_single_student(n)
     criminal_explanation: Faker::Lorem.paragraph(4),
     waiver_signature: Faker::Name.first_name,
     waiver_date: Faker::Date.between(2.days.ago, Date.today),
-    customer_id: 'sdfsd', #TODO: point id to Stripe user id
+    customer_id: 'cus_9frHntw1ew0W9H', #TODO: point id to Stripe user id
   )
   student
 end

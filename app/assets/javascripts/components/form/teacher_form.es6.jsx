@@ -47,6 +47,12 @@ class TeacherForm extends React.Component {
       stripe_account_number: null,
       stripe_account_holder_name: null,
       stripe_account_holder_type: null,
+      stripe_account_holder_dob: null,
+      stripe_address_line1: null,
+      stripe_address_city: null,
+      stripe_address_state: null,
+      stripe_address_postal_code: null,
+      stripe_ssn_last_4: null,
       activeInstruments: [],
       instruments: {},
       showWaiverModal: false,
@@ -110,6 +116,8 @@ class TeacherForm extends React.Component {
       this.setState({ birthday: moment });
     } else if (name == 'waiver_date') {
       this.setState({ waiver_date: moment });
+    } else if (name == 'stripe_account_holder_dob') {
+      this.setState({ stripe_account_holder_dob: moment });
     }
   }
 
@@ -151,7 +159,7 @@ class TeacherForm extends React.Component {
     this.setState({ showWaiverModal: false });
   }
 
-  setAvailability(callback) {
+  setAvailability() {
     const { calendar } = this.refs.availability.refs
     //TODO: not ideal way to do this.. figure out some other way
     var eventArray = $(calendar).fullCalendar('clientEvents');
@@ -159,11 +167,100 @@ class TeacherForm extends React.Component {
     for (var i = 0; i < eventArray.length; i++) {
       availabilityArray = availabilityArray.concat(range_to_array(eventArray[i]['start'], eventArray[i]['end']));
     }
-    this.setState({ availability: availabilityArray }, callback)
+    this.setState({ availability: availabilityArray })
   }
 
-  submitForm() {
-    this.setAvailability(this.createStripeAccount);
+  setInstruments() {
+    const { instruments, activeInstruments } = this.state;
+    var instrumentsObj = [];
+    for (let [instrumentName, active] of Object.entries(activeInstruments)) {
+      if (active == true) {
+        var instrument = Object.assign({}, {name: instrumentName}, instruments[instrumentName]);
+        instrumentsObj.push(instrument);
+      }
+    }
+    this.setState({ instruments_attributes: instrumentsObj });
+  }
+
+  createStripeAccount() {
+    const {
+      stripe_country,
+      stripe_currency,
+      stripe_routing_number,
+      stripe_account_number,
+      stripe_account_holder_name,
+      stripe_account_holder_type
+    } = this.state;
+
+    Stripe.bankAccount.createToken({
+      country: stripe_country,
+      currency: stripe_currency,
+      routing_number: stripe_routing_number,
+      account_number: stripe_account_number,
+      account_holder_name: stripe_account_holder_name,
+      account_holder_type: stripe_account_holder_type
+    }, this.stripeResponseHandler.bind(this));
+  }
+
+  stripeResponseHandler(status, response) {
+    const reject = (response) => { console.log(response) };
+    const resolve = ((response) => { this.createTeacher(response) });
+    
+    if (response.error) {
+      console.log(response.error);
+    } else {
+      var params = {
+        stripe_token: response.id,
+        email: this.state.email,
+        country: this.state.stripe_country,
+      };
+      Requester.post(
+        ApiConstants.stripe.createAccount,
+        params,
+        resolve,
+        reject
+      );
+    }
+  }
+
+  verifyStripeAccount(teacher) {
+    const {
+      stripe_account_holder_type,
+      waiver_date,
+      stripe_account_holder_dob,
+      stripe_address_line1,
+      stripe_address_city,
+      stripe_address_postal_code,
+      stripe_address_state,
+      stripe_ssn_last_4,
+    } = this.state
+    const reject = (response) => { console.log(response) };
+    const resolve = ((response) => { window.location.href = "/" });
+
+    var params = {
+      dob_day: stripe_account_holder_dob.date(),
+      // moment month is zero indexed
+      dob_month: stripe_account_holder_dob.month() + 1,
+      dob_year: stripe_account_holder_dob.year(),
+      first_name: teacher.first_name,
+      last_name: teacher.last_name,
+      type: stripe_account_holder_type.toLowerCase(),
+      tos_acceptance_date: waiver_date.unix(),
+      tos_acceptance_ip: teacher.sign_up_ip,
+      account_id: teacher.account_id,
+      address_city: stripe_address_city,
+      address_line_1: stripe_address_line1,
+      address_postal_code: stripe_address_postal_code,
+      address_state: stripe_address_state,
+      ssn_last_4: stripe_ssn_last_4,
+    };
+
+    Requester.post(
+      ApiConstants.stripe.verifyAccount,
+      params,
+      resolve,
+      reject
+    );
   }
 
   createTeacher(accountResponse) {
@@ -171,7 +268,7 @@ class TeacherForm extends React.Component {
       this.setState({ errors: response.errors });
     }
     var resolve = (response) => {
-      window.location.href = "/";
+      this.verifyStripeAccount(response);
     };
     var params = {
       teacher: {
@@ -216,6 +313,7 @@ class TeacherForm extends React.Component {
         waiver_date: this.state.waiver_date,
         account_id: accountResponse.account.id,
         bank_id: accountResponse.bank_account.id,
+        instruments_attributes: this.state.instruments_attributes,
       }
     };
     Requester.post(
@@ -226,45 +324,11 @@ class TeacherForm extends React.Component {
     );
   }
 
-  createStripeAccount() {
-    const {
-      stripe_country,
-      stripe_currency,
-      stripe_routing_number,
-      stripe_account_number,
-      stripe_account_holder_name,
-      stripe_account_holder_type
-    } = this.state;
-
-    Stripe.bankAccount.createToken({
-      country: stripe_country,
-      currency: stripe_currency,
-      routing_number: stripe_routing_number,
-      account_number: stripe_account_number,
-      account_holder_name: stripe_account_holder_name,
-      account_holder_type: stripe_account_holder_type
-    }, this.stripeResponseHandler.bind(this));
-  }
-
-  stripeResponseHandler(status, response) {
-    const reject = (response) => { console.log(response) };
-    const resolve = ((response) => { this.createTeacher(response) });
-    
-    if (response.error) {
-      console.log(response.error);
-    } else {
-      var params = {
-        stripe_token: response.id,
-        email: this.state.email,
-        country: this.state.stripe_country,
-      };
-      Requester.post(
-        ApiConstants.stripe.createAccount,
-        params,
-        resolve,
-        reject
-      );
-    }
+  // createTeacher is called after stripeResponseHandler resolves.
+  async submitForm() {
+    await this.setAvailability();
+    await this.setInstruments();
+    await this.createStripeAccount()
   }
 
   renderOptions(type) {
@@ -653,14 +717,25 @@ class TeacherForm extends React.Component {
                 <h2>Payment
                 </h2>
               </div>
-              <FormGroup>
-                <ControlLabel>Bank Account Holder Name</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  placeholder="Enter Bank Account Holder Name"
-                  name="stripe_account_holder_name"
-                  onChange={(event) => this.handleChange(event)}/>
-              </FormGroup>
+              <div className="form-row">
+                <FormGroup>
+                  <ControlLabel>Bank Account Holder Name</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    placeholder="Enter Bank Account Holder Name"
+                    name="stripe_account_holder_name"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
+                <FormGroup validationState={this.getValidationState("birthday")}>
+                  <ControlLabel>Bank Account Holder DOB</ControlLabel>
+                  <Datetime
+                    dateFormat="MM/DD/YYYY"
+                    timeFormat={false}
+                    inputProps={{placeholder: "MM/DD/YYYY"}}
+                    onChange={(moment) => this.handleDatetimeChange(moment, 'stripe_account_holder_dob')}/>
+                  {this.displayErrorMessage("birthday")}
+                </FormGroup>
+              </div>
               <FormGroup>
                 <ControlLabel>Bank Account Holder Type</ControlLabel>
                 <FormControl
@@ -689,6 +764,53 @@ class TeacherForm extends React.Component {
                     onChange={(event) => this.handleChange(event)}/>
                 </FormGroup>
               </div>
+              <FormGroup>
+                <ControlLabel>Address</ControlLabel>
+                <FormControl
+                  componentClass="input"
+                  placeholder="Enter Address Associated with Banking Account"
+                  name="stripe_address_line1"
+                  onChange={(event) => this.handleChange(event)}/>
+              </FormGroup>
+              <div className="form-row">
+                <FormGroup>
+                  <ControlLabel>City</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    placeholder="Enter City"
+                    name="stripe_address_city"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>Postal Code</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    placeholder="Enter Postal Code"
+                    name="stripe_address_postal_code"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
+              </div>
+              <div className="form-row">
+                <FormGroup>
+                  <ControlLabel>Address State</ControlLabel>
+                  <FormControl
+                    componentClass="select"
+                    name="stripe_address_state"
+                    onChange={(event) => this.handleChange(event)}>
+                    <option value="" disabled selected>Select your state</option>
+                    {this.renderOptions('state')}
+                  </FormControl>
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>Last 4 Digits of SSN</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    placeholder="Enter Last 4 Digits of SSN"
+                    name="stripe_ssn_last_4"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
+              </div>
+
               <div className="form-row">
                 <FormGroup>
                   <ControlLabel>Bank Account Country</ControlLabel>
