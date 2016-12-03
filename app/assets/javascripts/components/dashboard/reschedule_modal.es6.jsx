@@ -11,7 +11,7 @@ class RescheduleModal extends React.Component {
 
   static get propTypes() {
     return {
-      fetchLessons: React.PropTypes.func,
+      fetchUpcomingLessons: React.PropTypes.func,
       handleClose: React.PropTypes.func,
       lesson: React.PropTypes.object.isRequired,
       isStudent: React.PropTypes.bool.isRequired,
@@ -35,7 +35,7 @@ class RescheduleModal extends React.Component {
   }
 
   handleRescheduleLesson() {
-    const { lesson, handleClose, fetchLessons } = this.props;
+    const { lesson, handleClose, fetchUpcomingLessons } = this.props;
     const { lessonStartTime, lessonEndTime } = this.state;
 
     const route = ApiConstants.lessons.update(lesson.id);
@@ -47,7 +47,7 @@ class RescheduleModal extends React.Component {
     };
     const resolve = (response) => {
       handleClose();
-      fetchLessons();
+      fetchUpcomingLessons();
     };
     const reject = (response) => console.log(response);
     Requester.update(

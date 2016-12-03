@@ -10,7 +10,7 @@ class CancelModal extends React.Component {
   static get propTypes() {
     return {
       handleClose: React.PropTypes.func.isRequired,
-      fetchLessons: React.PropTypes.func.isRequired,
+      fetchUpcomingLessons: React.PropTypes.func.isRequired,
       lesson: React.PropTypes.object.isRequired,
       isStudent: React.PropTypes.bool.isRequired,
     };
@@ -23,12 +23,12 @@ class CancelModal extends React.Component {
   handleConfirmClick() {
     //TODO: Check difference of current time and lesson time and charge
     //cancellation fee if necessary
-    const { lesson, handleClose, fetchLessons } = this.props;
+    const { lesson, handleClose, fetchUpcomingLessons } = this.props;
 
     const route = ApiConstants.lessons.delete(lesson.id);
     const resolve = (response) => {
       handleClose();
-      fetchLessons();
+      fetchUpcomingLessons();
     }
     const reject = (response) => console.log(response);
     Requester.delete(
