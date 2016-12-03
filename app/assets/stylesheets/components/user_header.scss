@@ -7,12 +7,25 @@
     color: $white80;
   }
 
-  .navbar-nav > li > a:hover, a:focus, a:active {
-    color: $white40;
+  .navbar-nav > li > a:hover, a:focus, a:active,
+  .navbar-nav > .open > a {
+    color: $white;
+    background-color: $white20;
   }
 
   .link-container.navbar-right {
     padding-right: 100px;
+  }
+}
+
+ul.dropdown-menu {
+  min-width: 200px;
+  @include box-shadow(none);
+  border-radius: 0;
+  border-color: $grey20;
+
+  li > a {
+    padding: 10px 20px;
   }
 }
 
