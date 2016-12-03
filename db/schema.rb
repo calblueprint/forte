@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161202224414) do
+ActiveRecord::Schema.define(version: 20161203212206) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,13 +48,13 @@ ActiveRecord::Schema.define(version: 20161202224414) do
   add_index "instruments", ["instrumentable_type", "instrumentable_id"], name: "index_instruments_on_instrumentable_type_and_instrumentable_id", using: :btree
 
   create_table "lessons", force: :cascade do |t|
-    t.boolean  "is_paid",     default: false, null: false
+    t.boolean  "is_paid",                             default: false, null: false
     t.text     "feedback"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
     t.datetime "start_time"
     t.datetime "end_time"
-    t.decimal  "price"
+    t.decimal  "price",       precision: 8, scale: 2
     t.integer  "matching_id"
     t.string   "location"
   end
