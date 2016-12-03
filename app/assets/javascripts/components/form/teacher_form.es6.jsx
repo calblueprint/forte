@@ -170,6 +170,18 @@ class TeacherForm extends React.Component {
     this.setState({ availability: availabilityArray })
   }
 
+  setInstruments() {
+    const { instruments, activeInstruments } = this.state;
+    var instrumentsObj = [];
+    for (let [instrumentName, active] of Object.entries(activeInstruments)) {
+      if (active == true) {
+        var instrument = Object.assign({}, {name: instrumentName}, instruments[instrumentName]);
+        instrumentsObj.push(instrument);
+      }
+    }
+    this.setState({ instruments_attributes: instrumentsObj });
+  }
+
   createStripeAccount() {
     const {
       stripe_country,
@@ -301,6 +313,7 @@ class TeacherForm extends React.Component {
         waiver_date: this.state.waiver_date,
         account_id: accountResponse.account.id,
         bank_id: accountResponse.bank_account.id,
+        instruments_attributes: this.state.instruments_attributes,
       }
     };
     Requester.post(
@@ -314,6 +327,7 @@ class TeacherForm extends React.Component {
   // createTeacher is called after stripeResponseHandler resolves.
   async submitForm() {
     await this.setAvailability();
+    await this.setInstruments();
     await this.createStripeAccount()
   }
 

@@ -107,6 +107,7 @@ before_filter :configure_sign_up_params, only: [:create]
         :waiver_date,
         :account_id,
         :bank_id,
+        :instruments_attributes => [:id, :name, :years_played, :proficiency, :is_primary]
       ],
     )
   end
