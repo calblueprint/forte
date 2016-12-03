@@ -109,10 +109,6 @@ class LessonCard extends React.Component {
     }
   }
 
-  renderPayButton() {
-    
-  }
-
   renderPayModal() {
     const { lesson } = this.props;
     const { showPayModal } = this.state;
