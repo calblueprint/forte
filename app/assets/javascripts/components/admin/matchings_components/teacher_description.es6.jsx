@@ -13,7 +13,7 @@ class TeacherDescription extends React.Component {
       <div className="person-description">
         <p>Name: {teacher.first_name} {teacher.last_name}</p>
         <p>City: {teacher.city}</p>
-        <Button className="button button--outline-orange" onClick={(event) => onClick(teacher.id, null)}>See More</Button>
+        <Button className="button button--outline-orange more-button" onClick={(event) => onClick(teacher.id, null)}>See More</Button>
       </div>
     );
   }
