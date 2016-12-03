@@ -1,5 +1,16 @@
 class AdminHeader extends React.Component {
 
+  logout() {
+    const resolve = (response) => window.location = "/";
+    const reject = (response) => console.log(response);
+    var route = ApiConstants.authentication.logout.admin;
+    Requester.delete(
+      route,
+      resolve,
+      reject,
+    );
+  }
+
   render () {
     return (
     <div>
@@ -25,7 +36,7 @@ class AdminHeader extends React.Component {
             <NavItem href={RouteConstants.admin.roster}>ROSTER</NavItem>
           </Nav>
           <Nav pullRight>
-            <NavItem>Log Out</NavItem>
+            <NavItem onClick={() => this.logout()}>Log Out</NavItem>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
