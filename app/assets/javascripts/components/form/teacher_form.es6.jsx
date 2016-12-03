@@ -311,6 +311,7 @@ class TeacherForm extends React.Component {
     );
   }
 
+  // createTeacher is called after stripeResponseHandler resolves.
   async submitForm() {
     await this.setAvailability();
     await this.createStripeAccount()
