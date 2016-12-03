@@ -27,8 +27,8 @@ class MatchingItem extends React.Component {
   renderHeaderItem(label, text, onClick=null) {
     return (
       <div className="matching-item-header-item">
-        <div className="header-label" onClick={onClick}>{label}</div>
-        <div className="header-text">{text}</div>
+        <div className="header-label">{label}</div>
+        <div className="header-text" onClick={onClick}>{text}</div>
       </div>
     );
   }
