@@ -138,7 +138,7 @@ class StudentForm extends React.Component {
     this.setState({ showWaiverModal: false });
   }
 
-  setAvailability(callback) {
+  setAvailability() {
     const { calendar } = this.refs.availability.refs
     //TODO: not ideal way to do this.. figure out some other way
     var eventArray = $(calendar).fullCalendar('clientEvents');
@@ -146,7 +146,7 @@ class StudentForm extends React.Component {
     for (var i = 0; i < eventArray.length; i++) {
       availabilityArray = availabilityArray.concat(range_to_array(eventArray[i]['start'], eventArray[i]['end']));
     }
-    this.setState({ availability: availabilityArray }, callback)
+    this.setState({ availability: availabilityArray });
   }
 
   setInstruments() {
@@ -158,11 +158,55 @@ class StudentForm extends React.Component {
         instrumentsObj.push(instrument);
       }
     }
-    this.setState({ instruments_attributes: instrumentsObj }, this.createStripeCustomer);
+    this.setState({ instruments_attributes: instrumentsObj });
   }
 
-  submitForm() {
-    this.setAvailability(this.setInstruments);
+  createStripeCustomer() {
+    const {
+      card_number,
+      cvc,
+      exp_month,
+      exp_year,
+      cardholder_name,
+      stripe_address_line1,
+      stripe_address_line2,
+      stripe_address_city,
+      stripe_address_state,
+      stripe_address_zip
+    } = this.state;
+
+    Stripe.card.createToken({
+      number: card_number,
+      cvc: cvc,
+      exp_month: exp_month,
+      exp_year: exp_year,
+      name: cardholder_name,
+      address_line1: stripe_address_line1,
+      address_line2: stripe_address_line2,
+      address_city: stripe_address_city,
+      address_state: stripe_address_state,
+      address_zip: stripe_address_zip
+    }, this.stripeResponseHandler.bind(this));
+  }
+
+  stripeResponseHandler(status, response) {
+    const reject = (response) => { console.log(response) };
+    const resolve = ((response) => { this.createStudent(response) });
+    
+    if (response.error) {
+      console.log(response.error);
+    } else {
+      var params = {
+        stripe_token: response.id,
+        email: this.state.email,
+      };
+      Requester.post(
+        ApiConstants.stripe.createCustomer,
+        params,
+        resolve,
+        reject
+      );
+    }
   }
 
   createStudent(customer) {
@@ -217,52 +261,10 @@ class StudentForm extends React.Component {
     );
   }
 
-  createStripeCustomer() {
-    const {
-      card_number,
-      cvc,
-      exp_month,
-      exp_year,
-      cardholder_name,
-      stripe_address_line1,
-      stripe_address_line2,
-      stripe_address_city,
-      stripe_address_state,
-      stripe_address_zip
-    } = this.state;
-
-    Stripe.card.createToken({
-      number: card_number,
-      cvc: cvc,
-      exp_month: exp_month,
-      exp_year: exp_year,
-      name: cardholder_name,
-      address_line1: stripe_address_line1,
-      address_line2: stripe_address_line2,
-      address_city: stripe_address_city,
-      address_state: stripe_address_state,
-      address_zip: stripe_address_zip
-    }, this.stripeResponseHandler.bind(this));
-  }
-
-  stripeResponseHandler(status, response) {
-    const reject = (response) => { console.log(response) };
-    const resolve = ((response) => { this.createStudent(response) });
-    
-    if (response.error) {
-      console.log(response.error);
-    } else {
-      var params = {
-        stripe_token: response.id,
-        email: this.state.email,
-      };
-      Requester.post(
-        ApiConstants.stripe.createCustomer,
-        params,
-        resolve,
-        reject
-      );
-    }
+  async submitForm() {
+    await this.setAvailability();
+    await this.setInstruments();
+    await this.createStripeCustomer();
   }
 
   renderOptions(type) {

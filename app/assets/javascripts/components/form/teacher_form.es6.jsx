@@ -159,7 +159,7 @@ class TeacherForm extends React.Component {
     this.setState({ showWaiverModal: false });
   }
 
-  setAvailability(callback) {
+  setAvailability() {
     const { calendar } = this.refs.availability.refs
     //TODO: not ideal way to do this.. figure out some other way
     var eventArray = $(calendar).fullCalendar('clientEvents');
@@ -167,71 +167,7 @@ class TeacherForm extends React.Component {
     for (var i = 0; i < eventArray.length; i++) {
       availabilityArray = availabilityArray.concat(range_to_array(eventArray[i]['start'], eventArray[i]['end']));
     }
-    this.setState({ availability: availabilityArray }, callback)
-  }
-
-  submitForm() {
-    this.setAvailability(this.createStripeAccount);
-  }
-
-  createTeacher(accountResponse) {
-    var reject = (response) => {
-      this.setState({ errors: response.errors });
-    }
-    var resolve = (response) => {
-      this.verifyStripeAccount(response);
-    };
-    var params = {
-      teacher: {
-        email: this.state.email,
-        password: this.state.password,
-        password_confirmation: this.state.password_confirmation,
-        first_name: this.state.first_name,
-        last_name: this.state.last_name,
-        city: this.state.city,
-        gender: this.state.gender,
-        birthday: this.state.birthday,
-        school: this.state.school,
-        school_level: this.state.school_level,
-        phone: this.state.phone,
-        email:this.state.email,
-        introduction: this.state.introduction,
-        teaching_experience: this.state.teaching_experience,
-        training_experience: this.state.training_experience,
-        performance_experience: this.state.performance_experience,
-        address: this.state.address,
-        address_apt: this.state.address_apt,
-        state: this.state.state,
-        zipcode: this.state.zipcode,
-        location_preference: this.state.location_preference,
-        travel_distance: this.state.travel_distance,
-        availability: this.state.availability,
-        background_check: this.state.background_check,
-        reference1_first_name: this.state.reference1_first_name,
-        reference1_last_name: this.state.reference1_last_name,
-        reference1_relation: this.state.reference1_relation,
-        reference1_email: this.state.reference1_email,
-        reference1_phone: this.state.reference1_phone,
-        reference2_first_name: this.state.reference2_first_name,
-        reference2_last_name: this.state.reference2_last_name,
-        reference2_relation: this.state.reference2_relation,
-        reference2_email: this.state.reference2_email,
-        reference2_phone: this.state.reference2_phone,
-        criminal_charges: this.state.criminal_charges,
-        youth_participation: this.state.youth_participation,
-        criminal_explanation: this.state.criminal_explanation,
-        waiver_signature: this.state.waiver_signature,
-        waiver_date: this.state.waiver_date,
-        account_id: accountResponse.account.id,
-        bank_id: accountResponse.bank_account.id,
-      }
-    };
-    Requester.post(
-      ApiConstants.authentication.signup.teacher,
-      params,
-      resolve,
-      reject
-    );
+    this.setState({ availability: availabilityArray })
   }
 
   createStripeAccount() {
@@ -313,6 +249,71 @@ class TeacherForm extends React.Component {
       resolve,
       reject
     );
+  }
+
+  createTeacher(accountResponse) {
+    var reject = (response) => {
+      this.setState({ errors: response.errors });
+    }
+    var resolve = (response) => {
+      this.verifyStripeAccount(response);
+    };
+    var params = {
+      teacher: {
+        email: this.state.email,
+        password: this.state.password,
+        password_confirmation: this.state.password_confirmation,
+        first_name: this.state.first_name,
+        last_name: this.state.last_name,
+        city: this.state.city,
+        gender: this.state.gender,
+        birthday: this.state.birthday,
+        school: this.state.school,
+        school_level: this.state.school_level,
+        phone: this.state.phone,
+        email:this.state.email,
+        introduction: this.state.introduction,
+        teaching_experience: this.state.teaching_experience,
+        training_experience: this.state.training_experience,
+        performance_experience: this.state.performance_experience,
+        address: this.state.address,
+        address_apt: this.state.address_apt,
+        state: this.state.state,
+        zipcode: this.state.zipcode,
+        location_preference: this.state.location_preference,
+        travel_distance: this.state.travel_distance,
+        availability: this.state.availability,
+        background_check: this.state.background_check,
+        reference1_first_name: this.state.reference1_first_name,
+        reference1_last_name: this.state.reference1_last_name,
+        reference1_relation: this.state.reference1_relation,
+        reference1_email: this.state.reference1_email,
+        reference1_phone: this.state.reference1_phone,
+        reference2_first_name: this.state.reference2_first_name,
+        reference2_last_name: this.state.reference2_last_name,
+        reference2_relation: this.state.reference2_relation,
+        reference2_email: this.state.reference2_email,
+        reference2_phone: this.state.reference2_phone,
+        criminal_charges: this.state.criminal_charges,
+        youth_participation: this.state.youth_participation,
+        criminal_explanation: this.state.criminal_explanation,
+        waiver_signature: this.state.waiver_signature,
+        waiver_date: this.state.waiver_date,
+        account_id: accountResponse.account.id,
+        bank_id: accountResponse.bank_account.id,
+      }
+    };
+    Requester.post(
+      ApiConstants.authentication.signup.teacher,
+      params,
+      resolve,
+      reject
+    );
+  }
+
+  async submitForm() {
+    await this.setAvailability();
+    await this.createStripeAccount()
   }
 
   renderOptions(type) {
