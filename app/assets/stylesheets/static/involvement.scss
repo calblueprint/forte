@@ -69,26 +69,3 @@
     margin-top: auto;
   }
 }
-
-  /* Footer */
-
-.involvement-footer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 60px;
-  width: 100%;
-  background-color: $orange;
-  color: $white;
-
-  .involvement-footer__links-container {
-    color: $white;
-    font-size: $font-size-xs;
-
-    .link {
-      color: $white;
-      font-weight: $font-weight-large;
-    }
-  }
-}

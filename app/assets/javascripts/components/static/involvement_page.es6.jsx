@@ -41,17 +41,6 @@ class InvolvementPage extends React.Component {
     );
   }
 
-  renderFooter() {
-    return (
-       <div className="involvement-footer">
-        <div className="involvement-footer footer__links-container">
-          <span>Interested in partnering with Forte? </span>
-          <a className="link" href="#">Contact Us.</a>
-        </div>
-      </div>
-    );
-  }
-
   render() {
     return (
      <div className="page-wrapper">
@@ -70,7 +59,6 @@ class InvolvementPage extends React.Component {
           </div>
         </div>
       </div>
-      {this.renderFooter()}
       <Footer />
     </div>
     );
