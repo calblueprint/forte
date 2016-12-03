@@ -6,7 +6,7 @@ class AddInstrumentModal extends React.Component {
       instrumentToAdd: null,
       proficiency: null,
       yearsPlayed: null,
-      isPrimary: null,
+      isPrimary: false,
     };
   }
 
@@ -55,6 +55,58 @@ class AddInstrumentModal extends React.Component {
     );
   }
 
+  // TODO: Right now, instrument names are strings and not enums. Until they are changed
+  // to become enums, this handler is needed. After, remove this handler and use the
+  // handleInstrumentFieldChange as it works for enums.
+  handleInstrumentChange(event) {
+    var name = $(event.target).attr("name");
+    var value = $(event.target).val();
+    this.setState({ [name] : INSTRUMENTS[value] });
+  }
+
+  handleInstrumentFieldChange(event) {
+    const name = $(event.target).attr("name");
+    let value = $(event.target).val();
+    value = parseInt(value);
+    this.setState({ [name] : value });
+  }
+
+  renderOptions(type) {
+    var optionsArray = []
+    var retOptions = []
+    switch(type) {
+      case 'instruments':
+        optionsArray = INSTRUMENTS;
+        break;
+      case 'gender':
+        optionsArray = GENDERS;
+        break;
+      case 'school_level':
+        optionsArray = STUDENT_SCHOOL_LEVELS;
+        break;
+      case 'state':
+        optionsArray = STATES;
+        break;
+      case 'travel_distance':
+        optionsArray = TRAVEL_DISTANCES;
+        break;
+      case 'income_range':
+        optionsArray = INCOME_RANGES;
+        break;
+      case 'proficiency':
+        optionsArray = PROFICIENCY;
+        break;
+      case 'years_played':
+        optionsArray = YEARS_PLAYED;
+        break;
+    }
+    for (var i = 0; i < optionsArray.length; i++) {
+      retOptions.push(<option value={i}>{optionsArray[i]}</option>);
+    }
+    return retOptions;
+  }
+
+
   renderAddModal() {
     const { handleClose } = this.props;
     const { instrumentToAdd, proficiency, yearsPlayed, isPrimary } = this.state;
@@ -66,39 +118,38 @@ class AddInstrumentModal extends React.Component {
           <p>
             Which instrument would you like to add?
           </p>
-          <DropdownButton
-            title= { instrumentToAdd || "Instruments" }
-            onSelect={(eventKey) => this.setState({ instrumentToAdd: eventKey })}>
-            <MenuItem eventKey="Piano"> Piano </MenuItem>
-            <MenuItem eventKey="Clarinet"> Clarinet </MenuItem>
-            <MenuItem eventKey="Violin"> Violin </MenuItem>
-          </DropdownButton>
-          <DropdownButton
-            title= { proficiency || "How proficient are you?" }
-            onSelect={(eventKey) => this.setState({ proficiency: eventKey })}>
-            <MenuItem eventKey='No Experience'> No Experience </MenuItem>
-            <MenuItem eventKey='Beginner'> Beginner </MenuItem>
-            <MenuItem eventKey='Intermediate'> Intermediate </MenuItem>
-            <MenuItem eventKey='Advanced'> Advanced </MenuItem>
-            <MenuItem eventKey='Professional'> Professional </MenuItem>
-          </DropdownButton>
-          <DropdownButton
-            title= { yearsPlayed || "How many years of experience do you have? " }
-            onSelect={(eventKey) => this.setState({ yearsPlayed: eventKey })}>
-            <MenuItem eventKey='0'> 0 </MenuItem>
-            <MenuItem eventKey='1'> 1 </MenuItem>
-            <MenuItem eventKey='2'> 2 </MenuItem>
-            <MenuItem eventKey='3'> 3 </MenuItem>
-            <MenuItem eventKey='4'> 4 </MenuItem>
-            <MenuItem eventKey='5'> 5 </MenuItem>
-            <MenuItem eventKey='6'> 6+ </MenuItem>
-          </DropdownButton>
-          <DropdownButton
-            title= { isPrimary || "Is this your primary instrument?" }
-            onSelect={(eventKey) => this.setState({ isPrimary: eventKey })}>
-            <MenuItem eventKey={true}> Yes </MenuItem>
-            <MenuItem eventKey={false}> No </MenuItem>
-          </DropdownButton>
+          <div className="form-row">
+            <FormGroup>
+              <ControlLabel>Instrument</ControlLabel>
+              <FormControl
+                componentClass="select"
+                name="instrumentToAdd"
+                onChange={(event) => this.handleInstrumentChange(event)}>
+                <option value="" disabled selected>Select an instrument</option>
+                {this.renderOptions('instruments')}
+              </FormControl>
+            </FormGroup>
+            <FormGroup>
+              <ControlLabel>Proficiency</ControlLabel>
+              <FormControl
+                componentClass="select"
+                name="proficiency"
+                onChange={(event) => this.handleInstrumentFieldChange(event)}>
+                <option value="" disabled selected>Select a proficiency level</option>
+                {this.renderOptions('proficiency')}
+              </FormControl>
+            </FormGroup>
+            <FormGroup>
+              <ControlLabel>Years Played</ControlLabel>
+              <FormControl
+                componentClass="select"
+                name="yearsPlayed"
+                onChange={(event) => this.handleInstrumentFieldChange(event)}>
+                <option value="" disabled selected>Select a year</option>
+                {this.renderOptions('years_played')}
+              </FormControl>
+            </FormGroup>
+          </div>
         </Modal.Body>
         <Modal.Footer>
           <Button className="button button--outline-orange" onClick={handleClose}>Close</Button>
