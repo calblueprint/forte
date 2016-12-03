@@ -316,7 +316,7 @@ class StudentForm extends React.Component {
   renderInstrumentFields(instrument) {
     return (
       <div key={instrument}>
-        <div>{instrument}</div>
+      <h4 className="instrument-title">{instrument}</h4>
         <div className="form-row">
           <FormGroup>
             <ControlLabel>Proficiency</ControlLabel>
