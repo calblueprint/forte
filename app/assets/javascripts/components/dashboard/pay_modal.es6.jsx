@@ -11,6 +11,7 @@ class PayModal extends React.Component {
     return {
       handleClose: React.PropTypes.func.isRequired,
       lesson: React.PropTypes.object.isRequired,
+      fetchRecentLessons: React.PropTypes.func.isRequired,
     };
   }
 
@@ -44,11 +45,10 @@ class PayModal extends React.Component {
   }
 
   updateLessonPaid() {
-    const { handleClose, lesson } = this.props;
+    const { handleClose, lesson, fetchRecentLessons } = this.props;
     const resolve = (response) => {
       handleClose();
-      // TODO: Use fetchLessons().
-      window.location = RouteConstants.student.lessons;
+      fetchRecentLessons();
     };
     const reject = (response) => { console.log(response) };
 

@@ -13,7 +13,8 @@ class LessonCard extends React.Component {
     return {
       isStudent: React.PropTypes.bool,
       lesson: React.PropTypes.object,
-      fetchLessons: React.PropTypes.func,
+      fetchUpcomingLessons: React.PropTypes.func,
+      fetchRecentLessons: React.PropTypes.func,
     };
   }
 
@@ -41,7 +42,7 @@ class LessonCard extends React.Component {
   }
 
   renderCancelModal() {
-    const { isStudent, lesson, fetchLessons } = this.props;
+    const { isStudent, lesson, fetchUpcomingLessons } = this.props;
     const { showCancelModal } = this.state;
 
     if (showCancelModal) {
@@ -49,7 +50,7 @@ class LessonCard extends React.Component {
         <CancelModal
           lesson={lesson}
           handleClose={() => this.closeCancelModal()}
-          fetchLessons={fetchLessons}
+          fetchUpcomingLessons={fetchUpcomingLessons}
           isStudent={isStudent}
         />
       );
@@ -57,15 +58,29 @@ class LessonCard extends React.Component {
   }
 
   renderRescheduleModal() {
-    const { isStudent, lesson, fetchLessons } = this.props;
+    const { isStudent, lesson, fetchUpcomingLessons } = this.props;
     const { showRescheduleModal } = this.state;
     if (showRescheduleModal) {
       return (
         <RescheduleModal
           lesson={lesson}
           handleClose={() => this.closeRescheduleModal()}
-          fetchLessons={fetchLessons}
+          fetchUpcomingLessons={fetchUpcomingLessons}
           isStudent={isStudent}
+        />
+      );
+    }
+  }
+
+  renderPayModal() {
+    const { lesson, fetchRecentLessons } = this.props;
+    const { showPayModal } = this.state;
+    if (showPayModal) {
+      return (
+        <PayModal
+          lesson={lesson}
+          handleClose={() => this.closePayModal()}
+          fetchRecentLessons={fetchRecentLessons}
         />
       );
     }
@@ -106,19 +121,6 @@ class LessonCard extends React.Component {
       return (
         <div className="actions" />
       )
-    }
-  }
-
-  renderPayModal() {
-    const { lesson } = this.props;
-    const { showPayModal } = this.state;
-    if (showPayModal) {
-      return (
-        <PayModal
-          lesson={lesson}
-          handleClose={() => this.closePayModal()}
-        />
-      );
     }
   }
 

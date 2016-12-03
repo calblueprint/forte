@@ -80,7 +80,8 @@ class StudentLessonsPage extends React.Component {
     return (
       <LessonCard
         isStudent={true}
-        fetchLessons={() => this.fetchUpcomingLessons()}
+        fetchUpcomingLessons={() => this.fetchUpcomingLessons()}
+        fetchRecentLessons={() => this.fetchRecentLessons()}
         lesson={lesson} />
     );
   }
