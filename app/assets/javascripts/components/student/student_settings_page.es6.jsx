@@ -4,14 +4,30 @@ class StudentSettingsPage extends React.Component {
     super();
     this.state = {
       removeModalIsVisible: false,
+      instruments: null,
     };
   }
 
   static get propTypes() {
     return {
       student: React.PropTypes.object.isRequired,
-      instruments: React.PropTypes.array,
     };
+  }
+
+  componentDidMount() {
+    this.fetchInstruments();
+  }
+
+  fetchInstruments() {
+    const { student } = this.props;
+    const route = ApiConstants.students.instruments(student.id);
+    const resolve = (response) => this.setState({ instruments: response.instruments });
+    const reject = (response) => console.log(response);
+    Requester.get(
+      route,
+      resolve,
+      reject,
+    );
   }
 
   openRemoveModal() {
@@ -38,6 +54,7 @@ class StudentSettingsPage extends React.Component {
         <RemoveInstrumentModal
           isVisible={removeModalIsVisible}
           handleClose={() => this.closeRemoveModal()}
+          fetchInstruments={() => this.fetchInstruments()}
           instrument={instrument}
         />
       );
@@ -63,8 +80,10 @@ class StudentSettingsPage extends React.Component {
   }
 
   renderInstruments() {
-    const { instruments } = this.props;
-    return  instruments.map((instrument) => this.renderInstrument(instrument));
+    const { instruments } = this.state;
+    if (instruments) {
+      return instruments.map((instrument) => this.renderInstrument(instrument));
+    }
   }
 
   renderAvailability() {

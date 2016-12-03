@@ -10,6 +10,7 @@ class RemoveInstrumentModal extends React.Component {
   static get propTypes() {
     return {
       handleClose: React.PropTypes.func.isRequired,
+      fetchInstruments: React.PropTypes.func.isRequired,
       instrument: React.PropTypes.object.isRequired,
       isVisible: React.PropTypes.bool.isRequired,
     };
@@ -20,13 +21,12 @@ class RemoveInstrumentModal extends React.Component {
   }
 
   handleConfirmClick() {
-    const { instrument, handleClose} = this.props;
+    const { instrument, handleClose, fetchInstruments } = this.props;
 
     const route = ApiConstants.instruments.delete(instrument.id);
     const resolve = (response) => {
-      // TODO: Force a rerender when resolve.
-      // TODO: Send emails when lessons are deleted.
       handleClose();
+      fetchInstruments();
     }
     const reject = (response) => console.log(response);
     Requester.delete(

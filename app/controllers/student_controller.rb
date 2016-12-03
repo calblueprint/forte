@@ -7,7 +7,6 @@ class StudentController < ApplicationController
 
   def settings
     @student = current_student
-    @instruments = current_student.instruments
   end
 
 end
