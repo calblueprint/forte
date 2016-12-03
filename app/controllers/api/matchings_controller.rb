@@ -18,6 +18,11 @@ class Api::MatchingsController < Api::BaseController
         )
         lesson.save
       end
+      student = Student.find matching_params[:student_id]
+      teacher = Teacher.find matching_params[:teacher_id]
+      student.update_attribute(:availability, student.availability - matching_params[:lesson_time])
+      teacher.update_attribute(:availability, teacher.availability - matching_params[:lesson_time])
+
       render json: matching, status: 201
     else
       unprocessable_response matching
