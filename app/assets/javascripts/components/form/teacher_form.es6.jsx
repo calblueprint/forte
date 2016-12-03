@@ -42,7 +42,6 @@ class TeacherForm extends React.Component {
       waiver_signature: null,
       waiver_date: null,
       stripe_country: null,
-      stripe_currency: null,
       stripe_routing_number: null,
       stripe_account_number: null,
       stripe_account_holder_name: null,
@@ -185,7 +184,6 @@ class TeacherForm extends React.Component {
   createStripeAccount() {
     const {
       stripe_country,
-      stripe_currency,
       stripe_routing_number,
       stripe_account_number,
       stripe_account_holder_name,
@@ -194,7 +192,7 @@ class TeacherForm extends React.Component {
 
     Stripe.bankAccount.createToken({
       country: stripe_country,
-      currency: stripe_currency,
+      currency: 'USD',
       routing_number: stripe_routing_number,
       account_number: stripe_account_number,
       account_holder_name: stripe_account_holder_name,
@@ -361,11 +359,6 @@ class TeacherForm extends React.Component {
       case 'country':
         for (var i = 0; i < COUNTRY_CODES.length; i++) {
           retOptions.push(<option value={COUNTRY_CODES[i].name}>{COUNTRY_CODES[i].name}</option>);
-        }
-        return retOptions
-      case 'currency':
-        for (var i = 0; i < CURRENCIES.length; i++) {
-          retOptions.push(<option value={CURRENCIES[i]}>{CURRENCIES[i]}</option>);
         }
         return retOptions
     }
@@ -811,28 +804,16 @@ class TeacherForm extends React.Component {
                 </FormGroup>
               </div>
 
-              <div className="form-row">
-                <FormGroup>
-                  <ControlLabel>Bank Account Country</ControlLabel>
-                  <FormControl
-                    componentClass="select"
-                    name="stripe_country"
-                    onChange={(event) => this.handleCountryChange(event)}>
-                    <option value="" disabled selected>Select Bank Acount Country</option>
-                    {this.renderOptions('country')}
-                  </FormControl>
-                </FormGroup>
-                <FormGroup>
-                  <ControlLabel>Currency</ControlLabel>
-                  <FormControl
-                    componentClass="select"
-                    name="stripe_currency"
-                    onChange={(event) => this.handleChange(event)}>
-                    <option value="" disabled selected>Select Currency</option>
-                    {this.renderOptions('currency')}
-                  </FormControl>
-                </FormGroup>
-              </div>
+              <FormGroup>
+                <ControlLabel>Bank Account Country</ControlLabel>
+                <FormControl
+                  componentClass="select"
+                  name="stripe_country"
+                  onChange={(event) => this.handleCountryChange(event)}>
+                  <option value="" disabled selected>Select Bank Acount Country</option>
+                  {this.renderOptions('country')}
+                </FormControl>
+              </FormGroup>
 
               <div className="section-title">
                 <h2>Eligibility
