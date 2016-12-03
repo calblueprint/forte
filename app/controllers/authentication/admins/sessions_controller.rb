@@ -11,9 +11,6 @@ class Authentication::Admins::SessionsController < Devise::SessionsController
     super
     cookies[:is_signed_in] = admin_signed_in?
     cookies[:signed_in_type] = 'admin'
-    if admin_signed_in?
-      cookies[:name] = current_admin.first_name
-    end
   end
 
   # DELETE /resource/sign_out
