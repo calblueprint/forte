@@ -30,7 +30,6 @@ class AddInstrumentModal extends React.Component {
     } else {
       instrumentable_type = 'Teacher';
     }
-    // TODO: Validate that all fields are selected on submit.
 
     const params = {
       instrument: {
@@ -47,7 +46,7 @@ class AddInstrumentModal extends React.Component {
       handleClose();
       fetchInstruments();
     }
-    const reject = (response) => console.log(response);
+    const reject = (response) => {console.log(response)}
     Requester.post(
       route,
       params,
@@ -67,23 +66,25 @@ class AddInstrumentModal extends React.Component {
 
   handleInstrumentFieldChange(event) {
     const name = $(event.target).attr("name");
-    let value = $(event.target).val();
+    let value = $(event.target).val()
     value = parseInt(value);
     this.setState({ [name] : value });
+  }
+
+  getValidationState(name) {
+    if (this.state[name] === null) return 'error'
+    else return 'success';
   }
 
   renderOptions(type) {
     const { instruments } = this.props;
     const existingInstrumentsArray = instruments.map((instrument) => (instrument.name))
-    function removeExistingInstruments(instrument) {
-      return !existingInstrumentsArray.includes(instrument);
-    }
 
     var optionsArray = []
     var retOptions = []
     switch(type) {
       case 'instruments':
-        optionsArray = INSTRUMENTS.filter(removeExistingInstruments);
+        optionsArray = INSTRUMENTS
         break;
       case 'proficiency':
         optionsArray = PROFICIENCY;
@@ -93,6 +94,10 @@ class AddInstrumentModal extends React.Component {
         break;
     }
     for (var i = 0; i < optionsArray.length; i++) {
+      if (existingInstrumentsArray.includes(optionsArray[i])) {
+        // Don't show instruments that user already has under them.
+        continue;
+      }
       retOptions.push(<option value={i}>{optionsArray[i]}</option>);
     }
     return retOptions;
@@ -110,7 +115,8 @@ class AddInstrumentModal extends React.Component {
             Which instrument would you like to add?
           </p>
           <div className="form-row">
-            <FormGroup>
+            <FormGroup
+              validationState={this.getValidationState('instrumentToAdd')}>
               <ControlLabel>Instrument</ControlLabel>
               <FormControl
                 componentClass="select"
@@ -120,7 +126,8 @@ class AddInstrumentModal extends React.Component {
                 {this.renderOptions('instruments')}
               </FormControl>
             </FormGroup>
-            <FormGroup>
+            <FormGroup
+              validationState={this.getValidationState('proficiency')}>
               <ControlLabel>Proficiency</ControlLabel>
               <FormControl
                 componentClass="select"
@@ -130,7 +137,8 @@ class AddInstrumentModal extends React.Component {
                 {this.renderOptions('proficiency')}
               </FormControl>
             </FormGroup>
-            <FormGroup>
+            <FormGroup
+              validationState={this.getValidationState('yearsPlayed')}>
               <ControlLabel>Years Played</ControlLabel>
               <FormControl
                 componentClass="select"
