@@ -18,7 +18,7 @@ class Api::MatchingsController < Api::BaseController
         )
         lesson.save
       end
-      render json: matching
+      render json: matching, status: 201
     else
       unprocessable_response matching
     end

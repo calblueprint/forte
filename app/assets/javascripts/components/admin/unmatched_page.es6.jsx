@@ -150,7 +150,7 @@ class UnmatchedPage extends React.Component {
             </div>
             <FullTeacher teacher={teacher} />
             <div className="pane-footer">
-              <Button className="button button--outline-orange" onClick={() => this.openMatchingModal()}>Choose</Button>
+              <Button className="button button--solid-orange" onClick={() => this.openMatchingModal()}>Choose</Button>
             </div>
           </div>
         );

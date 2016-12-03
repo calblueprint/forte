@@ -35,6 +35,9 @@ before_filter :configure_sign_up_params, only: [:create]
     end
     cookies[:is_signed_in] = teacher_signed_in?
     cookies[:signed_in_type] = 'teacher'
+    if teacher_signed_in?
+      cookies[:name] = current_teacher.first_name
+    end
   end
 
   # GET /resource/edit

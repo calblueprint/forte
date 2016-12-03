@@ -73,7 +73,7 @@ class MatchingModal extends React.Component {
   }
 
   makeMatching() {
-    const { handleClose, student, teacher, instrument } = this.props;
+    const { student, teacher, instrument } = this.props;
     const { lessonTime, location } = this.state;
     route = ApiConstants.matchings.create;
     var params = {
@@ -86,9 +86,7 @@ class MatchingModal extends React.Component {
       }
     };
     var resolve = (response) => {
-      this.setState({ fullStudent: false, fullTeacher: false });
-      this.loadStudents();
-      handleClose();
+      window.location = RouteConstants.admin.unmatched;
     };
     var reject = (response) => console.log(response);
     Requester.post(

@@ -12,6 +12,9 @@ class Authentication::Admins::RegistrationsController < Devise::RegistrationsCon
     super
     cookies[:is_signed_in] = admin_signed_in?    
     cookies[:signed_in_type] = 'admin'
+    if admin_signed_in?
+      cookies[:name] = current_admin.first_name
+    end
   end
 
   # GET /resource/edit

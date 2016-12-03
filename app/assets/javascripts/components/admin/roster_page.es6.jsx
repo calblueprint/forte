@@ -118,9 +118,9 @@ class RosterPage extends React.Component {
               </InputGroup>
             </FormGroup>
             <ButtonGroup className="filter-buttons">
-              <Button onClick={(event) => this.fetchPeople()}>All</Button>
-              <Button onClick={(event) => this.filterByStudent()}>Students</Button>
-              <Button onClick={(event) => this.filterByTeacher()}>Teachers</Button>
+              <Button className="button button--outline-orange" onClick={(event) => this.fetchPeople()}>All</Button>
+              <Button className="button button--outline-orange" onClick={(event) => this.filterByStudent()}>Students</Button>
+              <Button className="button button--outline-orange" onClick={(event) => this.filterByTeacher()}>Teachers</Button>
             </ButtonGroup>
             <div className="roster-container">
               {this.renderPeople()}

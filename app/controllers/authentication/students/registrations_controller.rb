@@ -15,6 +15,9 @@ before_filter :configure_sign_up_params, only: [:create]
     end
     cookies[:is_signed_in] = student_signed_in?
     cookies[:signed_in_type] = 'student'
+    if student_signed_in?
+      cookies[:name] = current_student.first_name
+    end
   end
 
   # GET /resource/edit

@@ -11,6 +11,9 @@ class Authentication::Admins::SessionsController < Devise::SessionsController
     super
     cookies[:is_signed_in] = admin_signed_in?
     cookies[:signed_in_type] = 'admin'
+    if admin_signed_in?
+      cookies[:name] = current_admin.first_name
+    end
   end
 
   # DELETE /resource/sign_out
@@ -18,6 +21,7 @@ class Authentication::Admins::SessionsController < Devise::SessionsController
     super
     cookies[:is_signed_in] = admin_signed_in?
     cookies.delete :signed_in_type
+    cookies.delete :name
   end
   # protected
   # If you have extra params to permit, append them to the sanitizer.

@@ -43,7 +43,6 @@ class UserHeader extends React.Component {
         <Nav
           pullRight
           className="link-container">
-          <NavItem href={RouteConstants.student.dashboard}>Dashboard</NavItem>
           <NavItem href={RouteConstants.student.lessons}>My Lessons</NavItem>
           <NavItem href={RouteConstants.student.profile}>Profile</NavItem>
         </Nav>
@@ -54,6 +53,8 @@ class UserHeader extends React.Component {
   }
 
   render () {
+    var name = getCookie('name');
+
     return (
     <div>
       <Navbar
@@ -69,7 +70,7 @@ class UserHeader extends React.Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav pullRight>
-            <NavDropdown title="Welcome, NAME">
+            <NavDropdown title={"Welcome,  " + name}>
               {this.renderSettings()}
               <MenuItem onClick={() => this.logout()}>LOG OUT</MenuItem>
             </NavDropdown>
