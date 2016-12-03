@@ -3,6 +3,7 @@ class StudentSettingsPage extends React.Component {
   constructor() {
     super();
     this.state = {
+      addModalIsVisible: false,
       removeModalIsVisible: false,
       instruments: null,
     };
@@ -38,12 +39,12 @@ class StudentSettingsPage extends React.Component {
     this.setState({ removeModalIsVisible: false });
   }
 
-  handleRemoveInstrument() {
-    // TODO: Modal with deleting matchings.
+  openAddModal() {
+    this.setState({ addModalIsVisible: true });
   }
 
-  handleAddInstrument() {
-    // TODO: Modal including proficiency level and years played.
+  closeAddModal() {
+    this.setState({ addModalIsVisible: false });
   }
 
   renderRemoveModal(instrument) {
@@ -58,6 +59,24 @@ class StudentSettingsPage extends React.Component {
           instrument={instrument}
         />
       );
+    }
+  }
+
+  renderAddModal() {
+    const { addModalIsVisible } = this.state;
+    const { student } = this.props;
+    // TODO: Disallow adding an instrument that already exist for user
+
+    if (addModalIsVisible) {
+      return (
+        <AddInstrumentModal
+          isVisible={addModalIsVisible}
+          handleClose={() => this.closeAddModal()}
+          fetchInstruments={() => this.fetchInstruments()}
+          // instrument={instrument}
+          instrumentable={student}
+        />
+      )
     }
   }
 
@@ -108,9 +127,10 @@ class StudentSettingsPage extends React.Component {
         {this.renderInstruments()}
         <Button
           className="button button--outline-orange button--sm"
-          onClick={() => this.handleAddInstrument()}>
+          onClick={() => this.openAddModal()}>
           Add
         </Button>
+        {this.renderAddModal()}
       </div>
     </div>
     );

@@ -5,9 +5,11 @@ class Api::InstrumentsController < Api::BaseController
   end
 
   def create
+    byebug
     instrument = Instrument.new instrument_params
     if instrument.save
-      render json: instrument
+      render json: instrument,
+             status: 201
     else
       unprocessable_response instrument
     end
