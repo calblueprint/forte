@@ -71,7 +71,7 @@ class LessonCard extends React.Component {
     }
   }
 
-  renderPayButton() {
+  renderButtons() {
     const { lesson } = this.props;
     const {
       start_time,
@@ -81,12 +81,31 @@ class LessonCard extends React.Component {
     var now = moment();
     var date = moment(start_time);
 
-    if (!is_paid && now > date) {
+    if (date > now) {
       return (
-        <Button className="button button--outline-orange button--sm" onClick={() => this.openPayModal()}>
-          Pay
-        </Button>
+        <div className="actions">
+          <Button className="button button--outline-orange button--sm" onClick={() => this.openCancelModal()}>
+          Cancel
+          </Button>
+          {this.renderCancelModal()}
+          <Button className="button button--outline-orange button--sm" onClick={() => this.openRescheduleModal()}>
+          Reschedule
+          </Button>
+          {this.renderRescheduleModal()}
+        </div>
       );
+    } else if (!is_paid && now > date) {
+      return (
+        <div className="actions">
+        <Button className="button button--outline-orange button--sm" onClick={() => this.openPayModal()}>
+          Pay Now
+        </Button>
+        </div>
+      );
+    } else {
+      return (
+        <div className="actions" />
+      )
     }
   }
 
@@ -136,7 +155,6 @@ class LessonCard extends React.Component {
             <div className="info-row">
               <h5>${price}</h5>
               <Label bsStyle={paidLabelStyle}>{paidLabelText}</Label>
-              {this.renderPayButton()}
               {this.renderPayModal()}
             </div>
           </div>
@@ -151,16 +169,7 @@ class LessonCard extends React.Component {
             <h5>{lesson.location}</h5>
           </div>
         </div>
-        <div className="actions">
-          <Button className="button button--outline-orange button--sm" onClick={() => this.openCancelModal()}>
-          Cancel
-          </Button>
-          {this.renderCancelModal()}
-          <Button className="button button--outline-orange button--sm" onClick={() => this.openRescheduleModal()}>
-          Reschedule
-          </Button>
-          {this.renderRescheduleModal()}
-        </div>
+        {this.renderButtons()}
       </div>
     );
   }

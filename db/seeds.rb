@@ -217,7 +217,7 @@ def create_single_lesson(matching, upcoming=true, month_offset)
   start_time = upcoming ?
       (Date.today + (month_offset + 1).month + 9.hours + (15 * matching.student.availability[0].to_i).minutes) :
       (Date.today.months_ago(month_offset) + 9.hours + (15 * matching.student.availability[0].to_i).minutes)
-  paid = upcoming ? false : true;
+  paid = upcoming || month_offset==0 ? false : true;
   lesson = Lesson.create(
     start_time: start_time,
     end_time: start_time + 45.minutes,
