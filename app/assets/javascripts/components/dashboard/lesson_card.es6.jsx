@@ -5,6 +5,7 @@ class LessonCard extends React.Component {
     this.state = {
       showCancelModal: false,
       showRescheduleModal: false,
+      showPayModal: false,
     };
   }
 
@@ -30,6 +31,13 @@ class LessonCard extends React.Component {
 
   closeRescheduleModal() {
     this.setState({ showRescheduleModal: false });
+  }
+
+  openPayModal() {
+    this.setState({ showPayModal: true });
+  }
+  closePayModal() {
+    this.setState({ showPayModal: false });
   }
 
   renderCancelModal() {
@@ -63,6 +71,38 @@ class LessonCard extends React.Component {
     }
   }
 
+  renderPayButton() {
+    const { lesson } = this.props;
+    const {
+      start_time,
+      is_paid,
+    } = lesson;
+
+    var now = moment();
+    var date = moment(start_time);
+
+    if (!is_paid && now > date) {
+      return (
+        <Button className="button button--outline-orange button--sm" onClick={() => this.openPayModal()}>
+          Pay
+        </Button>
+      );
+    }
+  }
+
+  renderPayModal() {
+    const { lesson } = this.props;
+    const { showPayModal } = this.state;
+    if (showPayModal) {
+      return (
+        <PayModal
+          lesson={lesson}
+          handleClose={() => this.closePayModal()}
+        />
+      );
+    }
+  }
+
   render() {
     const { isStudent, lesson } = this.props;
     const {
@@ -74,7 +114,7 @@ class LessonCard extends React.Component {
       is_paid,
     } = lesson;
 
-    var startTime = moment(lesson['start_time']);
+    var startTime = moment(start_time);
     //TODO: Make sure right timezones and stuff
     if (isStudent) {
       var name = `${teacher.first_name} ${teacher.last_name}`;
@@ -96,6 +136,8 @@ class LessonCard extends React.Component {
             <div className="info-row">
               <h5>${price}</h5>
               <Label bsStyle={paidLabelStyle}>{paidLabelText}</Label>
+              {this.renderPayButton()}
+              {this.renderPayModal()}
             </div>
           </div>
         </div>
