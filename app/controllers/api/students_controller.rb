@@ -64,7 +64,7 @@ class Api::StudentsController < Api::BaseController
     end
     render json: students,
            each_serializer: StudentShowSerializer,
-           root: "students",
+           root: "students"
   end
 
   def student_params
