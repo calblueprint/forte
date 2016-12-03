@@ -29,6 +29,49 @@ class UnmatchedPage extends React.Component {
     );
   }
 
+  processGoogleMapsResponse(distances, teachers) {
+    var none = 'I am not willing to travel';
+    var fiveMiles = 'Up to 5 miles';
+    var tenMiles = 'Up to 10 miles';
+    var twentyMiles = 'Up to 20 miles';
+    var moreThanTwenty = '20 miles or more';
+    var milesToKilometers = 1.60934/100000;
+    var travelDistances = {fiveMiles: 5*1.60934, tenMiles: 10*1.60934, twentyMiles: 20*1.60934}
+    var validTeachers = []
+    for (i = 0; i < teachers.length; i+=1) {
+      var teacher = teachers[i];
+      if (distances[i]["status"] == "OK") {
+        var distance = distances[i]["distance"]["value"];
+        var unlimited_travel = (teacher.travel_distance == moreThanTwenty) || (this.state.student.travel_distance == moreThanTwenty);
+        var travel_within_constraint = (distance < travelDistances[teacher.travel_distance]) || (distance < travelDistances[this.state.student.travel_distance]);
+        if (unlimited_travel || travel_within_constraint) {
+          validTeachers.push(teacher);
+        }
+      }
+    }
+    return validTeachers
+  }
+
+  filterTeachersByDistance(teachers) {
+    var baseUrl = 'https://maps.googleapis.com/maps/api/distancematrix/json?';
+    var keyParam = 'key=AIzaSyB8eOyj6ztAT0abHmF59lKI9t2ihaGwT4c';
+    var originParam = 'origins=' + this.state.student.full_address;
+    var destinations = [];
+    for (i = 0; i < teachers.length; i+=1) {
+      var teacher = teachers[i];
+      destinations.push(teacher.full_address)
+    }
+    var destinationParam = 'destinations=' + destinations.join("|");
+    var route = baseUrl + originParam + "&" + destinationParam + "&" + keyParam;
+    var resolve = (response) => this.setState({ teachers: this.processGoogleMapsResponse(response["rows"][0]["elements"], teachers) });
+    var reject = (response) => console.log(response);
+    Requester.getWithCors(
+      route,
+      resolve,
+      reject,
+    );
+  }
+
   studentOnClick(studentId, instrument) {
     var studentRoute = ApiConstants.students.show(studentId)
     var studentResolve = ((response) => {
@@ -38,7 +81,7 @@ class UnmatchedPage extends React.Component {
         instrument: instrument.name,
       });
       var teacherRoute = ApiConstants.teachers.possibleTeachers(studentId, instrument.name);
-      var teacherResolve = (response) => this.setState({ teachers: response["teachers"] });
+      var teacherResolve = (response) => this.filterTeachersByDistance(response["teachers"]);
       var teacherReject = (response) => console.log(response);
       Requester.get(
         teacherRoute,

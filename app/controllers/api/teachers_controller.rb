@@ -79,7 +79,8 @@ class Api::TeachersController < Api::BaseController
         teacher_instrument_valid = true
       end
     end
-    return (time_overlap and teacher_instrument_valid)
+    travel_compatibility = (teacher.travel_distance != :'I am not willing to travel') or (student.travel_distance != :'I am not willing to travel')
+    return (time_overlap and teacher_instrument_valid and travel_compatibility)
   end
 
   def teacher_params

@@ -34,6 +34,18 @@
       request.send();
     }
 
+    getWithCors(route, resolve, reject) {
+      var request = this.initializeWithCors('GET', route);
+      request.onreadystatechange = () => {
+        if (request.readyState === XMLHttpRequest.DONE) {
+          if (request.status === 200 && resolve) {
+            resolve(JSON.parse(request.response));
+          }
+        }
+      };
+      request.send();
+    }
+
     get(route, resolve, reject) {
       var request = this.initialize('GET', route);
       request.onreadystatechange = () => {
@@ -44,6 +56,12 @@
         }
       };
       request.send();
+    }
+
+    initializeWithCors(type, route, content='application/json') {
+      var request = new XMLHttpRequest();
+      request.open(type, route);
+      return request;
     }
 
     initialize(type, route, content='application/json') {
