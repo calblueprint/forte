@@ -40,7 +40,7 @@ class Header extends React.Component {
         );
       } else if (signed_in_type == 'admin') {
         return (
-          <NavDropdown title={"Welcome,  " + name}>
+          <NavDropdown title={"Welcome,  Admin"}>
             <MenuItem href={RouteConstants.admin.unmatched}>Dashboard</MenuItem>
             <MenuItem onClick={() => this.logout()}>Log Out</MenuItem>
           </NavDropdown>
