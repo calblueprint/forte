@@ -48,6 +48,11 @@ class TeacherForm extends React.Component {
       stripe_account_holder_name: null,
       stripe_account_holder_type: null,
       stripe_account_holder_dob: null,
+      stripe_address_line1: null,
+      stripe_address_city: null,
+      stripe_address_state: null,
+      stripe_address_postal_code: null,
+      stripe_ssn_last_4: null,
       activeInstruments: [],
       instruments: {},
       showWaiverModal: false,
@@ -271,7 +276,16 @@ class TeacherForm extends React.Component {
   }
 
   verifyStripeAccount(teacher) {
-    const { stripe_account_holder_type, waiver_date, stripe_account_holder_dob } = this.state
+    const {
+      stripe_account_holder_type,
+      waiver_date,
+      stripe_account_holder_dob,
+      stripe_address_line1,
+      stripe_address_city,
+      stripe_address_postal_code,
+      stripe_address_state,
+      stripe_ssn_last_4,
+    } = this.state
     const reject = (response) => { console.log(response) };
     const resolve = ((response) => { window.location.href = "/" });
 
@@ -286,9 +300,12 @@ class TeacherForm extends React.Component {
       tos_acceptance_date: waiver_date.unix(),
       tos_acceptance_ip: teacher.sign_up_ip,
       account_id: teacher.account_id,
+      address_city: stripe_address_city,
+      address_line_1: stripe_address_line1,
+      address_postal_code: stripe_address_postal_code,
+      address_state: stripe_address_state,
+      ssn_last_4: stripe_ssn_last_4,
     };
-
-    console.log(params);
 
     Requester.post(
       ApiConstants.stripe.verifyAccount,
@@ -731,6 +748,53 @@ class TeacherForm extends React.Component {
                     onChange={(event) => this.handleChange(event)}/>
                 </FormGroup>
               </div>
+              <FormGroup>
+                <ControlLabel>Address</ControlLabel>
+                <FormControl
+                  componentClass="input"
+                  placeholder="Enter Address Associated with Banking Account"
+                  name="stripe_address_line1"
+                  onChange={(event) => this.handleChange(event)}/>
+              </FormGroup>
+              <div className="form-row">
+                <FormGroup>
+                  <ControlLabel>City</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    placeholder="Enter City"
+                    name="stripe_address_city"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>Postal Code</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    placeholder="Enter Postal Code"
+                    name="stripe_address_postal_code"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
+              </div>
+              <div className="form-row">
+                <FormGroup>
+                  <ControlLabel>Address State</ControlLabel>
+                  <FormControl
+                    componentClass="select"
+                    name="stripe_address_state"
+                    onChange={(event) => this.handleChange(event)}>
+                    <option value="" disabled selected>Select your state</option>
+                    {this.renderOptions('state')}
+                  </FormControl>
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>Last 4 Digits of SSN</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    placeholder="Enter Last 4 Digits of SSN"
+                    name="stripe_ssn_last_4"
+                    onChange={(event) => this.handleChange(event)}/>
+                </FormGroup>
+              </div>
+
               <div className="form-row">
                 <FormGroup>
                   <ControlLabel>Bank Account Country</ControlLabel>
