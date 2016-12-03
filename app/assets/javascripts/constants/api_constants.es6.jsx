@@ -78,6 +78,7 @@
       return {
         createCustomer: '/stripe/customer',
         createAccount: '/stripe/account',
+        verifyAccount: '/stripe/verify_account',
         charge: '/stripe/charge',
       }
     }
