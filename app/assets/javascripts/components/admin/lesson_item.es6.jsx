@@ -9,6 +9,8 @@ class LessonItem extends React.Component {
 
   render () {
     const { lesson } = this.props
+    var startTime = moment(lesson.start_time);
+    var endTime = moment(lesson.end_time);
     return (
       <div className="lesson-item">
         <div className="lesson-item-header">
@@ -17,11 +19,11 @@ class LessonItem extends React.Component {
         </div>
         <div className="lesson-item-content">
           {this.renderContentItem('Time',
-            lesson.start_time//.format('ddd') + ' ' + ''
-            //lesson.start_time.format('h:mm A').toUpperCase() + ' - ' +
-            //lesson.end_time.format('h:mm A').toUpperCase()
+            startTime.format('ddd') + ' ' +
+            startTime.format('h:mm A').toUpperCase() + ' - ' +
+            endTime.format('h:mm A').toUpperCase()
           )}
-          {this.renderContentItem('Price', lesson.lesson.price)}
+          {this.renderContentItem('Price', '$' + lesson.lesson.price)}
           {this.renderContentItem('Feedback', lesson.lesson.feedback)}
         </div>
       </div>

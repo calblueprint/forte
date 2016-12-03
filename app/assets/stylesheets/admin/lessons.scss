@@ -1,15 +1,7 @@
-.admin-lessons-page {
-  width: 100%;
-  padding: 0px 20px;
-
-  .lessons-container {
-    align-self: center;
-  }
-}
-
 .lesson-item {
   border: 1px solid $grey20;
   margin: 10px 0px;
+  width: 450px;
 
   .lesson-item-header {
     display: flex;

@@ -7,7 +7,6 @@ class MatchingItem extends React.Component {
   }
 
   render() {
-    console.log(this.props.matching);
     var startTime = moment(this.props.matching.matching.lesson_time[0]);
     return (
       <div className="matching-item">
