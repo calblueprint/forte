@@ -29,9 +29,9 @@ class HomePage extends React.Component {
         <Header />
           <div className="home-page content-wrapper">
             <div className="title-wrapper">
-              <div className="title-text">
+              <h2 className="title-text">
                 Grab a chair. Take a stand.
-              </div>
+              </h2>
               <div className="button-container">
                 <Button className="button button--solid-orange button--lg"
                         onClick={() => window.location = RouteConstants.form.student}>
@@ -43,9 +43,9 @@ class HomePage extends React.Component {
                 </Button>
               </div>
             </div>
-            <div className="forte-description">
-            Forte connects underserved youth with experienced musicians to provide access to affordable music lessons.
-            </div>
+            <h6 className="forte-description">
+              Forte connects underserved youth with experienced musicians to provide access to affordable music lessons.
+            </h6>
             <div className="instruments-wrapper">
               {this.renderInstrument('piano')}
               {this.renderInstrument('guitar')}

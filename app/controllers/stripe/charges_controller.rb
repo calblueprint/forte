@@ -1,16 +1,18 @@
 class Stripe::ChargesController < Stripe::BaseController 
   def charge_customer
-    student = student.find params[:student_id]
-    teacher = student.find params[:teacher_id]
+    student = Student.find params[:student_id]
+    teacher = Teacher.find params[:teacher_id]
     amount = params[:amount]
     begin
     
-    Stripe::Charge.create(
+    charge = Stripe::Charge.create(
       :amount => amount, # in cents
       :currency => "usd",
       :customer => student.customer_id,
       :destination => teacher.account_id
     )
+    render json: charge, status: 201
+
     rescue Stripe::CardError => e
       unprocessable_response student      
     end

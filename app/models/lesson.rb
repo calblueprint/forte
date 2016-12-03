@@ -16,8 +16,8 @@
 class Lesson < ActiveRecord::Base
   after_initialize :init
 
-  scope :upcoming, -> { where("start_time >= ?", Date.today).order(:start_time) }
-  scope :recent, -> { where("start_time < ?", Date.today).order(start_time: :desc) }
+  scope :upcoming, -> { where("start_time >= ?", DateTime.now).order(:start_time) }
+  scope :recent, -> { where("start_time < ?", DateTime.now).order(start_time: :desc) }
 
   validates :start_time, presence: true, date: true
   validates :end_time, presence: true, date: { after: :start_time }

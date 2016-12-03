@@ -22,7 +22,6 @@ class Header extends React.Component {
     var signed_in = getCookie('is_signed_in');
     var signed_in_type = getCookie('signed_in_type');
     var name = getCookie('name');
-    console.log(name);
     if (signed_in == 'true') {
       if (signed_in_type == 'student') {
         return (

@@ -46,8 +46,8 @@ class AdminLessonsPage extends React.Component {
     return (
       <div className="page-wrapper">
         <AdminHeader />
-        <div className="content-wrapper admin-lessons-page">
-          <h1 className="lessons-title">Lessons</h1>
+        <div className="content-wrapper">
+          <h1 >Lessons</h1>
           <div className="lessons-container">
             {this.renderLessons()}
           </div>
