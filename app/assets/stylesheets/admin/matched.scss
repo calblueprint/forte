@@ -1,5 +1,59 @@
 .matching-item {
-  background-color: $grey20;
-  padding: 10px 20px;
+  border: 1px solid $grey20;
   margin: 10px 0px;
+  width: 450px;
+
+  .matching-item-header {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid $grey20;
+    padding: 10px 20px;
+
+    .matching-item-header-item {
+      width: 200px;
+
+      &:first-child {
+        margin-right: 10px;
+      }
+
+      .header-label {
+        font-size: 14px;
+        font-weight: bold;
+        color: $orange;
+        text-transform: uppercase;
+      }
+
+      .header-text {
+        font-size: 17px;
+        font-weight: normal;
+        color: black;
+      }
+    }
+  }
+
+  .matching-item-content {
+    padding: 10px 20px;
+
+    .matching-item-content-item {
+      font-size: 17px;
+      line-height: 20px;
+
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+
+      .content-label {
+        font-size: 12px;
+        font-weight: bold;
+        color: $grey40;
+        text-transform: uppercase;
+      }
+
+      .content-text {
+        font-size: 14px;
+        font-weight: normal;
+        color: black;
+      }
+    }
+  }
 }
