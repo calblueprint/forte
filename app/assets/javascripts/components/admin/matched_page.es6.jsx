@@ -21,6 +21,7 @@ class MatchedPage extends React.Component {
       <div className="page-wrapper">
         <AdminHeader />
         <div className="content-wrapper">
+          <h1>Matchings</h1>
           {this.renderMatchings()}
         </div>
       </div>
