@@ -40,10 +40,10 @@ class Api::InstrumentsController < Api::BaseController
 
   def destroy_matchings(instrument)
     if instrument.instrumentable_type == 'Student'
-      Matching.where(student_id: instrument.instrumentable_id).destroy_all
+      Matching.where(student_id: instrument.instrumentable_id, instrument: instrument.name).destroy_all
     else
       # instrumentable_type == 'Teacher'
-      Matching.where(teacher_id: instrument.instrumentable_id).destroy_all
+      Matching.where(teacher_id: instrument.instrumentable_id, instrument: instrument.name).destroy_all
     end
   end
 

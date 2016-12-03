@@ -63,9 +63,8 @@ class StudentSettingsPage extends React.Component {
   }
 
   renderAddModal() {
-    const { addModalIsVisible } = this.state;
+    const { addModalIsVisible, instruments } = this.state;
     const { student } = this.props;
-    // TODO: Disallow adding an instrument that already exist for user
 
     if (addModalIsVisible) {
       return (
@@ -73,7 +72,7 @@ class StudentSettingsPage extends React.Component {
           isVisible={addModalIsVisible}
           handleClose={() => this.closeAddModal()}
           fetchInstruments={() => this.fetchInstruments()}
-          // instrument={instrument}
+          instruments={instruments}
           instrumentable={student}
         />
       )

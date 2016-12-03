@@ -14,7 +14,7 @@ class AddInstrumentModal extends React.Component {
     return {
       handleClose: React.PropTypes.func.isRequired,
       fetchInstruments: React.PropTypes.func.isRequired,
-      instrument: React.PropTypes.object.isRequired,
+      instruments: React.PropTypes.object.isRequired,
       instrumentable: React.PropTypes.object.isRequired,
       isVisible: React.PropTypes.bool.isRequired,
     };
@@ -73,26 +73,17 @@ class AddInstrumentModal extends React.Component {
   }
 
   renderOptions(type) {
+    const { instruments } = this.props;
+    const existingInstrumentsArray = instruments.map((instrument) => (instrument.name))
+    function removeExistingInstruments(instrument) {
+      return !existingInstrumentsArray.includes(instrument);
+    }
+
     var optionsArray = []
     var retOptions = []
     switch(type) {
       case 'instruments':
-        optionsArray = INSTRUMENTS;
-        break;
-      case 'gender':
-        optionsArray = GENDERS;
-        break;
-      case 'school_level':
-        optionsArray = STUDENT_SCHOOL_LEVELS;
-        break;
-      case 'state':
-        optionsArray = STATES;
-        break;
-      case 'travel_distance':
-        optionsArray = TRAVEL_DISTANCES;
-        break;
-      case 'income_range':
-        optionsArray = INCOME_RANGES;
+        optionsArray = INSTRUMENTS.filter(removeExistingInstruments);
         break;
       case 'proficiency':
         optionsArray = PROFICIENCY;
