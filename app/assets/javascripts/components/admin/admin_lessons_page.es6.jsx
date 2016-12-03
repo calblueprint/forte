@@ -20,9 +20,8 @@ class AdminLessonsPage extends React.Component {
     );
   }
 
-  onPersonClick(student) {
-    console.log(student)
-    this.setState({ showPersonModal: true, person: student })
+  onPersonClick(person) {
+    this.setState({ showPersonModal: true, person: person })
   }
 
   closePersonModal() {

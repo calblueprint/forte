@@ -14,8 +14,8 @@ class LessonItem extends React.Component {
     return (
       <div className="lesson-item">
         <div className="lesson-item-header">
-          {this.renderHeaderItem('Student', lesson.student.first_name + ' ' + lesson.student.last_name)}
-          {this.renderHeaderItem('Teacher', lesson.teacher.first_name + ' ' + lesson.teacher.last_name)}
+          {this.renderHeaderItem('Student', lesson.student.first_name + ' ' + lesson.student.last_name, (event) => this.props.onPersonClick(this.props.lesson.student))}
+          {this.renderHeaderItem('Teacher', lesson.teacher.first_name + ' ' + lesson.teacher.last_name, (event) => this.props.onPersonClick(this.props.lesson.teacher))}
         </div>
         <div className="lesson-item-content">
           {this.renderContentItem('Time',
@@ -30,10 +30,10 @@ class LessonItem extends React.Component {
     );
   }
 
-  renderHeaderItem(label, text) {
+  renderHeaderItem(label, text, onClick=null) {
     return (
       <div className="lesson-item-header-item">
-        <div className="header-label">{label}</div>
+        <div className="header-label" onClick={onClick}>{label}</div>
         <div className="header-text">{text}</div>
       </div>
     );

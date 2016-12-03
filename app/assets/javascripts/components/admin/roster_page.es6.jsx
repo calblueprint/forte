@@ -6,6 +6,7 @@ class RosterPage extends React.Component {
       people: null,
       showPersonModal: false,
       person: null,
+      filter: "All",
     };
   }
 
@@ -33,6 +34,8 @@ class RosterPage extends React.Component {
   }
 
   filterByStudent() {
+    this.setState({ filter: "Students" });
+
     const route = ApiConstants.students.index;
     const resolve = (response) => this.setState({ people: response.students });
     const reject = (response) => console.log(response);
@@ -44,6 +47,8 @@ class RosterPage extends React.Component {
   }
 
   filterByTeacher() {
+    this.setState({ filter: "Teachers" });
+
     const route = ApiConstants.teachers.index;
     const resolve = (response) => this.setState({ people: response.teachers });
     const reject = (response) => console.log(response);
@@ -94,6 +99,18 @@ class RosterPage extends React.Component {
     }
   }
 
+  renderFilterButton(label, onClick) {
+    if (label == this.state.filter) {
+      return (
+        <Button className="button button--solid-orange" onClick={onClick}>{label}</Button>
+      );
+    } else {
+      return (
+        <Button className="button button--outline-orange" onClick={onClick}>{label}</Button>
+      );
+    }
+  }
+
   render() {
     if (this.state.people == null) {
       return (
@@ -118,9 +135,9 @@ class RosterPage extends React.Component {
               </InputGroup>
             </FormGroup>
             <ButtonGroup className="filter-buttons">
-              <Button className="button button--outline-orange" onClick={(event) => this.fetchPeople()}>All</Button>
-              <Button className="button button--outline-orange" onClick={(event) => this.filterByStudent()}>Students</Button>
-              <Button className="button button--outline-orange" onClick={(event) => this.filterByTeacher()}>Teachers</Button>
+              {this.renderFilterButton('All', (event) => this.fetchPeople())}
+              {this.renderFilterButton('Students', (event) => this.filterByStudent())}
+              {this.renderFilterButton('Teachers', (event) => this.filterByTeacher())}
             </ButtonGroup>
             <div className="roster-container">
               {this.renderPeople()}

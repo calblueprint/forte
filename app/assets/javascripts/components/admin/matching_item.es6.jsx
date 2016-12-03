@@ -3,6 +3,7 @@ class MatchingItem extends React.Component {
   static get propTypes() {
     return {
       matching: React.PropTypes.object, 
+      onPersonClick: React.PropTypes.func,
     };
   }
 
@@ -11,8 +12,8 @@ class MatchingItem extends React.Component {
     return (
       <div className="matching-item">
         <div className="matching-item-header">
-          {this.renderHeaderItem('Student', this.props.matching.student.first_name + ' ' + this.props.matching.student.last_name)}
-          {this.renderHeaderItem('Teacher', this.props.matching.teacher.first_name + ' ' + this.props.matching.teacher.last_name)}
+          {this.renderHeaderItem('Student', this.props.matching.student.first_name + ' ' + this.props.matching.student.last_name, (event) => this.props.onPersonClick(this.props.matching.student))}
+          {this.renderHeaderItem('Teacher', this.props.matching.teacher.first_name + ' ' + this.props.matching.teacher.last_name, (event) => this.props.onPersonClick(this.props.matching.teacher))}
         </div>
         <div className="matching-item-content">
           {this.renderContentItem('Instrument', this.props.matching.matching.instrument)}
@@ -23,10 +24,10 @@ class MatchingItem extends React.Component {
     );
   }
 
-  renderHeaderItem(label, text) {
+  renderHeaderItem(label, text, onClick=null) {
     return (
       <div className="matching-item-header-item">
-        <div className="header-label">{label}</div>
+        <div className="header-label" onClick={onClick}>{label}</div>
         <div className="header-text">{text}</div>
       </div>
     );
