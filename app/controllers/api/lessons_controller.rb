@@ -31,7 +31,6 @@ class Api::LessonsController < Api::BaseController
 
   def destroy
     lesson = Lesson.find params[:id]
-    lesson.send_cancel_emails
     if lesson.destroy
       render json: lesson
     else
