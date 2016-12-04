@@ -15,6 +15,7 @@
 
 class Lesson < ActiveRecord::Base
   after_initialize :init
+  before_destroy :send_cancel_emails
 
   scope :upcoming, -> { where("start_time >= ?", DateTime.now).order(:start_time) }
   scope :recent, -> { where("start_time < ?", DateTime.now).order(start_time: :desc) }

@@ -118,6 +118,7 @@ Rails.application.routes.draw do
     get '/students/recent_lessons/:id', to: 'students#recent_lessons'
     get '/students/upcoming_lessons/:id', to: 'students#upcoming_lessons'
     get '/students/unmatched', to: 'students#unmatched'
+    get '/students/:id/instruments', to: 'students#instruments'
     resources :students, only: [:index, :destroy, :show, :update]
 
 

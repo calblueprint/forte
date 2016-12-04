@@ -17,70 +17,70 @@ def get_address
   addresses = [
       {
         address: "2520 Regent Street",
-        city: "Berkeley", 
-        address_2: "Apartment #5", 
+        city: "Berkeley",
+        address_2: "Apartment #5",
         state: 4,
         zip_code: "94704"
       },
       {
-        address: "1596 Bellemead Street", 
-        city: "San Jose", 
-        address_2: "", 
+        address: "1596 Bellemead Street",
+        city: "San Jose",
+        address_2: "",
         state: 4,
         zip_code: "95131"
       },
       {
-        address: "10225 Orange Avenue", 
-        city: "Cupertino", 
-        address_2: "", 
+        address: "10225 Orange Avenue",
+        city: "Cupertino",
+        address_2: "",
         state: 4,
         zip_code: "95014"
       },
       {
-        address: "2220 Dwight Way", 
-        city: "Berkeley", 
-        address_2: "Apartment #101", 
+        address: "2220 Dwight Way",
+        city: "Berkeley",
+        address_2: "Apartment #101",
         state: 4,
         zip_code: "94704"
       },
       {
-        address: "2400 Durant Avenue", 
-        city: "Berkeley", 
-        address_2: "", 
+        address: "2400 Durant Avenue",
+        city: "Berkeley",
+        address_2: "",
         state: 4,
         zip_code: "94704"
       },
       {
-        address: "225 Bush Street", 
-        city: "San Francisco", 
-        address_2: "", 
+        address: "225 Bush Street",
+        city: "San Francisco",
+        address_2: "",
         state: 4,
         zip_code: "94104"
       },
       {
-        address: "450 Serra Mall", 
-        city: "Palo Alto", 
-        address_2: "", 
+        address: "450 Serra Mall",
+        city: "Palo Alto",
+        address_2: "",
         state: 4,
         zip_code: "94305"
       },
       {
         address: "21840 McClellan Road",
-        city: "Cupertino", 
-        address_2: "", 
+        city: "Cupertino",
+        address_2: "",
         state: 4,
         zip_code: "95014"
       },
       {
-        address: "99 Grove Street", 
-        city: "San Francisco", 
-        address_2: "", 
+        address: "99 Grove Street",
+        city: "San Francisco",
+        address_2: "",
         state: 4,
         zip_code: "94102"
       },
       {
-        address: "1807 Telegraph Ave", 
-        city: "Oakland", 
+        address: "1807 Telegraph Ave",
+        city: "Oakland",
         address_2: "",
         state: 4,
         zip_code: "94612"
