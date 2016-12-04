@@ -35,6 +35,12 @@ class Lesson < ActiveRecord::Base
     LessonMailer.cancel_notify_parent(self).deliver_now
   end
 
+  def send_reschedule_emails
+    LessonMailer.reschedule_notify_teacher(self).deliver_now
+    LessonMailer.reschedule_notify_student(self).deliver_now
+    LessonMailer.reschedule_notify_parent(self).deliver_now
+  end
+
   def init
     self.location = self.matching.location || 'Location has not been set'
   end
