@@ -258,21 +258,21 @@ def create_lessons_and_matchings_with_matched_teachers_and_students
   end
 end
 
-def create_multiple_student_lessons_and_matchings_for_teachers
-  matched_teachers = Teacher.where(is_searching: false)
-  matched_students = Student.limit(10)
-  instrument_name = $instruments_array[0] # Instrument doesn't matter for now
+# def create_multiple_student_lessons_and_matchings_for_teachers
+#   matched_teachers = Teacher.where(is_searching: false)
+#   matched_students = Student.limit(10)
+#   instrument_name = $instruments_array[0] # Instrument doesn't matter for now
 
-  # Create a matching between every student and teacher
+#   # Create a matching between every student and teacher
 
-  matched_students.each do |student|
-    matched_teachers.each do |teacher|
-      matching = create_single_matching(teacher, student, instrument_name)
-      create_single_lesson(matching, upcoming=true, offset=1) # Arbitrary offset
-      create_single_lesson(matching, upcoming=false, offset=1)
-    end
-  end
-end
+#   matched_students.each do |student|
+#     matched_teachers.each do |teacher|
+#       matching = create_single_matching(teacher, student, instrument_name)
+#       create_single_lesson(matching, upcoming=true, offset=1) # Arbitrary offset
+#       create_single_lesson(matching, upcoming=false, offset=1)
+#     end
+#   end
+# end
 
 def create_admin_accounts
   puts "creating admin accounts"
@@ -295,5 +295,5 @@ end
 
 if Lesson.count == 0 && Matching.count == 0
   create_lessons_and_matchings_with_matched_teachers_and_students
-  create_multiple_student_lessons_and_matchings_for_teachers
+  # create_multiple_student_lessons_and_matchings_for_teachers
 end

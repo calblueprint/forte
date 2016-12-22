@@ -47,7 +47,7 @@ class Api::TeachersController < Api::BaseController
   def recent_lessons
     if current_teacher
       teacher = Teacher.find params[:id]
-      lessons = teacher.lessons.upcoming
+      lessons = teacher.lessons.recent
       render json: lessons,
              each_serializer: LessonIndexSerializer,
              root: "lessons"
