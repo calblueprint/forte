@@ -104,7 +104,6 @@ def create_single_teacher(is_searching, n)
     birthday: Faker::Date.between(35.years.ago, 15.years.ago),
     school: "#{Faker::Name.first_name} College",
     school_level: Faker::Number.between(0, 1),
-    phone: Faker::Base.numerify('###-###-####'),
     introduction: Faker::Lorem.paragraph(4),
     teaching_experience: Faker::Lorem.paragraph(4),
     training_experience: Faker::Lorem.paragraph(4),
