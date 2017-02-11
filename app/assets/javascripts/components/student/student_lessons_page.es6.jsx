@@ -53,26 +53,26 @@ class StudentLessonsPage extends React.Component {
     switch (option) {
       case "upcoming":
         style = (filter === "upcoming" ?
-                  "button button--lg button--solid-orange" :
-                  "button button--lg button--solid-white"
+                  "lesson-tab tab--active" :
+                  "lesson-tab"
                 );
         buttonText = "Upcoming Lessons";
         break;
       case "recent":
         style = (filter === "recent" ?
-                  "button button--lg button--solid-orange" :
-                  "button button--lg button--solid-white"
+                  "lesson-tab tab--active" :
+                  "lesson-tab"
                 );
         buttonText = "Recent Lessons";
         break;
     }
     return (
-      <Button
+      <button
         className={style}
         onClick={() => this.handleClick(option)}
       >
         {buttonText}
-      </Button>
+      </button>
     );
   }
 
@@ -107,7 +107,7 @@ class StudentLessonsPage extends React.Component {
         <h2 className="title">
           My Lessons
         </h2>
-        <div className="options-container">
+        <div className="options-container student-lesson-tabs">
           <ButtonGroup>
             {this.renderOption("upcoming")}
             {this.renderOption("recent")}

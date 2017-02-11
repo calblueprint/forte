@@ -2,27 +2,38 @@
 
 .lesson-card {
   display: flex;
+  flex-flow: row wrap;
   align-items: center;
   justify-content: space-around;
   border: 1px solid $grey20;
   border-bottom: 0px;
-  padding: 10px 30px;
+  padding: 15px;
+
+  &:last-of-type {
+    border-bottom: 1px solid $grey20;
+  }
 
   .lesson-time-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 25%;
 
     * {
       margin: 0;
       color: $grey80;
+    }
+
+    h2 {
+      font-weight: 700;
     }
   }
 
   .info-row {
     display: flex;
     flex-direction: row;
-    align-items:center;
+    align-items: center;
+    margin: 6px 0;
 
     img {
       height: 15px;
@@ -32,25 +43,104 @@
     > :first-child {
       margin-right: 10px;
     }
+
+    h5 {
+      margin: 0;
+    }
+  }
+
+  .details-row {
+    align-items: baseline;
   }
 
   .logistics {
     display: flex;
     flex-direction: column;
     padding: 0px 10px;
+    width: 25%;
+
+    h4 {
+      margin: 0;
+    }
   }
 
   .details {
     padding: 0px 10px;
+    width: 25%;
   }
 
   .actions {
     display: flex;
     flex-direction: column;
-    width: 150px;
+    width: 25%;
 
-    * {
+    button {
       margin: 5px 10px;
+    }
+  }
+}
+
+@media (max-width: 750px) {
+  .lesson-card {
+    align-items: flex-start;
+
+    .lesson-time-container {
+      align-items: baseline;
+      flex-direction: row;
+      margin-bottom: 10px;
+      width: 100%;
+
+      h2 {
+        font-size: 22px;
+        margin-right: 12px;
+      }
+    }
+
+    .logistics {
+      width: 33.33%;
+      padding-left: 0;
+    }
+
+    .details {
+      width: 33.33%;
+    }
+
+    .actions {
+      width: 33.33%;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .lesson-card {
+    .lesson-time-container {
+      width: 100%;
+
+      h2 {
+        font-size: 18px;
+        margin-right: 10px;
+      }
+    }
+
+    .logistics {
+      width: 50%;
+    }
+
+    .details {
+      width: 50%;
+    }
+
+    .actions {
+      flex-direction: row;
+      justify-content: space-between;
+      margin-top: 10px;
+      width: 100%;
+
+      button {
+        margin-left: 0;
+        margin-right: 0;
+        width: 48%;
+      }
     }
   }
 }
