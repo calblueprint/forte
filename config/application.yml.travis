@@ -1,1 +1,4 @@
 # Any secret keys/env variables go here
+test:
+  secret_key_base: 'ATESTKEY'
+  secret_key_devise: 'ATESTKEY'
