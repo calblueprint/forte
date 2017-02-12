@@ -48,7 +48,8 @@ class StudentForm extends React.Component {
       instruments: {},
       instruments_attributes: [],
       showWaiverModal: false,
-      errors: {}
+      errors: {},
+      card_errors: {}
     }
   }
 
@@ -79,7 +80,7 @@ class StudentForm extends React.Component {
   }
 
   displayErrorMessage(name) {
-    if (this.state.errors[name]) {
+    if (this.state.card_errors[name] || this.state.errors[name]) {
       return <HelpBlock className="error-message">{this.state.errors[name]}</HelpBlock>;
     }
   }
@@ -176,6 +177,23 @@ class StudentForm extends React.Component {
       stripe_address_zip
     } = this.state;
 
+    var stripe_reject = (card_number, exp_month, cvc) => {
+      var dict = this.stripeValidateFields(card_number, exp_month, cvc);
+      console.log(dict);
+      for (var k in dict) {
+        if (dict[k] == false) {
+          //set state for errors to be object of response.errors
+          this.setState = ({ card_errors : {
+                              //k (key that has false value): (helpful information such as error message)
+                              // [k]: dict[k],
+                              card_number: [false, "no"],
+            }
+          });
+        }
+      }
+    };
+
+
     Stripe.card.createToken({
       number: card_number,
       cvc: cvc,
@@ -188,12 +206,28 @@ class StudentForm extends React.Component {
       address_state: stripe_address_state,
       address_zip: stripe_address_zip
     }, this.stripeResponseHandler.bind(this));
+
+    console.log("yes", this.state.card_errors);
+  }
+  //create function that calls all the stripe validations and sends back an array of booleans
+  //javascript fxn can check if there are any false values and return error on UI
+  stripeValidateFields(card_number, exp_month, exp_year, cvc) {
+    var num_err = Stripe.card.validateCardNumber(card_number);
+    var expiry_err = Stripe.card.validateExpiry(exp_month, exp_year);
+    var cvc_err = Stripe.card.validateCVC(cvc);
+    var card_errs = {};
+    card_errs.card_number = num_err;
+    card_errs.exp_month = expiry_err;
+    card_errs.exp_year = expiry_err;
+    card_errs.cvc = cvc_err;
+    return card_errs;
   }
 
   stripeResponseHandler(status, response) {
     const reject = (response) => { console.log(response) };
     const resolve = ((response) => { this.createStudent(response) });
-    
+
+
     if (response.error) {
       console.log(response.error);
     } else {
