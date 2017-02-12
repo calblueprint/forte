@@ -107,7 +107,7 @@ class UnmatchedPage extends React.Component {
                 </div>
                 <h2>{student.first_name} {student.last_name}</h2>
               </div>
-              <h3 className="student-instrument">{instrument}</h3>
+              <h3 className="pane-description">Student</h3>
             </div>
             <FullStudent student={student} instrument={instrument}/>
           </div>
@@ -152,6 +152,7 @@ class UnmatchedPage extends React.Component {
                 </div>
                 <h2>{teacher.first_name} {teacher.last_name}</h2>
               </div>
+              <h3 className="pane-description">Teacher</h3>
             </div>
             <FullTeacher teacher={teacher} />
           </div>
@@ -198,7 +199,7 @@ class UnmatchedPage extends React.Component {
     }
 
     return (
-      <div className="page-wrapper">
+      <div className="page-wrapper unmatched-page-wrapper">
         <AdminHeader />
         <div className="content-wrapper unmatched-page">
           {this.renderStudentPart()}

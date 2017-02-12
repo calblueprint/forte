@@ -1,8 +1,14 @@
 $pane-header-height: 50px;
 $pane-footer-height: 50px;
+
+.unmatched-page-wrapper {
+  height: 100vh;
+}
+
 .unmatched-page {
   display: flex;
   flex-direction: row;
+  height: 100vh;
   width: 100%;
 
   .back-button {
@@ -21,6 +27,9 @@ $pane-footer-height: 50px;
     flex-direction: column;
     align-items: center;
     width: 50%;
+    height: 100%;
+    overflow: hidden;
+    overflow-y: scroll;
   }
 
   .pane-header {
@@ -53,7 +62,7 @@ $pane-footer-height: 50px;
     width: 100%;
   }
 
-  .student-instrument {
+  .pane-description {
     color: $orange;
     font-size: 14px;
     font-weight: 600;
@@ -81,7 +90,6 @@ $pane-footer-height: 50px;
       padding-right: 20px;
     }
   }
-
 }
 
 .person-list {
@@ -141,14 +149,12 @@ $pane-footer-height: 50px;
 }
 
 .full-person {
-  display: flex;
-  flex-direction: column;
   margin-top: 60px;
   margin-bottom: 80px;
   padding-top: 30px;
   padding-left: 20px;
   padding-right: 20px;
-  padding-bottom: 20px;
+  padding-bottom: 70px;
 
   .name {
     align-self: center;
