@@ -7,6 +7,7 @@ class RosterPage extends React.Component {
       showPersonModal: false,
       person: null,
       filter: "All",
+      searchInput: "",
     };
   }
 
@@ -35,28 +36,17 @@ class RosterPage extends React.Component {
 
   filterByStudent() {
     this.setState({ filter: "Students" });
-
-    const route = ApiConstants.students.index;
-    const resolve = (response) => this.setState({ people: response.students });
-    const reject = (response) => console.log(response);
-    Requester.get(
-      route,
-      resolve,
-      reject,
-    );
+    this.loadFilteredPeople(this.state.searchInput, "Students");
   }
 
   filterByTeacher() {
     this.setState({ filter: "Teachers" });
+    this.loadFilteredPeople(this.state.searchInput, "Teachers");
+  }
 
-    const route = ApiConstants.teachers.index;
-    const resolve = (response) => this.setState({ people: response.teachers });
-    const reject = (response) => console.log(response);
-    Requester.get(
-      route,
-      resolve,
-      reject,
-    );
+  filterByAll() {
+    this.setState({ filter: "All" });
+    this.loadFilteredPeople(this.state.searchInput, "All");
   }
 
   renderPersonModal() {
@@ -78,10 +68,35 @@ class RosterPage extends React.Component {
 
   onSearchChange(event) {
     var input = $(event.target).val();
-    if (input === "") {
-      this.fetchPeople();
+    this.setState({ searchInput: input });
+    this.loadFilteredPeople(input, this.state.filter);
+  }
+
+  loadFilteredPeople(input, filter) {
+    if (input == "") {
+      if (filter == "All") {
+        this.fetchPeople();
+      } else if (filter == "Teachers") {
+        const route = ApiConstants.teachers.index;
+        const resolve = (response) => this.setState({ people: response.teachers });
+        const reject = (response) => console.log(response);
+        Requester.get(
+          route,
+          resolve,
+          reject,
+        );
+      } else if (filter == "Students") {
+        const route = ApiConstants.students.index;
+        const resolve = (response) => this.setState({ people: response.students });
+        const reject = (response) => console.log(response);
+        Requester.get(
+          route,
+          resolve,
+          reject,
+        );
+      }
     } else {
-      const route = ApiConstants.searchables.users(input);
+      const route = ApiConstants.searchables.users(input, filter);
       const resolve = (response) => this.setState({ people: response.searchables });
       const reject = (response) => console.log(response);
       Requester.get(
@@ -128,7 +143,7 @@ class RosterPage extends React.Component {
               </InputGroup>
             </FormGroup>
             <ButtonGroup className="filter-buttons">
-              {this.renderFilterButton('All', (event) => this.fetchPeople())}
+              {this.renderFilterButton('All', (event) => this.filterByAll())}
               {this.renderFilterButton('Students', (event) => this.filterByStudent())}
               {this.renderFilterButton('Teachers', (event) => this.filterByTeacher())}
             </ButtonGroup>

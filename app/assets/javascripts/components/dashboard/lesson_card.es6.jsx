@@ -87,7 +87,7 @@ class LessonCard extends React.Component {
   }
 
   renderButtons() {
-    const { lesson } = this.props;
+    const { lesson, isStudent } = this.props;
     const {
       start_time,
       is_paid,
@@ -109,7 +109,7 @@ class LessonCard extends React.Component {
           {this.renderRescheduleModal()}
         </div>
       );
-    } else if (!is_paid && now > date) {
+    } else if (!is_paid && now > date && isStudent) {
       return (
         <div className="actions">
         <Button className="button button--outline-orange button--sm" onClick={() => this.openPayModal()}>
