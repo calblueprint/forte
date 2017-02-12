@@ -5,34 +5,37 @@ namespace :upcoming_lessons do
     puts "Verifying there exists four upcoming lesson for given matching..."
 
     num_upcoming_lessons = 4
-    midnight =  Date.current.tomorrow.midnight
 
     Matching.all.each do |matching|
-      upcoming_lessons = matching.lessons.where(["is_paid = ? AND end_time <= ?", false, Time.now])
+      upcoming_lessons = matching.lessons.where(["start_time >= ?", DateTime.now])
       if upcoming_lessons.count < num_upcoming_lessons
-        create_single_lesson(matching)
+        last_lesson = upcoming_lessons.order("end_time DESC").first
+        create_single_lesson(matching, last_lesson)
       end
     end
     puts "Done."
   end
 
-  def create_single_lesson(matching)
-    start_time = num_to_datetime(matching.lesson_time)
+  def create_single_lesson(matching, last_lesson)
+    day = matching.lesson_time[0] / 96
+    hour = (matching.lesson_time[0] % 96) / 4
+    minute = (matching.lesson_time[0] % 4) * 15
+    if last_lesson.start_time.wday == day
+      start_time = last_lesson.start_time + 7.day
+    else
+      start_time = last_lesson.start_time + ((day - last_lesson.start_time.wday) % 7).day
+    end
+    start_time = start_time.change({hour: hour, min: minute})
+    puts start_time
     lesson = Lesson.create(
       start_time: start_time,
-      end_time: end_time,
-      price: previous_lesson.price,
+      end_time: start_time + 45.minutes,
+      price: last_lesson.price,
       is_paid: false,
       feedback: nil,
       matching_id: matching.id,
     )
     lesson.save
   end
-
-  def num_to_datetime(lesson_time)
-    day = lesson_time / 96
-    hour = (lesson_time % 96) / 4
-    minute = (lesson_time % 4) * 15
-    puts day, hour, minute
-  end
 end
+
