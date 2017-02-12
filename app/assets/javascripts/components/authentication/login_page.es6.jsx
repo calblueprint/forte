@@ -2,8 +2,8 @@ class LoginPage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { 
-      email: '', 
+    this.state = {
+      email: '',
       password: '',
       errors: '',
       showAlert: false,
@@ -12,6 +12,12 @@ class LoginPage extends React.Component {
 
   handleChange(event) {
     this.setState({ [$(event.target).attr("name")] : $(event.target).val() });
+  }
+
+  handleEnter(event) {
+    if (event.keyCode == 13 || event.which == 13) {
+      this.login()
+    }
   }
 
   login() {
@@ -76,17 +82,21 @@ class LoginPage extends React.Component {
                 componentClass="input"
                 type="text"
                 name="email"
-                onChange={(event) => this.handleChange(event)} />
+                onChange={(e) => this.handleChange(e)}
+                onKeyDown={(e) => this.handleEnter(e.nativeEvent)} />
             </FormGroup>
             <FormGroup className="login-card__field">
               <ControlLabel>Password</ControlLabel>
               <FormControl
                 componentClass="input"
                 type="password"
-                name="password" 
-                onChange={(event) => this.handleChange(event)} />
+                name="password"
+                onChange={(e) => this.handleChange(e)}
+                onKeyDown={(e) => this.handleEnter(e.nativeEvent)} />
             </FormGroup>
-            <Button className="button button--solid-orange login-card__button" onClick={() => this.login()}>LOG IN</Button> 
+            <Button
+              className="button button--solid-orange login-card__button"
+              onClick={() => this.login()}>LOG IN</Button>
           </form>
         </div>
         <Footer />

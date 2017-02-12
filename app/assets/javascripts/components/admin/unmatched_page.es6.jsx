@@ -33,7 +33,7 @@ class UnmatchedPage extends React.Component {
     var studentRoute = ApiConstants.students.show(studentId)
     var studentResolve = ((response) => {
       this.setState({
-        fullStudent: true, 
+        fullStudent: true,
         student: response.student,
         instrument: instrument.name,
       });
@@ -88,7 +88,7 @@ class UnmatchedPage extends React.Component {
         <MatchingModal
           handleClose={() => this.closeMatchingModal()}
           student={student}
-          teacher={teacher} 
+          teacher={teacher}
           instrument={instrument} />
       );
     }
@@ -101,10 +101,13 @@ class UnmatchedPage extends React.Component {
         return (
           <div className="list-pane">
             <div className="pane-header">
-              <div className="back-button">
-                <Glyphicon glyph="chevron-left" className="back-button" onClick={(event) => this.studentBackButton(event)} />
+              <div className="pane-name">
+                <div className="back-button">
+                  <Glyphicon glyph="chevron-left" className="back-button" onClick={(event) => this.studentBackButton(event)} />
+                </div>
+                <h2>{student.first_name} {student.last_name}</h2>
               </div>
-              <h2>{student.first_name} {student.last_name} - {instrument}</h2>
+              <h3 className="student-instrument">{instrument}</h3>
             </div>
             <FullStudent student={student} instrument={instrument}/>
           </div>
@@ -121,9 +124,9 @@ class UnmatchedPage extends React.Component {
             <div className="pane-header">
               <h2>Unmatched Students</h2>
             </div>
-            <PersonList 
+            <PersonList
               people={students}
-              isStudent={true} 
+              isStudent={true}
               onPersonClick={(student, instrument) => this.studentOnClick(student, instrument)} />
           </div>
         );
@@ -143,15 +146,14 @@ class UnmatchedPage extends React.Component {
         return (
           <div className="list-pane">
             <div className="pane-header">
-              <div className="back-button">
-                <Glyphicon glyph="chevron-left" className="back-button" onClick={(event) => this.teacherBackButton(event)} />
+              <div className="pane-name">
+                <div className="back-button">
+                  <Glyphicon glyph="chevron-left" className="back-button" onClick={(event) => this.teacherBackButton(event)} />
+                </div>
+                <h2>{teacher.first_name} {teacher.last_name}</h2>
               </div>
-              <h2>{teacher.first_name} {teacher.last_name}</h2>
             </div>
             <FullTeacher teacher={teacher} />
-            <div className="pane-footer">
-              <Button className="button button--solid-orange" onClick={() => this.openMatchingModal()}>Match</Button>
-            </div>
           </div>
         );
       } else {
@@ -164,9 +166,9 @@ class UnmatchedPage extends React.Component {
         return (
           <div className="list-pane">
             <div className="pane-header">
-              <h2>Suitable Teachers</h2>
+              <h2>Suitable {this.state.instrument} Teachers</h2>
             </div>
-            <PersonList 
+            <PersonList
               people={teachers}
               isStudent={false}
               onPersonClick={(teacher, instrument) => this.teacherOnClick(teacher, instrument)} />
@@ -185,6 +187,16 @@ class UnmatchedPage extends React.Component {
   }
 
   render () {
+    let footer;
+
+    if (this.state.fullTeacher) {
+      footer =
+        <div className="pane-footer">
+          <Button className="button button--solid-orange"
+            onClick={() => this.openMatchingModal()}>Match</Button>
+        </div>
+    }
+
     return (
       <div className="page-wrapper">
         <AdminHeader />
@@ -192,6 +204,7 @@ class UnmatchedPage extends React.Component {
           {this.renderStudentPart()}
           <div className="divider" />
           {this.renderTeacherPart()}
+          {footer}
         </div>
         {this.renderMatchingModal()}
       </div>

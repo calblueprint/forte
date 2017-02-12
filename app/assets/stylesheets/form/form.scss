@@ -1,12 +1,13 @@
 /* Form Pages - Used for Student/Teacher form*/
 
+.form-wrapper {
+  padding-top: 80px;
+}
+
 .form-page {
   align-items: center;
-
-  .form-container {
-    width: 65%;
-    max-width: 1200px;
-  }
+  max-width: 700px;
+  padding: 0 15px;
 
   .section-title {
     border-bottom: 1px solid $grey20;
@@ -23,7 +24,7 @@
 }
 
 // use when more than one form control element in a row
-.form-row { 
+.form-row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -33,7 +34,15 @@
     margin-bottom: 0px;
   }
 
-  > * { margin: 0 10px; }    
+  > * { margin: 0 10px; }
   > :first-child { margin-left: 0; }
   > :last-child { margin-right: 0; }
+}
+
+.monthError {
+  float: left;
+}
+
+.yearError {
+  float: left;
 }
