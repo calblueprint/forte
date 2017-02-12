@@ -103,15 +103,13 @@ class StudentLessonsPage extends React.Component {
     return (
      <div className="page-wrapper">
       <UserHeader />
-      <div className="student-lessons-page content-wrapper">
+      <div className="lessons-page student-lessons-page content-wrapper">
         <h2 className="title">
           My Lessons
         </h2>
-        <div className="options-container student-lesson-tabs">
-          <ButtonGroup>
-            {this.renderOption("upcoming")}
-            {this.renderOption("recent")}
-          </ButtonGroup>
+        <div className="options-container lesson-tabs">
+          {this.renderOption("upcoming")}
+          {this.renderOption("recent")}
         </div>
         {this.renderLessonCards(filter)}
       </div>

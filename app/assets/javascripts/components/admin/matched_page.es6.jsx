@@ -1,5 +1,5 @@
 class MatchedPage extends React.Component {
-  
+
   constructor(props) {
     super();
     this.state = {
@@ -10,7 +10,7 @@ class MatchedPage extends React.Component {
 
   static get propTypes() {
     return {
-      matchings: React.PropTypes.array,  
+      matchings: React.PropTypes.array,
     };
   }
 
@@ -47,8 +47,8 @@ class MatchedPage extends React.Component {
     return (
       <div className="page-wrapper">
         <AdminHeader />
-        <div className="content-wrapper">
-          <h1>Matchings</h1>
+        <div className="content-wrapper matched-page">
+          <h1>Matched Pairs</h1>
           {this.renderMatchings()}
           {this.renderPersonModal()}
         </div>

@@ -11,6 +11,7 @@ html,body
 }
 
 * {
+  box-sizing: border-box;
   font-family: $font-family;
 }
 
@@ -53,6 +54,10 @@ h5 {
 h6 {
   font-size: $font-size-xxs;
   line-height: 1.5;
+}
+
+textarea {
+  resize: vertical;
 }
 
 textarea:hover,

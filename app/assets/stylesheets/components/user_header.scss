@@ -4,10 +4,15 @@
   background-color: $orange;
   min-height: 0;
 
+  .dropdown-menu a:focus {
+    // Need !important to override bootstrap
+    color: initial !important;
+  }
+
   .navbar-nav > li > a {
     color: $white80;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
   }
 
   .navbar-nav > li > a:hover, a:focus, a:active,
@@ -17,7 +22,7 @@
   }
 
   .link-container.navbar-right {
-    padding-right: 100px;
+    padding-right: 50px;
   }
 
   .navbar-toggle {
