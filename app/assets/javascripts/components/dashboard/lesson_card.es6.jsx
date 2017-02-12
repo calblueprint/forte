@@ -149,7 +149,7 @@ class LessonCard extends React.Component {
       <div className="lesson-card">
         <div className="lesson-time-container">
           <h2>{startTime.format('MMM DD').toUpperCase()}</h2>
-          <h4>{startTime.format('ddd').toUpperCase()} {startTime.format('hh:mm A').toUpperCase()}</h4>
+          <h4>{startTime.format('ddd')}, {startTime.format('hh:mm A')}</h4>
         </div>
         <div className="logistics">
           <h4>{matching.instrument} Lesson</h4>
@@ -162,11 +162,11 @@ class LessonCard extends React.Component {
           </div>
         </div>
         <div className="details">
-          <div className="info-row">
+          <div className="info-row details-row">
             <img src={ImageConstants.icons.person} href="#" />
             <h5>{name}</h5>
           </div>
-          <div className="info-row">
+          <div className="info-row details-row">
             <img src={ImageConstants.icons.location} href="#" />
             <h5>{lesson.location}</h5>
           </div>

@@ -16,7 +16,7 @@ class AdminHeader extends React.Component {
     <div>
       <Navbar
         fixedTop={true}
-        className="header">
+        className="header admin-header">
         <Navbar.Header>
             <Navbar.Brand>
               <a className="header__logo" href="/">

@@ -11,12 +11,13 @@
     justify-content: center;
     background-color: $orange60;
     background-image: url(asset-path('stencils/instrument_white.png'));
+    padding: 0 20px;
     width: 100%;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     height: 450px;
-  } 
+  }
 
   .title-text {
     color: $white;
@@ -28,6 +29,7 @@
   .forte-description {
     font-weight: 300;
     font-size: $font-size-l;
+    line-height: 1.4;
     margin-top: 50px;
     text-align: center;
     padding: 0px 20px;
@@ -61,7 +63,7 @@
     width: 300px;
     margin: 20px 20px 0px 20px;
     position: relative;
-    img {  
+    img {
       width: auto;
       height: 100%;
       text-align: center;
@@ -112,5 +114,11 @@
     color: $grey;
     font-size: $font-size-s;
     margin-top: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-page .title-text {
+    font-size: 48px;
   }
 }

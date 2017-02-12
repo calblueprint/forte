@@ -1,7 +1,12 @@
+.lesson-content-wrapper {
+  max-width: 500px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
 .lesson-item {
   border: 1px solid $grey20;
   margin: 10px 0px;
-  width: 450px;
 
   .lesson-item-header {
     display: flex;
@@ -10,7 +15,7 @@
     padding: 10px 20px;
 
     .lesson-item-header-item {
-      width: 200px;
+      width: 50%;
       cursor: pointer;
 
       &:first-child {

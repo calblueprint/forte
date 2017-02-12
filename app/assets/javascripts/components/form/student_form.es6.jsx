@@ -193,7 +193,7 @@ class StudentForm extends React.Component {
   stripeResponseHandler(status, response) {
     const reject = (response) => { console.log(response) };
     const resolve = ((response) => { this.createStudent(response) });
-    
+
     if (response.error) {
       console.log(response.error);
     } else {
@@ -365,7 +365,7 @@ class StudentForm extends React.Component {
 
   render () {
     return (
-      <div className="page-wrapper">
+      <div className="page-wrapper form-wrapper">
         <Header />
           <div className="content-wrapper form-page">
             <h1>Student Application</h1>

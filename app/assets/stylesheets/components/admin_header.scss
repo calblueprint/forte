@@ -1,0 +1,34 @@
+/* Header Styles */
+
+.admin-header.navbar-default {
+  min-height: 0;
+
+  .navbar-nav > li > a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .navbar-nav > li > a:hover, a:focus, a:active,
+  .navbar-nav > .open > a {
+    color: $grey;
+  }
+
+  .navbar-toggle {
+    border-color: transparent;
+    margin-top: 9px;
+    margin-bottom: 9px;
+
+    &:hover, &:focus {
+      background: $grey20;
+    }
+  }
+
+  .icon-bar {
+    background-color: $grey;
+  }
+
+  .navbar-brand {
+    height: 50px;
+    padding: 4px;
+  }
+}

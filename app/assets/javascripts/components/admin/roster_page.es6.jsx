@@ -60,17 +60,10 @@ class RosterPage extends React.Component {
     }
   }
 
-  renderPerson(person) {
-    return (
-      <div>
-        <RosterItem person={person} onPersonClick={(person)=>this.onPersonClick(person)} />
-        <div className="item-separator" />
-      </div>
-    );
-  }
-
   renderPeople() {
-    return this.state.people.map((person) => this.renderPerson(person));
+    return this.state.people.map((person) => {
+      return <RosterItem person={person} onPersonClick={(person)=>this.onPersonClick(person)} />
+    });
   }
 
   onSearchChange(event) {
@@ -139,8 +132,8 @@ class RosterPage extends React.Component {
             <h1 className="roster-title">Roster</h1>
              <FormGroup className="searchbar">
               <InputGroup>
-                <FormControl 
-                  componentClass="input"  
+                <FormControl
+                  componentClass="input"
                   placeholder="Search"
                   name="first_name"
                   onChange={(event) => this.onSearchChange(event)}/>
