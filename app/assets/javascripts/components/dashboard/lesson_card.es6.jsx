@@ -87,7 +87,7 @@ class LessonCard extends React.Component {
   }
 
   renderButtons() {
-    const { lesson } = this.props;
+    const { lesson, isStudent } = this.props;
     const {
       start_time,
       is_paid,
@@ -109,7 +109,7 @@ class LessonCard extends React.Component {
           {this.renderRescheduleModal()}
         </div>
       );
-    } else if (!is_paid && now > date) {
+    } else if (!is_paid && now > date && isStudent) {
       return (
         <div className="actions">
         <Button className="button button--outline-orange button--sm" onClick={() => this.openPayModal()}>
@@ -144,12 +144,12 @@ class LessonCard extends React.Component {
     }
     var paidLabelText = is_paid ? 'Paid' : 'Unpaid';
     var paidLabelStyle = is_paid ? 'success' : 'danger';
-    
+
     return (
       <div className="lesson-card">
         <div className="lesson-time-container">
           <h2>{startTime.format('MMM DD').toUpperCase()}</h2>
-          <h4>{startTime.format('ddd').toUpperCase()} {startTime.format('hh:mm A').toUpperCase()}</h4>
+          <h4>{startTime.format('ddd')}, {startTime.format('hh:mm A')}</h4>
         </div>
         <div className="logistics">
           <h4>{matching.instrument} Lesson</h4>
@@ -162,11 +162,11 @@ class LessonCard extends React.Component {
           </div>
         </div>
         <div className="details">
-          <div className="info-row">
+          <div className="info-row details-row">
             <img src={ImageConstants.icons.person} href="#" />
             <h5>{name}</h5>
           </div>
-          <div className="info-row">
+          <div className="info-row details-row">
             <img src={ImageConstants.icons.location} href="#" />
             <h5>{lesson.location}</h5>
           </div>

@@ -109,7 +109,7 @@ Rails.application.routes.draw do
     ##################################################
     # Search
     ##################################################
-    get '/searchables/users/:prefix', to: 'searchables#users'
+    get '/searchables/users', to: 'searchables#users'
     get '/searchables/roster', to: 'searchables#roster'
 
     ##################################################

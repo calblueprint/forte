@@ -1,8 +1,8 @@
 class MatchingItem extends React.Component {
-  
+
   static get propTypes() {
     return {
-      matching: React.PropTypes.object, 
+      matching: React.PropTypes.object,
       onPersonClick: React.PropTypes.func,
     };
   }
@@ -17,7 +17,7 @@ class MatchingItem extends React.Component {
         </div>
         <div className="matching-item-content">
           {this.renderContentItem('Instrument', this.props.matching.matching.instrument)}
-          {this.renderContentItem('Location', this.props.matching.matching.location)}
+          {this.renderContentItem('Location', this.props.matching.matching.location, "matching-item-location")}
           {this.renderContentItem('Time', startTime.format('ddd') + ' ' + startTime.format('h:mm A').toUpperCase())}
         </div>
       </div>
@@ -33,9 +33,9 @@ class MatchingItem extends React.Component {
     );
   }
 
-  renderContentItem(label, text) {
+  renderContentItem(label, text, className="") {
     return (
-      <div className="matching-item-content-item">
+      <div className={`matching-item-content-item ${className}`}>
         <div className="content-label">{label}</div>
         <div className="content-text">{text}</div>
       </div>

@@ -11,14 +11,14 @@ class PersonList extends React.Component {
   renderPerson(person) {
     if (this.props.isStudent) {
       return (
-        <StudentDescription 
+        <StudentDescription
           student={person}
           key={person.id}
           onClick={this.props.onPersonClick} />
       );
     } else {
       return (
-        <TeacherDescription 
+        <TeacherDescription
           teacher={person}
           key={person.id}
           onClick={this.props.onPersonClick} />

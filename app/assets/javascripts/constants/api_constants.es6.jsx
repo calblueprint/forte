@@ -56,7 +56,7 @@
 
     get searchables() {
       return {
-        users: (prefix) => `/api/searchables/users/${prefix}`,
+        users: (prefix, filter) => `/api/searchables/users?prefix=${prefix}&filter=${filter}`,
         roster: '/api/searchables/roster',
       }
     }

@@ -1,11 +1,12 @@
 class Api::SearchablesController < Api::BaseController
   def users
     results = PgSearch.multisearch(params[:prefix])
+    filter = params[:filter]
     people_array = []
     for result in results
-      if result.searchable_type == "Teacher"
+      if result.searchable_type == "Teacher" and filter != "Students"
         people_array.push(Teacher.find(result.searchable_id))
-      else
+      elsif result.searchable_type == "Student" and filter != "Teachers"
         people_array.push(Student.find(result.searchable_id))
       end
     end

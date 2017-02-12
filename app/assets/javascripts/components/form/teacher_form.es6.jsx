@@ -203,7 +203,7 @@ class TeacherForm extends React.Component {
   stripeResponseHandler(status, response) {
     const reject = (response) => { console.log(response) };
     const resolve = ((response) => { this.createTeacher(response) });
-    
+
     if (response.error) {
       console.log(response.error);
     } else {
@@ -433,7 +433,7 @@ class TeacherForm extends React.Component {
 
   render () {
     return (
-      <div className="page-wrapper">
+      <div className="page-wrapper form-wrapper">
         <Header />
           <div className="content-wrapper form-page">
             <h1>Teacher Application</h1>
@@ -671,7 +671,7 @@ class TeacherForm extends React.Component {
               </FormGroup>
 
               {/*Application Page 3*/}
-             
+
               <div className="section-title">
                 <h2>Scheduling
                 </h2>
