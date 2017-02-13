@@ -96,10 +96,12 @@ class UnmatchedPage extends React.Component {
 
   renderStudentPart() {
     const { fullStudent, student, students, instrument } = this.state;
+    const emptyPane = <div className="pane-container"/>;
+
     if (fullStudent) {
       if (student != null) {
         return (
-          <div className="list-pane">
+          <div className="pane-container">
             <div className="pane-header">
               <div className="pane-name">
                 <div className="back-button">
@@ -109,42 +111,49 @@ class UnmatchedPage extends React.Component {
               </div>
               <h3 className="pane-description">Student</h3>
             </div>
-            <FullStudent student={student} instrument={instrument}/>
+            <div className="list-pane">
+              <FullStudent student={student} instrument={instrument}/>
+            </div>
           </div>
         );
       } else {
-        return (
-          <div className="list-pane"/>
-        );
+        return emptyPane;
       }
     } else {
       if (students != null) {
         return (
-          <div className="list-pane">
+          <div className="pane-container">
             <div className="pane-header">
               <h2>Unmatched Students</h2>
             </div>
+            <div className="list-pane">
             <PersonList
               people={students}
               isStudent={true}
               onPersonClick={(student, instrument) => this.studentOnClick(student, instrument)} />
           </div>
+          </div>
         );
       } else {
-        return (
-          <div className="list-pane"/>
-        );
+        return emptyPane;
       }
     }
   }
 
   renderTeacherPart() {
     const { fullTeacher, fullStudent, teacher, teachers, instrument } = this.state;
+    const emptyPane =
+      <div className="pane-container">
+        <div className="teacher-empty-state">
+          <img src={this.props.emptyStateImg} alt="Empty state icon"/>
+          <p>Select a student on the left to see available teachers!</p>
+        </div>
+      </div>
 
     if (fullTeacher) {
       if (teachers != null) {
         return (
-          <div className="list-pane">
+          <div className="pane-container">
             <div className="pane-header">
               <div className="pane-name">
                 <div className="back-button">
@@ -154,36 +163,34 @@ class UnmatchedPage extends React.Component {
               </div>
               <h3 className="pane-description">Teacher</h3>
             </div>
-            <FullTeacher teacher={teacher} />
+            <div className="list-pane">
+              <FullTeacher teacher={teacher} />
+            </div>
           </div>
         );
       } else {
-        return (
-          <div className="list-pane"/>
-        );
+        return emptyPane;
       }
     } else if (fullStudent) {
       if (teachers != null) {
         return (
-          <div className="list-pane">
+          <div className="pane-container">
             <div className="pane-header">
               <h2>Suitable {this.state.instrument} Teachers</h2>
             </div>
-            <PersonList
-              people={teachers}
-              isStudent={false}
-              onPersonClick={(teacher, instrument) => this.teacherOnClick(teacher, instrument)} />
+            <div className="list-pane">
+              <PersonList
+                people={teachers}
+                isStudent={false}
+                onPersonClick={(teacher, instrument) => this.teacherOnClick(teacher, instrument)} />
+            </div>
           </div>
         );
       } else {
-        return (
-          <div className="list-pane"/>
-        );
+        return emptyPane;
       }
     } else {
-      return (
-        <div className="list-pane"/>
-      );
+      return emptyPane;
     }
   }
 
@@ -194,20 +201,22 @@ class UnmatchedPage extends React.Component {
       footer =
         <div className="pane-footer">
           <Button className="button button--solid-orange"
-            onClick={() => this.openMatchingModal()}>Match</Button>
+            onClick={() => this.openMatchingModal()}>Click to Match</Button>
         </div>
     }
 
     return (
       <div className="page-wrapper unmatched-page-wrapper">
         <AdminHeader />
-        <div className="content-wrapper unmatched-page">
-          {this.renderStudentPart()}
-          <div className="divider" />
-          {this.renderTeacherPart()}
-          {footer}
+        <div className="container">
+          <div className="content-wrapper unmatched-page">
+            {this.renderStudentPart()}
+            <div className="divider" />
+            {this.renderTeacherPart()}
+            {footer}
+          </div>
+          {this.renderMatchingModal()}
         </div>
-        {this.renderMatchingModal()}
       </div>
     );
   }

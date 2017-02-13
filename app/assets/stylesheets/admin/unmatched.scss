@@ -6,9 +6,11 @@ $pane-footer-height: 50px;
 }
 
 .unmatched-page {
+  border-left: 1px solid $grey20;
+  border-right: 1px solid $grey20;
   display: flex;
   flex-direction: row;
-  height: 100vh;
+  height: calc(100vh - 50px);
   width: 100%;
 
   .back-button {
@@ -22,11 +24,16 @@ $pane-footer-height: 50px;
     z-index:100;
   }
 
+  .pane-container {
+    width: 50%;
+    position: relative;
+  }
+
   .list-pane {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 50%;
+    width: 100%;
     height: 100%;
     overflow: hidden;
     overflow-y: scroll;
@@ -37,8 +44,9 @@ $pane-footer-height: 50px;
     align-items: center;
     flex-flow: row wrap;
     justify-content: center;
-    position: fixed;
-    width: inherit;
+    position: absolute;
+    top: 0;
+    width: 100%;
     padding: 10px;
     background-color: $white;
     border-bottom: 1px solid $grey20;
@@ -71,6 +79,25 @@ $pane-footer-height: 50px;
     text-align: center;
   }
 
+  .teacher-empty-state {
+    margin-top: 50px;
+    text-align: center;
+    padding: 0 40px;
+
+    img {
+      margin-bottom: 20px;
+      max-width: 70px;
+      opacity: 0.25;
+    }
+
+    p {
+      color: $grey60;
+      font-size: 16px;
+      margin: 0 auto;
+      max-width: 250px;
+    }
+  }
+
   .pane-footer {
     display: flex;
     align-items: center;
@@ -78,6 +105,7 @@ $pane-footer-height: 50px;
     position: fixed;
     height: $pane-footer-height;
     width: inherit;
+    left: 0;
     padding: 10px;
     box-shadow: 0 -1px 14px rgba(0, 0, 0, 0.1);
     background-color: #F5F5F5;
@@ -184,6 +212,11 @@ $pane-footer-height: 50px;
 }
 
 @media (max-width: 500px) {
+  .unmatched-page-wrapper > .container {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
   .unmatched-page {
     .person-description {
       .person-detail {
