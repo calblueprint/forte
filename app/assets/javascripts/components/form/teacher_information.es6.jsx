@@ -160,7 +160,7 @@ class TeacherInformation extends React.Component {
               <FormGroup>
                 <ControlLabel>Do you authorize Forte to conduct a
                 background and personal reference checks in accordance
-                with our saftey policy?</ControlLabel>
+                with our safety policy?</ControlLabel>
                 <Radio readOnly checked={teacher.background_check==true}>
                   Yes
                 </Radio>
