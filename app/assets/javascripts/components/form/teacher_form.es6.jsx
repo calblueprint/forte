@@ -812,7 +812,7 @@ class TeacherForm extends React.Component {
               <FormGroup validationState={this.getValidationState("background_check")}>
                 <ControlLabel>Do you authorize Forte to conduct a
                 background and personal reference checks in accordance
-                with our saftey policy?</ControlLabel>
+                with our safety policy?</ControlLabel>
                 <Radio
                   name="background_check"
                   value={true}
