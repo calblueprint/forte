@@ -9,6 +9,16 @@
     align-self: flex-start;
   }
 
+  .forte-title {
+    font-style: italic;
+  }
+
+  .forte-defn-label {
+    color: $grey60;
+    font-weight: 600;
+    margin-right: 5px;
+  }
+
   .section__title {
     color: $orange;
     font-weight: bold;

@@ -4,9 +4,9 @@ class AboutPage extends React.Component {
     super(props);
     this.state = {
       people: [
-        'daniel', 'richard', 'shain', 'rocky', 
+        'daniel', 'richard', 'rocky',
         'rachel', 'sahil', 'lancy'
-      ], 
+      ],
     }
   }
 
@@ -14,20 +14,14 @@ class AboutPage extends React.Component {
     switch (option) {
       case 'daniel':
         name = 'Daniel Kim';
-        position = 'Chief Executive Officer';
+        position = 'Co-founder & CEO';
         image = ImageConstants.headshots.daniel;
         break;
 
       case 'richard':
         name = 'Richard Donahue';
-        position = 'Chief Financial Officer';
+        position = 'Co-founder & CFO';
         image = ImageConstants.headshots.richard;
-        break;
-
-      case 'shain':
-        name = 'Shain Lafazan';
-        position = 'Chief Technology Officer';
-        image = ImageConstants.headshots.shain;
         break;
 
       case 'rocky':
@@ -72,19 +66,19 @@ class AboutPage extends React.Component {
   renderIndividuals() {
     return this.state.people.map((person) => this.renderIndividual(person));
   }
-  
+
   render() {
     return (
       <div className="page-wrapper">
         <Header />
           <div className="content-wrapper about-page">
             <div className="section">
-              <h2 className="section__title">
+              <h2 className="section__title forte-title">
                 for·te
               </h2>
               <h4 className="section__subtitle">
-                adj. loudly, with passion and energy
-                n. one's strength, talent or skill
+                <span className="forte-defn-label">adj.</span> loudly, with passion and energy <br/>
+                <span className="forte-defn-label">n.</span> one's strength, talent or skill
               </h4>
             </div>
             <div className="section">
