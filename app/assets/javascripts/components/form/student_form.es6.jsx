@@ -169,15 +169,15 @@ class StudentForm extends React.Component {
  * @param cvc
  */
 async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
-    var dict = await this.stripeValidateFields(card_number, exp_month, exp_year, cvc);
-    var x = {};
-    for (var k in dict) {
+    var card_errs = await this.stripeValidateFields(card_number, exp_month, exp_year, cvc);
+    var stripe_error_info = {};
+    for (var err_type in card_errs) {
       //TODO: Find JS function to identify false values instead
-      if (dict[k][0] === false) {
-        x[k] = dict[k][1];
+      if (card_errs[err_type][0] === false) {
+        stripe_error_info[err_type] = card_errs[err_type][1];
       }
     }
-    this.setState({ errors: x });
+    this.setState({ errors: stripe_error_info });
   }
 
   /**
