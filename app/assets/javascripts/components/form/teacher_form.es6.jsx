@@ -181,7 +181,44 @@ class TeacherForm extends React.Component {
     this.setState({ instruments_attributes: instrumentsObj });
   }
 
-  createStripeAccount() {
+  /**
+   * Sets the state of errors to be the errored fields returned from stripeValidateFields
+   * @param stripe_routing_number
+   * @param stripe_account_number
+   * @param stripe_country
+   */
+  async validateStripeCustomer(stripe_routing_number, stripe_account_number, stripe_country) {
+    var payment_errs = await this.stripeValidateFields(stripe_routing_number, stripe_account_number, stripe_country);
+    var stripe_error_info = {};
+    var error_check = true;
+    for (var err_type in payment_errs) {
+      //TODO: Find JS function to identify false values instead
+      if (payment_errs[err_type][0] === false) {
+        error_check = false;
+        stripe_error_info[err_type] = payment_errs[err_type][1];
+      }
+    }
+    this.setState({ errors: stripe_error_info });
+    return error_check;
+  }
+
+  /**
+   * Calls Stripe validations on the inputted payment information
+   * @param stripe_routing_number
+   * @param stripe_account_number
+   * @param stripe_country
+   *
+   */
+  stripeValidateFields(stripe_routing_number, stripe_account_number, stripe_country) {
+    var routing_num_err = Stripe.bankAccount.validateRoutingNumber(stripe_routing_number, stripe_country);
+    var account_num_err = Stripe.bankAccount.validateAccountNumber(stripe_account_number, stripe_country);
+    var payment_errs = {};
+    payment_errs.stripe_routing_number = [routing_num_err, "Please enter a valid routing number"];
+    payment_errs.stripe_account_number = [account_num_err, "Please enter a valid account number"];
+    return payment_errs;
+  }
+
+  async createStripeAccount() {
     const {
       stripe_country,
       stripe_routing_number,
@@ -190,14 +227,19 @@ class TeacherForm extends React.Component {
       stripe_account_holder_type
     } = this.state;
 
-    Stripe.bankAccount.createToken({
-      country: stripe_country,
-      currency: 'USD',
-      routing_number: stripe_routing_number,
-      account_number: stripe_account_number,
-      account_holder_name: stripe_account_holder_name,
-      account_holder_type: stripe_account_holder_type
-    }, this.stripeResponseHandler.bind(this));
+    var validate_stripe_response = await this.validateStripeCustomer(stripe_routing_number, stripe_account_number, stripe_country); // Validate stripe credentials first
+
+    // Only create customer if stripe validations pass - do not create token if there are stripe errors
+    if (validate_stripe_response === true) {
+      Stripe.bankAccount.createToken({
+        country: stripe_country,
+        currency: 'USD',
+        routing_number: stripe_routing_number,
+        account_number: stripe_account_number,
+        account_holder_name: stripe_account_holder_name,
+        account_holder_type: stripe_account_holder_type
+      }, this.stripeResponseHandler.bind(this));
+    }
   }
 
   stripeResponseHandler(status, response) {
@@ -739,6 +781,7 @@ class TeacherForm extends React.Component {
                     placeholder="Enter Routing Number"
                     name="stripe_routing_number"
                     onChange={(event) => this.handleChange(event)}/>
+                    {this.displayErrorMessage("stripe_routing_number")}
                 </FormGroup>
                 <FormGroup>
                   <ControlLabel>Bank Account Number</ControlLabel>
@@ -747,6 +790,7 @@ class TeacherForm extends React.Component {
                     placeholder="Enter Bank Account Number"
                     name="stripe_account_number"
                     onChange={(event) => this.handleChange(event)}/>
+                    {this.displayErrorMessage("stripe_account_number")}
                 </FormGroup>
               </div>
               <FormGroup>

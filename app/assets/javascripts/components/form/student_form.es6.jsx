@@ -171,7 +171,7 @@ class StudentForm extends React.Component {
 async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
     var card_errs = await this.stripeValidateFields(card_number, exp_month, exp_year, cvc);
     var stripe_error_info = {};
-    var error_check;
+    var error_check = true;
     for (var err_type in card_errs) {
       //TODO: Find JS function to identify false values instead
       if (card_errs[err_type][0] === false) {
@@ -179,12 +179,8 @@ async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
         stripe_error_info[err_type] = card_errs[err_type][1];
       }
     }
-    if (error_check === false) {
-      this.setState({ errors: stripe_error_info });
-      return false;
-    } else {
-      return true;
-    }
+    this.setState({ errors: stripe_error_info });
+    return error_check;
   }
 
   /**
@@ -194,7 +190,7 @@ async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
    * @param cvc
    *
    */
-  async stripeValidateFields(card_number, exp_month, exp_year, cvc) {
+  stripeValidateFields(card_number, exp_month, exp_year, cvc) {
     var num_err = Stripe.card.validateCardNumber(card_number);
     var expiry_err = Stripe.card.validateExpiry(exp_month, exp_year);
     var cvc_err = Stripe.card.validateCVC(cvc);
@@ -235,7 +231,7 @@ async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
         address_city: stripe_address_city,
         address_state: stripe_address_state,
         address_zip: stripe_address_zip
-      }, this.stripeResponseHandler.bind(this), console.log("createToken"));
+      }, this.stripeResponseHandler.bind(this));
     }
   }
 
