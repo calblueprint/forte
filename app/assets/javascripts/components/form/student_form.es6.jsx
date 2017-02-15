@@ -171,13 +171,20 @@ class StudentForm extends React.Component {
 async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
     var card_errs = await this.stripeValidateFields(card_number, exp_month, exp_year, cvc);
     var stripe_error_info = {};
+    var error_check;
     for (var err_type in card_errs) {
       //TODO: Find JS function to identify false values instead
       if (card_errs[err_type][0] === false) {
+        error_check = false;
         stripe_error_info[err_type] = card_errs[err_type][1];
       }
     }
-    this.setState({ errors: stripe_error_info });
+    if (error_check === false) {
+      this.setState({ errors: stripe_error_info });
+      return false;
+    } else {
+      return true;
+    }
   }
 
   /**
@@ -213,11 +220,10 @@ async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
       errors,
     } = this.state;
 
-    await this.validateStripeCustomer(card_number, exp_month, exp_year, cvc); // Validate stripe credentials first
+    var validate_stripe_response = await this.validateStripeCustomer(card_number, exp_month, exp_year, cvc); // Validate stripe credentials first
 
     // Only create customer if stripe validations pass - do not create token if there are stripe errors
-    var st = this.state.errors
-    if (st.card_number === undefined && st.exp_month === undefined && st.cvc === undefined) {
+    if (validate_stripe_response === true) {
       Stripe.card.createToken({
         number: card_number,
         cvc: cvc,
@@ -229,7 +235,7 @@ async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
         address_city: stripe_address_city,
         address_state: stripe_address_state,
         address_zip: stripe_address_zip
-      }, this.stripeResponseHandler.bind(this));
+      }, this.stripeResponseHandler.bind(this), console.log("createToken"));
     }
   }
 
