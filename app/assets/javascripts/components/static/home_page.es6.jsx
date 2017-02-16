@@ -17,8 +17,14 @@ class HomePage extends React.Component {
     }
     return (
       <div className="instrument">
+        <div className="instrument-hover-container">
+          <h2 className="instrument__description">{description}</h2>
+          <div className="instrument-btn-container">
+            <a className="button button--solid-white button--sm" href="">Teach</a>
+            <a className="button button--solid-white button--sm" href="">Learn</a>
+          </div>
+        </div>
         <img src={image} alt={description} />
-        <h2 className="instrument__description">{description}</h2>
       </div>
     )
   }
@@ -33,11 +39,11 @@ class HomePage extends React.Component {
                 Grab a chair. Take a stand.
               </h2>
               <div className="button-container">
-                <Button className="button button--solid-orange button--lg"
+                <Button className="button button--solid-orange button--lg home-cta"
                         onClick={() => window.location = RouteConstants.form.student}>
                   Learn
                 </Button>
-                <Button className="button button--solid-orange button--lg"
+                <Button className="button button--solid-orange button--lg home-cta"
                         onClick={() => window.location = RouteConstants.form.teacher}>
                   Teach
                 </Button>
