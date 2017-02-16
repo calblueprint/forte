@@ -20,7 +20,7 @@ class Matching < ActiveRecord::Base
   validates :location, presence: true
   # validate :valid_lesson_array
 
-  has_many :lessons
+  has_many :lessons, dependent: :destroy
   belongs_to :student, :inverse_of => :matchings
   belongs_to :teacher, :inverse_of => :matchings
 

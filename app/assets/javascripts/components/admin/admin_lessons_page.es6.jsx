@@ -20,9 +20,8 @@ class AdminLessonsPage extends React.Component {
     );
   }
 
-  onPersonClick(student) {
-    console.log(student)
-    this.setState({ showPersonModal: true, person: student })
+  onPersonClick(person) {
+    this.setState({ showPersonModal: true, person: person })
   }
 
   closePersonModal() {
@@ -46,8 +45,8 @@ class AdminLessonsPage extends React.Component {
     return (
       <div className="page-wrapper">
         <AdminHeader />
-        <div className="content-wrapper admin-lessons-page">
-          <h1 className="lessons-title">Lessons</h1>
+        <div className="content-wrapper lesson-content-wrapper">
+          <h1 >Lessons</h1>
           <div className="lessons-container">
             {this.renderLessons()}
           </div>

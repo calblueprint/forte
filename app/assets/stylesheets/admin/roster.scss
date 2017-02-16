@@ -1,8 +1,5 @@
-$roster-width: 100%;
-$max-roster-width: 800px;
-
 .roster-page {
-  width: 100%;
+  max-width: 700px;
   padding: 0px 20px;
 
   .roster-container {
@@ -12,34 +9,39 @@ $max-roster-width: 800px;
 
   .item-separator {
     border-top: 1px solid $grey20;
-    width: $roster-width;
-    max-width: $max-roster-width;
     margin: 30px 0px;
   }
 
   .searchbar {
-    width: $roster-width;
-    max-width: $max-roster-width;
     align-self: center;
 
     .input-group-addon {
       border: none;
     }
   }
+
+  .filter-buttons {
+    align-self: center;
+  }
 }
 
 .roster-item {
   display: flex;
   flex-direction: column;
+  border-bottom: 1px solid $grey20;
   background-color: #FFFFFF;
-  width: $roster-width;
-  max-width: $max-roster-width;
+  padding: 30px 15px;
+
+  &:hover {
+    background: $grey5;
+    cursor: pointer;
+  }
 
   .roster-item__img {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: blue;
+    background: $grey20;
     display: inline-block;
     vertical-align: middle;
     margin-right: 15px;
@@ -51,7 +53,15 @@ $max-roster-width: 800px;
     align-items: center;
   }
 
+  .roster-item__header-description {
+    h3 {
+      margin: 0;
+      margin-bottom: 8px;
+    }
+  }
+
   .roster-item__description {
+    color: $grey80;
     padding-top: 10px;
   }
 }

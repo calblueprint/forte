@@ -53,32 +53,32 @@ class TeacherLessonsPage extends React.Component {
     switch (option) {
       case "upcoming":
         style = (filter === "upcoming" ?
-                  "button button--lg button--solid-orange" :
-                  "button button--lg button--solid-white"
+                  "lesson-tab tab--active" :
+                  "lesson-tab"
                 );
         buttonText = "Upcoming Lessons";
         break;
       case "recent":
         style = (filter === "recent" ?
-                  "button button--lg button--solid-orange" :
-                  "button button--lg button--solid-white"
+                  "lesson-tab tab--active" :
+                  "lesson-tab"
                 );
         buttonText = "Recent Lessons";
         break;
     }
     return (
-      <Button
+      <button
         className={style}
         onClick={() => this.handleClick(option)}
       >
         {buttonText}
-      </Button>
+      </button>
     );
   }
 
   renderLessonCard(lesson) {
     return (
-      <LessonCard 
+      <LessonCard
         isStudent={false}
         fetchLessons={() => this.fetchUpcomingLessons()}
         lesson={lesson} />
@@ -102,15 +102,13 @@ class TeacherLessonsPage extends React.Component {
     return (
      <div className="page-wrapper">
       <UserHeader />
-      <div className="teacher-lessons-page content-wrapper">
+      <div className="lessons-page teacher-lessons-page content-wrapper">
         <h2 className="title">
           My Lessons
         </h2>
-        <div className="options-container">
-          <ButtonGroup>
-            {this.renderOption("upcoming")}
-            {this.renderOption("recent")}
-          </ButtonGroup>
+        <div className="options-container lesson-tabs">
+          {this.renderOption("upcoming")}
+          {this.renderOption("recent")}
         </div>
         {this.renderLessonCards(filter)}
       </div>

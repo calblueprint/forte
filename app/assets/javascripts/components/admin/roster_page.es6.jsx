@@ -6,6 +6,8 @@ class RosterPage extends React.Component {
       people: null,
       showPersonModal: false,
       person: null,
+      filter: "All",
+      searchInput: "",
     };
   }
 
@@ -33,25 +35,18 @@ class RosterPage extends React.Component {
   }
 
   filterByStudent() {
-    const route = ApiConstants.students.index;
-    const resolve = (response) => this.setState({ people: response.students });
-    const reject = (response) => console.log(response);
-    Requester.get(
-      route,
-      resolve,
-      reject,
-    );
+    this.setState({ filter: "Students" });
+    this.loadFilteredPeople(this.state.searchInput, "Students");
   }
 
   filterByTeacher() {
-    const route = ApiConstants.teachers.index;
-    const resolve = (response) => this.setState({ people: response.teachers });
-    const reject = (response) => console.log(response);
-    Requester.get(
-      route,
-      resolve,
-      reject,
-    );
+    this.setState({ filter: "Teachers" });
+    this.loadFilteredPeople(this.state.searchInput, "Teachers");
+  }
+
+  filterByAll() {
+    this.setState({ filter: "All" });
+    this.loadFilteredPeople(this.state.searchInput, "All");
   }
 
   renderPersonModal() {
@@ -65,31 +60,61 @@ class RosterPage extends React.Component {
     }
   }
 
-  renderPerson(person) {
-    return (
-      <div>
-        <RosterItem person={person} onPersonClick={(person)=>this.onPersonClick(person)} />
-        <div className="item-separator" />
-      </div>
-    );
-  }
-
   renderPeople() {
-    return this.state.people.map((person) => this.renderPerson(person));
+    return this.state.people.map((person) => {
+      return <RosterItem person={person} onPersonClick={(person)=>this.onPersonClick(person)} />
+    });
   }
 
   onSearchChange(event) {
     var input = $(event.target).val();
-    if (input === "") {
-      this.fetchPeople();
+    this.setState({ searchInput: input });
+    this.loadFilteredPeople(input, this.state.filter);
+  }
+
+  loadFilteredPeople(input, filter) {
+    if (input == "") {
+      if (filter == "All") {
+        this.fetchPeople();
+      } else if (filter == "Teachers") {
+        const route = ApiConstants.teachers.index;
+        const resolve = (response) => this.setState({ people: response.teachers });
+        const reject = (response) => console.log(response);
+        Requester.get(
+          route,
+          resolve,
+          reject,
+        );
+      } else if (filter == "Students") {
+        const route = ApiConstants.students.index;
+        const resolve = (response) => this.setState({ people: response.students });
+        const reject = (response) => console.log(response);
+        Requester.get(
+          route,
+          resolve,
+          reject,
+        );
+      }
     } else {
-      const route = ApiConstants.searchables.users(input);
+      const route = ApiConstants.searchables.users(input, filter);
       const resolve = (response) => this.setState({ people: response.searchables });
       const reject = (response) => console.log(response);
       Requester.get(
         route,
         resolve,
         reject,
+      );
+    }
+  }
+
+  renderFilterButton(label, onClick) {
+    if (label == this.state.filter) {
+      return (
+        <Button className="button button--solid-orange" onClick={onClick}>{label}</Button>
+      );
+    } else {
+      return (
+        <Button className="button button--outline-orange" onClick={onClick}>{label}</Button>
       );
     }
   }
@@ -107,8 +132,8 @@ class RosterPage extends React.Component {
             <h1 className="roster-title">Roster</h1>
              <FormGroup className="searchbar">
               <InputGroup>
-                <FormControl 
-                  componentClass="input"  
+                <FormControl
+                  componentClass="input"
                   placeholder="Search"
                   name="first_name"
                   onChange={(event) => this.onSearchChange(event)}/>
@@ -118,9 +143,9 @@ class RosterPage extends React.Component {
               </InputGroup>
             </FormGroup>
             <ButtonGroup className="filter-buttons">
-              <Button onClick={(event) => this.fetchPeople()}>All</Button>
-              <Button onClick={(event) => this.filterByStudent()}>Students</Button>
-              <Button onClick={(event) => this.filterByTeacher()}>Teachers</Button>
+              {this.renderFilterButton('All', (event) => this.filterByAll())}
+              {this.renderFilterButton('Students', (event) => this.filterByStudent())}
+              {this.renderFilterButton('Teachers', (event) => this.filterByTeacher())}
             </ButtonGroup>
             <div className="roster-container">
               {this.renderPeople()}

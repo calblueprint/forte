@@ -35,6 +35,9 @@ before_filter :configure_sign_up_params, only: [:create]
     end
     cookies[:is_signed_in] = teacher_signed_in?
     cookies[:signed_in_type] = 'teacher'
+    if teacher_signed_in?
+      cookies[:name] = current_teacher.first_name
+    end
   end
 
   # GET /resource/edit
@@ -107,6 +110,7 @@ before_filter :configure_sign_up_params, only: [:create]
         :waiver_date,
         :account_id,
         :bank_id,
+        :instruments_attributes => [:id, :name, :years_played, :proficiency, :is_primary]
       ],
     )
   end

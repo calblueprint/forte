@@ -32,6 +32,7 @@
         show: (id) => `/api/students/${id}`,
         upcomingLessons: (id) => `/api/students/upcoming_lessons/${id}`,
         recentLessons: (id) => `/api/students/recent_lessons/${id}`,
+        instruments: (id) => `/api/students/${id}/instruments`,
       };
     }
 
@@ -49,7 +50,7 @@
 
     get searchables() {
       return {
-        users: (prefix) => `/api/searchables/users/${prefix}`,
+        users: (prefix, filter) => `/api/searchables/users?prefix=${prefix}&filter=${filter}`,
         roster: '/api/searchables/roster',
       }
     }
@@ -80,6 +81,13 @@
         createAccount: '/stripe/account',
         verifyAccount: '/stripe/verify_account',
         charge: '/stripe/charge',
+      }
+    }
+
+    get instruments() {
+      return {
+        create: '/api/instruments',
+        delete: (id) => `/api/instruments/${id}`,
       }
     }
   }

@@ -11,8 +11,10 @@ class FullTeacher extends React.Component {
     return (
       <div className="full-person">
         <TeacherInformation
-          teacher={teacher} />
-        <Calendar 
+          teacher={teacher}
+          showCategory={true} />
+        <h2 className="section-title">Availability</h2>
+        <Calendar
           isEditable={false}
           events={availability_to_events(teacher.availability)} />
       </div>

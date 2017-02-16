@@ -6,7 +6,7 @@ class StudentController < ApplicationController
   end
 
   def settings
-    @student_id = current_student.id
+    @student = current_student
   end
 
 end

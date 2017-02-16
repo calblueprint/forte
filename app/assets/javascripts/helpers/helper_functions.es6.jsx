@@ -5,3 +5,8 @@ function intersection(a, b) {
     [...set1].filter(x => set2.has(x)));
   return Array.from(intersection);
 }
+
+function priceToStripePrice(price) {
+  var stripePrice = parseFloat(price) * 100;
+  return stripePrice
+}

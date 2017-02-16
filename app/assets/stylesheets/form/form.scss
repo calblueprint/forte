@@ -1,25 +1,59 @@
 /* Form Pages - Used for Student/Teacher form*/
 
+.form-wrapper {
+  padding-top: 80px;
+}
+
+.section-title {
+  border-bottom: 1px solid $grey20;
+  color: $orange;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 65px 0 30px 0;
+  padding-bottom: 8px;
+}
+
 .form-page {
   align-items: center;
+  max-width: 550px;
+  margin: 0 auto;
+  padding: 0 15px;
 
-  .form-container {
-    width: 65%;
-    max-width: 1200px;
+  textarea {
+    min-height: 100px;
   }
 
-  .section-title {
-    border-bottom: 1px solid $grey20;
-    margin-bottom: 20px;
-
-    * {
-      color: $orange80;
-    }
+  .section-subtitle {
+    color: $grey;
+    font-size: 18px;
+    font-weight: 600;
   }
+
+  .instrument-title {
+    color: $orange80;
+  }
+
+  .form-input-description {
+    color: $grey80;
+    font-size: 13px;
+  }
+
+  .form-help-text {
+    color: $grey80;
+    font-size: 16px;
+  }
+
+  .reference-group-label {
+    color: $grey80;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
 }
 
 // use when more than one form control element in a row
-.form-row { 
+.form-row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -29,7 +63,7 @@
     margin-bottom: 0px;
   }
 
-  > * { margin: 0 10px; }    
+  > * { margin: 0 10px; }
   > :first-child { margin-left: 0; }
   > :last-child { margin-right: 0; }
 }

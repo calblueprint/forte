@@ -1,0 +1,2 @@
+class InstrumentIndexSerializer < InstrumentBaseSerializer
+end

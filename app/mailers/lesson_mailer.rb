@@ -30,5 +30,35 @@ class LessonMailer < ApplicationMailer
          to: @student.email
   end
 
+  def reschedule_notify_teacher(lesson)
+    @lesson = lesson
+    @matching = lesson.matching
+    @student = lesson.student
+    @teacher = lesson.teacher
+    instrument = @matching.instrument
+    mail subject: "Forte Lesson Reschedule | (#{instrument})",
+         to: @teacher.email
+  end
+
+  def reschedule_notify_student(lesson)
+    @lesson = lesson
+    @matching = lesson.matching
+    @student = lesson.student
+    @teacher = lesson.teacher
+    instrument = @matching.instrument
+    mail subject: "Forte Lesson Reschedule | (#{instrument})",
+         to: @teacher.email
+  end
+
+  def reschedule_notify_parent(lesson)
+    @lesson = lesson
+    @matching = lesson.matching
+    @student = lesson.student
+    @teacher = lesson.teacher
+    instrument = @matching.instrument
+    mail subject: "Forte Lesson Reschedule | (#{instrument})",
+         to: @teacher.email
+  end
+
 end
 

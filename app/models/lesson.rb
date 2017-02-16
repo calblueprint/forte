@@ -15,9 +15,10 @@
 
 class Lesson < ActiveRecord::Base
   after_initialize :init
+  before_destroy :send_cancel_emails
 
-  scope :upcoming, -> { where("start_time >= ?", Date.today) }
-  scope :recent, -> { where("start_time < ?", Date.today) }
+  scope :upcoming, -> { where("start_time >= ?", DateTime.now).order(:start_time) }
+  scope :recent, -> { where("start_time < ?", DateTime.now).order(start_time: :desc) }
 
   validates :start_time, presence: true, date: true
   validates :end_time, presence: true, date: { after: :start_time }
@@ -32,6 +33,12 @@ class Lesson < ActiveRecord::Base
     LessonMailer.cancel_notify_teacher(self).deliver_now
     LessonMailer.cancel_notify_student(self).deliver_now
     LessonMailer.cancel_notify_parent(self).deliver_now
+  end
+
+  def send_reschedule_emails
+    LessonMailer.reschedule_notify_teacher(self).deliver_now
+    LessonMailer.reschedule_notify_student(self).deliver_now
+    LessonMailer.reschedule_notify_parent(self).deliver_now
   end
 
   def init

@@ -13,6 +13,9 @@ class Authentication::Students::SessionsController < Devise::SessionsController
     super
     cookies[:is_signed_in] = student_signed_in?
     cookies[:signed_in_type] = 'student'
+    if student_signed_in?
+      cookies[:name] = current_student.first_name
+    end
   end
 
   # DELETE /resource/sign_out
@@ -20,6 +23,7 @@ class Authentication::Students::SessionsController < Devise::SessionsController
     super
     cookies[:is_signed_in] = student_signed_in?
     cookies.delete :signed_in_type
+    cookies.delete :name
   end
 
   # protected

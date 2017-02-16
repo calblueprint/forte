@@ -5,6 +5,7 @@ class LessonCard extends React.Component {
     this.state = {
       showCancelModal: false,
       showRescheduleModal: false,
+      showPayModal: false,
     };
   }
 
@@ -12,7 +13,8 @@ class LessonCard extends React.Component {
     return {
       isStudent: React.PropTypes.bool,
       lesson: React.PropTypes.object,
-      fetchLessons: React.PropTypes.func,
+      fetchUpcomingLessons: React.PropTypes.func,
+      fetchRecentLessons: React.PropTypes.func,
     };
   }
 
@@ -32,8 +34,15 @@ class LessonCard extends React.Component {
     this.setState({ showRescheduleModal: false });
   }
 
+  openPayModal() {
+    this.setState({ showPayModal: true });
+  }
+  closePayModal() {
+    this.setState({ showPayModal: false });
+  }
+
   renderCancelModal() {
-    const { isStudent, lesson, fetchLessons } = this.props;
+    const { isStudent, lesson, fetchUpcomingLessons } = this.props;
     const { showCancelModal } = this.state;
 
     if (showCancelModal) {
@@ -41,7 +50,7 @@ class LessonCard extends React.Component {
         <CancelModal
           lesson={lesson}
           handleClose={() => this.closeCancelModal()}
-          fetchLessons={fetchLessons}
+          fetchUpcomingLessons={fetchUpcomingLessons}
           isStudent={isStudent}
         />
       );
@@ -49,17 +58,69 @@ class LessonCard extends React.Component {
   }
 
   renderRescheduleModal() {
-    const { isStudent, lesson, fetchLessons } = this.props;
+    const { isStudent, lesson, fetchUpcomingLessons } = this.props;
     const { showRescheduleModal } = this.state;
     if (showRescheduleModal) {
       return (
         <RescheduleModal
           lesson={lesson}
           handleClose={() => this.closeRescheduleModal()}
-          fetchLessons={fetchLessons}
+          fetchUpcomingLessons={fetchUpcomingLessons}
           isStudent={isStudent}
         />
       );
+    }
+  }
+
+  renderPayModal() {
+    const { lesson, fetchRecentLessons } = this.props;
+    const { showPayModal } = this.state;
+    if (showPayModal) {
+      return (
+        <PayModal
+          lesson={lesson}
+          handleClose={() => this.closePayModal()}
+          fetchRecentLessons={fetchRecentLessons}
+        />
+      );
+    }
+  }
+
+  renderButtons() {
+    const { lesson, isStudent } = this.props;
+    const {
+      start_time,
+      is_paid,
+    } = lesson;
+
+    var now = moment();
+    var date = moment(start_time);
+
+    if (date > now) {
+      return (
+        <div className="actions">
+          <Button className="button button--outline-orange button--sm" onClick={() => this.openCancelModal()}>
+          Cancel
+          </Button>
+          {this.renderCancelModal()}
+          <Button className="button button--outline-orange button--sm" onClick={() => this.openRescheduleModal()}>
+          Reschedule
+          </Button>
+          {this.renderRescheduleModal()}
+        </div>
+      );
+    } else if (!is_paid && now > date && isStudent) {
+      return (
+        <div className="actions">
+        <Button className="button button--outline-orange button--sm" onClick={() => this.openPayModal()}>
+          Pay Now
+        </Button>
+        </div>
+      );
+    } else {
+      return (
+        <div className="actions" />
+      )
     }
   }
 
@@ -74,7 +135,7 @@ class LessonCard extends React.Component {
       is_paid,
     } = lesson;
 
-    var startTime = moment(lesson['start_time']);
+    var startTime = moment(start_time);
     //TODO: Make sure right timezones and stuff
     if (isStudent) {
       var name = `${teacher.first_name} ${teacher.last_name}`;
@@ -83,12 +144,12 @@ class LessonCard extends React.Component {
     }
     var paidLabelText = is_paid ? 'Paid' : 'Unpaid';
     var paidLabelStyle = is_paid ? 'success' : 'danger';
-    
+
     return (
       <div className="lesson-card">
         <div className="lesson-time-container">
           <h2>{startTime.format('MMM DD').toUpperCase()}</h2>
-          <h4>{startTime.format('hh:mm A').toUpperCase()}</h4>
+          <h4>{startTime.format('ddd')}, {startTime.format('hh:mm A')}</h4>
         </div>
         <div className="logistics">
           <h4>{matching.instrument} Lesson</h4>
@@ -96,29 +157,21 @@ class LessonCard extends React.Component {
             <div className="info-row">
               <h5>${price}</h5>
               <Label bsStyle={paidLabelStyle}>{paidLabelText}</Label>
+              {this.renderPayModal()}
             </div>
           </div>
         </div>
         <div className="details">
-          <div className="info-row">
+          <div className="info-row details-row">
             <img src={ImageConstants.icons.person} href="#" />
             <h5>{name}</h5>
           </div>
-          <div className="info-row">
+          <div className="info-row details-row">
             <img src={ImageConstants.icons.location} href="#" />
             <h5>{lesson.location}</h5>
           </div>
         </div>
-        <div className="actions">
-          <Button className="button button--outline-orange button--sm" onClick={() => this.openCancelModal()}>
-          Cancel
-          </Button>
-          {this.renderCancelModal()}
-          <Button className="button button--outline-orange button--sm" onClick={() => this.openRescheduleModal()}>
-          Reschedule
-          </Button>
-          {this.renderRescheduleModal()}
-        </div>
+        {this.renderButtons()}
       </div>
     );
   }

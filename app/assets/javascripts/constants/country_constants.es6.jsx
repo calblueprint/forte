@@ -1,5 +1,3 @@
-const CURRENCIES = ['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY']
-
 const COUNTRY_CODES = [
 {
 "name": "Afghanistan",

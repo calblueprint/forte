@@ -12,6 +12,9 @@ class Authentication::Teachers::SessionsController < Devise::SessionsController
     super
     cookies[:is_signed_in] = teacher_signed_in?
     cookies[:signed_in_type] = 'teacher'
+    if teacher_signed_in?
+      cookies[:name] = current_teacher.first_name
+    end
   end
 
   # DELETE /resource/sign_out
@@ -19,6 +22,7 @@ class Authentication::Teachers::SessionsController < Devise::SessionsController
     super
     cookies[:is_signed_in] = teacher_signed_in?
     cookies.delete :signed_in_type
+    cookies.delete :name
   end
 
   # protected

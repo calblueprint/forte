@@ -2,16 +2,26 @@ class LoginPage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { 
-      email: '', 
+    this.state = {
+      email: '',
       password: '',
       errors: '',
       showAlert: false,
      };
   }
 
+  componentDidMount() {
+    this.autofocus.focus();
+  }
+
   handleChange(event) {
     this.setState({ [$(event.target).attr("name")] : $(event.target).val() });
+  }
+
+  handleEnter(event) {
+    if (event.keyCode == 13 || event.which == 13) {
+      this.login()
+    }
   }
 
   login() {
@@ -29,11 +39,11 @@ class LoginPage extends React.Component {
     } else if (this.props.type == 'teacher') {
       var params = { teacher: paramsObject };
       var route = ApiConstants.authentication.login.teacher;
-      var resolve = (response) => { window.location.href = "/"; };
+      var resolve = (response) => { window.location.href = "/teacher/lessons"; };
     } else if (this.props.type == 'admin') {
       var params = { admin: paramsObject };
       var route = ApiConstants.authentication.login.admin;
-      var resolve = (response) => { window.location.href = "/admin/matched"; };
+      var resolve = (response) => { window.location.href = "/admin/unmatched"; };
     }
     Requester.post(
       route,
@@ -72,21 +82,26 @@ class LoginPage extends React.Component {
             <FormGroup className="login-card__field">
               {this.renderErrors()}
               <ControlLabel>Email</ControlLabel>
-              <FormControl
-                componentClass="input"
+              <input
+                className="form-control"
                 type="text"
                 name="email"
-                onChange={(event) => this.handleChange(event)} />
+                ref={(ref) => { this.autofocus = ref; }}
+                onChange={(e) => this.handleChange(e)}
+                onKeyDown={(e) => this.handleEnter(e.nativeEvent)} />
             </FormGroup>
             <FormGroup className="login-card__field">
               <ControlLabel>Password</ControlLabel>
-              <FormControl
-                componentClass="input"
+              <input
+                className="form-control"
                 type="password"
-                name="password" 
-                onChange={(event) => this.handleChange(event)} />
+                name="password"
+                onChange={(e) => this.handleChange(e)}
+                onKeyDown={(e) => this.handleEnter(e.nativeEvent)} />
             </FormGroup>
-            <Button className="button button--solid-orange login-card__button" onClick={() => this.login()}>LOG IN</Button> 
+            <Button
+              className="button button--solid-orange login-card__button"
+              onClick={() => this.login()}>LOG IN</Button>
           </form>
         </div>
         <Footer />

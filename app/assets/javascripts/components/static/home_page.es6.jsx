@@ -29,23 +29,23 @@ class HomePage extends React.Component {
         <Header />
           <div className="home-page content-wrapper">
             <div className="title-wrapper">
-              <div className="title-text">
+              <h2 className="title-text">
                 Grab a chair. Take a stand.
-              </div>
+              </h2>
               <div className="button-container">
                 <Button className="button button--solid-orange button--lg"
                         onClick={() => window.location = RouteConstants.form.student}>
-                  Apply to Learn
+                  Learn
                 </Button>
                 <Button className="button button--solid-orange button--lg"
                         onClick={() => window.location = RouteConstants.form.teacher}>
-                  Apply to Teach
+                  Teach
                 </Button>
               </div>
             </div>
-            <div className="forte-description">
-            Forte connects underserved youth with experienced musicians to provide access to affordable music lessons.
-            </div>
+            <h6 className="forte-description">
+              Forte connects underserved youth with experienced musicians to provide access to affordable music lessons.
+            </h6>
             <div className="instruments-wrapper">
               {this.renderInstrument('piano')}
               {this.renderInstrument('guitar')}
@@ -62,7 +62,7 @@ class HomePage extends React.Component {
                 </p>
               </div>
               <div className="information-block">
-                <h2 className="information-block__title">How it works</h2>
+                <h2 className="information-block__title">How It Works</h2>
                 <p className="information-block__description">
                   Our teachers provide deeply discounted private instruction to
                   underserved youth in the Bay Area.

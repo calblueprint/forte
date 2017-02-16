@@ -13,13 +13,90 @@ def create_single_admin(n)
   admin
 end
 
+def get_address
+  addresses = [
+      {
+        address: "2520 Regent Street",
+        city: "Berkeley",
+        address_2: "Apartment #5",
+        state: 4,
+        zip_code: "94704"
+      },
+      {
+        address: "1596 Bellemead Street",
+        city: "San Jose",
+        address_2: "",
+        state: 4,
+        zip_code: "95131"
+      },
+      {
+        address: "10225 Orange Avenue",
+        city: "Cupertino",
+        address_2: "",
+        state: 4,
+        zip_code: "95014"
+      },
+      {
+        address: "2220 Dwight Way",
+        city: "Berkeley",
+        address_2: "Apartment #101",
+        state: 4,
+        zip_code: "94704"
+      },
+      {
+        address: "2400 Durant Avenue",
+        city: "Berkeley",
+        address_2: "",
+        state: 4,
+        zip_code: "94704"
+      },
+      {
+        address: "225 Bush Street",
+        city: "San Francisco",
+        address_2: "",
+        state: 4,
+        zip_code: "94104"
+      },
+      {
+        address: "450 Serra Mall",
+        city: "Palo Alto",
+        address_2: "",
+        state: 4,
+        zip_code: "94305"
+      },
+      {
+        address: "21840 McClellan Road",
+        city: "Cupertino",
+        address_2: "",
+        state: 4,
+        zip_code: "95014"
+      },
+      {
+        address: "99 Grove Street",
+        city: "San Francisco",
+        address_2: "",
+        state: 4,
+        zip_code: "94102"
+      },
+      {
+        address: "1807 Telegraph Ave",
+        city: "Oakland",
+        address_2: "",
+        state: 4,
+        zip_code: "94612"
+      },
+    ]
+    return addresses.sample
+end
+
 def create_single_teacher(is_searching, n)
+  address = get_address
   teacher = Teacher.create(
     is_searching: is_searching,
     email: Faker::Internet.email,
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.last_name,
-    city: Faker::Address.city,
+    city: address[:city],
     phone: Faker::Base.numerify('###-###-####'),
     password: "password",
     availability: [35, 36, 37, 38, 39, 42, 43, 44],
@@ -27,15 +104,14 @@ def create_single_teacher(is_searching, n)
     birthday: Faker::Date.between(35.years.ago, 15.years.ago),
     school: "#{Faker::Name.first_name} College",
     school_level: Faker::Number.between(0, 1),
-    phone: Faker::Base.numerify('###-###-####'),
     introduction: Faker::Lorem.paragraph(4),
     teaching_experience: Faker::Lorem.paragraph(4),
     training_experience: Faker::Lorem.paragraph(4),
     performance_experience: Faker::Lorem.paragraph(4),
-    address: Faker::Address.street_address,
-    address_apt: Faker::Number.between(0, 12), #change
-    state: Faker::Number.between(0, 49),
-    zipcode: Faker::Address.zip_code,
+    address: address[:address],
+    address_apt: address[:address_2],
+    state: address[:state],
+    zipcode: address[:zip_code],
     location_preference: Faker::Boolean.boolean,
     travel_distance: Faker::Number.between(0, 4),
     background_check: Faker::Boolean.boolean,
@@ -74,8 +150,9 @@ def create_unmatched_teachers
 end
 
 def create_single_student(n)
+  address = get_address
   student = Student.create(
-    city: Faker::Address.city,
+    city: address[:city],
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.first_name,
     email: Faker::Internet.email,
@@ -93,10 +170,10 @@ def create_single_student(n)
     performance_experience: Faker::Lorem.paragraph(4),
     student_email: Faker::Internet.email,
     student_phone: Faker::Base.numerify('###-###-####'),
-    address: Faker::Address.street_address,
-    address_apt: Faker::Number.between(0, 12), #change
-    state: Faker::Number.between(0, 49),
-    zipcode: Faker::Address.zip_code,
+    address: address[:address],
+    address_apt: address[:address_2],
+    state: address[:state],
+    zipcode: address[:zip_code],
     location_preference: Faker::Boolean.boolean,
     travel_distance: Faker::Number.between(0, 4),
     income_range: Faker::Number.between(0, 4),
@@ -137,9 +214,9 @@ end
 
 def create_single_lesson(matching, upcoming=true, month_offset)
   start_time = upcoming ?
-      (Date.today + month_offset.month + 9.hours + (15 * matching.student.availability[0].to_i).minutes) :
+      (Date.today + (month_offset + 1).month + 9.hours + (15 * matching.student.availability[0].to_i).minutes) :
       (Date.today.months_ago(month_offset) + 9.hours + (15 * matching.student.availability[0].to_i).minutes)
-  paid = upcoming ? false : true;
+  paid = upcoming || month_offset==0 ? false : true;
   lesson = Lesson.create(
     start_time: start_time,
     end_time: start_time + 45.minutes,
@@ -180,21 +257,21 @@ def create_lessons_and_matchings_with_matched_teachers_and_students
   end
 end
 
-def create_multiple_student_lessons_and_matchings_for_teachers
-  matched_teachers = Teacher.where(is_searching: false)
-  matched_students = Student.limit(10)
-  instrument_name = $instruments_array[0] # Instrument doesn't matter for now
+# def create_multiple_student_lessons_and_matchings_for_teachers
+#   matched_teachers = Teacher.where(is_searching: false)
+#   matched_students = Student.limit(10)
+#   instrument_name = $instruments_array[0] # Instrument doesn't matter for now
 
-  # Create a matching between every student and teacher
+#   # Create a matching between every student and teacher
 
-  matched_students.each do |student|
-    matched_teachers.each do |teacher|
-      matching = create_single_matching(teacher, student, instrument_name)
-      create_single_lesson(matching, upcoming=true, offset=1) # Arbitrary offset
-      create_single_lesson(matching, upcoming=false, offset=1)
-    end
-  end
-end
+#   matched_students.each do |student|
+#     matched_teachers.each do |teacher|
+#       matching = create_single_matching(teacher, student, instrument_name)
+#       create_single_lesson(matching, upcoming=true, offset=1) # Arbitrary offset
+#       create_single_lesson(matching, upcoming=false, offset=1)
+#     end
+#   end
+# end
 
 def create_admin_accounts
   puts "creating admin accounts"
@@ -217,5 +294,5 @@ end
 
 if Lesson.count == 0 && Matching.count == 0
   create_lessons_and_matchings_with_matched_teachers_and_students
-  create_multiple_student_lessons_and_matchings_for_teachers
+  # create_multiple_student_lessons_and_matchings_for_teachers
 end
