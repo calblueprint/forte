@@ -30,13 +30,8 @@ class UnmatchedPage extends React.Component {
   }
 
   processGoogleMapsResponse(distances, teachers) {
-    var none = 'I am not willing to travel';
-    var fiveMiles = 'Up to 5 miles';
-    var tenMiles = 'Up to 10 miles';
-    var twentyMiles = 'Up to 20 miles';
     var moreThanTwenty = '20 miles or more';
-    var milesToKilometers = 1.60934/100000;
-    var travelDistances = {fiveMiles: 5*1.60934, tenMiles: 10*1.60934, twentyMiles: 20*1.60934}
+    var travelDistances = {'I am not willing to travel': 0, 'Up to 5 miles': 5, 'Up to 10 miles': 10, '20 miles or more': 20}
     var validTeachers = []
     for (i = 0; i < teachers.length; i+=1) {
       var teacher = teachers[i];
