@@ -29,6 +29,49 @@ class UnmatchedPage extends React.Component {
     );
   }
 
+  processGoogleMapsResponse(distances, teachers) {
+    var moreThanTwenty = '20 miles or more';
+    var travelDistances = {'I am not willing to travel': 0, 'Up to 5 miles': 5, 'Up to 10 miles': 10, '20 miles or more': 20}
+    var validTeachers = []
+    for (i = 0; i < teachers.length; i+=1) {
+      var teacher = teachers[i];
+      if (distances[i]["status"] == "OK") {
+        var distance = distances[i]["distance"]["value"];
+        var unlimited_travel = (teacher.travel_distance == moreThanTwenty) || (this.state.student.travel_distance == moreThanTwenty);
+        var travel_within_constraint = (distance < travelDistances[teacher.travel_distance]) || (distance < travelDistances[this.state.student.travel_distance]);
+        if (unlimited_travel || travel_within_constraint) {
+          validTeachers.push(teacher);
+        }
+      }
+    }
+    return validTeachers
+  }
+
+  filterTeachersByDistance(teachers) {
+    var destinations = [];
+    for (i = 0; i < teachers.length; i+=1) {
+      var teacher = teachers[i];
+      destinations.push(teacher.full_address)
+    }
+
+    var service = new google.maps.DistanceMatrixService();
+    service.getDistanceMatrix(
+      {
+        origins: [this.state.student.full_address],
+        destinations: destinations,
+        travelMode: 'DRIVING',
+        unitSystem: google.maps.UnitSystem.IMPERIAL,
+      }, googleMapsCallback.bind(this));
+
+    function googleMapsCallback(response, status) {
+      if (status == 'OK') {
+        this.setState({ teachers: this.processGoogleMapsResponse(response["rows"][0]["elements"], teachers) });
+      } else {
+        console.log(response);
+      }
+    };
+  }
+
   studentOnClick(studentId, instrument) {
     var studentRoute = ApiConstants.students.show(studentId)
     var studentResolve = ((response) => {
@@ -38,7 +81,7 @@ class UnmatchedPage extends React.Component {
         instrument: instrument.name,
       });
       var teacherRoute = ApiConstants.teachers.possibleTeachers(studentId, instrument.name);
-      var teacherResolve = (response) => this.setState({ teachers: response["teachers"] });
+      var teacherResolve = (response) => this.filterTeachersByDistance(response["teachers"]);
       var teacherReject = (response) => console.log(response);
       Requester.get(
         teacherRoute,
