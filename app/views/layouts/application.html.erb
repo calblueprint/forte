@@ -6,6 +6,7 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag "https://js.stripe.com/v1/", type: 'text/javascript' %>
   <%= javascript_tag "Stripe.setPublishableKey('#{Rails.configuration.stripe[:publishable_key]}');", type: 'text/javascript' %>
+  <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{Rails.configuration.google_maps[:api_key]}&libraries=places"%>
   <%= csrf_meta_tags %>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
   <%= favicon_link_tag 'favicon/favicon.ico' %>

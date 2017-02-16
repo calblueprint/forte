@@ -53,23 +53,28 @@ class UnmatchedPage extends React.Component {
   }
 
   filterTeachersByDistance(teachers) {
-    var baseUrl = 'https://maps.googleapis.com/maps/api/distancematrix/json?';
-    var keyParam = 'key=AIzaSyB8eOyj6ztAT0abHmF59lKI9t2ihaGwT4c';
-    var originParam = 'origins=' + this.state.student.full_address;
     var destinations = [];
     for (i = 0; i < teachers.length; i+=1) {
       var teacher = teachers[i];
       destinations.push(teacher.full_address)
     }
-    var destinationParam = 'destinations=' + destinations.join("|");
-    var route = baseUrl + originParam + "&" + destinationParam + "&" + keyParam;
-    var resolve = (response) => this.setState({ teachers: this.processGoogleMapsResponse(response["rows"][0]["elements"], teachers) });
-    var reject = (response) => console.log(response);
-    Requester.getWithCors(
-      route,
-      resolve,
-      reject,
-    );
+
+    var service = new google.maps.DistanceMatrixService();
+    service.getDistanceMatrix(
+      {
+        origins: [this.state.student.full_address],
+        destinations: destinations,
+        travelMode: 'DRIVING',
+        unitSystem: google.maps.UnitSystem.IMPERIAL,
+      }, googleMapsCallback.bind(this));
+
+    function googleMapsCallback(response, status) {
+      if (status == 'OK') {
+        this.setState({ teachers: this.processGoogleMapsResponse(response["rows"][0]["elements"], teachers) });
+      } else {
+        console.log(response);
+      }
+    };
   }
 
   studentOnClick(studentId, instrument) {
