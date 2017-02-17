@@ -166,7 +166,7 @@ class ProgramPage extends React.Component {
       <div className="page-wrapper">
         <Header />
         <div className="content-wrapper program-page">
-          <h1>Our Program</h1>
+          <h2 className="section__title">Our Program</h2>
           <h3 className="subtitle">
             Forte connects underserved youth with experienced musicians
             to provide access to affordable music lessons.

@@ -18,6 +18,14 @@ $form-control-bottom-margin : 30px;
     border: 1px solid $orange40;
     background-color: $white
   }
+
+  &::-webkit-input-placeholder {
+    color: $grey40;
+  }
+
+  &::-moz-placeholder {
+    color: $grey40;
+  }
 }
 
 .form-group {
