@@ -31,11 +31,11 @@ namespace :scheduler do
     else
       start_time = last_lesson_time + ((day - last_lesson_time.wday) % 7).day
     end
-    start_time = start_time.change({hour: hour, min: minute})
+    start_time = start_time.change({hour: hour, min: minute}
     lesson = Lesson.create(
       start_time: start_time,
       end_time: start_time + (len * 15).minutes,
-      price: 15,
+      price: matching.default_price,
       is_paid: false,
       feedback: nil,
       matching_id: matching.id,
