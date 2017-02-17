@@ -171,16 +171,16 @@ class StudentForm extends React.Component {
 async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
     var card_errs = await this.stripeValidateFields(card_number, exp_month, exp_year, cvc);
     var stripe_error_info = {};
-    var error_check = true;
+    var validated = true;
     for (var err_type in card_errs) {
       //TODO: Find JS function to identify false values instead
-      if (card_errs[err_type][0] === false) {
-        error_check = false;
+      if (!card_errs[err_type][0]) {
+        validated = false;
         stripe_error_info[err_type] = card_errs[err_type][1];
       }
     }
     this.setState({ errors: stripe_error_info });
-    return error_check;
+    return validated;
   }
 
   /**
@@ -196,7 +196,7 @@ async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
     var cvc_err = Stripe.card.validateCVC(cvc);
     var card_errs = {};
     card_errs.card_number = [num_err, "Please enter a valid card number"];
-    card_errs.exp_month = [expiry_err, "Please enter a valid card expiration date"];
+    card_errs.exp_month = [expiry_err, "Please enter a valid expiration date"];
     card_errs.cvc = [cvc_err, "Please enter a valid cvc number"];
     return card_errs;
   }
@@ -219,7 +219,7 @@ async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
     var validate_stripe_response = await this.validateStripeCustomer(card_number, exp_month, exp_year, cvc); // Validate stripe credentials first
 
     // Only create customer if stripe validations pass - do not create token if there are stripe errors
-    if (validate_stripe_response === true) {
+    if (validate_stripe_response) {
       Stripe.card.createToken({
         number: card_number,
         cvc: cvc,

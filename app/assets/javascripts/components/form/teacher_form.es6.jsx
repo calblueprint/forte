@@ -190,16 +190,16 @@ class TeacherForm extends React.Component {
   async validateStripeCustomer(stripe_routing_number, stripe_account_number, stripe_country) {
     var payment_errs = await this.stripeValidateFields(stripe_routing_number, stripe_account_number, stripe_country);
     var stripe_error_info = {};
-    var error_check = true;
+    var validated = true;
     for (var err_type in payment_errs) {
       //TODO: Find JS function to identify false values instead
-      if (payment_errs[err_type][0] === false) {
-        error_check = false;
+      if (!payment_errs[err_type][0]) {
+        validated = false;
         stripe_error_info[err_type] = payment_errs[err_type][1];
       }
     }
     this.setState({ errors: stripe_error_info });
-    return error_check;
+    return validated;
   }
 
   /**
@@ -230,7 +230,7 @@ class TeacherForm extends React.Component {
     var validate_stripe_response = await this.validateStripeCustomer(stripe_routing_number, stripe_account_number, stripe_country); // Validate stripe credentials first
 
     // Only create customer if stripe validations pass - do not create token if there are stripe errors
-    if (validate_stripe_response === true) {
+    if (validate_stripe_response) {
       Stripe.bankAccount.createToken({
         country: stripe_country,
         currency: 'USD',
@@ -774,7 +774,7 @@ class TeacherForm extends React.Component {
                 </FormControl>
               </FormGroup>
               <div className="form-row">
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("stripe_routing_number")}>
                   <ControlLabel>Routing Number</ControlLabel>
                   <FormControl
                     componentClass="input"
@@ -783,7 +783,7 @@ class TeacherForm extends React.Component {
                     onChange={(event) => this.handleChange(event)}/>
                     {this.displayErrorMessage("stripe_routing_number")}
                 </FormGroup>
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("stripe_account_number")}>
                   <ControlLabel>Bank Account Number</ControlLabel>
                   <FormControl
                     componentClass="input"
