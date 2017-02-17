@@ -8,6 +8,7 @@
         involvement: '/involvement',
         contact: '/contact',
         about: '/about',
+        terms: '/terms',
       }
     }
 

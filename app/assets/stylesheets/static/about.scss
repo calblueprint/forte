@@ -1,6 +1,11 @@
 /* About Page */
 
 .about-page {
+  background-image: image_url("about/about_graphic.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position-x: left;
+  margin-top: 40px;
   padding: 20px;
   max-width: 800px;
 

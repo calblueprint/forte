@@ -55,9 +55,18 @@ class StudentForm extends React.Component {
   componentDidMount() {
     // set up active instruments object
     var activeInstruments = {}
+    const hash = window.location.hash.replace("#", "");
+
     for (var i = 0; i < INSTRUMENTS.length; i++) {
-      activeInstruments[INSTRUMENTS[i]] = false;
+      let item = INSTRUMENTS[i];
+
+      if (item === hash) {
+        activeInstruments[item] = true;
+      } else {
+        activeInstruments[item] = false;
+      }
     }
+
     this.setState({ activeInstruments: activeInstruments });
 
     // set up instruments fields object

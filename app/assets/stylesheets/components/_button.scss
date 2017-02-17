@@ -1,11 +1,19 @@
 .button {
   @include appearance(none);
   border-radius: 2px;
+  cursor: pointer;
+  display: inline-block;
+  padding: 6px 12px;
   font-size: $font-size-xs;
   font-weight: $font-weight-large;
   text-transform: uppercase;
+  transition: 100ms;
   letter-spacing: 2px;
   outline: none;
+
+  &:hover {
+    text-decoration: none;
+  }
 
   &:active {
     box-shadow: none;
