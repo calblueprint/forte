@@ -188,13 +188,18 @@ async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
    * @param card_number
    * @param exp_month, exp_year
    * @param cvc
-   *
    */
   stripeValidateFields(card_number, exp_month, exp_year, cvc) {
     var num_err = Stripe.card.validateCardNumber(card_number);
     var expiry_err = Stripe.card.validateExpiry(exp_month, exp_year);
     var cvc_err = Stripe.card.validateCVC(cvc);
     var card_errs = {};
+    card_errs.cardholder_name = [this.state.cardholder_name, "Can't be blank"];
+    card_errs.stripe_address_line1 = [this.state.stripe_address_line1, "Can't be blank"];
+    card_errs.stripe_address_line2 = [this.state.stripe_address_line2, "Can't be blank"];
+    card_errs.stripe_address_city = [this.state.stripe_address_city, "Can't be blank"];
+    card_errs.stripe_address_state = [this.state.stripe_address_state, "Can't be blank"];
+    card_errs.stripe_address_zip = [this.state.stripe_address_zip, "Can't be blank"];
     card_errs.card_number = [num_err, "Please enter a valid card number"];
     card_errs.exp_month = [expiry_err, "Please enter a valid expiration date"];
     card_errs.cvc = [cvc_err, "Please enter a valid cvc number"];
@@ -216,7 +221,7 @@ async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
       errors,
     } = this.state;
 
-    var validate_stripe_response = await this.validateStripeCustomer(card_number, exp_month, exp_year, cvc); // Validate stripe credentials first
+    var validate_stripe_response = await this.validateStripeCustomer(card_number, exp_month, exp_year, cvc);
 
     // Only create customer if stripe validations pass - do not create token if there are stripe errors
     if (validate_stripe_response) {
