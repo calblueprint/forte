@@ -6,7 +6,7 @@ class Footer extends React.Component {
         <div className="footer__links-container">
           <span>© 2016 Forte Academy, Inc.</span>
           <span>    ·    </span>
-          <a className="link" href="#">Terms & Privacy</a>
+          <a className="link" href={RouteConstants.staticPages.terms}>Terms & Privacy</a>
           <span>    ·    </span>
           <a className="link" href={RouteConstants.staticPages.contact}>Contact Us</a>
         </div>

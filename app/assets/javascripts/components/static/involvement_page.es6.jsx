@@ -8,12 +8,14 @@ class InvolvementPage extends React.Component {
         optionTitle = 'Student';
         optionDescription = 'Learn your dream instrument at deeply discounted rates.';
         buttonText = 'Start Learning';
+        url = RouteConstants.form.student;
         break;
       case 'teacher':
         optionIcon = ImageConstants.instruments.clarinet;
         optionTitle = 'Teacher';
         optionDescription = 'Share your passion for music with our students and help provide access to affordable music education.';
         buttonText = 'Start Teaching';
+        url = RouteConstants.form.teacher;
         middle = true;
         break;
       case 'donor':
@@ -21,6 +23,7 @@ class InvolvementPage extends React.Component {
         optionTitle = 'Donor';
         optionDescription = 'Support Forte in our mission to change the lives of underserved youth musicians.';
         buttonText = 'Donate Now';
+        url = url = RouteConstants.form.teacher;
         break;
     }
 
@@ -35,7 +38,7 @@ class InvolvementPage extends React.Component {
           <p>{optionDescription}</p>
         </div>
         <div className="option-button">
-          <Button className="button button--outline-orange">{buttonText}</Button>
+          <a href={url} className="button button--outline-orange">{buttonText}</a>
         </div>
       </div>
     );

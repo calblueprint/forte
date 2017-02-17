@@ -53,6 +53,7 @@ Rails.application.routes.draw do
     get :contact
     post :send_contact_email
     get :about
+    get :terms
   end
 
   ##################################################

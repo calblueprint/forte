@@ -5,15 +5,16 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 60px;
   width: 100%;
+  padding: 12px 0;
   background-color: $grey;
   color: $white;
 }
-  
+
 .footer__links-container {
   color: $white;
   font-size: $font-size-xs;
+  margin-bottom: 4px;
   text-align: center;
 
   .link {
@@ -23,4 +24,5 @@
 
 .footer__nonprofit-label {
   font-size: $font-size-xxs;
+  opacity: 0.8;
 }
