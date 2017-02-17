@@ -35,11 +35,11 @@ class HomePage extends React.Component {
               <div className="button-container">
                 <Button className="button button--solid-orange button--lg"
                         onClick={() => window.location = RouteConstants.form.student}>
-                  Apply to Learn
+                  Learn
                 </Button>
                 <Button className="button button--solid-orange button--lg"
                         onClick={() => window.location = RouteConstants.form.teacher}>
-                  Apply to Teach
+                  Teach
                 </Button>
               </div>
             </div>
@@ -62,7 +62,7 @@ class HomePage extends React.Component {
                 </p>
               </div>
               <div className="information-block">
-                <h2 className="information-block__title">How it works</h2>
+                <h2 className="information-block__title">How It Works</h2>
                 <p className="information-block__description">
                   Our teachers provide deeply discounted private instruction to
                   underserved youth in the Bay Area.

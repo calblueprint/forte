@@ -1,5 +1,5 @@
 class Footer extends React.Component {
-  
+
   render () {
     return (
       <div className="footer">
@@ -11,7 +11,7 @@ class Footer extends React.Component {
           <a className="link" href={RouteConstants.staticPages.contact}>Contact Us</a>
         </div>
         <div className="footer__nonprofit-label">
-          <span>Forte academy, Inc. is a 501(c)(3) nonprofit organization.</span>
+          <span>Forte Academy, Inc. is a 501(c)(3) nonprofit organization.</span>
         </div>
       </div>
     );
