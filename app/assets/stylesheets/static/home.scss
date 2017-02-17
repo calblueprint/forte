@@ -79,7 +79,7 @@
 
     &:hover {
       .instrument-hover-container {
-        top: 0;
+        top: calc(100% - 130px);
       }
     }
   }
@@ -103,6 +103,7 @@
     a {
       border: 1px solid white;
       display: inline-block;
+      flex: 1;
       margin: 0 10px;
     }
   }

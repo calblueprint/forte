@@ -1,35 +1,40 @@
 class HomePage extends React.Component {
 
-  renderInstrument(option) {
-    switch (option) {
-      case 'piano':
-        var image = ImageConstants.instruments.piano;
-        var description = 'Piano';
-        break;
-      case 'guitar':
-        var image = ImageConstants.instruments.guitar;
-        var description = 'Guitar';
-        break;
-      case 'clarinet':
-        var image = ImageConstants.instruments.clarinet;
-        var description = 'Clarinet';
-        break;
-    }
+  constructor(props) {
+    super(props);
+
+    this.instruments = [
+      "piano",
+      "guitar",
+      "clarinet",
+    ];
+  }
+
+  renderInstrument(instr, index) {
+    let image = ImageConstants.instruments[instr];
+    let instrument = capitalizeFirstLetter(instr);
+    let teachLink = RouteConstants.form.teacher + "#" + instrument;
+    let learnLink = RouteConstants.form.student + "#" + instrument;
+
     return (
-      <div className="instrument">
+      <div className="instrument" key={index}>
         <div className="instrument-hover-container">
-          <h2 className="instrument__description">{description}</h2>
+          <h2 className="instrument__description">{instrument}</h2>
           <div className="instrument-btn-container">
-            <a className="button button--solid-white button--sm" href="">Teach</a>
-            <a className="button button--solid-white button--sm" href="">Learn</a>
+            <a className="button button--solid-white" href={teachLink}>Teach</a>
+            <a className="button button--solid-white" href={learnLink}>Learn</a>
           </div>
         </div>
-        <img src={image} alt={description} />
+        <img src={image} alt={instrument} />
       </div>
     )
   }
 
   render () {
+    let instruments = this.instruments.map((instrument, index) => {
+      return this.renderInstrument(instrument, index);
+    });
+
     return (
       <div className="page-wrapper">
         <Header />
@@ -53,9 +58,7 @@ class HomePage extends React.Component {
               Forte connects underserved youth with experienced musicians to provide access to affordable music lessons.
             </h6>
             <div className="instruments-wrapper">
-              {this.renderInstrument('piano')}
-              {this.renderInstrument('guitar')}
-              {this.renderInstrument('clarinet')}
+              {instruments}
             </div>
             <div className="home-page__line-break">
             </div>
