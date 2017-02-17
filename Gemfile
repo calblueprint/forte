@@ -1,5 +1,5 @@
 
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 ruby '2.2.5'
 
 # Rails
@@ -20,7 +20,7 @@ gem 'pg_search', '1.0.5'
 gem 'react-rails', '1.5.0'
 gem 'react-bootstrap-rails'
 gem 'bootstrap-sass', '~> 3.2.0'
-gem 'stripe', :git => 'http://github.com/stripe/stripe-ruby'
+gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 gem 'browserify-rails'
 # Client
 gem 'font-awesome-rails', '4.5.0'
@@ -62,8 +62,9 @@ group :production, :staging do
 end
 
 
-source "http://insecure.rails-assets.org" do
+source "https://rails-assets.org" do
   gem 'rails-assets-react-datetime'
   gem 'rails-assets-moment'
   gem 'rails-assets-moment-timezone'
 end
+
