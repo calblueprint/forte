@@ -7,14 +7,14 @@ class InvolvementPage extends React.Component {
         optionIcon = ImageConstants.roles.student;
         optionTitle = 'Student';
         optionDescription = 'Learn your dream instrument at deeply discounted rates.';
-        buttonText = 'Start Learning';
+        buttonText = 'Apply to Learn';
         url = RouteConstants.form.student;
         break;
       case 'teacher':
-        optionIcon = ImageConstants.instruments.clarinet;
+        optionIcon = ImageConstants.instruments.piano;
         optionTitle = 'Teacher';
         optionDescription = 'Share your passion for music with our students and help provide access to affordable music education.';
-        buttonText = 'Start Teaching';
+        buttonText = 'Apply to Teach';
         url = RouteConstants.form.teacher;
         middle = true;
         break;

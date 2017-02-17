@@ -57,7 +57,6 @@
     justify-content: center;
     flex-wrap: wrap;
     margin-top: 60px;
-
   }
 
   .instrument {
@@ -118,9 +117,22 @@
   }
 
   .home-page__line-break {
-    margin-top: 60px;
-    border-top: 1px solid $grey80;
+    margin-top: 80px;
+    border-top: 1px solid $grey20;
     width: 70vw;
+  }
+
+  .home__link {
+    color: $orange;
+    display: inline-block;
+    font-size: 14px;
+
+    &:after {
+      content: "\f105";
+      display: inline-block;
+      font-family: 'FontAwesome';
+      padding-left: 4px;
+    }
   }
 
   .information-wrapper {
@@ -128,18 +140,19 @@
     flex-direction: row;
     justify-content: center;
     flex-wrap: wrap;
-    margin-top: 50px;
+    margin: 50px 0;
   }
 
   .information-block {
     height: 200px;
     width: 300px;
-    margin: 20px 20px 0px 20px;
+    margin: 0 20px;
   }
 
   .information-block__title {
     color: $orange;
     font-size: $font-size-l;
+    font-weight: 500;
   }
 
   .information-block__description {

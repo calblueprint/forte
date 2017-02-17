@@ -55,7 +55,8 @@ class HomePage extends React.Component {
               </div>
             </div>
             <h6 className="forte-description">
-              Forte connects underserved youth with experienced musicians to provide access to affordable music lessons.
+              Forte connects underserved youth with experienced musicians to provide
+              access to affordable music lessons.
             </h6>
             <div className="instruments-wrapper">
               {instruments}
@@ -64,24 +65,27 @@ class HomePage extends React.Component {
             </div>
             <div className="information-wrapper">
               <div className="information-block">
-                <h2 className="information-block__title">Our Mission</h2>
+                <h2 className="information-block__title">About Us</h2>
                 <p className="information-block__description">
-                  To democratize music education and empower youth to discover,
-                  learn, and love music.
+                  We aim to democratize music education and empower youth to discover,
+                  learn and love music.
                 </p>
+                <a className="home__link" href={RouteConstants.staticPages.about}>Read more</a>
               </div>
               <div className="information-block">
-                <h2 className="information-block__title">How It Works</h2>
+                <h2 className="information-block__title">Our Program</h2>
                 <p className="information-block__description">
-                  Our teachers provide deeply discounted private instruction to
-                  underserved youth in the Bay Area.
+                  Our teachers provide affordable private instruction to underserved
+                  middle school students in the Bay Area, New York City and Los Angeles.
                 </p>
+                <a className="home__link" href={RouteConstants.staticPages.program}>Read more</a>
               </div>
               <div className="information-block">
                 <h2 className="information-block__title">Get Involved</h2>
                 <p className="information-block__description">
                   Teach our students, learn an instrument or donate to our cause.
                 </p>
+                <a className="home__link" href={RouteConstants.staticPages.involvement}>Read more</a>
               </div>
             </div>
           </div>
