@@ -1,13 +1,13 @@
 GIT
-  remote: https://github.com/stripe/stripe-ruby
-  revision: 58184c2039dae58bf7825863bd104749530ce26c
+  remote: http://github.com/stripe/stripe-ruby
+  revision: 32530b1ad675f6d9b1aa47670bd9cdac16be9798
   specs:
-    stripe (1.57.0)
+    stripe (1.58.0)
       rest-client (>= 1.4, < 4.0)
 
 GEM
-  remote: https://rubygems.org/
-  remote: https://rails-assets.org/
+  remote: http://rubygems.org/
+  remote: http://insecure.rails-assets.org/
   specs:
     actionmailer (4.2.4)
       actionpack (= 4.2.4)
@@ -94,7 +94,7 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
-    domain_name (0.5.20161021)
+    domain_name (0.5.20161129)
       unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
     execjs (2.7.0)

@@ -208,6 +208,7 @@ def create_single_matching(teacher, student, instrument_name)
     student_id: student.id,
     teacher_id: teacher.id,
     location: teacher.address,
+    default_price: 15.00,
   )
   matching
 end
@@ -220,7 +221,7 @@ def create_single_lesson(matching, upcoming=true, month_offset)
   lesson = Lesson.create(
     start_time: start_time,
     end_time: start_time + 45.minutes,
-    price: 15.0,
+    price: 15.00,
     is_paid: paid,
     feedback: Faker::Lorem.paragraph,
     matching_id: matching.id,

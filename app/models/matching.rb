@@ -17,6 +17,7 @@ class Matching < ActiveRecord::Base
   validates :student_id, presence: true
   validates :teacher_id, presence: true
   validates :lesson_time, presence: true, :length => { :minimum => 2 }
+  validates :default_price, presence: true
   validates :location, presence: true
   # validate :valid_lesson_array
 
