@@ -171,7 +171,51 @@ class StudentForm extends React.Component {
     this.setState({ instruments_attributes: instrumentsObj });
   }
 
-  createStripeCustomer() {
+/**
+ * Sets the state of errors to be the errored fields returned from stripeValidateFields
+ * @param card_number
+ * @param exp_month, exp_year
+ * @param cvc
+ */
+async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
+    var card_errs = await this.stripeValidateFields(card_number, exp_month, exp_year, cvc);
+    var stripe_error_info = {};
+    var validated = true;
+    for (var err_type in card_errs) {
+      //TODO: Find JS function to identify false values instead
+      if (!card_errs[err_type][0]) {
+        validated = false;
+        stripe_error_info[err_type] = card_errs[err_type][1];
+      }
+    }
+    this.setState({ errors: stripe_error_info });
+    return validated;
+  }
+
+  /**
+   * Calls Stripe validations on the inputted card information
+   * @param card_number
+   * @param exp_month, exp_year
+   * @param cvc
+   */
+  stripeValidateFields(card_number, exp_month, exp_year, cvc) {
+    var num_err = Stripe.card.validateCardNumber(card_number);
+    var expiry_err = Stripe.card.validateExpiry(exp_month, exp_year);
+    var cvc_err = Stripe.card.validateCVC(cvc);
+    var card_errs = {};
+    card_errs.cardholder_name = [this.state.cardholder_name, "Can't be blank"];
+    card_errs.stripe_address_line1 = [this.state.stripe_address_line1, "Can't be blank"];
+    card_errs.stripe_address_line2 = [this.state.stripe_address_line2, "Can't be blank"];
+    card_errs.stripe_address_city = [this.state.stripe_address_city, "Can't be blank"];
+    card_errs.stripe_address_state = [this.state.stripe_address_state, "Can't be blank"];
+    card_errs.stripe_address_zip = [this.state.stripe_address_zip, "Can't be blank"];
+    card_errs.card_number = [num_err, "Please enter a valid card number"];
+    card_errs.exp_month = [expiry_err, "Please enter a valid expiration date"];
+    card_errs.cvc = [cvc_err, "Please enter a valid cvc number"];
+    return card_errs;
+  }
+
+  async createStripeCustomer() {
     const {
       card_number,
       cvc,
@@ -182,21 +226,27 @@ class StudentForm extends React.Component {
       stripe_address_line2,
       stripe_address_city,
       stripe_address_state,
-      stripe_address_zip
+      stripe_address_zip,
+      errors,
     } = this.state;
 
-    Stripe.card.createToken({
-      number: card_number,
-      cvc: cvc,
-      exp_month: exp_month,
-      exp_year: exp_year,
-      name: cardholder_name,
-      address_line1: stripe_address_line1,
-      address_line2: stripe_address_line2,
-      address_city: stripe_address_city,
-      address_state: stripe_address_state,
-      address_zip: stripe_address_zip
-    }, this.stripeResponseHandler.bind(this));
+    var validate_stripe_response = await this.validateStripeCustomer(card_number, exp_month, exp_year, cvc);
+
+    // Only create customer if stripe validations pass - do not create token if there are stripe errors
+    if (validate_stripe_response) {
+      Stripe.card.createToken({
+        number: card_number,
+        cvc: cvc,
+        exp_month: exp_month,
+        exp_year: exp_year,
+        name: cardholder_name,
+        address_line1: stripe_address_line1,
+        address_line2: stripe_address_line2,
+        address_city: stripe_address_city,
+        address_state: stripe_address_state,
+        address_zip: stripe_address_zip
+      }, this.stripeResponseHandler.bind(this));
+    }
   }
 
   stripeResponseHandler(status, response) {
@@ -703,7 +753,6 @@ class StudentForm extends React.Component {
                     onChange={(event) => this.handleIntegerChange(event)}/>
                   </div>
                   {this.displayErrorMessage("exp_month")}
-                  {this.displayErrorMessage("exp_year")}
                 </FormGroup>
                 <FormGroup validationState={this.getValidationState("cvc")}>
                   <ControlLabel>CVC</ControlLabel>
@@ -712,6 +761,7 @@ class StudentForm extends React.Component {
                     placeholder="Enter CVC Code"
                     name="cvc"
                     onChange={(event) => this.handleChange(event)}/>
+                    {this.displayErrorMessage("cvc")}
                 </FormGroup>
               </div>
               <FormGroup validationState={this.getValidationState("stripe_address_line1")}>
