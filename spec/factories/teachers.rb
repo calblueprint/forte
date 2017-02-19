@@ -25,7 +25,6 @@
 #  school                 :string
 #  phone                  :string
 #  introduction           :text
-#  lesson_experience      :text
 #  teaching_experience    :text
 #  training_experience    :text
 #  performance_experience :text
@@ -52,6 +51,9 @@
 #  waiver_signature       :string
 #  waiver_date            :datetime
 #  school_level           :integer
+#  account_id             :string
+#  bank_id                :string
+#  sign_up_ip             :string
 #
 
 FactoryGirl.define do

@@ -44,6 +44,7 @@
 #  criminal_explanation   :text
 #  waiver_signature       :string
 #  waiver_date            :datetime
+#  customer_id            :string
 #
 
 FactoryGirl.define do
