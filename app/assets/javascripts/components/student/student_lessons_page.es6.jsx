@@ -56,15 +56,10 @@ class StudentLessonsPage extends React.Component {
 
     if (!mostRecent) { return; }
 
-    if (storedRecent == mostRecent.id) {
-      if (!mostRecent.student_feedback) {
-        this.setState({ showFeedbackModal: true });
-        // localStorage.setItem("shownModal", true);
-      }
-    } else {
+    if (!storedRecent == mostRecent.id) {
       this.setState({ showFeedbackModal: true });
       localStorage.setItem("recentLesson", mostRecent.id);
-      // localStorage.setItem("shownModal", true);
+      localStorage.setItem("shownModal", true);
     }
   }
 
@@ -82,7 +77,6 @@ class StudentLessonsPage extends React.Component {
         />
       )
     }
-
   }
 
 

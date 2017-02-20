@@ -1,6 +1,7 @@
 class FeedbackModal extends React.Component {
 
   constructor(props) {
+    console.log(props)
     super(props);
     this.state = {
       submitted: false,
