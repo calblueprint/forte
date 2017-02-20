@@ -1,7 +1,6 @@
 class FeedbackModal extends React.Component {
 
   constructor(props) {
-    console.log(props)
     super(props);
     this.state = {
       submitted: false,
@@ -21,9 +20,7 @@ class FeedbackModal extends React.Component {
         student_feedback: this.state.student_feedback,
       }
     }
-    const resolve = (response) => {
-      this.setState({ submitted: true });
-    };
+    const resolve = (response) => { this.setState({ submitted: true }); };
     const reject = (response) => { console.log(response) };
 
     Requester.update(
@@ -46,7 +43,7 @@ class FeedbackModal extends React.Component {
 
           <FormGroup className="marginTop-md">
             <ControlLabel>Comments</ControlLabel>
-            <p className="form-input-description">Your teacher won't see what you write here.</p>
+            <p className="form-input-description">Only Forte Admins will see what you write here.</p>
             <FormControl
               className="feedback-input"
               componentClass="textarea"

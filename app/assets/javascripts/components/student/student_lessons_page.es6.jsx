@@ -56,7 +56,7 @@ class StudentLessonsPage extends React.Component {
 
     if (!mostRecent) { return; }
 
-    if (!storedRecent == mostRecent.id) {
+    if (!storedRecent == mostRecent.id && !shown) {
       this.setState({ showFeedbackModal: true });
       localStorage.setItem("recentLesson", mostRecent.id);
       localStorage.setItem("shownModal", true);

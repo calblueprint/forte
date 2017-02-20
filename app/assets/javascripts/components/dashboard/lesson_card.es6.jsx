@@ -118,7 +118,7 @@ class LessonCard extends React.Component {
     var date = moment(start_time);
 
     if (date > now) {
-        cancelBtn =
+      cancelBtn =
         <div>
           <Button className="button button--outline-orange button--sm" onClick={() => this.openCancelModal()}>
           Cancel
