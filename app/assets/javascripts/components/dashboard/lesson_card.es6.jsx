@@ -1,17 +1,19 @@
 class LessonCard extends React.Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       showCancelModal: false,
       showRescheduleModal: false,
       showPayModal: false,
+      showFeedbackModal: false,
     };
   }
 
   static get propTypes() {
     return {
       isStudent: React.PropTypes.bool,
+      studentId: React.PropTypes.number,
       lesson: React.PropTypes.object,
       fetchUpcomingLessons: React.PropTypes.func,
       fetchRecentLessons: React.PropTypes.func,
@@ -96,6 +98,7 @@ class LessonCard extends React.Component {
   }
 
   renderFeedbackModal() {
+    const { fetchRecentLessons } = this.props;
     const { showFeedbackModal } = this.state;
 
     if (showFeedbackModal) {
@@ -103,6 +106,8 @@ class LessonCard extends React.Component {
         <FeedbackModal
           handleClose={() => this.closeFeedbackModal()}
           lesson={this.props.lesson}
+          fetchRecentLessons={fetchRecentLessons}
+          studentId={this.props.studentId}
         />
       )
     }
@@ -146,7 +151,7 @@ class LessonCard extends React.Component {
           </div>
       }
 
-      if (!student_feedback && storedRecent == lesson.id) {
+      if (isStudent && !student_feedback && (storedRecent == lesson.id)) {
         feedbackBtn =
           <div>
             <Button className="button button--outline-orange button--sm" onClick={() => this.openFeedbackModal()}>

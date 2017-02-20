@@ -7,6 +7,18 @@ class FeedbackModal extends React.Component {
     };
   }
 
+  static get propTypes() {
+    return {
+
+    };
+  }
+
+  closeModal() {
+    localStorage.removeItem("shownModal")
+    this.props.fetchRecentLessons();
+    this.props.handleClose();
+  }
+
   handleChange(event) {
     var name = $(event.target).attr("name");
     var value = $(event.target).val();
@@ -75,7 +87,7 @@ class FeedbackModal extends React.Component {
         </Modal.Body>
         <Modal.Footer>
           <Button className="button button--solid-orange"
-            onClick={this.props.handleClose}>Return to Dashboard</Button>
+            onClick={this.closeModal.bind(this)}>Return to Dashboard</Button>
         </Modal.Footer>
       </div>
     )

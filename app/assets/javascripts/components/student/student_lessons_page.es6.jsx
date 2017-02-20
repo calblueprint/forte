@@ -54,9 +54,10 @@ class StudentLessonsPage extends React.Component {
     const storedRecent = JSON.parse(localStorage.getItem("recentLesson"));
     const mostRecent = this.state.recentLessons[0];
 
-    if (!mostRecent) { return; }
+    // If no recent lessons or not a student, don't show modal
+    if (!mostRecent || !this.props.studentId) { return; }
 
-    if (!storedRecent == mostRecent.id && !shown) {
+    if (!(storedRecent == mostRecent.id) && !shown) {
       this.setState({ showFeedbackModal: true });
       localStorage.setItem("recentLesson", mostRecent.id);
       localStorage.setItem("shownModal", true);
@@ -74,11 +75,12 @@ class StudentLessonsPage extends React.Component {
         <FeedbackModal
           handleClose={() => this.closeFeedbackModal()}
           lesson={this.state.recentLessons[0]}
+          studentId={studentId}
+          fetchRecentLessons={() => this.fetchRecentLessons()}
         />
       )
     }
   }
-
 
   handleClick(filter) {
     this.setState({ filter: filter });
@@ -105,8 +107,7 @@ class StudentLessonsPage extends React.Component {
     return (
       <button
         className={style}
-        onClick={() => this.handleClick(option)}
-      >
+        onClick={() => this.handleClick(option)} >
         {buttonText}
       </button>
     );
@@ -116,6 +117,7 @@ class StudentLessonsPage extends React.Component {
     return (
       <LessonCard
         isStudent={true}
+        studentId={this.props.studentId}
         fetchUpcomingLessons={() => this.fetchUpcomingLessons()}
         fetchRecentLessons={() => this.fetchRecentLessons()}
         lesson={lesson} />
