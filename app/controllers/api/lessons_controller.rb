@@ -16,12 +16,13 @@ class Api::LessonsController < Api::BaseController
   def update
     lesson = Lesson.find params[:id]
     # TODO: If the update only changes price and not time, then we shouldnt' send a reschedule email, but a Lesson Price Changed email.
-    if params[:is_paid]
-      # Send payment email
-    else
-      # Send rescheduled lesson email
-      lesson.send_reschedule_emails
-    end
+    # if params[:is_paid]
+    #   # Send payment email
+    # else
+    #   # Send rescheduled lesson email
+    #   lesson.send_reschedule_emails
+    # end
+
     if lesson.update_attributes lesson_params
       render json: lesson
     else
@@ -47,7 +48,8 @@ class Api::LessonsController < Api::BaseController
     params.require(:lesson).permit(
       :time,
       :is_paid,
-      :feedback,
+      :student_feedback,
+      :teacher_feedback,
       :matching_id,
       :start_time,
       :end_time,

@@ -12,6 +12,7 @@ class StudentLessonsPage extends React.Component {
       filter: "upcoming",
       upcomingLessons: null,
       recentLessons: null,
+      showFeedbackModal: false,
     };
   }
 
@@ -35,7 +36,10 @@ class StudentLessonsPage extends React.Component {
   fetchRecentLessons() {
     const { studentId } = this.props;
     const route = ApiConstants.students.recentLessons(studentId);
-    const resolve = (response) => this.setState({ recentLessons: response.lessons });
+    const resolve = (response) =>
+      this.setState({ recentLessons: response.lessons }, () => {
+        this.openFeedbackModal();
+      });
     const reject = (response) => console.log(response);
     Requester.get(
       route,
@@ -43,6 +47,44 @@ class StudentLessonsPage extends React.Component {
       reject,
     );
   }
+
+  openFeedbackModal() {
+    // Check cache
+    const shown = JSON.parse(localStorage.getItem("shownModal"));
+    const storedRecent = JSON.parse(localStorage.getItem("recentLesson"));
+    const mostRecent = this.state.recentLessons[0];
+
+    if (!mostRecent) { return; }
+
+    if (storedRecent == mostRecent.id) {
+      if (!mostRecent.student_feedback) {
+        this.setState({ showFeedbackModal: true });
+        // localStorage.setItem("shownModal", true);
+      }
+    } else {
+      this.setState({ showFeedbackModal: true });
+      localStorage.setItem("recentLesson", mostRecent.id);
+      // localStorage.setItem("shownModal", true);
+    }
+  }
+
+  closeFeedbackModal() {
+    this.setState({ showFeedbackModal: false });
+  }
+
+  renderFeedbackModal() {
+    const { studentId } = this.props;
+    if (this.state.showFeedbackModal) {
+      return (
+        <FeedbackModal
+          handleClose={() => this.closeFeedbackModal()}
+          lesson={this.state.recentLessons[0]}
+        />
+      )
+    }
+
+  }
+
 
   handleClick(filter) {
     this.setState({ filter: filter });
@@ -103,6 +145,7 @@ class StudentLessonsPage extends React.Component {
     return (
      <div className="page-wrapper">
       <UserHeader />
+      {this.renderFeedbackModal()}
       <div className="lessons-page student-lessons-page content-wrapper">
         <h2 className="title">
           My Lessons

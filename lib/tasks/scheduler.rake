@@ -37,7 +37,8 @@ namespace :scheduler do
       end_time: start_time + (len * 15).minutes,
       price: matching.default_price,
       is_paid: false,
-      feedback: nil,
+      student_feedback: nil,
+      teacher_feedback: nil,
       matching_id: matching.id,
     )
     lesson.save
