@@ -223,7 +223,6 @@ def create_single_lesson(matching, upcoming=true, month_offset)
     end_time: start_time + 45.minutes,
     price: 15.00,
     is_paid: paid,
-    feedback: Faker::Lorem.paragraph,
     matching_id: matching.id,
   )
   lesson.save

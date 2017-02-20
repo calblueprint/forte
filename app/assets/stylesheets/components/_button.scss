@@ -18,6 +18,10 @@
   &:active {
     box-shadow: none;
   }
+
+  &.pull-left {
+    margin-right: auto;
+  }
 }
 
 .button--outline-white {
