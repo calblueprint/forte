@@ -62,17 +62,21 @@ Rails.application.routes.draw do
   ##################################################
   devise_for :students, controllers: {
     sessions: 'authentication/students/sessions',
-    registrations: 'authentication/students/registrations'
+    registrations: 'authentication/students/registrations',
+    passwords: 'authentication/students/passwords'
   }
 
   devise_for :teachers, controllers: {
     sessions: 'authentication/teachers/sessions',
-    registrations: 'authentication/teachers/registrations'
+    registrations: 'authentication/teachers/registrations',
+    passwords: 'authentication/teachers/passwords'
+
   }
 
   devise_for :admins, controllers: {
     sessions: 'authentication/admins/sessions',
-    registrations: 'authentication/admins/registrations'
+    registrations: 'authentication/admins/registrations',
+    passwords: 'authentication/admins/passwords'
   }
 
   ##################################################
