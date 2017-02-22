@@ -12,6 +12,7 @@ class StudentLessonsPage extends React.Component {
       filter: "upcoming",
       upcomingLessons: null,
       recentLessons: null,
+      showFeedbackModal: false,
     };
   }
 
@@ -35,13 +36,50 @@ class StudentLessonsPage extends React.Component {
   fetchRecentLessons() {
     const { studentId } = this.props;
     const route = ApiConstants.students.recentLessons(studentId);
-    const resolve = (response) => this.setState({ recentLessons: response.lessons });
+    const resolve = (response) =>
+      this.setState({ recentLessons: response.lessons }, () => {
+        this.openFeedbackModal();
+      });
     const reject = (response) => console.log(response);
     Requester.get(
       route,
       resolve,
       reject,
     );
+  }
+
+  openFeedbackModal() {
+    // Check cache
+    const shown = JSON.parse(localStorage.getItem("shownModal"));
+    const storedRecent = JSON.parse(localStorage.getItem("recentLesson"));
+    const mostRecent = this.state.recentLessons[0];
+
+    // If no recent lessons or not a student, don't show modal
+    if (!mostRecent || !this.props.studentId) { return; }
+
+    if (!(storedRecent == mostRecent.id) && !shown) {
+      this.setState({ showFeedbackModal: true });
+      localStorage.setItem("recentLesson", mostRecent.id);
+      localStorage.setItem("shownModal", true);
+    }
+  }
+
+  closeFeedbackModal() {
+    this.setState({ showFeedbackModal: false });
+  }
+
+  renderFeedbackModal() {
+    const { studentId } = this.props;
+    if (this.state.showFeedbackModal) {
+      return (
+        <FeedbackModal
+          handleClose={() => this.closeFeedbackModal()}
+          lesson={this.state.recentLessons[0]}
+          studentId={studentId}
+          fetchRecentLessons={() => this.fetchRecentLessons()}
+        />
+      )
+    }
   }
 
   handleClick(filter) {
@@ -69,8 +107,7 @@ class StudentLessonsPage extends React.Component {
     return (
       <button
         className={style}
-        onClick={() => this.handleClick(option)}
-      >
+        onClick={() => this.handleClick(option)} >
         {buttonText}
       </button>
     );
@@ -80,6 +117,7 @@ class StudentLessonsPage extends React.Component {
     return (
       <LessonCard
         isStudent={true}
+        studentId={this.props.studentId}
         fetchUpcomingLessons={() => this.fetchUpcomingLessons()}
         fetchRecentLessons={() => this.fetchRecentLessons()}
         lesson={lesson} />
@@ -103,6 +141,7 @@ class StudentLessonsPage extends React.Component {
     return (
      <div className="page-wrapper">
       <UserHeader />
+      {this.renderFeedbackModal()}
       <div className="lessons-page student-lessons-page content-wrapper">
         <h2 className="title">
           My Lessons

@@ -62,9 +62,18 @@ class TeacherForm extends React.Component {
   componentDidMount() {
     // set up active instruments object
     var activeInstruments = {}
+    const hash = window.location.hash.replace("#", "");
+
     for (var i = 0; i < INSTRUMENTS.length; i++) {
-      activeInstruments[INSTRUMENTS[i]] = false;
+      let item = INSTRUMENTS[i];
+
+      if (item === hash) {
+        activeInstruments[item] = true;
+      } else {
+        activeInstruments[item] = false;
+      }
     }
+
     this.setState({ activeInstruments: activeInstruments });
 
     // set up instruments fields object
@@ -181,7 +190,52 @@ class TeacherForm extends React.Component {
     this.setState({ instruments_attributes: instrumentsObj });
   }
 
-  createStripeAccount() {
+  /**
+   * Sets the state of errors to be the errored fields returned from stripeValidateFields
+   * @param stripe_routing_number
+   * @param stripe_account_number
+   * @param stripe_country
+   */
+  async validateStripeCustomer(stripe_routing_number, stripe_account_number, stripe_country) {
+    var payment_errs = await this.stripeValidateFields(stripe_routing_number, stripe_account_number, stripe_country);
+    var stripe_error_info = {};
+    var validated = true;
+    for (var err_type in payment_errs) {
+      //TODO: Find JS function to identify false values instead
+      if (!payment_errs[err_type][0]) {
+        validated = false;
+        stripe_error_info[err_type] = payment_errs[err_type][1];
+      }
+    }
+    this.setState({ errors: stripe_error_info });
+    return validated;
+  }
+
+  /**
+   * Calls Stripe validations on the inputted payment information
+   * @param stripe_routing_number
+   * @param stripe_account_number
+   * @param stripe_country
+   */
+  stripeValidateFields(stripe_routing_number, stripe_account_number, stripe_country) {
+    var routing_num_err = Stripe.bankAccount.validateRoutingNumber(stripe_routing_number, stripe_country);
+    var account_num_err = Stripe.bankAccount.validateAccountNumber(stripe_account_number, stripe_country);
+    var payment_errs = {};
+    payment_errs.stripe_account_holder_name = [this.state.stripe_account_holder_name, "Can't be blank"];
+    payment_errs.stripe_account_holder_type = [this.state.stripe_account_holder_type, "Can't be blank"];
+    payment_errs.stripe_account_holder_dob = [this.state.stripe_account_holder_dob, "Can't be blank"];
+    payment_errs.stripe_address_line1 = [this.state.stripe_address_line1, "Can't be blank"];
+    payment_errs.stripe_address_city = [this.state.stripe_address_city, "Can't be blank"];
+    payment_errs.stripe_address_state = [this.state.stripe_address_state, "Can't be blank"];
+    payment_errs.stripe_address_postal_code = [this.state.stripe_address_postal_code, "Can't be blank"];
+    payment_errs.stripe_ssn_last_4 = [this.state.stripe_ssn_last_4, "Can't be blank"];
+    payment_errs.stripe_country = [this.state.stripe_country, "Can't be blank"];
+    payment_errs.stripe_routing_number = [routing_num_err, "Please enter a valid routing number"];
+    payment_errs.stripe_account_number = [account_num_err, "Please enter a valid account number"];
+    return payment_errs;
+  }
+
+  async createStripeAccount() {
     const {
       stripe_country,
       stripe_routing_number,
@@ -190,14 +244,19 @@ class TeacherForm extends React.Component {
       stripe_account_holder_type
     } = this.state;
 
-    Stripe.bankAccount.createToken({
-      country: stripe_country,
-      currency: 'USD',
-      routing_number: stripe_routing_number,
-      account_number: stripe_account_number,
-      account_holder_name: stripe_account_holder_name,
-      account_holder_type: stripe_account_holder_type
-    }, this.stripeResponseHandler.bind(this));
+    var validate_stripe_response = await this.validateStripeCustomer(stripe_routing_number, stripe_account_number, stripe_country);
+
+    // Only create customer if stripe validations pass - do not create token if there are stripe errors
+    if (validate_stripe_response) {
+      Stripe.bankAccount.createToken({
+        country: stripe_country,
+        currency: 'USD',
+        routing_number: stripe_routing_number,
+        account_number: stripe_account_number,
+        account_holder_name: stripe_account_holder_name,
+        account_holder_type: stripe_account_holder_type
+      }, this.stripeResponseHandler.bind(this));
+    }
   }
 
   stripeResponseHandler(status, response) {
@@ -436,13 +495,12 @@ class TeacherForm extends React.Component {
       <div className="page-wrapper form-wrapper">
         <Header />
           <div className="content-wrapper form-page">
-            <h1>Teacher Application</h1>
+            <h1 className="marginBot-lg">Teacher Application</h1>
             <div className="form-container">
               <form>
               {/*Application Page 1*/}
-              <div className="section-title">
-                <h2>Basic Information</h2>
-              </div>
+              <h2 className="section-title"
+                style={{marginTop: "0px"}}>Basic Information</h2>
               <div className="form-row">
                 <FormGroup validationState={this.getValidationState("first_name")}>
                   <ControlLabel>First Name</ControlLabel>
@@ -572,42 +630,43 @@ class TeacherForm extends React.Component {
                 {this.displayErrorMessage("address_apt")}
               </FormGroup>
 
-              <FormGroup validationState={this.getValidationState("city")}>
-                <ControlLabel>City</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  placeholder="City"
-                  name="city"
-                  onChange={(event) => this.handleChange(event)}/>
-                {this.displayErrorMessage("city")}
-              </FormGroup>
+              <div className="form-row">
+                <FormGroup validationState={this.getValidationState("city")}>
+                  <ControlLabel>City</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    placeholder="City"
+                    name="city"
+                    onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("city")}
+                </FormGroup>
 
-              <FormGroup validationState={this.getValidationState("state")}>
-                <ControlLabel>State</ControlLabel>
-                <FormControl
-                  componentClass="select"
-                  name="state"
-                  onChange={(event) => this.handleIntegerChange(event)}>
-                  <option value="" disabled selected>Select your state</option>
-                  {this.renderOptions('state')}
-                </FormControl>
-              {this.displayErrorMessage("state")}
-              </FormGroup>
+                <FormGroup validationState={this.getValidationState("state")}>
+                  <ControlLabel>State</ControlLabel>
+                  <FormControl
+                    componentClass="select"
+                    name="state"
+                    onChange={(event) => this.handleIntegerChange(event)}>
+                    <option value="" disabled selected>Select your state</option>
+                    {this.renderOptions('state')}
+                  </FormControl>
+                {this.displayErrorMessage("state")}
+                </FormGroup>
 
-              <FormGroup validationState={this.getValidationState("zipcode")}>
-                <ControlLabel>Zip Code</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  placeholder="Zip Code"
-                  name="zipcode"
-                  onChange={(event) => this.handleChange(event)}/>
-                {this.displayErrorMessage("zipcode")}
-              </FormGroup>
-              {/*Application Page 2*/}
-              <div className="section-title">
-                <h2>Pick the instruments you would like to teach with Forte
-                </h2>
+                <FormGroup validationState={this.getValidationState("zipcode")}>
+                  <ControlLabel>Zip Code</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    placeholder="Zip Code"
+                    name="zipcode"
+                    onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("zipcode")}
+                </FormGroup>
               </div>
+
+              {/*Application Page 2*/}
+              <h2 className="section-title">Instruments</h2>
+              <ControlLabel className="marginBot-sm">Which instruments can you teach?</ControlLabel>
               <div className="form-row">
                 {this.renderInstrumentButtons()}
               </div>
@@ -619,10 +678,7 @@ class TeacherForm extends React.Component {
                 transitionLeaveTimeout={300}>
                 {this.renderInstrumentsFields()}
               </CSSTransitionGroup>
-              <div className="section-title">
-                <h2>Musical Experience
-                </h2>
-              </div>
+              <h2 className="section-title">Musical Experience</h2>
               <FormGroup validationState={this.getValidationState("introduction")}>
                 <ControlLabel>Tell us a little bit about yourself and the impact
                 you hope to make with Forte!</ControlLabel>
@@ -672,10 +728,7 @@ class TeacherForm extends React.Component {
 
               {/*Application Page 3*/}
 
-              <div className="section-title">
-                <h2>Scheduling
-                </h2>
-              </div>
+              <h2 className="section-title">Scheduling</h2>
               <FormGroup validationState={this.getValidationState("location_preference")}>
                 <ControlLabel>Location Preference</ControlLabel>
                   <Checkbox
@@ -701,35 +754,34 @@ class TeacherForm extends React.Component {
 
               <FormGroup validationState={this.getValidationState("availability")}>
                 <ControlLabel>Weekly Availability</ControlLabel>
+                <p className="form-input-description">Click and drag on the calendar to select times that you're available.</p>
                 <Calendar ref="availability"/>
                 {this.displayErrorMessage("availability")}
               </FormGroup>
 
               {/*Application Page 4*/}
-              <div className="section-title">
-                <h2>Payment
-                </h2>
-              </div>
+              <h2 className="section-title">Payment</h2>
               <div className="form-row">
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("stripe_account_holder_name")}>
                   <ControlLabel>Bank Account Holder Name</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Enter Bank Account Holder Name"
                     name="stripe_account_holder_name"
                     onChange={(event) => this.handleChange(event)}/>
+                    {this.displayErrorMessage("stripe_account_holder_name")}
                 </FormGroup>
-                <FormGroup validationState={this.getValidationState("birthday")}>
+                <FormGroup validationState={this.getValidationState("stripe_account_holder_dob")}>
                   <ControlLabel>Bank Account Holder DOB</ControlLabel>
                   <Datetime
                     dateFormat="MM/DD/YYYY"
                     timeFormat={false}
                     inputProps={{placeholder: "MM/DD/YYYY"}}
                     onChange={(moment) => this.handleDatetimeChange(moment, 'stripe_account_holder_dob')}/>
-                  {this.displayErrorMessage("birthday")}
+                  {this.displayErrorMessage("stripe_account_holder_dob")}
                 </FormGroup>
               </div>
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("stripe_account_holder_type")}>
                 <ControlLabel>Bank Account Holder Type</ControlLabel>
                 <FormControl
                   componentClass="select"
@@ -738,53 +790,59 @@ class TeacherForm extends React.Component {
                   <option value="" disabled selected>Select Account Type</option>
                   {this.renderOptions('account_holder_type')}
                 </FormControl>
+                {this.displayErrorMessage("stripe_account_holder_type")}
               </FormGroup>
               <div className="form-row">
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("stripe_routing_number")}>
                   <ControlLabel>Routing Number</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Enter Routing Number"
                     name="stripe_routing_number"
                     onChange={(event) => this.handleChange(event)}/>
+                    {this.displayErrorMessage("stripe_routing_number")}
                 </FormGroup>
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("stripe_account_number")}>
                   <ControlLabel>Bank Account Number</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Enter Bank Account Number"
                     name="stripe_account_number"
                     onChange={(event) => this.handleChange(event)}/>
+                    {this.displayErrorMessage("stripe_account_number")}
                 </FormGroup>
               </div>
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("stripe_address_line1")}>
                 <ControlLabel>Address</ControlLabel>
                 <FormControl
                   componentClass="input"
                   placeholder="Enter Address Associated with Banking Account"
                   name="stripe_address_line1"
                   onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("stripe_address_line1")}
               </FormGroup>
               <div className="form-row">
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("stripe_address_city")}>
                   <ControlLabel>City</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Enter City"
                     name="stripe_address_city"
                     onChange={(event) => this.handleChange(event)}/>
+                    {this.displayErrorMessage("stripe_address_city")}
                 </FormGroup>
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("stripe_address_postal_code")}>
                   <ControlLabel>Postal Code</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Enter Postal Code"
                     name="stripe_address_postal_code"
                     onChange={(event) => this.handleChange(event)}/>
+                    {this.displayErrorMessage("stripe_address_postal_code")}
                 </FormGroup>
               </div>
               <div className="form-row">
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("stripe_address_state")}>
                   <ControlLabel>Address State</ControlLabel>
                   <FormControl
                     componentClass="select"
@@ -793,18 +851,20 @@ class TeacherForm extends React.Component {
                     <option value="" disabled selected>Select your state</option>
                     {this.renderOptions('state')}
                   </FormControl>
+                  {this.displayErrorMessage("stripe_address_state")}
                 </FormGroup>
-                <FormGroup>
+                <FormGroup validationState={this.getValidationState("stripe_ssn_last_4")}>
                   <ControlLabel>Last 4 Digits of SSN</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Enter Last 4 Digits of SSN"
                     name="stripe_ssn_last_4"
                     onChange={(event) => this.handleChange(event)}/>
+                    {this.displayErrorMessage("stripe_ssn_last_4")}
                 </FormGroup>
               </div>
 
-              <FormGroup>
+              <FormGroup validationState={this.getValidationState("stripe_country")}>
                 <ControlLabel>Bank Account Country</ControlLabel>
                 <FormControl
                   componentClass="select"
@@ -813,17 +873,15 @@ class TeacherForm extends React.Component {
                   <option value="" disabled selected>Select Bank Acount Country</option>
                   {this.renderOptions('country')}
                 </FormControl>
+                {this.displayErrorMessage("stripe_country")}
               </FormGroup>
 
-              <div className="section-title">
-                <h2>Eligibility
-                </h2>
-              </div>
+              <h2 className="section-title">Eligibility</h2>
               {/*Application Page 5*/}
               <FormGroup validationState={this.getValidationState("background_check")}>
                 <ControlLabel>Do you authorize Forte to conduct a
                 background and personal reference checks in accordance
-                with our saftey policy?</ControlLabel>
+                with our safety policy?</ControlLabel>
                 <Radio
                   name="background_check"
                   value={true}
@@ -839,9 +897,13 @@ class TeacherForm extends React.Component {
                 {this.displayErrorMessage("background_check")}
               </FormGroup>
 
+              <h3 className="section-subtitle">References</h3>
+              <p className="form-input-description">Choose a few references who can tell us more about you.</p>
+
+              <h4 className="reference-group-label marginTop-md">Reference #1</h4>
               <div className="form-row">
                 <FormGroup validationState={this.getValidationState("reference1_first_name")}>
-                  <ControlLabel>Reference #1</ControlLabel>
+                  <ControlLabel>First Name</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="First Name"
@@ -851,7 +913,7 @@ class TeacherForm extends React.Component {
                 </FormGroup>
 
                 <FormGroup validationState={this.getValidationState("reference1_last_name")}>
-                  <ControlLabel></ControlLabel>
+                  <ControlLabel>Last Name</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Last Name"
@@ -861,7 +923,7 @@ class TeacherForm extends React.Component {
                 </FormGroup>
 
                 <FormGroup validationState={this.getValidationState("reference1_relation")}>
-                  <ControlLabel></ControlLabel>
+                  <ControlLabel>Relationship</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Relationship"
@@ -873,7 +935,7 @@ class TeacherForm extends React.Component {
 
               <div className="form-row">
                 <FormGroup validationState={this.getValidationState("reference1_email")}>
-                  <ControlLabel></ControlLabel>
+                  <ControlLabel>Email</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Email"
@@ -883,7 +945,7 @@ class TeacherForm extends React.Component {
                 </FormGroup>
 
                 <FormGroup validationState={this.getValidationState("reference1_phone")}>
-                  <ControlLabel></ControlLabel>
+                  <ControlLabel>Phone</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Phone"
@@ -893,9 +955,10 @@ class TeacherForm extends React.Component {
                 </FormGroup>
               </div>
 
+              <h4 className="reference-group-label marginTop-xl">Reference #2</h4>
               <div className="form-row">
                 <FormGroup validationState={this.getValidationState("reference2_first_name")}>
-                  <ControlLabel>Reference #2</ControlLabel>
+                  <ControlLabel>First Name</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="First Name"
@@ -905,7 +968,7 @@ class TeacherForm extends React.Component {
                 </FormGroup>
 
                 <FormGroup validationState={this.getValidationState("reference2_last_name")}>
-                  <ControlLabel></ControlLabel>
+                  <ControlLabel>Last Name</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Last Name"
@@ -915,7 +978,7 @@ class TeacherForm extends React.Component {
                 </FormGroup>
 
                 <FormGroup validationState={this.getValidationState("reference2_relation")}>
-                  <ControlLabel></ControlLabel>
+                  <ControlLabel>Relationship</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Relationship"
@@ -927,7 +990,7 @@ class TeacherForm extends React.Component {
 
               <div className="form-row">
                 <FormGroup validationState={this.getValidationState("reference2_email")}>
-                  <ControlLabel></ControlLabel>
+                  <ControlLabel>Email</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Email"
@@ -937,7 +1000,7 @@ class TeacherForm extends React.Component {
                 </FormGroup>
 
                 <FormGroup validationState={this.getValidationState("reference2_phone")}>
-                  <ControlLabel></ControlLabel>
+                  <ControlLabel>Phone</ControlLabel>
                   <FormControl
                     componentClass="input"
                     placeholder="Phone"
@@ -996,31 +1059,35 @@ class TeacherForm extends React.Component {
               </FormGroup>
 
               {/*Application Page 6*/}
-              <div className="section-title">
-                <h2>Waiver
-                </h2>
-              </div>
-              <a onClick={(event) => this.openWaiver(event)}>Please read the Waiver and sign below</a>
+              <h2 className="section-title">Waiver</h2>
+              <p className="form-help-text">Please read the waiver and sign your name below.</p>
+              <button className="button button--sm button--outline-orange marginBot-lg"
+                onClick={(event) => this.openWaiver(event)}
+                type="button"
+                >Open Waiver</button>
               {this.renderWaiverModal()}
-              <FormGroup validationState={this.getValidationState("waiver_signature")}>
-                <ControlLabel>Signature</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  placeholder="Full Name"
-                  name="waiver_signature"
-                  onChange={(event) => this.handleChange(event)}/>
-                {this.displayErrorMessage("waiver_signature")}
-              </FormGroup>
 
-              <FormGroup validationState={this.getValidationState("waiver_date")}>
-                <ControlLabel>Date</ControlLabel>
-                 <Datetime
-                  dateFormat="MM/DD/YYYY"
-                  timeFormat={false}
-                  inputProps={{placeholder: "MM/DD/YYYY"}}
-                  onChange={(moment) => this.handleDatetimeChange(moment, 'waiver_date')}/>
-                {this.displayErrorMessage("waiver_date")}
-              </FormGroup>
+              <div className="form-row">
+                <FormGroup validationState={this.getValidationState("waiver_signature")}>
+                  <ControlLabel>Signature</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    placeholder="Full Name"
+                    name="waiver_signature"
+                    onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("waiver_signature")}
+                </FormGroup>
+
+                <FormGroup validationState={this.getValidationState("waiver_date")}>
+                  <ControlLabel>Date</ControlLabel>
+                   <Datetime
+                    dateFormat="MM/DD/YYYY"
+                    timeFormat={false}
+                    inputProps={{placeholder: "MM/DD/YYYY"}}
+                    onChange={(moment) => this.handleDatetimeChange(moment, 'waiver_date')}/>
+                  {this.displayErrorMessage("waiver_date")}
+                </FormGroup>
+              </div>
 
               <Button className="button button--solid-orange login-card__button form-submit"
               onClick={() => this.submitForm()}>Submit</Button>

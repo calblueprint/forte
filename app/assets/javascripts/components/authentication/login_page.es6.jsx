@@ -11,6 +11,10 @@ class LoginPage extends React.Component {
      };
   }
 
+  componentDidMount() {
+    this.autofocus.focus();
+  }
+
   handleChange(event) {
     this.setState({ [$(event.target).attr("name")] : $(event.target).val() });
   }
@@ -97,17 +101,18 @@ class LoginPage extends React.Component {
             <FormGroup className="login-card__field">
               {this.renderErrors()}
               <ControlLabel>Email</ControlLabel>
-              <FormControl
-                componentClass="input"
+              <input
+                className="form-control"
                 type="text"
                 name="email"
+                ref={(ref) => { this.autofocus = ref; }}
                 onChange={(e) => this.handleChange(e)}
                 onKeyDown={(e) => this.handleEnter(e.nativeEvent)} />
             </FormGroup>
             <FormGroup className="login-card__field">
               <ControlLabel>Password</ControlLabel>
-              <FormControl
-                componentClass="input"
+              <input
+                className="form-control"
                 type="password"
                 name="password"
                 onChange={(e) => this.handleChange(e)}

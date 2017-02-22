@@ -55,9 +55,18 @@ class StudentForm extends React.Component {
   componentDidMount() {
     // set up active instruments object
     var activeInstruments = {}
+    const hash = window.location.hash.replace("#", "");
+
     for (var i = 0; i < INSTRUMENTS.length; i++) {
-      activeInstruments[INSTRUMENTS[i]] = false;
+      let item = INSTRUMENTS[i];
+
+      if (item === hash) {
+        activeInstruments[item] = true;
+      } else {
+        activeInstruments[item] = false;
+      }
     }
+
     this.setState({ activeInstruments: activeInstruments });
 
     // set up instruments fields object
@@ -162,7 +171,51 @@ class StudentForm extends React.Component {
     this.setState({ instruments_attributes: instrumentsObj });
   }
 
-  createStripeCustomer() {
+/**
+ * Sets the state of errors to be the errored fields returned from stripeValidateFields
+ * @param card_number
+ * @param exp_month, exp_year
+ * @param cvc
+ */
+async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
+    var card_errs = await this.stripeValidateFields(card_number, exp_month, exp_year, cvc);
+    var stripe_error_info = {};
+    var validated = true;
+    for (var err_type in card_errs) {
+      //TODO: Find JS function to identify false values instead
+      if (!card_errs[err_type][0]) {
+        validated = false;
+        stripe_error_info[err_type] = card_errs[err_type][1];
+      }
+    }
+    this.setState({ errors: stripe_error_info });
+    return validated;
+  }
+
+  /**
+   * Calls Stripe validations on the inputted card information
+   * @param card_number
+   * @param exp_month, exp_year
+   * @param cvc
+   */
+  stripeValidateFields(card_number, exp_month, exp_year, cvc) {
+    var num_err = Stripe.card.validateCardNumber(card_number);
+    var expiry_err = Stripe.card.validateExpiry(exp_month, exp_year);
+    var cvc_err = Stripe.card.validateCVC(cvc);
+    var card_errs = {};
+    card_errs.cardholder_name = [this.state.cardholder_name, "Can't be blank"];
+    card_errs.stripe_address_line1 = [this.state.stripe_address_line1, "Can't be blank"];
+    card_errs.stripe_address_line2 = [this.state.stripe_address_line2, "Can't be blank"];
+    card_errs.stripe_address_city = [this.state.stripe_address_city, "Can't be blank"];
+    card_errs.stripe_address_state = [this.state.stripe_address_state, "Can't be blank"];
+    card_errs.stripe_address_zip = [this.state.stripe_address_zip, "Can't be blank"];
+    card_errs.card_number = [num_err, "Please enter a valid card number"];
+    card_errs.exp_month = [expiry_err, "Please enter a valid expiration date"];
+    card_errs.cvc = [cvc_err, "Please enter a valid cvc number"];
+    return card_errs;
+  }
+
+  async createStripeCustomer() {
     const {
       card_number,
       cvc,
@@ -173,21 +226,27 @@ class StudentForm extends React.Component {
       stripe_address_line2,
       stripe_address_city,
       stripe_address_state,
-      stripe_address_zip
+      stripe_address_zip,
+      errors,
     } = this.state;
 
-    Stripe.card.createToken({
-      number: card_number,
-      cvc: cvc,
-      exp_month: exp_month,
-      exp_year: exp_year,
-      name: cardholder_name,
-      address_line1: stripe_address_line1,
-      address_line2: stripe_address_line2,
-      address_city: stripe_address_city,
-      address_state: stripe_address_state,
-      address_zip: stripe_address_zip
-    }, this.stripeResponseHandler.bind(this));
+    var validate_stripe_response = await this.validateStripeCustomer(card_number, exp_month, exp_year, cvc);
+
+    // Only create customer if stripe validations pass - do not create token if there are stripe errors
+    if (validate_stripe_response) {
+      Stripe.card.createToken({
+        number: card_number,
+        cvc: cvc,
+        exp_month: exp_month,
+        exp_year: exp_year,
+        name: cardholder_name,
+        address_line1: stripe_address_line1,
+        address_line2: stripe_address_line2,
+        address_city: stripe_address_city,
+        address_state: stripe_address_state,
+        address_zip: stripe_address_zip
+      }, this.stripeResponseHandler.bind(this));
+    }
   }
 
   stripeResponseHandler(status, response) {
@@ -368,13 +427,12 @@ class StudentForm extends React.Component {
       <div className="page-wrapper form-wrapper">
         <Header />
           <div className="content-wrapper form-page">
-            <h1>Student Application</h1>
+            <h1 className="marginBot-lg">Student Application</h1>
             <div className="form-container">
               <form>
               {/*Application Page 1*/}
-              <div className="section-title">
-                <h2>Student Information</h2>
-              </div>
+              <h2 className="section-title"
+                style={{marginTop: "0px"}}>Student Information</h2>
               <div className="form-row">
                 <FormGroup validationState={this.getValidationState("first_name")}>
                   <ControlLabel>First Name</ControlLabel>
@@ -479,42 +537,41 @@ class StudentForm extends React.Component {
                 {this.displayErrorMessage("address_apt")}
               </FormGroup>
 
-              <FormGroup validationState={this.getValidationState("city")}>
-                <ControlLabel>City</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  placeholder="City"
-                  name="city"
-                  onChange={(event) => this.handleChange(event)}/>
-                {this.displayErrorMessage("city")}
-              </FormGroup>
+              <div className="form-row">
+                <FormGroup validationState={this.getValidationState("city")}>
+                  <ControlLabel>City</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    placeholder="City"
+                    name="city"
+                    onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("city")}
+                </FormGroup>
 
-              <FormGroup validationState={this.getValidationState("state")}>
-                <ControlLabel>State</ControlLabel>
-                <FormControl
-                  componentClass="select"
-                  name="state"
-                  onChange={(event) => this.handleIntegerChange(event)}>
-                  <option value="" disabled selected>Select your state</option>
-                  {this.renderOptions('state')}
-                </FormControl>
-              {this.displayErrorMessage("state")}
-              </FormGroup>
+                <FormGroup validationState={this.getValidationState("state")}>
+                  <ControlLabel>State</ControlLabel>
+                  <FormControl
+                    componentClass="select"
+                    name="state"
+                    onChange={(event) => this.handleIntegerChange(event)}>
+                    <option value="" disabled selected>Select your state</option>
+                    {this.renderOptions('state')}
+                  </FormControl>
+                {this.displayErrorMessage("state")}
+                </FormGroup>
 
-              <FormGroup validationState={this.getValidationState("zipcode")}>
-                <ControlLabel>Zip Code</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  placeholder="Zip Code"
-                  name="zipcode"
-                  onChange={(event) => this.handleChange(event)}/>
-                {this.displayErrorMessage("zipcode")}
-              </FormGroup>
-
-
-             <div className="section-title">
-                <h2>Parent/Guardian Information</h2>
+                <FormGroup validationState={this.getValidationState("zipcode")}>
+                  <ControlLabel>Zip Code</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    placeholder="Zip Code"
+                    name="zipcode"
+                    onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("zipcode")}
+                </FormGroup>
               </div>
+
+              <h2 className="section-title">Parent/Guardian Information</h2>
               <div className="form-row">
                 <FormGroup validationState={this.getValidationState("guardian_first_name")}>
                   <ControlLabel>Parent/Guardian First Name</ControlLabel>
@@ -580,11 +637,9 @@ class StudentForm extends React.Component {
                 </FormGroup>
               </div>
 
-              <div className="section-title">
-                <h2>Pick the instruments you would like to learn with Forte
-                </h2>
-              </div>
+              <h2 className="section-title">Instruments</h2>
               {/*Application Page 2*/}
+              <ControlLabel className="marginBot-sm">Which instruments would you like to learn?</ControlLabel>
               <div className="form-row">
                 {this.renderInstrumentButtons()}
               </div>
@@ -597,10 +652,7 @@ class StudentForm extends React.Component {
                 {this.renderInstrumentsFields()}
               </CSSTransitionGroup>
 
-               <div className="section-title">
-                <h2>Musical Experience
-                </h2>
-              </div>
+              <h2 className="section-title">Musical Experience</h2>
               <FormGroup validationState={this.getValidationState("introduction")}>
                 <ControlLabel>Let us know a little bit about yourself!</ControlLabel>
                 <FormControl
@@ -635,9 +687,7 @@ class StudentForm extends React.Component {
               </FormGroup>
 
               {/*Application Page 3*/}
-              <div className="section-title">
-                <h2>Scheduling</h2>
-              </div>
+              <h2 className="section-title">Scheduling</h2>
               <FormGroup validationState={this.getValidationState("location_preference")}>
                 <ControlLabel>Location Preference</ControlLabel>
                   <Checkbox
@@ -662,14 +712,13 @@ class StudentForm extends React.Component {
 
               <FormGroup validationState={this.getValidationState("availability")}>
                 <ControlLabel>Weekly Availability</ControlLabel>
+                <p className="form-input-description">Click and drag on the calendar to select times that you're available.</p>
                 <Calendar ref="availability"/>
                 {this.displayErrorMessage("availability")}
               </FormGroup>
 
               {/*Application Page 4*/}
-              <div className="section-title">
-                <h2>Payment</h2>
-              </div>
+              <h2 className="section-title">Payment</h2>
               <FormGroup validationState={this.getValidationState("cardholder_name")}>
                 <ControlLabel>Cardholder Name</ControlLabel>
                 <FormControl
@@ -704,7 +753,6 @@ class StudentForm extends React.Component {
                     onChange={(event) => this.handleIntegerChange(event)}/>
                   </div>
                   {this.displayErrorMessage("exp_month")}
-                  {this.displayErrorMessage("exp_year")}
                 </FormGroup>
                 <FormGroup validationState={this.getValidationState("cvc")}>
                   <ControlLabel>CVC</ControlLabel>
@@ -713,6 +761,7 @@ class StudentForm extends React.Component {
                     placeholder="Enter CVC Code"
                     name="cvc"
                     onChange={(event) => this.handleChange(event)}/>
+                    {this.displayErrorMessage("cvc")}
                 </FormGroup>
               </div>
               <FormGroup validationState={this.getValidationState("stripe_address_line1")}>
@@ -768,9 +817,7 @@ class StudentForm extends React.Component {
               </div>
 
               {/*Application Page 5*/}
-              <div className="section-title">
-                <h2>Eligibility</h2>
-              </div>
+              <h2 className="section-title">Eligibility</h2>
               <FormGroup validationState={this.getValidationState("income_range")}>
                 <ControlLabel>Income Estimate</ControlLabel>
                 <FormControl
@@ -839,31 +886,37 @@ class StudentForm extends React.Component {
                   onChange={(event) => this.handleChange(event)}/>
                 {this.displayErrorMessage("criminal_explanation")}
               </FormGroup>
-              <div className="section-title">
-                <h2>Waiver</h2>
-              </div>
-              {/*Application Page 6*/}
-              <a onClick={(event) => this.openWaiver(event)}>Please read the Waiver and sign below</a>
-              {this.renderWaiverModal()}
-              <FormGroup validationState={this.getValidationState("waiver_signature")}>
-                <ControlLabel>Signature</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  placeholder="Enter name"
-                  name="waiver_signature"
-                  onChange={(event) => this.handleChange(event)}/>
-                {this.displayErrorMessage("waiver_signature")}
-              </FormGroup>
 
-              <FormGroup validationState={this.getValidationState("waiver_date")}>
-                <ControlLabel>Date</ControlLabel>
-                 <Datetime
-                  dateFormat="MM/DD/YYYY"
-                  timeFormat={false}
-                  inputProps={{placeholder: "MM/DD/YYYY"}}
-                  onChange={(moment) => this.handleDatetimeChange(moment, 'waiver_date')}/>
-                {this.displayErrorMessage("waiver_date")}
-              </FormGroup>
+              {/*Application Page 6*/}
+              <h2 className="section-title">Waiver</h2>
+              <p className="form-help-text">Please read the waiver and sign your name below.</p>
+              <button className="button button--sm button--outline-orange marginBot-lg"
+                onClick={(event) => this.openWaiver(event)}
+                type="button"
+                >Open Waiver</button>
+              {this.renderWaiverModal()}
+
+              <div className="form-row">
+                <FormGroup validationState={this.getValidationState("waiver_signature")}>
+                  <ControlLabel>Signature</ControlLabel>
+                  <FormControl
+                    componentClass="input"
+                    placeholder="Enter name"
+                    name="waiver_signature"
+                    onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("waiver_signature")}
+                </FormGroup>
+
+                <FormGroup validationState={this.getValidationState("waiver_date")}>
+                  <ControlLabel>Date</ControlLabel>
+                   <Datetime
+                    dateFormat="MM/DD/YYYY"
+                    timeFormat={false}
+                    inputProps={{placeholder: "MM/DD/YYYY"}}
+                    onChange={(moment) => this.handleDatetimeChange(moment, 'waiver_date')}/>
+                  {this.displayErrorMessage("waiver_date")}
+                </FormGroup>
+              </div>
 
               <Button
                 className="button button--solid-orange login-card__button form-submit"

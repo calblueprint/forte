@@ -1,17 +1,19 @@
 class LessonCard extends React.Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       showCancelModal: false,
       showRescheduleModal: false,
       showPayModal: false,
+      showFeedbackModal: false,
     };
   }
 
   static get propTypes() {
     return {
       isStudent: React.PropTypes.bool,
+      studentId: React.PropTypes.number,
       lesson: React.PropTypes.object,
       fetchUpcomingLessons: React.PropTypes.func,
       fetchRecentLessons: React.PropTypes.func,
@@ -37,8 +39,17 @@ class LessonCard extends React.Component {
   openPayModal() {
     this.setState({ showPayModal: true });
   }
+
   closePayModal() {
     this.setState({ showPayModal: false });
+  }
+
+  openFeedbackModal() {
+    this.setState({ showFeedbackModal: true });
+  }
+
+  closeFeedbackModal() {
+    this.setState({ showFeedbackModal: false });
   }
 
   renderCancelModal() {
@@ -86,41 +97,76 @@ class LessonCard extends React.Component {
     }
   }
 
+  renderFeedbackModal() {
+    const { fetchRecentLessons } = this.props;
+    const { showFeedbackModal } = this.state;
+
+    if (showFeedbackModal) {
+      return (
+        <FeedbackModal
+          handleClose={() => this.closeFeedbackModal()}
+          lesson={this.props.lesson}
+          fetchRecentLessons={fetchRecentLessons}
+          studentId={this.props.studentId}
+        />
+      )
+    }
+  }
+
   renderButtons() {
+    let cancelBtn, rescheduleBtn, feedbackBtn, payBtn;
+    const storedRecent = JSON.parse(localStorage.getItem("recentLesson"));
     const { lesson, isStudent } = this.props;
-    const {
-      start_time,
-      is_paid,
-    } = lesson;
+    const { start_time, is_paid, student_feedback } = lesson;
 
     var now = moment();
     var date = moment(start_time);
 
     if (date > now) {
-      return (
-        <div className="actions">
+      cancelBtn =
+        <div>
           <Button className="button button--outline-orange button--sm" onClick={() => this.openCancelModal()}>
           Cancel
           </Button>
           {this.renderCancelModal()}
+        </div>
+
+      rescheduleBtn =
+        <div>
           <Button className="button button--outline-orange button--sm" onClick={() => this.openRescheduleModal()}>
           Reschedule
           </Button>
           {this.renderRescheduleModal()}
         </div>
-      );
-    } else if (!is_paid && now > date && isStudent) {
-      return (
-        <div className="actions">
-        <Button className="button button--outline-orange button--sm" onClick={() => this.openPayModal()}>
-          Pay Now
-        </Button>
-        </div>
-      );
-    } else {
-      return (
-        <div className="actions" />
-      )
+    }
+
+    if (now >= date) {
+      if (isStudent && !is_paid) {
+        payBtn =
+          <div>
+            <Button className="button button--outline-orange button--sm" onClick={() => this.openPayModal()}>
+              Pay Now
+            </Button>
+            {this.renderPayModal()}
+          </div>
+      }
+
+      if (isStudent && !student_feedback && (storedRecent == lesson.id)) {
+        feedbackBtn =
+          <div>
+            <Button className="button button--outline-orange button--sm" onClick={() => this.openFeedbackModal()}>
+              Leave Feedback
+            </Button>
+            {this.renderFeedbackModal()}
+          </div>
+      }
+    }
+
+    return {
+      cancelBtn: cancelBtn,
+      rescheduleBtn: rescheduleBtn,
+      feedbackBtn: feedbackBtn,
+      payBtn: payBtn,
     }
   }
 
@@ -134,6 +180,7 @@ class LessonCard extends React.Component {
       matching,
       is_paid,
     } = lesson;
+    const { cancelBtn, rescheduleBtn, feedbackBtn, payBtn } = this.renderButtons();
 
     var startTime = moment(start_time);
     //TODO: Make sure right timezones and stuff
@@ -157,7 +204,6 @@ class LessonCard extends React.Component {
             <div className="info-row">
               <h5>${price}</h5>
               <Label bsStyle={paidLabelStyle}>{paidLabelText}</Label>
-              {this.renderPayModal()}
             </div>
           </div>
         </div>
@@ -171,7 +217,12 @@ class LessonCard extends React.Component {
             <h5>{lesson.location}</h5>
           </div>
         </div>
-        {this.renderButtons()}
+        <div className="actions">
+          {cancelBtn}
+          {rescheduleBtn}
+          {payBtn}
+          {feedbackBtn}
+        </div>
       </div>
     );
   }

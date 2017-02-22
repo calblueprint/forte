@@ -1,0 +1,22 @@
+.terms-container {
+  margin: 100px auto;
+  max-width: 800px;
+
+  h1 {
+  }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  p, ul>li {
+    color: $grey80;
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  hr {
+    margin: 80px 0;
+  }
+}

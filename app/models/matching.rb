@@ -2,13 +2,15 @@
 #
 # Table name: matchings
 #
-#  id          :integer          not null, primary key
-#  instrument  :string           not null
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  student_id  :integer
-#  teacher_id  :integer
-#  lesson_time :integer          default([]), not null, is an Array
+#  id            :integer          not null, primary key
+#  instrument    :string           not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  student_id    :integer
+#  teacher_id    :integer
+#  lesson_time   :integer          default([]), not null, is an Array
+#  location      :string
+#  default_price :decimal(, )
 #
 
 class Matching < ActiveRecord::Base
@@ -17,6 +19,7 @@ class Matching < ActiveRecord::Base
   validates :student_id, presence: true
   validates :teacher_id, presence: true
   validates :lesson_time, presence: true, :length => { :minimum => 2 }
+  validates :default_price, presence: true
   validates :location, presence: true
   # validate :valid_lesson_array
 

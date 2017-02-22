@@ -1,0 +1,38 @@
+.modal-dialog {
+  .modal-content {
+    border-color: transparent;
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .modal-title {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .form-input-description {
+    color: $grey80;
+    font-size: 13px;
+  }
+
+  .feedback-input {
+    min-height: 90px;
+  }
+
+  .feedback-img-container {
+    padding: 20px 40px;
+    width: 100%;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .feedback-success {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 auto 30px;
+    max-width: 460px;
+    text-align: center;
+  }
+}

@@ -1,45 +1,35 @@
 /*Contact Styles */
 
 .contact-page {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  padding-top: 60px;
+
+  .contact-col {
+    padding: 0 20px;
+    max-width: 485px;
+  }
 
   .questions {
     color: $orange;
     font-size: $font-size-l;
     font-weight: $font-weight-large;
+    margin-bottom: 40px;
     text-align: center;
-  }
-
-  .input-field {
-    padding: 12px 20px;
-    margin: 12px 0;
-    box-sizing: border-box;
-    border: solid 1px $grey;
-  }
-
-  .half-width-input {
-    width: 48%;
-  }
-
-  .full-width-input {
     width: 100%;
   }
 
-  .last-name-input {
-    float: right;
-  }
-
-  .subject-input {
-    margin-bottom: 0px;
-  }
-
-  .message-input {
-    margin-top: 0px;
-    height: 150px;
-    border-top: none;
-  }
-
   .contact-form {
-    margin: 100px 250px 100px 200px;
-    min-width: 400px;
+    margin: 0 auto 60px;
+  }
+
+  .textarea {
+    min-height: 130px;
+  }
+
+  .contact-detail {
+    color: $grey80;
+    margin-bottom: 4px;
   }
 }
