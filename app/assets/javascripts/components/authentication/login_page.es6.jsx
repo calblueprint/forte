@@ -115,13 +115,9 @@ class LoginPage extends React.Component {
             </FormGroup>
 
             <div className="login-buttons">
-              <Button
-                className="login-card__reset-password"
-                onClick={(event) => this.openResetPassword(event)}>Forgot Password</Button>
+              <Button className="login-card__reset-password" onClick={() => this.openResetPassword()}>Forgot Password</Button>
               {this.renderResetPasswordModal()}
-              <Button
-                className="button button--solid-orange login-card__button"
-                onClick={() => this.login()}>LOG IN</Button> 
+              <Button className="button button--solid-orange login-card__button" onClick={() => this.login()}>LOG IN</Button> 
             </div>
 
           </form>
