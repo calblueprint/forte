@@ -24,7 +24,7 @@ class LessonItem extends React.Component {
             endTime.format('h:mm A').toUpperCase()
           )}
           {this.renderContentItem('Price', '$' + lesson.lesson.price)}
-          {this.renderContentItem('Feedback', lesson.lesson.feedback)}
+          {this.renderContentItem('Feedback', lesson.lesson.student_feedback)}
         </div>
       </div>
     );

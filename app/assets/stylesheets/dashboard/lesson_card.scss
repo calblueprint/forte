@@ -74,8 +74,12 @@
     flex-direction: column;
     width: 25%;
 
+    div {
+      margin: 5px 0;
+    }
+
     button {
-      margin: 5px 10px;
+      width: 100%;
     }
   }
 }
@@ -136,7 +140,7 @@
       margin-top: 10px;
       width: 100%;
 
-      button {
+      div {
         margin-left: 0;
         margin-right: 0;
         width: 48%;
