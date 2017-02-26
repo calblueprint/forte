@@ -4,7 +4,6 @@ class RosterPage extends React.Component {
     super();
     this.state = {
       people: null,
-      showPersonModal: false,
       person: null,
       filter: "All",
       searchInput: "",
@@ -26,14 +25,6 @@ class RosterPage extends React.Component {
     );
   }
 
-  onPersonClick(person) {
-    this.setState({ showPersonModal: true, person: person });
-  }
-
-  closePersonModal() {
-    this.setState({ showPersonModal: false, person: null });
-  }
-
   filterByStudent() {
     this.setState({ filter: "Students" });
     this.loadFilteredPeople(this.state.searchInput, "Students");
@@ -49,20 +40,9 @@ class RosterPage extends React.Component {
     this.loadFilteredPeople(this.state.searchInput, "All");
   }
 
-  renderPersonModal() {
-    const { showPersonModal } = this.state;
-    if (showPersonModal == true) {
-      return (
-        <PersonModal
-          handleClose={() => this.closePersonModal()}
-          person={this.state.person} />
-      );
-    }
-  }
-
   renderPeople() {
     return this.state.people.map((person) => {
-      return <RosterItem person={person} onPersonClick={(person)=>this.onPersonClick(person)} />
+      return <RosterItem person={person} />
     });
   }
 
@@ -120,40 +100,43 @@ class RosterPage extends React.Component {
   }
 
   render() {
+    let people;
+
     if (this.state.people == null) {
-      return (
-        <div />
-      );
+      people = <div>No people yet!</div>
     } else {
-      return (
-        <div className="page-wrapper">
-          <AdminHeader />
-          <div className="content-wrapper roster-page">
-            <h1 className="roster-title">Roster</h1>
-             <FormGroup className="searchbar">
-              <InputGroup>
-                <FormControl
-                  componentClass="input"
-                  placeholder="Search"
-                  name="first_name"
-                  onChange={(event) => this.onSearchChange(event)}/>
-                <InputGroup.Addon>
-                  <Glyphicon glyph="search" />
-                </InputGroup.Addon>
-              </InputGroup>
-            </FormGroup>
-            <ButtonGroup className="filter-buttons">
-              {this.renderFilterButton('All', (event) => this.filterByAll())}
-              {this.renderFilterButton('Students', (event) => this.filterByStudent())}
-              {this.renderFilterButton('Teachers', (event) => this.filterByTeacher())}
-            </ButtonGroup>
-            <div className="roster-container">
-              {this.renderPeople()}
-            </div>
-            {this.renderPersonModal()}
+      people = this.state.people.map((person, index) => {
+        return <RosterItem person={person} key={index} />
+      });
+    }
+
+    return (
+      <div className="page-wrapper">
+        <AdminHeader />
+        <div className="content-wrapper roster-page">
+          <h1 className="roster-title">Roster</h1>
+           <FormGroup className="searchbar">
+            <InputGroup>
+              <FormControl
+                componentClass="input"
+                placeholder="Search"
+                name="first_name"
+                onChange={(event) => this.onSearchChange(event)}/>
+              <InputGroup.Addon>
+                <Glyphicon glyph="search" />
+              </InputGroup.Addon>
+            </InputGroup>
+          </FormGroup>
+          <ButtonGroup className="filter-buttons">
+            {this.renderFilterButton('All', (event) => this.filterByAll())}
+            {this.renderFilterButton('Students', (event) => this.filterByStudent())}
+            {this.renderFilterButton('Teachers', (event) => this.filterByTeacher())}
+          </ButtonGroup>
+          <div className="roster-container">
+            {people}
           </div>
         </div>
-      );
-    }
+      </div>
+    );
   }
 }

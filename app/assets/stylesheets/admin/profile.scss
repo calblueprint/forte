@@ -1,0 +1,136 @@
+$profile-pic-width: 150px;
+$cover-height: 240px;
+
+.profile-page {
+  background: #F6F6F6;
+
+  .profile-cover {
+    background: $grey20;
+    display: flex;
+    min-height: $cover-height;
+    flex-flow: column wrap;
+    justify-content: flex-end;
+    width: 100%;
+  }
+
+  .cover-background {
+    padding-bottom: 10px;
+    position: relative;
+  }
+
+  .cover-tabs {
+    background: white;
+  }
+
+  .profile-tabs-container {
+    list-style: none;
+    margin-bottom: 0;
+    padding-left: $profile-pic-width + 25px;
+  }
+
+  .tab {
+    color: $grey80;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    padding: 10px;
+    margin: 0 7px;
+
+    &:first-of-type {
+      margin-left: 5px;
+    }
+
+    &:hover {
+      color: $orange;
+      background: #F6F6F6;
+    }
+
+    &.active {
+      color: $orange;
+      font-weight: 600;
+      position: relative;
+
+      &:after {
+        background: #F6F6F6;
+        content: "";
+        width: 14px;
+        height: 14px;
+        position: absolute;
+        bottom: -7px;
+        left: 50%;
+        transform: translateX(-50%) rotateZ(45deg);
+      }
+    }
+  }
+
+  .profile-name {
+    display: inline-block;
+    font-size: 26px;
+    font-weight: 600;
+    padding-left: $profile-pic-width + 25px;
+    margin: 0;
+    vertical-align: middle;
+  }
+
+  .person-type {
+    background: $orange;
+    border-radius: 2px;
+    color: white;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 4px 8px;
+    margin-left: 20px;
+  }
+
+  .profile-pic {
+    bottom: -25px;
+    border: 3px solid white;
+    border-radius: 3px;
+    background: $orange;
+    height: $profile-pic-width;
+    position: absolute;
+    width: $profile-pic-width;
+  }
+
+  .profile-info {
+    background: #F6F6F6;
+    padding-top: 30px;
+    padding-bottom: 50px;
+
+    .container {
+      display: flex;
+      align-items: flex-start;
+    }
+  }
+
+  .profile-quick-info-box {
+    background: white;
+    border: 1px solid $grey10;
+    padding: 15px;
+    width: 230px;
+  }
+
+  .box-label {
+    color: $grey60;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    margin-top: 0;
+    text-transform: uppercase;
+  }
+
+  .box-desc {
+    margin-bottom: 14px;
+    &:last-of-type { margin-bottom: 0; }
+  }
+
+  .profile-detail-container {
+    background: white;
+    border: 1px solid $grey10;
+    flex: 1;
+    margin-left: 30px;
+    padding: 25px;
+  }
+}
