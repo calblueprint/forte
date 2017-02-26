@@ -9,12 +9,12 @@ class RosterItem extends React.Component {
 
   render () {
     return (
-      <div className="roster-item">
+      <div className="roster-item" onClick={(event)=>this.props.onPersonClick(this.props.person)}>
         <div className="roster-item__header-container">
           <img src="" className="roster-item__img"></img>
           <div className="roster-item__header-description">
               <h3>
-                {this.props.person.first_name} {this.props.person.last_name}
+                {this.props.person.first_name} {this.props.person.last_name}, 12
               </h3>
               <div>{this.props.person.city}, CA</div>
               <div>{this.props.person.instrument}</div>

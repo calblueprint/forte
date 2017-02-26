@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
  before_action :authenticate_admin!
-
+ 
   def matched
     matchings = Matching.all
     @matching_info = []
@@ -19,10 +19,6 @@ class AdminController < ApplicationController
   end
 
   def roster
-  end
-
-  def student
-    student = Student.find(1)
   end
 
   def unmatched
