@@ -78,7 +78,7 @@ class LoginPage extends React.Component {
     const { resetPasswordModal } = this.state;
     if (resetPasswordModal) {
       return ( 
-        <ResetPasswordModal handleClose = {() => this.closeResetPassword() } />
+        <ResetPasswordModal type={this.props.type} handleClose = {() => this.closeResetPassword() } />
       );
     }
   }
@@ -120,9 +120,13 @@ class LoginPage extends React.Component {
             </FormGroup>
 
             <div className="login-buttons">
-              <Button className="login-card__reset-password" onClick={() => this.openResetPassword()}>Forgot Password</Button>
+              <Button
+                className="login-card__reset-password"
+                onClick={() => this.openResetPassword()}>Forgot Password</Button>
               {this.renderResetPasswordModal()}
-              <Button className="button button--solid-orange login-card__button" onClick={() => this.login()}>LOG IN</Button> 
+              <Button
+                className="button button--solid-orange login-card__button"
+                onClick={() => this.login()}>LOG IN</Button> 
             </div>
 
           </form>

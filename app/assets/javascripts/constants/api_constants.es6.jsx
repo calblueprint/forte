@@ -20,12 +20,18 @@
           student: '/students',
           teacher: '/teachers',
         },
-        // reset_password:
-        // {
-        //   student: '/students/reset_password'
-        //   teacher: '/teachers/reset_password'
-        //   admin: '/admins/reset_password',
-        // }
+        request_reset_password:
+        {
+          student: '/passwords/students/reset_request',
+          teacher: '/passwords/teachers/reset_request',
+          admin: '/passwords/admins/reset_request',
+        },
+        change_password:
+        {
+          student: 'passwords/students/reset_password',
+          teacher: 'passwords/teachers/reset_password',
+          admin: 'passwords/admins/reset_password',
+        }
       }
     }
 

@@ -81,6 +81,22 @@ Rails.application.routes.draw do
   }
 
   ##################################################
+  #
+  # Passwords
+  #
+  ##################################################
+  devise_scope :admin do
+    post 'passwords/admins/reset_request', to: 'authentication/admins/passwords#send_token'
+    post 'passwords/admins/reset_password', to: 'authentication/admins/passwords#reset_password'
+  end
+
+  resource :admin, only: [:edit] do
+    collection do
+      patch 'reset_password'
+    end
+  end
+
+  ##################################################
   # Stripe
   ##################################################
   namespace :stripe do

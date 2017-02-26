@@ -1,73 +1,37 @@
 class Authentication::Admins::PasswordsController < Devise::PasswordsController
-  # GET /resource/password/new
-  # def new
-  #   super
-  # end
 
-  # POST /resource/password
-  # def create
-  #   super
-  # end
+  def send_token
+    user = Admin.find_by_email(params[:email])
+    if user.present?
+      @reset_password_token = user.send_reset_password_instructions
+      render_json_message(status: :ok)
+    elsif user.nil?
+      error_response(message: "The entered email address cannot be found.", status: :forbidden)
+    else 
+      error_response(message: "An unknown error occurred.", status: :internal_server_error)
+    end
+  end
 
-  # GET /resource/password/edit?reset_password_token=abcdef
-  # def edit
-  #   super
-  # end
-
-  # PUT /resource/password
-  # def update
-  #   super
-  # end
-
-  # protected
-
-  # def after_resetting_password_path_for(resource)
-  #   super(resource)
-  # end
-
-  # The path used after sending reset password instructions
-  # def after_sending_reset_password_instructions_path_for(resource_name)
-  #   super(resource_name)
-  # end
-
+  # Resetting password with token
   def reset_password
-    admin_user = Admin.find_by_email(params[:email])
-    # resource = Admin.reset_password_by_token reset_params
+    resource = Admin.reset_password_by_token(reset_password_params)
 
-    if admin_user.present?
-      admin_user.send_reset_password_instructions
-      render_json_message(:ok)
+    if resource.errors.messages.blank?
+      redirect_to root_path
     else
-      render_json_message(:forbidden, errors: ["Your entered email address cannot be found."])
+      error_response(message: "An error occurred while changing your password.")
+    end
   end
 
 
-  # def request_reset_params
-  #   params.permit(:email)
-  # end
+  private
 
-  # def reset_params
-  #   params.permit(:password, :password_confirmation, :reset_password_token)
-  # end
+  def send_token_params
+    params.permit(:email)
+  end
 
-
-  # def reset
-  #   password_errors = accumulate_password_errors
-  #   unless password_errors.blank?
-  #     render_json_message(:forbidden, errors: password_errors)
-  #     return
-  #   end
-
-  #   resource = User.reset_password_by_token reset_params
-
-  #   if !resource.errors.messages.blank?
-  #     errors = resource.errors.messages[:reset_password_token].map do |error|
-  #       "Reset token " + error
-  #     end
-  #     render_json_message(:forbidden, errors: errors)
-  #   else
-  #     render_json_message(:ok, message: "Password successfully reset.", to: root_path)
-  #   end
-  # end
+  def reset_password_params
+    params.require(:admin).permit(:password, :password_confirmation, :reset_password_token)
+  end
 
 end

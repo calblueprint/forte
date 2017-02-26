@@ -1,4 +1,4 @@
-class Modal extends React.Component {
+class WaiverModal extends React.Component {
 
   static get propTypes() {
     return {
