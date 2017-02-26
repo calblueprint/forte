@@ -27,6 +27,7 @@ class MatchingCalendar extends React.Component {
       header: false,
       defaultView: 'agendaWeek',
       columnFormat: 'ddd M/D',
+      timezone: "local", // interpret all times in local timezone
       selectable: true,
       editable: true,
       minTime: "08:00",

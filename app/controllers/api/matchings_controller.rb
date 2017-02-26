@@ -58,7 +58,8 @@ class Api::MatchingsController < Api::BaseController
       {:lesson_time => []},
       :student_id,
       :teacher_id,
-      :location
+      :location,
+      :default_price,
     )
   end
 end

@@ -2,6 +2,9 @@
 times */
 
 function range_to_array(start, end) {
+  // store times in utc on the backend
+  start = start.utc();
+  end = end.utc();
   var startDay = start.day();
   var startHour = start.hour();
   var startMinute = start.minute();
@@ -41,7 +44,7 @@ function number_to_moment(number) {
   var day = Math.floor(number/96);
   var hour = Math.floor((number%96)/4);
   var minute = ((number%96)%4)*15;
-  return moment().startOf('week').add(day, 'days').add(hour, 'hours').add(minute, 'minutes');
+  return moment().utc().startOf('week').add(day, 'days').add(hour, 'hours').add(minute, 'minutes');
 }
 
 function get_unavailable_availability(availability) {
