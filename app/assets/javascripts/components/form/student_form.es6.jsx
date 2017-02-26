@@ -114,7 +114,6 @@ class StudentForm extends React.Component {
   }
 
   handleDatetimeChange(moment, name) {
-    console.log(moment);
     if (name == 'birthday') {
       this.setState({ birthday: moment });
     } else if (name == 'waiver_date') {
@@ -152,12 +151,10 @@ class StudentForm extends React.Component {
     const { calendar } = this.refs.availability.refs
     //TODO: not ideal way to do this.. figure out some other way
     var eventArray = $(calendar).fullCalendar('clientEvents');
-    console.log(eventArray);
     var availabilityArray = []
     for (var i = 0; i < eventArray.length; i++) {
       availabilityArray = availabilityArray.concat(range_to_array(eventArray[i]['start'], eventArray[i]['end']));
     }
-    console.log(availabilityArray);
     this.setState({ availability: availabilityArray });
   }
 
