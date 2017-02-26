@@ -16,6 +16,8 @@ Rails.application.routes.draw do
     get :unmatched
     get :lessons
     get :roster
+    get :profile
+    # get 'roster/student/:id', to: 'admin#student'
   end
 
   ##################################################
