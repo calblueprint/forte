@@ -82,9 +82,32 @@ Rails.application.routes.draw do
 
   ##################################################
   #
-  # Passwords
+  # Change Passwords
   #
   ##################################################
+
+  devise_scope :student do
+    post 'passwords/students/reset_request', to: 'authentication/students/passwords#send_token'
+    post 'passwords/students/reset_password', to: 'authentication/students/passwords#reset_password'
+  end
+
+  resource :student, only: [:edit] do
+    collection do
+      patch 'reset_password'
+    end
+  end
+
+  devise_scope :teacher do
+    post 'passwords/teachers/reset_request', to: 'authentication/teachers/passwords#send_token'
+    post 'passwords/teachers/reset_password', to: 'authentication/teachers/passwords#reset_password'
+  end
+
+  resource :teacher, only: [:edit] do
+    collection do
+      patch 'reset_password'
+    end
+  end
+
   devise_scope :admin do
     post 'passwords/admins/reset_request', to: 'authentication/admins/passwords#send_token'
     post 'passwords/admins/reset_password', to: 'authentication/admins/passwords#reset_password'
