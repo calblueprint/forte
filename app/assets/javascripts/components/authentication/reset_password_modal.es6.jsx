@@ -10,37 +10,58 @@ class ResetPasswordModal extends React.Component {
 
   static get propTypes() {
     return {
+      type: React.PropTypes.string,
       handleClose: React.PropTypes.func,
     };
   }
 
-  // WIP: Need to set route and resolve links
   resetPassword() {
-    var reject = (response) => this.setState({ errors: response.error }); // why is this one just error?
-    var paramsObject = {
-      email: this.state.email,
+    var reject = (response) => this.setState({ errors: response.error });
+    var params = {
+      email: this.state.email
     };
+
     
     if (this.props.type == 'student') {
-      var params = { student: paramsObject };
-      // var route = ApiConstants.authentication.reset_password.student;
-      // var resolve = (response) => { window.location.href = "/student/reset_password"; };
+      var route = ApiConstants.authentication.request_reset_password.student;
+      var resolve = (response) => { console.log(response); };
     } else if (this.props.type == 'teacher') {
-      var params = { teacher: paramsObject };
-      // var route = ApiConstants.authentication.reset_password.teacher;
-      // var resolve = (response) => { window.location.href = "/teacher/reset_password"; };
+      var route = ApiConstants.authentication.request_reset_password.teacher;
+      var resolve = (response) => { console.log(response); };
     } else if (this.props.type == 'admin') {
-      var params = { admin: paramsObject };
-      // var route = ApiConstants.authentication.reset_password.admin;
-      // var resolve = (response) => { window.location.href = "/admin/reset_password"; };
+      var route = ApiConstants.authentication.request_reset_password.admin;
+      var resolve = (response) => { console.log(response); };
     }
-  
+
     Requester.post(
       route,
       params,
       resolve,
       reject,
     );
+  }
+
+
+  // Handle wrong email errors
+  renderEmailErrors() {
+    const { errors } = this.state;
+    if (errors != '') {
+      return (
+        <Alert bsStyle="danger">
+          {errors}
+        </Alert>
+      )
+    };
+  }
+
+  handleChange(event) {
+    this.setState({ [$(event.target).attr("name")] : $(event.target).val() });
+  }
+
+  handleEnter(event) {
+    if (event.keyCode == 13 || event.which == 13) {
+      this.resetPassword()
+    }
   }
 
   render () {
@@ -59,13 +80,13 @@ class ResetPasswordModal extends React.Component {
                 type="text"
                 name="email"
                 placeholder="Email Address"
-                onChange={(event) => this.handleChange(event)} />
+                onChange={(e) => this.handleChange(e)}
+                onKeyDown={(e) => this.handleEnter(e.nativeEvent)} />  
             </FormGroup>
         </Modal.Body>
 
         <Modal.Footer>
-          // <Button className="button--solid-orange" onClick={this.resetPassword()}>Send Password Reset Email</Button>
-          <Button className="button--solid-orange" onClick={this.props.handleClose()}>Send Password Reset Email</Button>
+          <Button className="button--solid-orange" onClick={() => this.resetPassword()}>Send Password Reset Email</Button>
         </Modal.Footer>
       </Modal>
     );
