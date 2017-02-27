@@ -114,7 +114,6 @@ class StudentForm extends React.Component {
   }
 
   handleDatetimeChange(moment, name) {
-    console.log(moment);
     if (name == 'birthday') {
       this.setState({ birthday: moment });
     } else if (name == 'waiver_date') {
