@@ -19,7 +19,13 @@
         {
           student: '/students',
           teacher: '/teachers',
-        }
+        },
+        request_reset_password:
+        {
+          student: '/passwords/students/reset_request',
+          teacher: '/passwords/teachers/reset_request',
+          admin: '/passwords/admins/reset_request',
+        },
       }
     }
 

@@ -27,6 +27,18 @@
 
   .login-card__button {
     margin-top: 15px;
-    align-self: flex-end;
+    display: inline-block;
   }
+
+  .login-card__reset-password {
+    margin-top: 15px;
+    display: inline-block;
+  }
+
+  .login-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
 }
