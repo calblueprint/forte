@@ -4,7 +4,6 @@ class ProfilePage extends React.Component {
     super(props);
 
     this.state = {
-      isStudent: this.props.isStudent,
       currTab: 1,
       person: {},
     };
@@ -15,10 +14,10 @@ class ProfilePage extends React.Component {
   }
 
   fetchProfile() {
-    const { isStudent } = this.state;
+    const { isStudent } = this.props;
     let route;
 
-    if (this.state.isStudent) {
+    if (isStudent) {
       route = ApiConstants.students.show(this.props.id);
     } else {
       route = ApiConstants.teachers.show(this.props.id);
@@ -37,7 +36,7 @@ class ProfilePage extends React.Component {
   }
 
   switchTab(num) {
-    this.setState({ currTab: num, })
+    this.setState({ currTab: num });
   }
 
   renderActiveView() {
@@ -52,25 +51,35 @@ class ProfilePage extends React.Component {
 
   renderQuickInfoBoxText() {
     const { person } = this.state;
+    const age = moment(person.birthday).fromNow().split(" ")[0];;
 
     return (
       <div>
-        <h3 className="box-label">Gender</h3>
-        <p className="box-desc">{person.gender}</p>
+        <div className="box-row">
+          <div>
+            <h3 className="box-label">Gender</h3>
+            <p className="box-desc">{person.gender}</p>
+          </div>
+          <div>
+            <h3 className="box-label">Age</h3>
+            <p className="box-desc">{age} yrs.</p>
+          </div>
+        </div>
         <h3 className="box-label">Student Email</h3>
-        <p className="box-desc">{person.student_email}</p>
+        <p className="box-desc">
+          <a href={`mailto:${person.email}`}>{person.email}</a>
+        </p>
         <h3 className="box-label">City</h3>
         <p className="box-desc">{person.city}, {person.state}</p>
         <h3 className="box-label">School</h3>
         <p className="box-desc">{person.school}</p>
-        <h3 className="box-label">Grade</h3>
-        <p className="box-desc">{person.school_level}</p>
       </div>
     )
   }
 
   render() {
-    const { person, isStudent, currTab } = this.state;
+    const { person, currTab } = this.state;
+    const { isStudent } = this.props;
     const personType = isStudent ? "Student" : "Teacher";
 
     return (

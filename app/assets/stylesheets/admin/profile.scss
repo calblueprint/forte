@@ -53,10 +53,10 @@ $cover-height: 240px;
       &:after {
         background: #F6F6F6;
         content: "";
-        width: 14px;
-        height: 14px;
+        width: 12px;
+        height: 12px;
         position: absolute;
-        bottom: -7px;
+        bottom: -6px;
         left: 50%;
         transform: translateX(-50%) rotateZ(45deg);
       }
@@ -110,6 +110,13 @@ $cover-height: 240px;
     border: 1px solid $grey10;
     padding: 15px;
     width: 230px;
+
+    .box-row {
+      display: flex;
+      margin-bottom: 14px;
+
+      div { width: 50%; }
+    }
   }
 
   .box-label {
