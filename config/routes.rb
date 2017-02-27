@@ -11,13 +11,16 @@ Rails.application.routes.draw do
   # Admin
   ##################################################
   get 'admin', to: redirect('admin/matched')
-  namespace :admin do
-    get :matched
-    get :unmatched
-    get :lessons
-    get :roster
-    get :profile
-    # get 'roster/student/:id', to: 'admin#student'
+  resources :admin do
+    collection do
+      get :matched
+      get :unmatched
+      get :lessons
+      get :roster
+      get :profile
+      get 'roster/students/:id', to: 'admin#student'
+      get 'roster/teachers/:id', to: 'admin#teacher'
+    end
   end
 
   ##################################################

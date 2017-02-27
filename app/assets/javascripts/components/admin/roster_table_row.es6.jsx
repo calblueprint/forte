@@ -18,16 +18,27 @@ class RosterTableRow extends React.Component {
     }
   }
 
+  linkToProfile() {
+    console.log("linking")
+    const type = this.state.isStudent ? "students" : "teachers";
+    const id = this.props.person.id;
+
+    window.location = `/admin/roster/${type}/${id}`;
+  }
+
   render () {
     const { person } = this.props;
     let personType = this.state.isStudent ? "Student" : "Teacher";
 
     return (
-      <tr>
+      <tr onClick={() => this.linkToProfile()}>
         <td className="name-col">{person.first_name} {person.last_name}</td>
         <td hidden={this.props.filter !== "All"}>{personType}</td>
         <td>{person.gender}</td>
-        <td>{person.email}</td>
+        <td>
+          <a href={`mailto:${person.email}`}
+             className="roster-table-email">{person.email}</a>
+        </td>
         <td>{person.city}, {person.state}</td>
         <td>{person.instrument}</td>
       </tr>

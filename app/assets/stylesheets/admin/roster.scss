@@ -28,6 +28,29 @@
 
   .searchbar {
     margin-left: 20px;
+
+    input {
+      width: 200px;
+    }
+  }
+
+  .filter-btn {
+    background: white;
+    border: none;
+    border-radius: 4px;
+    letter-spacing: 0;
+    margin: 0 4px;
+    padding: 4px 10px;
+    text-transform: initial;
+
+    &:hover {
+      background: $grey10;
+    }
+
+    &.btn-solid {
+      background: $orange;
+      color: white;
+    }
   }
 
   .roster-table {
@@ -36,6 +59,18 @@
     .name-col {
       color: black;
       font-weight: 500;
+    }
+  }
+
+  .roster-loading {
+    color: black;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 20px 0;
+    text-align: center;
+
+    &:hover {
+      background: initial;
     }
   }
 }

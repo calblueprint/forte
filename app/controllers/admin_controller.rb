@@ -21,10 +21,14 @@ class AdminController < ApplicationController
   def roster
   end
 
-  def student
-    student = Student.find(1)
+  def unmatched
   end
 
-  def unmatched
+  def student
+    @student = Student.find params[:id]
+  end
+
+  def teacher
+    @teacher = Teacher.find params[:id]
   end
 end

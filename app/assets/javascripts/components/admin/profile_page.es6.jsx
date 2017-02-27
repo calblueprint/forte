@@ -4,20 +4,26 @@ class ProfilePage extends React.Component {
     super(props);
 
     this.state = {
-      isStudent: true,
+      isStudent: this.props.isStudent,
       currTab: 1,
       person: {},
     };
   }
 
   componentDidMount() {
-    this.fetchProfile();
+    this.fetchProfile(this.props.id);
   }
 
   fetchProfile() {
     const { isStudent } = this.state;
+    let route;
 
-    const route = ApiConstants.students.show(1);
+    if (this.state.isStudent) {
+      route = ApiConstants.students.show(this.props.id);
+    } else {
+      route = ApiConstants.teachers.show(this.props.id);
+    }
+
     const resolve = (response) => {
       if (isStudent) {
         this.setState({ person: response.student });

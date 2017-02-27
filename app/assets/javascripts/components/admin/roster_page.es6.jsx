@@ -3,8 +3,8 @@ class RosterPage extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      people: null,
-      person: null,
+      hasResult: true,
+      people: [],
       filter: "All",
       searchInput: "",
     };
@@ -25,19 +25,13 @@ class RosterPage extends React.Component {
     );
   }
 
-  filterByStudent() {
-    this.setState({ filter: "Students" });
-    this.loadFilteredPeople(this.state.searchInput, "Students");
-  }
+  filter(type) {
+    this.setState({
+      filter: type,
+      people: [],
+    })
 
-  filterByTeacher() {
-    this.setState({ filter: "Teachers" });
-    this.loadFilteredPeople(this.state.searchInput, "Teachers");
-  }
-
-  filterByAll() {
-    this.setState({ filter: "All" });
-    this.loadFilteredPeople(this.state.searchInput, "All");
+    this.loadFilteredPeople(this.state.searchInput, type);
   }
 
   onSearchChange(event) {
@@ -52,7 +46,16 @@ class RosterPage extends React.Component {
         this.fetchPeople();
       } else if (filter == "Teachers") {
         const route = ApiConstants.teachers.index;
-        const resolve = (response) => this.setState({ people: response.teachers });
+        const resolve = (response) => {
+          let hasResult = false;
+          if (response.teachers.length != 0) {
+            hasResult = true;
+          }
+          this.setState({
+            people: response.teachers,
+            hasResult: hasResult,
+          });
+        }
         const reject = (response) => console.log(response);
         Requester.get(
           route,
@@ -61,7 +64,16 @@ class RosterPage extends React.Component {
         );
       } else if (filter == "Students") {
         const route = ApiConstants.students.index;
-        const resolve = (response) => this.setState({ people: response.students });
+        const resolve = (response) => {
+          let hasResult = false;
+          if (response.students.length != 0) {
+            hasResult = true;
+          }
+          this.setState({
+            people: response.students,
+            hasResult: hasResult,
+          });
+        }
         const reject = (response) => console.log(response);
         Requester.get(
           route,
@@ -69,9 +81,19 @@ class RosterPage extends React.Component {
           reject,
         );
       }
+
     } else {
       const route = ApiConstants.searchables.users(input, filter);
-      const resolve = (response) => this.setState({ people: response.searchables });
+      const resolve = (response) => {
+        let hasResult = false;
+        if (response.searchables.length != 0) {
+          hasResult = true;
+        }
+        this.setState({
+          people: response.searchables,
+          hasResult: hasResult,
+        });
+      }
       const reject = (response) => console.log(response);
       Requester.get(
         route,
@@ -81,31 +103,39 @@ class RosterPage extends React.Component {
     }
   }
 
-  renderFilterButton(label, onClick) {
-    if (label == this.state.filter) {
-      return (
-        <Button className="button button--solid-orange"
-                onClick={onClick}>{label}</Button>
-      );
-    } else {
-      return (
-        <Button className="button button--outline-orange"
-                onClick={onClick}>{label}</Button>
-      );
-    }
+  renderFilterButton(label) {
+    let btnType = (label == this.state.filter) ? "solid" : "outline";
+
+    return (
+      <button className={`button filter-btn btn-${btnType}`}
+              onClick={() => this.filter(label)}>{label}</button>
+    )
   }
 
   render() {
     let people;
 
-    if (this.state.people == null) {
-    } else {
+    if (this.state.people.length != 0) {
       people = this.state.people.map((person, index) => {
         return <RosterTableRow person={person}
                                filter={this.state.filter}
                                key={index} />
 
       });
+    } else if (this.state.hasResult) {
+      const span = this.state.filter == "All" ? 6 : 5;
+      people = <tr>
+                 <td className="roster-loading" colSpan={span}>
+                     Loading...
+                 </td>
+               </tr>
+    } else {
+      const span = this.state.filter == "All" ? 6 : 5;
+      people = <tr>
+                 <td className="roster-loading" colSpan={span}>
+                     No Results
+                 </td>
+               </tr>
     }
 
     return (
@@ -115,11 +145,11 @@ class RosterPage extends React.Component {
           <div className="roster-header">
             <h1 className="roster-title">Roster</h1>
             <div className="roster-header-controls">
-              <ButtonGroup className="filter-buttons">
-                {this.renderFilterButton('All', (event) => this.filterByAll())}
-                {this.renderFilterButton('Students', (event) => this.filterByStudent())}
-                {this.renderFilterButton('Teachers', (event) => this.filterByTeacher())}
-              </ButtonGroup>
+              <div className="filter-buttons">
+                {this.renderFilterButton('All')}
+                {this.renderFilterButton('Students')}
+                {this.renderFilterButton('Teachers')}
+              </div>
               <div className="searchbar">
                 <input type="text" name="first_name" className="form-control"
                   onChange={(e) => this.onSearchChange(e)}
