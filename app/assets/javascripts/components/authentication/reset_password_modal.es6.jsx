@@ -41,19 +41,6 @@ class ResetPasswordModal extends React.Component {
     );
   }
 
-
-  // Handle wrong email errors
-  renderEmailErrors() {
-    const { errors } = this.state;
-    if (errors != '') {
-      return (
-        <Alert bsStyle="danger">
-          {errors}
-        </Alert>
-      )
-    };
-  }
-
   handleChange(event) {
     this.setState({ [$(event.target).attr("name")] : $(event.target).val() });
   }
@@ -86,7 +73,9 @@ class ResetPasswordModal extends React.Component {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button className="button--solid-orange" onClick={() => this.resetPassword()}>Send Password Reset Email</Button>
+          <Button
+            className="button--solid-orange"
+            onClick={() => this.resetPassword()}>Send Password Reset Email</Button>
         </Modal.Footer>
       </Modal>
     );
