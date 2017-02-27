@@ -21,6 +21,7 @@ class Calendar extends React.Component {
       header: false,
       defaultView: 'agendaWeek',
       columnFormat: 'ddd',
+      timezone: "local", // interpret all times in local timezone
       editable: isEditable, // can edit existing events
       selectable: isEditable, // can create events 
       minTime: "08:00",

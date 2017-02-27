@@ -6,6 +6,7 @@ class MatchingModal extends React.Component {
       showNextScreen: false,
       lessonTime: [],
       location: '',
+      default_price: '',
       errors: '',
     };
   }
@@ -34,6 +35,7 @@ class MatchingModal extends React.Component {
       showNextScreen: false,
       location: '',
       lessonTime: [],
+      default_price: '',
     });
   }
 
@@ -44,9 +46,12 @@ class MatchingModal extends React.Component {
   }
 
   validateForm() {
-    const { location } = this.state;
+    const { location, default_price } = this.state;
     if (location == '') {
       this.setState({ errors: "Please choose a location for the lesson."});
+    }
+    if (default_price == '') {
+      this.setState({ errors: "Please choose a default price for the lesson."});
     }
     return true;
   }
@@ -74,7 +79,7 @@ class MatchingModal extends React.Component {
 
   makeMatching() {
     const { student, teacher, instrument } = this.props;
-    const { lessonTime, location } = this.state;
+    const { lessonTime, location, default_price } = this.state;
     route = ApiConstants.matchings.create;
     var params = {
       matching: {
@@ -83,6 +88,7 @@ class MatchingModal extends React.Component {
         instrument: instrument,
         location: location,
         lesson_time: lessonTime,
+        default_price: parseInt(default_price),
       }
     };
     var resolve = (response) => {
@@ -130,9 +136,12 @@ class MatchingModal extends React.Component {
         <div>
           <Modal.Body>
             {this.renderErrors()}
-            <MatchingCalendar 
-              ref="calendar" 
-              availability={overlappingAvailability} /> 
+            <FormGroup>
+              <ControlLabel>Note that all times are in your local time zone!</ControlLabel>
+              <MatchingCalendar 
+                ref="calendar" 
+                availability={overlappingAvailability} /> 
+            </FormGroup>
             <FormGroup>
               <ControlLabel>Location</ControlLabel>
               <FormControl
@@ -149,6 +158,19 @@ class MatchingModal extends React.Component {
                   Student's House
                 </option>
               </FormControl>
+            </FormGroup>
+            <FormGroup>
+              <ControlLabel>Default Price</ControlLabel>
+              <InputGroup>
+                <InputGroup.Addon>$</InputGroup.Addon>
+                <FormControl
+                  componentClass="input"
+                  name="default_price"
+                  type="number"
+                  onChange={(event) => this.handleChange(event)}>
+                </FormControl>
+                <InputGroup.Addon>.00</InputGroup.Addon>
+              </InputGroup>
             </FormGroup>
           </Modal.Body>
           <Modal.Footer>

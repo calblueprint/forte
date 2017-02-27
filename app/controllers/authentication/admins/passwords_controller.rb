@@ -1,32 +1,37 @@
 class Authentication::Admins::PasswordsController < Devise::PasswordsController
-  # GET /resource/password/new
-  # def new
-  #   super
-  # end
 
-  # POST /resource/password
-  # def create
-  #   super
-  # end
+  def send_token
+    user = Admin.find_by_email(params[:email])
+    if user.present?
+      @reset_password_token = user.send_reset_password_instructions
+      render_json_message(status: :ok)
+    elsif user.nil?
+      error_response(message: "The entered email address cannot be found.", status: :forbidden)
+    else 
+      error_response(message: "An unknown error occurred.", status: :internal_server_error)
+    end
+  end
 
-  # GET /resource/password/edit?reset_password_token=abcdef
-  # def edit
-  #   super
-  # end
+  # Resetting password with token
+  def reset_password
+    resource = Admin.reset_password_by_token(reset_password_params)
 
-  # PUT /resource/password
-  # def update
-  #   super
-  # end
+    if resource.errors.messages.blank?
+      redirect_to root_path
+    else
+      error_response(message: "An error occurred while changing your password.")
+    end
+  end
 
-  # protected
 
-  # def after_resetting_password_path_for(resource)
-  #   super(resource)
-  # end
+  private
 
-  # The path used after sending reset password instructions
-  # def after_sending_reset_password_instructions_path_for(resource_name)
-  #   super(resource_name)
-  # end
+  def send_token_params
+    params.permit(:email)
+  end
+
+  def reset_password_params
+    params.require(:admin).permit(:password, :password_confirmation, :reset_password_token)
+  end
+
 end

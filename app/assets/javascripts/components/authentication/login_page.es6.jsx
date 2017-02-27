@@ -7,6 +7,7 @@ class LoginPage extends React.Component {
       password: '',
       errors: '',
       showAlert: false,
+      resetPasswordModal: false,
      };
   }
 
@@ -31,11 +32,11 @@ class LoginPage extends React.Component {
       password: this.state.password,
       remember_me: 1
     };
+    
     if (this.props.type == 'student') {
       var params = { student: paramsObject };
       var route = ApiConstants.authentication.login.student;
-      var resolve = (response) => { window.location.href = "/student/lessons";
-    };
+      var resolve = (response) => { window.location.href = "/student/lessons"; };
     } else if (this.props.type == 'teacher') {
       var params = { teacher: paramsObject };
       var route = ApiConstants.authentication.login.teacher;
@@ -45,6 +46,7 @@ class LoginPage extends React.Component {
       var route = ApiConstants.authentication.login.admin;
       var resolve = (response) => { window.location.href = "/admin/unmatched"; };
     }
+  
     Requester.post(
       route,
       params,
@@ -62,6 +64,23 @@ class LoginPage extends React.Component {
         </Alert>
       )
     };
+  }
+
+  openResetPassword() {
+    this.setState({ resetPasswordModal: true });
+  }
+
+  closeResetPassword() {
+    this.setState( { resetPasswordModal: false });
+  }
+
+  renderResetPasswordModal() {
+    const { resetPasswordModal } = this.state;
+    if (resetPasswordModal) {
+      return ( 
+        <ResetPasswordModal type={this.props.type} handleClose = {() => this.closeResetPassword() } />
+      );
+    }
   }
 
   render () {
@@ -99,9 +118,17 @@ class LoginPage extends React.Component {
                 onChange={(e) => this.handleChange(e)}
                 onKeyDown={(e) => this.handleEnter(e.nativeEvent)} />
             </FormGroup>
-            <Button
-              className="button button--solid-orange login-card__button"
-              onClick={() => this.login()}>LOG IN</Button>
+
+            <div className="login-buttons">
+              <Button
+                className="login-card__reset-password"
+                onClick={() => this.openResetPassword()}>Forgot Password</Button>
+              {this.renderResetPasswordModal()}
+              <Button
+                className="button button--solid-orange login-card__button"
+                onClick={() => this.login()}>LOG IN</Button> 
+            </div>
+
           </form>
         </div>
         <Footer />

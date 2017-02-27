@@ -59,9 +59,7 @@ class Student < ActiveRecord::Base
   validates :city, presence: true
   validates :first_name, presence: true
   validates :last_name, presence: true
-  validates :email, presence: true, uniqueness: true
   validates :availability, presence: true
-  validates :password, presence: true
   validates :gender, presence: true
   validates :birthday, presence: true
   validates :school, presence: true
@@ -83,7 +81,7 @@ class Student < ActiveRecord::Base
   validates :criminal_charges, :inclusion => { :in => [true, false] }
   validates :waiver_signature, presence: true
   validates :waiver_date, presence: true
-  validates :customer_id, presence: true
+  validates :customer_id, presence: true, on: :new
 
   has_many :matchings
   has_many :lessons, through: :matchings

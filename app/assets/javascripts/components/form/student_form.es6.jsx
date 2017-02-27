@@ -114,7 +114,6 @@ class StudentForm extends React.Component {
   }
 
   handleDatetimeChange(moment, name) {
-    console.log(moment);
     if (name == 'birthday') {
       this.setState({ birthday: moment });
     } else if (name == 'waiver_date') {
@@ -171,51 +170,63 @@ class StudentForm extends React.Component {
     this.setState({ instruments_attributes: instrumentsObj });
   }
 
-/**
- * Sets the state of errors to be the errored fields returned from stripeValidateFields
- * @param card_number
- * @param exp_month, exp_year
- * @param cvc
- */
-async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
-    var card_errs = await this.stripeValidateFields(card_number, exp_month, exp_year, cvc);
-    var stripe_error_info = {};
-    var validated = true;
-    for (var err_type in card_errs) {
-      //TODO: Find JS function to identify false values instead
-      if (!card_errs[err_type][0]) {
-        validated = false;
-        stripe_error_info[err_type] = card_errs[err_type][1];
-      }
+  /**
+    * Validates fields for student form fields
+    */
+  async validateStudentFields() {
+    var reject = (response) => {
+      this.createStripeCustomer(response)
+    };
+    var resolve = (response) => { this.createStripeCustomer(response) };
+    var params = {
+      student: {
+        email: this.state.email,
+        password: this.state.password,
+        password_confirmation: this.state.password_confirmation,
+        first_name: this.state.first_name,
+        last_name: this.state.last_name,
+        city: this.state.city,
+        gender: this.state.gender,
+        birthday: this.state.birthday,
+        school: this.state.school,
+        school_level: this.state.school_level,
+        guardian_first_name: this.state.guardian_first_name,
+        guardian_last_name: this.state.guardian_last_name,
+        guardian_phone: this.state.guardian_phone,
+        introduction: this.state.introduction,
+        lesson_experience: this.state.lesson_experience,
+        performance_experience: this.state.performance_experience,
+        student_email: this.state.student_email,
+        student_phone: this.state.student_phone,
+        address: this.state.address,
+        address_apt: this.state.address_apt,
+        state: this.state.state,
+        zipcode: this.state.zipcode,
+        location_preference: this.state.location_preference,
+        travel_distance: this.state.travel_distance,
+        availability: this.state.availability,
+        income_range: this.state.income_range,
+        household_number: this.state.household_number,
+        disciplinary_action: this.state.disciplinary_action,
+        criminal_charges: this.state.criminal_charges,
+        waiver_signature: this.state.waiver_signature,
+        waiver_date: this.state.waiver_date,
+        instruments_attributes: this.state.instruments_attributes,
+      },
     }
-    this.setState({ errors: stripe_error_info });
-    return validated;
+    Requester.post(
+      ApiConstants.students.validate,
+      params,
+      resolve,
+      reject
+    );
   }
 
   /**
-   * Calls Stripe validations on the inputted card information
-   * @param card_number
-   * @param exp_month, exp_year
-   * @param cvc
-   */
-  stripeValidateFields(card_number, exp_month, exp_year, cvc) {
-    var num_err = Stripe.card.validateCardNumber(card_number);
-    var expiry_err = Stripe.card.validateExpiry(exp_month, exp_year);
-    var cvc_err = Stripe.card.validateCVC(cvc);
-    var card_errs = {};
-    card_errs.cardholder_name = [this.state.cardholder_name, "Can't be blank"];
-    card_errs.stripe_address_line1 = [this.state.stripe_address_line1, "Can't be blank"];
-    card_errs.stripe_address_line2 = [this.state.stripe_address_line2, "Can't be blank"];
-    card_errs.stripe_address_city = [this.state.stripe_address_city, "Can't be blank"];
-    card_errs.stripe_address_state = [this.state.stripe_address_state, "Can't be blank"];
-    card_errs.stripe_address_zip = [this.state.stripe_address_zip, "Can't be blank"];
-    card_errs.card_number = [num_err, "Please enter a valid card number"];
-    card_errs.exp_month = [expiry_err, "Please enter a valid expiration date"];
-    card_errs.cvc = [cvc_err, "Please enter a valid cvc number"];
-    return card_errs;
-  }
-
-  async createStripeCustomer() {
+    * Creates a Stripe Customer on the Rails side
+    * @param student_errs Object
+    */
+  async createStripeCustomer(student_errs) {
     const {
       card_number,
       cvc,
@@ -229,8 +240,7 @@ async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
       stripe_address_zip,
       errors,
     } = this.state;
-
-    var validate_stripe_response = await this.validateStripeCustomer(card_number, exp_month, exp_year, cvc);
+    var validate_stripe_response = await this.validateStudentAndStripeCustomer(card_number, exp_month, exp_year, cvc, student_errs);
 
     // Only create customer if stripe validations pass - do not create token if there are stripe errors
     if (validate_stripe_response) {
@@ -267,6 +277,55 @@ async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
         reject
       );
     }
+  }
+
+   /**
+   * Sets the state of errors to be the errored fields returned from stripeValidateFields and validateStudentFields
+   * @param card_number
+   * @param exp_month, exp_year
+   * @param cvc
+   */
+  async validateStudentAndStripeCustomer(card_number, exp_month, exp_year, cvc, student_errs) {
+    var card_errs = await this.stripeValidateFields(card_number, exp_month, exp_year, cvc);
+    var error_info = {};
+    var validated = true;
+    for (var err_type in card_errs) {
+      //TODO: Find JS function to identify false values instead
+      if (!card_errs[err_type][0]) {
+        validated = false;
+        error_info[err_type] = card_errs[err_type][1];
+      }
+    }
+    // Checks to see if object is null
+    if (!(Object.keys(student_errs).length === 0)) {
+      validated = false;
+    }
+    error_info = Object.assign(error_info, student_errs);
+    this.setState({ errors: error_info });
+    return validated;
+  }
+
+  /**
+   * Calls Stripe validations on the inputted card information
+   * @param card_number
+   * @param exp_month, exp_year
+   * @param cvc
+   */
+  stripeValidateFields(card_number, exp_month, exp_year, cvc) {
+    var num_err = Stripe.card.validateCardNumber(card_number);
+    var expiry_err = Stripe.card.validateExpiry(exp_month, exp_year);
+    var cvc_err = Stripe.card.validateCVC(cvc);
+    var card_errs = {};
+    card_errs.cardholder_name = [this.state.cardholder_name, "Can't be blank"];
+    card_errs.stripe_address_line1 = [this.state.stripe_address_line1, "Can't be blank"];
+    card_errs.stripe_address_line2 = [this.state.stripe_address_line2, "Can't be blank"];
+    card_errs.stripe_address_city = [this.state.stripe_address_city, "Can't be blank"];
+    card_errs.stripe_address_state = [this.state.stripe_address_state, "Can't be blank"];
+    card_errs.stripe_address_zip = [this.state.stripe_address_zip, "Can't be blank"];
+    card_errs.card_number = [num_err, "Please enter a valid card number"];
+    card_errs.exp_month = [expiry_err, "Please enter a valid expiration date"];
+    card_errs.cvc = [cvc_err, "Please enter a valid cvc number"];
+    return card_errs;
   }
 
   createStudent(customer) {
@@ -325,7 +384,7 @@ async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
   async submitForm() {
     await this.setAvailability();
     await this.setInstruments();
-    await this.createStripeCustomer();
+    await this.validateStudentFields();
   }
 
   renderOptions(type) {
@@ -639,18 +698,21 @@ async validateStripeCustomer(card_number, exp_month, exp_year, cvc) {
 
               <h2 className="section-title">Instruments</h2>
               {/*Application Page 2*/}
-              <ControlLabel className="marginBot-sm">Which instruments would you like to learn?</ControlLabel>
-              <div className="form-row">
-                {this.renderInstrumentButtons()}
-              </div>
-              <CSSTransitionGroup
-                transitionName="fade"
-                transitionEnter={true}
-                transitionLeave={true}
-                transitionEnterTimeout={500}
-                transitionLeaveTimeout={300}>
-                {this.renderInstrumentsFields()}
-              </CSSTransitionGroup>
+              <FormGroup validationState={this.getValidationState("instruments")}>
+                <ControlLabel className="marginBot-sm">Which instruments would you like to learn?</ControlLabel>
+                <div className="form-row">
+                  {this.renderInstrumentButtons()}
+                </div>
+                <CSSTransitionGroup
+                  transitionName="fade"
+                  transitionEnter={true}
+                  transitionLeave={true}
+                  transitionEnterTimeout={500}
+                  transitionLeaveTimeout={300}>
+                  {this.renderInstrumentsFields()}
+                </CSSTransitionGroup>
+                {this.displayErrorMessage("instruments")}
+              </FormGroup>
 
               <h2 className="section-title">Musical Experience</h2>
               <FormGroup validationState={this.getValidationState("introduction")}>
