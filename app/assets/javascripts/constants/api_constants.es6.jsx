@@ -27,6 +27,7 @@
       return {
         index: '/api/students',
         unmatched: '/api/students/unmatched',
+        validate: '/api/students/validate',
         delete: (id) => `/api/students/${id}`,
         update: (id) => `/api/students/${id}`,
         show: (id) => `/api/students/${id}`,
