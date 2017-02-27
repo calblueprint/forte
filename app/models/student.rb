@@ -89,7 +89,6 @@ class Student < ActiveRecord::Base
   has_many :instruments, as: :instrumentable, dependent: :destroy
 
   accepts_nested_attributes_for :instruments
-  validates :instruments, presence: true
 
   # If any of the enums here change, make sure to change constants.es6.jsx file
   # too
