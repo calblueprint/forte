@@ -13,11 +13,19 @@
     display: flex;
     flex-direction: row;
     border-bottom: 1px solid $grey20;
-    padding: 10px 20px;
+    padding: 10px;
     cursor: pointer;
 
     .matching-item-header-item {
+      display: block;
+      text-decoration: none;
+      padding: 10px;
       width: 200px;
+      cursor: pointer;
+
+      &:hover {
+        background: $grey5;
+      }
 
       &:first-child {
         margin-right: 10px;

@@ -2,10 +2,6 @@ class MatchedPage extends React.Component {
 
   constructor(props) {
     super();
-    this.state = {
-      showPersonModal: false,
-      person: null,
-    };
   }
 
   static get propTypes() {
@@ -16,31 +12,14 @@ class MatchedPage extends React.Component {
 
   renderMatching(matching) {
     return (
-      <MatchingItem matching={matching} onPersonClick={(person)=>this.onPersonClick(person)}/>
+      <MatchingItem matching={matching}/>
     );
   }
 
   renderMatchings() {
-    return this.props.matchings.map((matching) => this.renderMatching(matching));
-  }
-
-  onPersonClick(person) {
-    this.setState({ showPersonModal: true, person: person });
-  }
-
-  closePersonModal() {
-    this.setState({ showPersonModal: false, person: null });
-  }
-
-  renderPersonModal() {
-    const { showPersonModal } = this.state;
-    if (showPersonModal == true) {
-      return (
-        <PersonModal
-          handleClose={() => this.closePersonModal()}
-          person={this.state.person} />
-      );
-    }
+    return this.props.matchings.map((matching, index) => {
+      return <MatchingItem matching={matching} key={index} />
+    });
   }
 
   render () {
@@ -50,7 +29,6 @@ class MatchedPage extends React.Component {
         <div className="content-wrapper matched-page">
           <h1>Matched Pairs</h1>
           {this.renderMatchings()}
-          {this.renderPersonModal()}
         </div>
       </div>
     );

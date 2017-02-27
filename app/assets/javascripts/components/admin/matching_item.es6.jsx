@@ -3,17 +3,20 @@ class MatchingItem extends React.Component {
   static get propTypes() {
     return {
       matching: React.PropTypes.object,
-      onPersonClick: React.PropTypes.func,
     };
   }
 
   render() {
-    var startTime = moment(this.props.matching.matching.lesson_time[0]);
+    const { matching } = this.props;
+    let startTime = moment(this.props.matching.matching.lesson_time[0]);
+    let studentName = `${matching.student.first_name} ${matching.student.last_name}`;
+    let teacherName = `${matching.teacher.first_name} ${matching.teacher.last_name}`;
+
     return (
       <div className="matching-item">
         <div className="matching-item-header">
-          {this.renderHeaderItem('Student', this.props.matching.student.first_name + ' ' + this.props.matching.student.last_name, (event) => this.props.onPersonClick(this.props.matching.student))}
-          {this.renderHeaderItem('Teacher', this.props.matching.teacher.first_name + ' ' + this.props.matching.teacher.last_name, (event) => this.props.onPersonClick(this.props.matching.teacher))}
+          {this.renderHeaderItem('Student', studentName, matching.student.id)}
+          {this.renderHeaderItem('Teacher', teacherName, matching.teacher.id)}
         </div>
         <div className="matching-item-content">
           {this.renderContentItem('Instrument', this.props.matching.matching.instrument)}
@@ -24,12 +27,21 @@ class MatchingItem extends React.Component {
     );
   }
 
-  renderHeaderItem(label, text, onClick=null) {
+  renderHeaderItem(label, text, id) {
+    let link;
+    if (label == "Student") {
+      link = RouteConstants.admin.studentProfile(id);
+    } else {
+      link = RouteConstants.admin.teacherProfile(id);
+    }
+
     return (
-      <div className="matching-item-header-item">
-        <div className="header-label">{label}</div>
-        <div className="header-text" onClick={onClick}>{text}</div>
-      </div>
+      <a className="matching-item-header-item" href={link}>
+        <div>
+          <div className="header-label">{label}</div>
+          <div className="header-text">{text}</div>
+        </div>
+      </a>
     );
   }
 
