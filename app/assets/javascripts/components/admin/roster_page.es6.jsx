@@ -16,7 +16,10 @@ class RosterPage extends React.Component {
 
   fetchPeople() {
     const route = ApiConstants.searchables.roster;
-    const resolve = (response) => this.setState({ people: response.searchables });
+    const resolve = (response) => {
+      this.setState({ people: response.searchables });
+      console.log(response)
+    }
     const reject = (response) => console.log(response);
     Requester.get(
       route,
@@ -117,8 +120,8 @@ class RosterPage extends React.Component {
 
     if (this.state.people.length != 0) {
       people = this.state.people.map((person, index) => {
-        return <RosterTableRow person={person}
-                               filter={this.state.filter}
+        return <RosterTableRow filter={this.state.filter}
+                               person={person}
                                key={index} />
 
       });

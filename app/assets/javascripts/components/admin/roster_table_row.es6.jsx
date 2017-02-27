@@ -19,11 +19,13 @@ class RosterTableRow extends React.Component {
   }
 
   linkToProfile() {
-    console.log("linking")
-    const type = this.state.isStudent ? "students" : "teachers";
     const id = this.props.person.id;
 
-    window.location = `/admin/roster/${type}/${id}`;
+    if (this.state.isStudent) {
+      window.location = RouteConstants.admin.studentProfile(id);
+    } else {
+      window.location = RouteConstants.admin.teacherProfile(id);
+    }
   }
 
   render () {
