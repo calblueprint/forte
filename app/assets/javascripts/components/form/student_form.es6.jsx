@@ -139,6 +139,71 @@ class StudentForm extends React.Component {
     });
   }
 
+  handleAddressChange(event) {
+    var componentForm = {
+      street_number: 'short_name',
+      route: 'long_name',
+      locality: 'long_name',
+      administrative_area_level_1: 'short_name',
+      postal_code: 'short_name'
+    };
+
+    var autocomplete = new google.maps.places.Autocomplete(document.getElementById("address"));
+    this.geolocate(autocomplete);
+    autocomplete.addListener("place_changed", function() {
+      var place = autocomplete.getPlace();
+
+      // Clear any old address information
+      for (var i = 2; i < componentForm.length; i++) {
+        document.getElementById(componentForm[i]).value = '';
+        document.getElementById(componentForm[i]).disabled = false;
+      }
+      document.getElementById("address").value = '';
+      document.getElementById("address").disabled = false;
+
+      // Get each component of the address from the place details
+      // and fill the corresponding field on the form.
+      var street_number, street_name;
+      for (var i = 0; i < place.address_components.length; i++) {
+        var addressType = place.address_components[i].types[0];
+        if (componentForm[addressType]) {
+          var val = place.address_components[i][componentForm[addressType]];
+          if (addressType == "administrative_area_level_1") {
+            val = STATES.indexOf(val);
+            document.getElementById(addressType).value = val;          
+          } else if (addressType == "street_number") {
+            street_number = val;
+          } else if (addressType == "route") {
+            street_name = val;
+          } else {
+            document.getElementById(addressType).value = val;          
+          }
+        }
+      }
+      if (street_number != null && street_name != null) {
+        document.getElementById("address").value = street_number + " " + street_name;
+      }
+    });
+  }
+
+  // Bias the autocomplete object to the user's geographical location,
+  // as supplied by the browser's 'navigator.geolocation' object.
+  geolocate(autocomplete) {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var geolocation = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        var circle = new google.maps.Circle({
+          center: geolocation,
+          radius: position.coords.accuracy
+        });
+        autocomplete.setBounds(circle.getBounds());
+      });
+    }
+  }
+
   openWaiver() {
     this.setState({ showWaiverModal: true });
   }
@@ -581,7 +646,9 @@ class StudentForm extends React.Component {
                 <FormControl
                   componentClass="input"
                   placeholder="Address"
+                  id="address"
                   name="address"
+                  onFocus={(event) => this.handleAddressChange(event)}
                   onChange={(event) => this.handleChange(event)}/>
                 {this.displayErrorMessage("address")}
               </FormGroup>
@@ -603,6 +670,7 @@ class StudentForm extends React.Component {
                     componentClass="input"
                     placeholder="City"
                     name="city"
+                    id="locality"
                     onChange={(event) => this.handleChange(event)}/>
                   {this.displayErrorMessage("city")}
                 </FormGroup>
@@ -612,6 +680,7 @@ class StudentForm extends React.Component {
                   <FormControl
                     componentClass="select"
                     name="state"
+                    id="administrative_area_level_1"
                     onChange={(event) => this.handleIntegerChange(event)}>
                     <option value="" disabled selected>Select your state</option>
                     {this.renderOptions('state')}
@@ -625,6 +694,7 @@ class StudentForm extends React.Component {
                     componentClass="input"
                     placeholder="Zip Code"
                     name="zipcode"
+                    id="postal_code"
                     onChange={(event) => this.handleChange(event)}/>
                   {this.displayErrorMessage("zipcode")}
                 </FormGroup>
