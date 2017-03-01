@@ -86,7 +86,7 @@ before_filter :configure_sign_up_params, only: [:create]
         :training_experience,
         :performance_experience,
         :address,
-        :address_apt,
+        :address2,
         :state,
         :zipcode,
         :city,

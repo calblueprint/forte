@@ -32,7 +32,7 @@
 #  student_email          :string
 #  student_phone          :string
 #  address                :string
-#  address_apt            :string
+#  address2               :string
 #  state                  :integer
 #  zipcode                :integer
 #  location_preference    :boolean
