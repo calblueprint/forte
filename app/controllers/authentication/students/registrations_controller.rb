@@ -69,7 +69,7 @@ before_filter :configure_sign_up_params, only: [:create]
         :student_email,
         :student_phone,
         :address,
-        :address_apt,
+        :address2,
         :state,
         :zipcode,
         :location_preference,
