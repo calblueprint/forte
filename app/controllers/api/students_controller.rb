@@ -75,14 +75,52 @@ class Api::StudentsController < Api::BaseController
            root: "students"
   end
 
+  def validate
+    student = Student.new(student_params)
+    if student.valid?
+      render json: student
+    else
+      puts student.errors.messages
+      render json: student.errors.messages
+    end
+  end
+
+  private
+
   def student_params
     params.require(:student).permit(
-      :availability,
       :city,
       :first_name,
-      :instrument,
       :last_name,
       :email,
+      {:availability => []},
+      :password,
+      :password_confirmation,
+      :gender,
+      :birthday,
+      :school,
+      :school_level,
+      :guardian_first_name,
+      :guardian_last_name,
+      :guardian_phone,
+      :introduction,
+      :lesson_experience,
+      :performance_experience,
+      :student_email,
+      :student_phone,
+      :address,
+      :address_apt,
+      :state,
+      :zipcode,
+      :location_preference,
+      :travel_distance,
+      :income_range,
+      :household_number,
+      :disciplinary_action,
+      :criminal_charges,
+      :waiver_signature,
+      :waiver_date,
+      :instruments_attributes => [:id, :name, :years_played, :proficiency, :is_primary]
     )
   end
 end

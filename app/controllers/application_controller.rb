@@ -3,6 +3,16 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :null_session
 
+
+  def render_json_message(status, options = {})
+    render json: {
+      data: options[:data],
+      message: options[:message],
+      to: options[:to],
+      errors: options[:errors]
+    }, status: status
+  end
+
   def error_response(object: nil, message: nil, status: nil)
     render json: response_message(object, message), status: status
   end
@@ -24,4 +34,5 @@ class ApplicationController < ActionController::Base
       { errors: object.errors.to_hash(true) }
     end
   end
+
 end

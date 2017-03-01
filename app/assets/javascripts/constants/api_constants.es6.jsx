@@ -19,7 +19,13 @@
         {
           student: '/students',
           teacher: '/teachers',
-        }
+        },
+        request_reset_password:
+        {
+          student: '/passwords/students/reset_request',
+          teacher: '/passwords/teachers/reset_request',
+          admin: '/passwords/admins/reset_request',
+        },
       }
     }
 
@@ -27,6 +33,7 @@
       return {
         index: '/api/students',
         unmatched: '/api/students/unmatched',
+        validate: '/api/students/validate',
         delete: (id) => `/api/students/${id}`,
         update: (id) => `/api/students/${id}`,
         show: (id) => `/api/students/${id}`,
