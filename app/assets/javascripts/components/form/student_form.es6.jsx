@@ -223,28 +223,6 @@ class StudentForm extends React.Component {
   }
 
   /**
-   * Calls Stripe validations on the inputted card information
-   * @param card_number
-   * @param exp_month, exp_year
-   * @param cvc
-   */
-  stripeValidateFields(card_number, exp_month, exp_year, cvc) {
-    var num_err = Stripe.card.validateCardNumber(card_number);
-    var expiry_err = Stripe.card.validateExpiry(exp_month, exp_year);
-    var cvc_err = Stripe.card.validateCVC(cvc);
-    var card_errs = {};
-    card_errs.cardholder_name = [this.state.cardholder_name, "Can't be blank"];
-    card_errs.stripe_address_line1 = [this.state.stripe_address_line1, "Can't be blank"];
-    card_errs.stripe_address_city = [this.state.stripe_address_city, "Can't be blank"];
-    card_errs.stripe_address_state = [this.state.stripe_address_state, "Can't be blank"];
-    card_errs.stripe_address_zip = [this.state.stripe_address_zip, "Can't be blank"];
-    card_errs.card_number = [num_err, "Please enter a valid card number"];
-    card_errs.exp_month = [expiry_err, "Please enter a valid expiration date"];
-    card_errs.cvc = [cvc_err, "Please enter a valid cvc number"];
-    return card_errs;
-  }
-
-  /**
     * Creates a Stripe Customer on the Rails side
     * @param student_errs Object
     */
@@ -325,6 +303,28 @@ class StudentForm extends React.Component {
     error_info = Object.assign(error_info, student_errs);
     this.setState({ errors: error_info });
     return validated;
+  }
+
+  /**
+   * Calls Stripe validations on the inputted card information
+   * @param card_number
+   * @param exp_month, exp_year
+   * @param cvc
+   */
+  stripeValidateFields(card_number, exp_month, exp_year, cvc) {
+    var num_err = Stripe.card.validateCardNumber(card_number);
+    var expiry_err = Stripe.card.validateExpiry(exp_month, exp_year);
+    var cvc_err = Stripe.card.validateCVC(cvc);
+    var card_errs = {};
+    card_errs.cardholder_name = [this.state.cardholder_name, "Can't be blank"];
+    card_errs.stripe_address_line1 = [this.state.stripe_address_line1, "Can't be blank"];
+    card_errs.stripe_address_city = [this.state.stripe_address_city, "Can't be blank"];
+    card_errs.stripe_address_state = [this.state.stripe_address_state, "Can't be blank"];
+    card_errs.stripe_address_zip = [this.state.stripe_address_zip, "Can't be blank"];
+    card_errs.card_number = [num_err, "Please enter a valid card number"];
+    card_errs.exp_month = [expiry_err, "Please enter a valid expiration date"];
+    card_errs.cvc = [cvc_err, "Please enter a valid cvc number"];
+    return card_errs;
   }
 
   createStudent(customer) {
