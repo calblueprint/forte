@@ -604,7 +604,7 @@ class StudentForm extends React.Component {
                 <ControlLabel>School Name</ControlLabel>
                 <FormControl
                   componentClass="input"
-                  placeholder="School"
+                  placeholder="Enter school"
                   name="school"
                   onChange={(event) => this.handleChange(event)}/>
                 {this.displayErrorMessage("school")}
