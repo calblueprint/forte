@@ -1,25 +1,33 @@
-<h2>Change Your Password</h2>
-
 <%= form_for(resource, as: resource_name , :url => { :action => 'reset_password'}) do |f| %>
   <%= devise_error_messages! %>
   <%= f.hidden_field :reset_password_token %>
+  
+  <div class="page-wrapper">
+    <%= react_component('Header') %>
+    <div class="content-wrapper login-page">
+      <div class="login-card">
+        <h2 class="login-card__header">Change Your Password</h2>
+        <div class="login-card__field form-group">
+          <%= f.label :password, "New password", :class => "control-label" %>
+          <% if @minimum_password_length %>
+            <div class="login-card__header"><%= @minimum_password_length %> characters minimum</div>
+          <% end %>
+          <%= f.password_field :password, autofocus: true, autocomplete: "off", :class => "form-control" %>
+        </div>
+            
+        <div class="login-card__field form-group">
+          <%= f.label :password_confirmation, "Confirm new password", :class => "control-label" %><br />
+          <%= f.password_field :password_confirmation, autocomplete: "off", :class => "form-control" %>
+        </div>
 
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
-    <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "off" %>
+        <div class="actions">
+          <%= f.submit "Change Password", :class => "button button--solid-orange login-card__button" %>
+        </div>
+      
+      <% end %>
+
+    </div>
   </div>
+</div>
 
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Change Password" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+<%= react_component('Footer') %>
