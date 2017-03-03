@@ -19,7 +19,7 @@ class TeacherForm extends React.Component {
       training_experience: null,
       performance_experience: null,
       address: null,
-      address_apt: null,
+      address2: null,
       state: null,
       zipcode: null,
       location_preference: false,
@@ -411,7 +411,7 @@ class TeacherForm extends React.Component {
         training_experience: this.state.training_experience,
         performance_experience: this.state.performance_experience,
         address: this.state.address,
-        address_apt: this.state.address_apt,
+        address2: this.state.address2,
         state: this.state.state,
         zipcode: this.state.zipcode,
         location_preference: this.state.location_preference,
@@ -687,14 +687,14 @@ class TeacherForm extends React.Component {
                 {this.displayErrorMessage("address")}
               </FormGroup>
 
-              <FormGroup validationState={this.getValidationState("address_apt")}>
-                <ControlLabel>Apt # (optional)</ControlLabel>
+              <FormGroup validationState={this.getValidationState("address2")}>
+                <ControlLabel>Address Line 2 (optional)</ControlLabel>
                 <FormControl
                   componentClass="input"
-                  placeholder="Apt #"
-                  name="address_apt"
+                  placeholder="Address Line 2"
+                  name="address2"
                   onChange={(event) => this.handleChange(event)}/>
-                {this.displayErrorMessage("address_apt")}
+                {this.displayErrorMessage("address2")}
               </FormGroup>
 
               <div className="form-row">

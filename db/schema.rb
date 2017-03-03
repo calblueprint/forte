@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170219204410) do
+ActiveRecord::Schema.define(version: 20170301044239) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -116,7 +116,7 @@ ActiveRecord::Schema.define(version: 20170219204410) do
     t.string   "student_email"
     t.string   "student_phone"
     t.string   "address"
-    t.string   "address_apt"
+    t.string   "address2"
     t.integer  "state"
     t.integer  "zipcode"
     t.boolean  "location_preference"
@@ -161,7 +161,7 @@ ActiveRecord::Schema.define(version: 20170219204410) do
     t.text     "training_experience"
     t.text     "performance_experience"
     t.string   "address"
-    t.string   "address_apt"
+    t.string   "address2"
     t.integer  "state"
     t.integer  "zipcode"
     t.boolean  "location_preference"

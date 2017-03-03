@@ -21,7 +21,7 @@ class StudentForm extends React.Component {
       student_email: null,
       student_phone: null,
       address: null,
-      address_apt: null,
+      address2: null,
       state: null,
       zipcode: null,
       location_preference: false,
@@ -383,7 +383,6 @@ class StudentForm extends React.Component {
     var card_errs = {};
     card_errs.cardholder_name = [this.state.cardholder_name, "Can't be blank"];
     card_errs.stripe_address_line1 = [this.state.stripe_address_line1, "Can't be blank"];
-    card_errs.stripe_address_line2 = [this.state.stripe_address_line2, "Can't be blank"];
     card_errs.stripe_address_city = [this.state.stripe_address_city, "Can't be blank"];
     card_errs.stripe_address_state = [this.state.stripe_address_state, "Can't be blank"];
     card_errs.stripe_address_zip = [this.state.stripe_address_zip, "Can't be blank"];
@@ -420,7 +419,7 @@ class StudentForm extends React.Component {
         student_email: this.state.student_email,
         student_phone: this.state.student_phone,
         address: this.state.address,
-        address_apt: this.state.address_apt,
+        address2: this.state.address2,
         state: this.state.state,
         zipcode: this.state.zipcode,
         location_preference: this.state.location_preference,
@@ -653,14 +652,14 @@ class StudentForm extends React.Component {
                 {this.displayErrorMessage("address")}
               </FormGroup>
 
-              <FormGroup validationState={this.getValidationState("address_apt")}>
-                <ControlLabel>Apt # (optional)</ControlLabel>
+              <FormGroup validationState={this.getValidationState("address2")}>
+                <ControlLabel>Address Line 2 (optional)</ControlLabel>
                 <FormControl
                   componentClass="input"
-                  placeholder="Apt #"
-                  name="address_apt"
+                  placeholder="Address Line 2"
+                  name="address2"
                   onChange={(event) => this.handleChange(event)}/>
-                {this.displayErrorMessage("address_apt")}
+                {this.displayErrorMessage("address2")}
               </FormGroup>
 
               <div className="form-row">
