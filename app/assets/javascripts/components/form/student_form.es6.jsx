@@ -47,6 +47,7 @@ class StudentForm extends React.Component {
       activeInstruments: {},
       instruments: {},
       instruments_attributes: [],
+      place_id = null,
       showWaiverModal: false,
       errors: {}
     }

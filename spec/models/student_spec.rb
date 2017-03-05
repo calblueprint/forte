@@ -45,6 +45,7 @@
 #  waiver_signature       :string
 #  waiver_date            :datetime
 #  customer_id            :string
+#  place_id               :string
 #
 
 require 'rails_helper'
