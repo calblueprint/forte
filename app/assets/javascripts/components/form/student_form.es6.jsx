@@ -182,7 +182,7 @@ class StudentForm extends React.Component {
           }
         }
       }
-      if (street_number != null && street_name != null) {
+      if (street_number && street_name) {
         val = street_number + " " + street_name;
         document.getElementById("address").value = val;
         this.setState({ address: val });
