@@ -160,26 +160,17 @@ class TeacherForm extends React.Component {
   }
 
   handleAddressChange(event) {
-    var componentForm = {
-      street_number: 'short_name',
-      route: 'long_name',
-      locality: 'long_name',
-      administrative_area_level_1: 'short_name',
-      postal_code: 'short_name'
-    };
 
-    var autocomplete = new google.maps.places.Autocomplete(document.getElementById("address"));
-    this.geolocate(autocomplete);
-    autocomplete.addListener("place_changed", function() {
+    function fillInAddress() {
+      var componentForm = {
+        street_number: 'short_name',
+        route: 'long_name',
+        locality: 'long_name',
+        administrative_area_level_1: 'short_name',
+        postal_code: 'short_name'
+      };
+      
       var place = autocomplete.getPlace();
-
-      // Clear any old address information
-      for (var i = 2; i < componentForm.length; i++) {
-        document.getElementById(componentForm[i]).value = '';
-        document.getElementById(componentForm[i]).disabled = false;
-      }
-      document.getElementById("address").value = '';
-      document.getElementById("address").disabled = false;
 
       // Get each component of the address from the place details
       // and fill the corresponding field on the form.
@@ -188,22 +179,40 @@ class TeacherForm extends React.Component {
         var addressType = place.address_components[i].types[0];
         if (componentForm[addressType]) {
           var val = place.address_components[i][componentForm[addressType]];
-          if (addressType == "administrative_area_level_1") {
-            val = STATES.indexOf(val);
-            document.getElementById(addressType).value = val;          
-          } else if (addressType == "street_number") {
-            street_number = val;
-          } else if (addressType == "route") {
-            street_name = val;
-          } else {
-            document.getElementById(addressType).value = val;          
+          switch(addressType) {
+            case "administrative_area_level_1":
+              val = STATES.indexOf(val);
+              document.getElementById(addressType).value = val;
+              this.setState({ state: val });
+              break;
+            case "street_number":
+              street_number = val;
+              break;
+            case "route":
+              street_name = val;
+              break;
+            case "locality":
+              document.getElementById(addressType).value = val;
+              this.setState({ city: val });
+              break;
+            case "postal_code":
+              document.getElementById(addressType).value = val;
+              this.setState({ zipcode: val });
+              break;
           }
         }
       }
       if (street_number != null && street_name != null) {
-        document.getElementById("address").value = street_number + " " + street_name;
+        val = street_number + " " + street_name;
+        document.getElementById("address").value = val;
+        this.setState({ address: val });
       }
-    });
+    }
+
+    var autocomplete = new google.maps.places.Autocomplete(document.getElementById("address"));
+    this.geolocate(autocomplete);
+    autocomplete.addListener("place_changed", fillInAddress.bind(this));
+    this.handleChange(event);
   }
 
   // Bias the autocomplete object to the user's geographical location,
@@ -682,8 +691,7 @@ class TeacherForm extends React.Component {
                   placeholder="Address"
                   name="address"
                   id="address"
-                  onFocus={(event) => this.handleAddressChange(event)}
-                  onChange={(event) => this.handleChange(event)}/>
+                  onChange={(event) => this.handleAddressChange(event)} />
                 {this.displayErrorMessage("address")}
               </FormGroup>
 
