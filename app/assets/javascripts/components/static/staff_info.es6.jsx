@@ -7,7 +7,6 @@ class StaffInfo extends React.Component {
   static get propTypes() {
     return {
       person: React.PropTypes.object,
-      handleClose: React.PropTypes.func,
     };
   }
 
