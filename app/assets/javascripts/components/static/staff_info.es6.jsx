@@ -35,5 +35,4 @@ class StaffInfo extends React.Component {
       </div>
     );
   }
-
 }
