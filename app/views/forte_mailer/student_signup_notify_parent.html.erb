@@ -1,10 +1,14 @@
-<div style="width: 100%; background-color: #ebeef2;">
-  <div style="width: 600px; padding: 24px; margin: auto; background-color: #ffffff;">
-    <h4>Hi <%= @student.guardian_first_name %>,</h4>
+<div style="width: 100%; background-color: #f4f4f4; padding: 20px 0; font-family: sans-serif;">
+  <div style="max-width: 600px; margin: auto; background-color: #ffffff;">
+    <%= render "partials/email_header" %>
 
-    <p>Your student has succesfully completed their registration for Forte</p>
+    <div style="padding: 24px;">
+      <h4>Hi <%= @student.guardian_first_name %>,</h4>
 
-    <p>Sincereley,</p>
-    <h4>The Forte Team</h4>
+      <p>Your student has succesfully completed their registration for Forte</p>
+
+      <p>Sincereley,</p>
+      <h4>The Forte Team</h4>
+    </div>
   </div>
 </div>
