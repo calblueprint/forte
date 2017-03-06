@@ -78,8 +78,8 @@ class RescheduleModal extends React.Component {
       return (
         <div>
           <Modal.Body>
-            <RescheduleCalendar 
-              ref="rescheduler" 
+            <RescheduleCalendar
+              ref="rescheduler"
               lesson={lesson}
             />
           </Modal.Body>
