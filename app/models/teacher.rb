@@ -54,6 +54,7 @@
 #  account_id             :string
 #  bank_id                :string
 #  sign_up_ip             :string
+#  place_id               :string
 #
 
 class Teacher < ActiveRecord::Base
