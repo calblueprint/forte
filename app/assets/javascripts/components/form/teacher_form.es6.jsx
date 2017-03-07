@@ -159,6 +159,80 @@ class TeacherForm extends React.Component {
     });
   }
 
+  handleAddressChange(event) {
+
+    function fillInAddress() {
+      var componentForm = {
+        street_number: 'short_name',
+        route: 'long_name',
+        locality: 'long_name',
+        administrative_area_level_1: 'short_name',
+        postal_code: 'short_name'
+      };
+      
+      var place = autocomplete.getPlace();
+
+      // Get each component of the address from the place details
+      // and fill the corresponding field on the form.
+      var street_number, street_name;
+      for (var i = 0; i < place.address_components.length; i++) {
+        var addressType = place.address_components[i].types[0];
+        if (componentForm[addressType]) {
+          var val = place.address_components[i][componentForm[addressType]];
+          switch(addressType) {
+            case "administrative_area_level_1":
+              val = STATES.indexOf(val);
+              document.getElementById(addressType).value = val;
+              this.setState({ state: val });
+              break;
+            case "street_number":
+              street_number = val;
+              break;
+            case "route":
+              street_name = val;
+              break;
+            case "locality":
+              document.getElementById(addressType).value = val;
+              this.setState({ city: val });
+              break;
+            case "postal_code":
+              document.getElementById(addressType).value = val;
+              this.setState({ zipcode: val });
+              break;
+          }
+        }
+      }
+      if (street_number && street_name) {
+        val = street_number + " " + street_name;
+        document.getElementById("address").value = val;
+        this.setState({ address: val });
+      }
+    }
+
+    var autocomplete = new google.maps.places.Autocomplete(document.getElementById("address"));
+    this.geolocate(autocomplete);
+    autocomplete.addListener("place_changed", fillInAddress.bind(this));
+    this.handleChange(event);
+  }
+
+  // Bias the autocomplete object to the user's geographical location,
+  // as supplied by the browser's 'navigator.geolocation' object.
+  geolocate(autocomplete) {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var geolocation = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        var circle = new google.maps.Circle({
+          center: geolocation,
+          radius: position.coords.accuracy
+        });
+        autocomplete.setBounds(circle.getBounds());
+      });
+    }
+  }
+
   openWaiver() {
     this.setState({ showWaiverModal: true });
   }
@@ -616,7 +690,8 @@ class TeacherForm extends React.Component {
                   componentClass="input"
                   placeholder="Address"
                   name="address"
-                  onChange={(event) => this.handleChange(event)}/>
+                  id="address"
+                  onChange={(event) => this.handleAddressChange(event)} />
                 {this.displayErrorMessage("address")}
               </FormGroup>
 
@@ -637,6 +712,7 @@ class TeacherForm extends React.Component {
                     componentClass="input"
                     placeholder="City"
                     name="city"
+                    id="locality"
                     onChange={(event) => this.handleChange(event)}/>
                   {this.displayErrorMessage("city")}
                 </FormGroup>
@@ -646,6 +722,7 @@ class TeacherForm extends React.Component {
                   <FormControl
                     componentClass="select"
                     name="state"
+                    id="administrative_area_level_1"
                     onChange={(event) => this.handleIntegerChange(event)}>
                     <option value="" disabled selected>Select your state</option>
                     {this.renderOptions('state')}
@@ -659,6 +736,7 @@ class TeacherForm extends React.Component {
                     componentClass="input"
                     placeholder="Zip Code"
                     name="zipcode"
+                    id="postal_code"
                     onChange={(event) => this.handleChange(event)}/>
                   {this.displayErrorMessage("zipcode")}
                 </FormGroup>
@@ -857,6 +935,8 @@ class TeacherForm extends React.Component {
                   <ControlLabel>Last 4 Digits of SSN</ControlLabel>
                   <FormControl
                     componentClass="input"
+                    type="password"
+                    maxLength="4"
                     placeholder="Enter Last 4 Digits of SSN"
                     name="stripe_ssn_last_4"
                     onChange={(event) => this.handleChange(event)}/>
