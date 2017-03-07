@@ -39,7 +39,8 @@ class RosterTableRow extends React.Component {
         <td>{person.gender}</td>
         <td>
           <a href={`mailto:${person.email}`}
-             className="roster-table-email">{person.email}</a>
+             className="roster-table-email"
+             onClick={(e) => e.stopPropagation()}>{person.email}</a>
         </td>
         <td>{person.city}, {person.state}</td>
         <td>{person.instrument}</td>
