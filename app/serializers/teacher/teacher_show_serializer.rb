@@ -13,7 +13,7 @@ class TeacherShowSerializer < TeacherBaseSerializer
               :training_experience,
               :performance_experience,
               :address,
-              :address_apt,
+              :address2,
               :state,
               :zipcode,
               :location_preference, 

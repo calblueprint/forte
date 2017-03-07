@@ -32,7 +32,7 @@
 #  student_email          :string
 #  student_phone          :string
 #  address                :string
-#  address_apt            :string
+#  address2               :string
 #  state                  :integer
 #  zipcode                :integer
 #  location_preference    :boolean
@@ -45,6 +45,7 @@
 #  waiver_signature       :string
 #  waiver_date            :datetime
 #  customer_id            :string
+#  place_id               :string
 #
 
 FactoryGirl.define do

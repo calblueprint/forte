@@ -29,7 +29,7 @@
 #  training_experience    :text
 #  performance_experience :text
 #  address                :string
-#  address_apt            :string
+#  address2               :string
 #  state                  :integer
 #  zipcode                :integer
 #  location_preference    :boolean
@@ -54,6 +54,7 @@
 #  account_id             :string
 #  bank_id                :string
 #  sign_up_ip             :string
+#  place_id               :string
 #
 
 class Teacher < ActiveRecord::Base
@@ -127,7 +128,7 @@ class Teacher < ActiveRecord::Base
   end
 
   def full_address
-    "#{address} #{address_apt}, #{state} #{zipcode}"
+    "#{address} #{address2}, #{state} #{zipcode}"
   end
 
   def submit_signup

@@ -14,7 +14,7 @@ class StudentShowSerializer < StudentBaseSerializer
               :student_email,
               :student_phone,
               :address,
-              :address_apt,
+              :address2,
               :state,
               :city,
               :zipcode,

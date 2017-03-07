@@ -109,7 +109,7 @@ class TeacherInformation extends React.Component {
                 <FormControl
                   readOnly
                   componentClass="input"
-                  value={teacher.address_apt} />
+                  value={teacher.address2} />
               </FormGroup>
               <FormGroup>
                 <ControlLabel>City</ControlLabel>
