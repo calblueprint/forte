@@ -491,6 +491,8 @@ class StudentForm extends React.Component {
   renderOptions(type) {
     var optionsArray = []
     var retOptions = []
+    var i = 0;
+    var j = 0;
     switch(type) {
       case 'gender':
         optionsArray = GENDERS;
@@ -513,9 +515,12 @@ class StudentForm extends React.Component {
       case 'years_played':
         optionsArray = YEARS_PLAYED;
         break;
+      case 'household_number':
+        optionsArray = HOUSEHOLD_NUMBER;
+        j = 1;
     }
-    for (var i = 0; i < optionsArray.length; i++) {
-      retOptions.push(<option value={i}>{optionsArray[i]}</option>);
+    for (; i < optionsArray.length; i++, j++) {
+      retOptions.push(<option value={j}>{optionsArray[i]}</option>);
     }
     return retOptions;
   }
@@ -1000,10 +1005,12 @@ class StudentForm extends React.Component {
               <FormGroup validationState={this.getValidationState("household_number")}>
                 <ControlLabel>Household Number</ControlLabel>
                 <FormControl
-                  componentClass="input"
-                  placeholder="Number of members in household"
+                  componentClass="select"
                   name="household_number"
-                  onChange={(event) => this.handleIntegerChange(event)}/>
+                  onChange={(event) => this.handleIntegerChange(event)}>
+                  <option value="" disabled selected>Select number of members in household</option>
+                  {this.renderOptions('household_number')}
+                </FormControl>
                 {this.displayErrorMessage("household_number")}
               </FormGroup>
 

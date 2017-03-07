@@ -34,3 +34,5 @@ const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                       'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
 const ACCOUNT_HOLDER_TYPE = ['Individual', 'Company']
+
+const HOUSEHOLD_NUMBER = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
