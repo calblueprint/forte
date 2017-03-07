@@ -54,6 +54,7 @@ class TeacherForm extends React.Component {
       stripe_ssn_last_4: null,
       activeInstruments: [],
       instruments: {},
+      place_id: null, // Google place ID corresponding to the teacher's address
       showWaiverModal: false,
       errors: {}
     }
