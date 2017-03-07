@@ -78,9 +78,8 @@ class Api::StudentsController < Api::BaseController
   def validate
     student = Student.new(student_params)
     if student.valid?
-      render json: student
+      render_json_message(:created)
     else
-      puts student.errors.messages
       render json: student.errors.messages
     end
   end
