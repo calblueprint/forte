@@ -176,7 +176,7 @@ def create_single_student(n)
     zipcode: address[:zip_code],
     location_preference: Faker::Boolean.boolean,
     travel_distance: Faker::Number.between(0, 4),
-    income_range: Faker::Number.between(0, 4),
+    income_range: Faker::Number.between(0, 7),
     household_number: Faker::Number.between(0, 10),
     disciplinary_action: Faker::Boolean.boolean,
     criminal_charges: Faker::Boolean.boolean,
