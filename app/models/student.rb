@@ -102,11 +102,13 @@ class Student < ActiveRecord::Base
                 :MA, :MI, :MN, :MS, :MO, :MT, :NE, :NV, :NH, :NJ,
                 :NM, :NY, :NC, :ND, :OH, :OK, :OR, :PA, :RI, :SC,
                 :SD, :TN, :TX, :UT, :VT, :VA, :WA, :WV, :WI, :WY ]
-  enum gender: [ :female, :male, :other ]
+  enum gender: [ :Female, :Male ]
   enum travel_distance: [ :'I am not willing to travel', :'Up to 5 miles',
                           :'Up to 10 miles', :'Up to 20 miles',
-                          :'20 miles or more']
-  enum income_range: [:'$0 - $10,000', :'$10,001 - $20,000', :'$20,001 - 30,000', :'$30,001 - 40,000', :'$40,001 - $50,000']
+                          :'20 miles or more' ]
+  enum income_range: [:'$0 - $10,000', :'$10,001 - $20,000', :'$20,001 - $30,000',
+                      :'$30,001 - 40,000', :'$40,001 - $50,000', :'$50,001 - $75,000',
+                      :'$75,001 - $125,000', :'$125k+' ]
 
   def full_name
     "#{first_name} #{last_name}"
