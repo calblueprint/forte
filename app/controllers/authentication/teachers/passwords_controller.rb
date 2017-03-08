@@ -1,13 +1,13 @@
 class Authentication::Teachers::PasswordsController < Devise::PasswordsController
-  
+
   def send_token
     user = Teacher.find_by_email(params[:email])
     if user.present?
       @reset_password_token = user.send_reset_password_instructions
-      render_json_message(status: :ok)
+      render_json_message(:ok)
     elsif user.nil?
       error_response(message: "The entered email address cannot be found.", status: :forbidden)
-    else 
+    else
       error_response(message: "An unknown error occurred.", status: :internal_server_error)
     end
   end
