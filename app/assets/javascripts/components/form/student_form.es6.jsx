@@ -582,7 +582,7 @@ class StudentForm extends React.Component {
     const { showWaiverModal } = this.state;
     if (showWaiverModal == true) {
       return (
-        <WaiverModal handleClose={() => this.closeWaiver()} />
+        <WaiverModal isStudent={true} handleClose={() => this.closeWaiver()} />
       );
     }
   }
