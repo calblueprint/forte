@@ -48,8 +48,9 @@ Rails.application.configure do
     :domain               => "gmail.com",
     :user_name            => ENV['smtp_username'],
     :password             => ENV['smtp_password'],
-    :authentication       => "plain",
-    :enable_starttls_auto => true
+    :authentication       => :plain,
+    :enable_starttls_auto => true,
+    :openssl_verify_mode => 'none'
   }
 
   config.action_mailer.perform_deliveries = true
