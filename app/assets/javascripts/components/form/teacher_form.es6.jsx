@@ -429,8 +429,17 @@ class TeacherForm extends React.Component {
    * @param stripe_country
    */
   stripeValidateFields(stripe_routing_number, stripe_account_number, stripe_country) {
+
     var routing_num_err = Stripe.bankAccount.validateRoutingNumber(stripe_routing_number, stripe_country);
     var account_num_err = Stripe.bankAccount.validateAccountNumber(stripe_account_number, stripe_country);
+
+    var routing_num_err_msg = (routing_num_err && !stripe_country) ? "Please make sure Bank Account Country is not blank" :  "Please enter a valid routing number";
+    var account_num_err_msg = (account_num_err && !stripe_country) ? "Please make sure Bank Account Country is not blank" : "Please enter a valid account number";
+
+    if (!stripe_country) {
+      routing_num_err = false;
+      account_num_err = false;
+    }
 
     var payment_errs = {};
 
@@ -443,8 +452,8 @@ class TeacherForm extends React.Component {
     payment_errs.stripe_address_postal_code = [this.state.stripe_address_postal_code, "Can't be blank"];
     payment_errs.stripe_ssn_last_4 = [this.state.stripe_ssn_last_4, "Can't be blank"];
     payment_errs.stripe_country = [this.state.stripe_country, "Can't be blank"];
-    payment_errs.stripe_routing_number = [routing_num_err, "Please enter a valid routing number"];
-    payment_errs.stripe_account_number = [account_num_err, "Please enter a valid account number"];
+    payment_errs.stripe_routing_number = [routing_num_err, routing_num_err_msg];
+    payment_errs.stripe_account_number = [account_num_err, account_num_err_msg];
 
     return payment_errs;
   }
