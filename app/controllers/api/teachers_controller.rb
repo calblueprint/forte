@@ -106,6 +106,8 @@ class Api::TeachersController < Api::BaseController
       :school_level,
       :phone,
       :email,
+      :password,
+      :password_confirmation,
       :introduction,
       :teaching_experience,
       :training_experience,
