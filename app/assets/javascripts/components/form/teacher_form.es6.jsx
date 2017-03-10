@@ -265,6 +265,7 @@ class TeacherForm extends React.Component {
     this.setState({ instruments_attributes: instrumentsObj });
   }
 
+  /* Back-end Validtions for Teacher Fields */
   validateTeacherFields() {
 
     var reject = (response) => {
@@ -376,6 +377,7 @@ class TeacherForm extends React.Component {
    * @param stripe_routing_number
    * @param stripe_account_number
    * @param stripe_country
+   * @param teacher_errs
    */
   async validateTeacherAndStripeCustomer(stripe_routing_number, stripe_account_number, stripe_country, teacher_errs) {
 
