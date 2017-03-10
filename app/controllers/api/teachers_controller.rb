@@ -83,15 +83,57 @@ class Api::TeachersController < Api::BaseController
     return (time_overlap and teacher_instrument_valid and travel_compatibility)
   end
 
+  def validate
+    teacher = Teacher.new(teacher_params)
+    if teacher.valid?
+      render_json_message(:created)
+    else
+      render json: teacher.errors.messages
+    end
+  end
+
+  private
+
   def teacher_params
     params.require(:teacher).permit(
-      :is_searching,
-      :instruments,
-      :email,
-      :city,
       :first_name,
       :last_name,
-      :availability,
+      :email,
+      {:availability => []},
+      :gender,
+      :birthday,
+      :school,
+      :school_level,
+      :phone,
+      :email,
+      :introduction,
+      :teaching_experience,
+      :training_experience,
+      :performance_experience,
+      :address,
+      :address2,
+      :state,
+      :zipcode,
+      :city,
+      :location_preference,
+      :travel_distance,
+      :background_check,
+      :reference1_first_name,
+      :reference1_last_name,
+      :reference1_relation,
+      :reference1_email,
+      :reference1_phone,
+      :reference2_first_name,
+      :reference2_last_name,
+      :reference2_relation,
+      :reference2_email,
+      :reference2_phone,
+      :youth_participation,
+      :criminal_charges,
+      :criminal_explanation,
+      :waiver_signature,
+      :waiver_date,
+      :instruments_attributes => [:id, :name, :years_played, :proficiency, :is_primary]
     )
   end
 end
