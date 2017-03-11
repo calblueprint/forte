@@ -4,7 +4,7 @@ class ResetPasswordModal extends React.Component {
     super(props);
     this.state = {
       email: '',
-      errors: '',
+      error: '',
     };
   }
 
@@ -17,7 +17,7 @@ class ResetPasswordModal extends React.Component {
 
   resetPassword() {
     var reject = (response) => {
-      this.setState({ errors: response.message })
+      this.setState({ error: response.message })
     };
     var params = {
       email: this.state.email
@@ -53,12 +53,12 @@ class ResetPasswordModal extends React.Component {
     }
   }
 
-  renderErrors() {
-    const { errors } = this.state;
-    if (errors != '') {
+  renderError() {
+    const { error } = this.state;
+    if (error != '') {
       return (
         <Alert bsStyle="danger">
-          {errors}
+          {error}
         </Alert>
       )
     };
@@ -72,7 +72,7 @@ class ResetPasswordModal extends React.Component {
         <Modal.Header closeButton>
           <Modal.Title>Reset Your Password</Modal.Title>
         </Modal.Header>
-        {this.renderErrors()}
+        {this.renderError()}
         <Modal.Body>
             <FormGroup className="reset-password__field">
               <FormControl
