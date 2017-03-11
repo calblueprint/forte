@@ -116,6 +116,8 @@ class MatchingModal extends React.Component {
 
   renderBody() {
     const { handleClose, student, teacher } = this.props;
+    console.log(student.first_name);
+    console.log(student);
     const { showNextScreen } = this.state;
     var overlappingAvailability = intersection(student.availability, teacher.availability);
     if (showNextScreen) {
@@ -140,7 +142,8 @@ class MatchingModal extends React.Component {
               <ControlLabel>Note that all times are in your local time zone!</ControlLabel>
               <MatchingCalendar 
                 ref="calendar" 
-                availability={overlappingAvailability} /> 
+                availability={overlappingAvailability}
+                timezone={student.timezone} /> 
             </FormGroup>
             <FormGroup>
               <ControlLabel>Location</ControlLabel>

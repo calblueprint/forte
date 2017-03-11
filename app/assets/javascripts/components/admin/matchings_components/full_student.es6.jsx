@@ -17,7 +17,7 @@ class FullStudent extends React.Component {
         <h2 className="section-title">Availability</h2>
         <Calendar
           isEditable={false}
-          events={availability_to_events(student.availability)} />
+          events={availability_to_events(student.availability, student.timezone)} />
       </div>
     );
   }

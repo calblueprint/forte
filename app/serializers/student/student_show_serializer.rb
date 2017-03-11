@@ -28,7 +28,8 @@ class StudentShowSerializer < StudentBaseSerializer
               :waiver_date,
               :full_address,
               :full_name,
-              :unmatched_instruments
+              :unmatched_instruments,
+              :timezone,
 
   def unmatched_instruments
     student_instruments = object.instruments.map &:name
