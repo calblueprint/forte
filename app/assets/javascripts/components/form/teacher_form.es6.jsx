@@ -172,6 +172,9 @@ class TeacherForm extends React.Component {
       };
       
       var place = autocomplete.getPlace();
+      var lat = place["geometry"]["location"]["lat"]();
+      var lng = place["geometry"]["location"]["lng"]();
+      this.setState({ lat: lat, lng: lng });
 
       // Get each component of the address from the place details
       // and fill the corresponding field on the form.
@@ -402,6 +405,21 @@ class TeacherForm extends React.Component {
     var resolve = (response) => {
       this.verifyStripeAccount(response);
     };
+    if (!this.state.lat && !this.state.lng) {
+      const { address, address_apt, city, state, zipcode } = this.state;
+      var geocoder = new google.maps.Geocoder();
+      var full_address = [address, address_apt, city, state, zipcode].join(" ");
+      geocoder.geocode({"address": full_address}, function(results, status) {
+        if (status === 'OK') {
+          var location = results[0]["geometry"]["location"];
+          var lat = location["lat"]();
+          var lng = location["lng"]();
+          this.setState({ lat: lat, lng: lng });
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+        }
+      }.bind(this));
+    }
     var params = {
       teacher: {
         email: this.state.email,
@@ -446,6 +464,8 @@ class TeacherForm extends React.Component {
         account_id: accountResponse.account.id,
         bank_id: accountResponse.bank_account.id,
         instruments_attributes: this.state.instruments_attributes,
+        lat: this.state.lat,
+        lng: this.state.lng,
       }
     };
     Requester.post(

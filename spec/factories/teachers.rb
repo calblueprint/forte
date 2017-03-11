@@ -54,7 +54,9 @@
 #  account_id             :string
 #  bank_id                :string
 #  sign_up_ip             :string
-#  place_id               :string
+#  lat                    :decimal(, )
+#  lng                    :decimal(, )
+#  timezone               :string
 #
 
 FactoryGirl.define do

@@ -82,6 +82,8 @@ before_filter :configure_sign_up_params, only: [:create]
         :waiver_signature,
         :waiver_date,
         :customer_id,
+        :lat,
+        :lng,
         :instruments_attributes => [:id, :name, :years_played, :proficiency, :is_primary]
       ],
     )
