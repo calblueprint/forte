@@ -46,6 +46,7 @@
     get teachers() {
       return {
         index: '/api/teachers',
+        validate: '/api/teachers/validate',
         delete: (id) => `/api/teachers/${id}`,
         update: (id) => `/api/teachers/${id}`,
         show: (id) => `/api/teachers/${id}`,
