@@ -44,7 +44,6 @@ class UnmatchedPage extends React.Component {
         }
       }
     }
-    console.log(validTeachers);
     return validTeachers;
   }
 
