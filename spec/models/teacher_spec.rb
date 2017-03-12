@@ -3,7 +3,7 @@
 # Table name: teachers
 #
 #  id                     :integer          not null, primary key
-#  is_searching           :boolean          default(FALSE)
+#  is_searching           :boolean          default(TRUE)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  email                  :string           default(""), not null
@@ -55,6 +55,7 @@
 #  bank_id                :string
 #  sign_up_ip             :string
 #  place_id               :string
+#  teach_for_free         :boolean          default(FALSE)
 #
 
 require 'rails_helper'

@@ -113,6 +113,7 @@ def create_single_teacher(is_searching, n)
     state: address[:state],
     zipcode: address[:zip_code],
     location_preference: Faker::Boolean.boolean,
+    teach_for_free: Faker::Boolean.boolean,
     travel_distance: Faker::Number.between(0, 4),
     background_check: Faker::Boolean.boolean,
     reference1_first_name: Faker::Name.first_name,
