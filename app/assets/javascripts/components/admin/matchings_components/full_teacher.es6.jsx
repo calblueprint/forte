@@ -8,13 +8,13 @@ class FullTeacher extends React.Component {
 
   render () {
     const { teacher } = this.props
-    console.log(teacher.timezone);
     return (
       <div className="full-person">
         <TeacherInformation
           teacher={teacher}
           showCategory={true} />
         <h2 className="section-title">Availability</h2>
+        <p>Note: Calendar is displayed in timezone <b>{teacher.timezone}</b></p>
         <Calendar
           isEditable={false}
           events={availability_to_events(teacher.availability, teacher.timezone)} />

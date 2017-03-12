@@ -44,7 +44,8 @@ class UnmatchedPage extends React.Component {
         }
       }
     }
-    return validTeachers
+    console.log(validTeachers);
+    return validTeachers;
   }
 
   filterTeachersByDistance(teachers) {
@@ -53,6 +54,9 @@ class UnmatchedPage extends React.Component {
       var teacher = teachers[i];
       destinations.push(teacher.full_address)
     }
+    console.log(teachers);
+    console.log(this.state.student.full_address);
+    console.log(destinations);
 
     var service = new google.maps.DistanceMatrixService();
     service.getDistanceMatrix(

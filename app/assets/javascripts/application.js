@@ -21,4 +21,4 @@
 //= require react-datetime
 //= require fullcalendar
 //= require components
-// = require_tree 
+//= require_tree .

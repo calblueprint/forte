@@ -47,7 +47,8 @@ class StudentForm extends React.Component {
       activeInstruments: {},
       instruments: {},
       instruments_attributes: [],
-      place_id: null, // Google place ID corresponding to the student's address
+      lat: null,
+      lng: null,
       showWaiverModal: false,
       errors: {}
     }

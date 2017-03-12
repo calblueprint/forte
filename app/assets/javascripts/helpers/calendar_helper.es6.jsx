@@ -25,7 +25,6 @@ function range_to_array(start, end) {
 
 function availability_to_events(availability, timezone) {
   var events = [], rstart, rend;
-  console.log(availability);
   for (var i = 0; i < availability.length; i++) {
     rstart = availability[i];
     rend = rstart;

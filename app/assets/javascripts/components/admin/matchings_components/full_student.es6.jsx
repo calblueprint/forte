@@ -15,6 +15,7 @@ class FullStudent extends React.Component {
           student={student}
           showCategory={true} />
         <h2 className="section-title">Availability</h2>
+        <p>Note: Calendar is displayed in timezone <b>{student.timezone}</b></p>
         <Calendar
           isEditable={false}
           events={availability_to_events(student.availability, student.timezone)} />

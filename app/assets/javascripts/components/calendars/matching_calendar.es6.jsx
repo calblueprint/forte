@@ -76,7 +76,10 @@ class MatchingCalendar extends React.Component {
   }
   render () {
     return (
-      <div ref="calendar"></div>
+      <div>
+        <p>Note: Calendar displayed in timezone <b>{this.props.timezone}</b></p>
+        <div ref="calendar"></div>
+      </div>
     );
   }
 }
