@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   namespace :student do
     get :lessons
     get :settings
+    get :profile
   end
 
   ##################################################
@@ -128,6 +129,7 @@ Rails.application.routes.draw do
   ##################################################
   namespace :stripe do
     post '/customer', to: 'customers#create_customer'
+    post '/update_customer', to: 'customers#update_customer'
     post '/charge', to: 'charges#charge_customer'
     post '/account', to: 'accounts#create_account'
     post '/verify_account', to: 'accounts#update_account'
