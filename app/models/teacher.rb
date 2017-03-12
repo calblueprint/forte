@@ -69,7 +69,6 @@ class Teacher < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  validates :email, presence: true, uniqueness: true
   validates :city, presence: true
   validates :first_name, presence: true
   validates :last_name, presence: true
@@ -104,8 +103,8 @@ class Teacher < ActiveRecord::Base
   validates :youth_participation, :inclusion => { :in => [true, false] }
   validates :waiver_signature, presence: true
   validates :waiver_date, presence: true
-  validates :account_id, presence: true
-  validates :bank_id, presence: true
+  validates :account_id, presence: true, on: :new
+  validates :bank_id, presence: true, on: :new
 
   has_many :matchings
   has_many :lessons, through: :matchings
@@ -120,7 +119,7 @@ class Teacher < ActiveRecord::Base
                 :MA, :MI, :MN, :MS, :MO, :MT, :NE, :NV, :NH, :NJ,
                 :NM, :NY, :NC, :ND, :OH, :OK, :OR, :PA, :RI, :SC,
                 :SD, :TN, :TX, :UT, :VT, :VA, :WA, :WV, :WI, :WY ]
-  enum gender: [ :female, :male, :other ]
+  enum gender: [ :Female, :Male ]
   enum travel_distance: [ :'I am not willing to travel', :'Up to 5 miles',
                           :'Up to 10 miles', :'Up to 20 miles',
                           :'20 miles or more']

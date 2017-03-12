@@ -62,7 +62,6 @@ before_filter :configure_sign_up_params, only: [:create]
         :guardian_first_name,
         :guardian_last_name,
         :guardian_phone,
-        :email,
         :introduction,
         :lesson_experience,
         :performance_experience,

@@ -80,7 +80,6 @@ before_filter :configure_sign_up_params, only: [:create]
         :school,
         :school_level,
         :phone,
-        :email,
         :introduction,
         :teaching_experience,
         :training_experience,

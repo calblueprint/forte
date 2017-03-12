@@ -170,7 +170,7 @@ class TeacherForm extends React.Component {
         administrative_area_level_1: 'short_name',
         postal_code: 'short_name'
       };
-      
+
       var place = autocomplete.getPlace();
       var lat = place["geometry"]["location"]["lat"]();
       var lng = place["geometry"]["location"]["lng"]();
@@ -268,52 +268,69 @@ class TeacherForm extends React.Component {
     this.setState({ instruments_attributes: instrumentsObj });
   }
 
-  /**
-   * Sets the state of errors to be the errored fields returned from stripeValidateFields
-   * @param stripe_routing_number
-   * @param stripe_account_number
-   * @param stripe_country
-   */
-  async validateStripeCustomer(stripe_routing_number, stripe_account_number, stripe_country) {
-    var payment_errs = await this.stripeValidateFields(stripe_routing_number, stripe_account_number, stripe_country);
-    var stripe_error_info = {};
-    var validated = true;
-    for (var err_type in payment_errs) {
-      //TODO: Find JS function to identify false values instead
-      if (!payment_errs[err_type][0]) {
-        validated = false;
-        stripe_error_info[err_type] = payment_errs[err_type][1];
-      }
+  /* Back-end Validtions for Teacher Fields */
+  validateTeacherFields() {
+
+    var reject = (response) => {
+      this.createStripeAccount(response);
     }
-    this.setState({ errors: stripe_error_info });
-    return validated;
+    var resolve = (response) => {
+      this.createStripeAccount({});
+    };
+
+    var params = {
+      teacher: {
+        email: this.state.email,
+        password: this.state.password,
+        password_confirmation: this.state.password_confirmation,
+        first_name: this.state.first_name,
+        last_name: this.state.last_name,
+        city: this.state.city,
+        gender: this.state.gender,
+        birthday: this.state.birthday,
+        school: this.state.school,
+        school_level: this.state.school_level,
+        phone: this.state.phone,
+        email:this.state.email,
+        introduction: this.state.introduction,
+        teaching_experience: this.state.teaching_experience,
+        training_experience: this.state.training_experience,
+        performance_experience: this.state.performance_experience,
+        address: this.state.address,
+        address2: this.state.address2,
+        state: this.state.state,
+        zipcode: this.state.zipcode,
+        location_preference: this.state.location_preference,
+        travel_distance: this.state.travel_distance,
+        availability: this.state.availability,
+        background_check: this.state.background_check,
+        reference1_first_name: this.state.reference1_first_name,
+        reference1_last_name: this.state.reference1_last_name,
+        reference1_relation: this.state.reference1_relation,
+        reference1_email: this.state.reference1_email,
+        reference1_phone: this.state.reference1_phone,
+        reference2_first_name: this.state.reference2_first_name,
+        reference2_last_name: this.state.reference2_last_name,
+        reference2_relation: this.state.reference2_relation,
+        reference2_email: this.state.reference2_email,
+        reference2_phone: this.state.reference2_phone,
+        criminal_charges: this.state.criminal_charges,
+        youth_participation: this.state.youth_participation,
+        criminal_explanation: this.state.criminal_explanation,
+        waiver_signature: this.state.waiver_signature,
+        waiver_date: this.state.waiver_date,
+        instruments_attributes: this.state.instruments_attributes,
+      }
+    };
+    Requester.post(
+      ApiConstants.teachers.validate,
+      params,
+      resolve,
+      reject
+    );
   }
 
-  /**
-   * Calls Stripe validations on the inputted payment information
-   * @param stripe_routing_number
-   * @param stripe_account_number
-   * @param stripe_country
-   */
-  stripeValidateFields(stripe_routing_number, stripe_account_number, stripe_country) {
-    var routing_num_err = Stripe.bankAccount.validateRoutingNumber(stripe_routing_number, stripe_country);
-    var account_num_err = Stripe.bankAccount.validateAccountNumber(stripe_account_number, stripe_country);
-    var payment_errs = {};
-    payment_errs.stripe_account_holder_name = [this.state.stripe_account_holder_name, "Can't be blank"];
-    payment_errs.stripe_account_holder_type = [this.state.stripe_account_holder_type, "Can't be blank"];
-    payment_errs.stripe_account_holder_dob = [this.state.stripe_account_holder_dob, "Can't be blank"];
-    payment_errs.stripe_address_line1 = [this.state.stripe_address_line1, "Can't be blank"];
-    payment_errs.stripe_address_city = [this.state.stripe_address_city, "Can't be blank"];
-    payment_errs.stripe_address_state = [this.state.stripe_address_state, "Can't be blank"];
-    payment_errs.stripe_address_postal_code = [this.state.stripe_address_postal_code, "Can't be blank"];
-    payment_errs.stripe_ssn_last_4 = [this.state.stripe_ssn_last_4, "Can't be blank"];
-    payment_errs.stripe_country = [this.state.stripe_country, "Can't be blank"];
-    payment_errs.stripe_routing_number = [routing_num_err, "Please enter a valid routing number"];
-    payment_errs.stripe_account_number = [account_num_err, "Please enter a valid account number"];
-    return payment_errs;
-  }
-
-  async createStripeAccount() {
+  async createStripeAccount(teacher_errs) {
     const {
       stripe_country,
       stripe_routing_number,
@@ -322,7 +339,7 @@ class TeacherForm extends React.Component {
       stripe_account_holder_type
     } = this.state;
 
-    var validate_stripe_response = await this.validateStripeCustomer(stripe_routing_number, stripe_account_number, stripe_country);
+    var validate_stripe_response = await this.validateTeacherAndStripeCustomer(stripe_routing_number, stripe_account_number, stripe_country, teacher_errs);
 
     // Only create customer if stripe validations pass - do not create token if there are stripe errors
     if (validate_stripe_response) {
@@ -356,6 +373,94 @@ class TeacherForm extends React.Component {
         reject
       );
     }
+  }
+
+  /**
+   * Sets the state of errors to be the errored fields returned from stripeValidateFields
+   * @param stripe_routing_number
+   * @param stripe_account_number
+   * @param stripe_country
+   * @param teacher_errs
+   */
+  async validateTeacherAndStripeCustomer(stripe_routing_number, stripe_account_number, stripe_country, teacher_errs) {
+
+    var payment_errs = await this.stripeValidateFields(stripe_routing_number, stripe_account_number, stripe_country);
+    var instrument_errors = await this.validateInstruments();
+
+    var error_info = {};
+    var validated = true;
+    for (var err_type in payment_errs) {
+      //TODO: Find JS function to identify false values instead
+      if (!payment_errs[err_type][0]) {
+        validated = false;
+        error_info[err_type] = payment_errs[err_type][1];
+      }
+    }
+    if (!(Object.keys(teacher_errs).length === 0) || !(Object.keys(instrument_errors).length === 0)) {
+      validated = false;
+    }
+    error_info = Object.assign(error_info, teacher_errs, instrument_errors);
+    this.setState({ errors: error_info });
+    return validated;
+  }
+
+  /**
+   * Front-end validation for instrument_attributes field
+   */
+  validateInstruments() {
+    const {
+      instruments_attributes,
+    } = this.state;
+
+    var errors = {};
+
+    if (!(instruments_attributes.length)) {
+      errors.instruments = "Can't Be Blank";
+    } else {
+      for (var i = 0; i < instruments_attributes.length; i++) {
+        if ((instruments_attributes[i]['name'] == null) || (instruments_attributes[i]['proficiency'] == null) ||
+          (instruments_attributes[i]['years_played'] == null)) {
+            errors.instruments = "Can't Be Blank";
+        }
+      }
+    }
+    return errors;
+  }
+
+  /**
+   * Calls Stripe validations on the inputted payment information
+   * @param stripe_routing_number
+   * @param stripe_account_number
+   * @param stripe_country
+   */
+  stripeValidateFields(stripe_routing_number, stripe_account_number, stripe_country) {
+
+    var routing_num_err = Stripe.bankAccount.validateRoutingNumber(stripe_routing_number, stripe_country);
+    var account_num_err = Stripe.bankAccount.validateAccountNumber(stripe_account_number, stripe_country);
+
+    var routing_num_err_msg = (routing_num_err && !stripe_country) ? "Please make sure Bank Account Country is not blank" :  "Please enter a valid routing number";
+    var account_num_err_msg = (account_num_err && !stripe_country) ? "Please make sure Bank Account Country is not blank" : "Please enter a valid account number";
+
+    if (!stripe_country) {
+      routing_num_err = false;
+      account_num_err = false;
+    }
+
+    var payment_errs = {};
+
+    payment_errs.stripe_account_holder_name = [this.state.stripe_account_holder_name, "Can't be blank"];
+    payment_errs.stripe_account_holder_type = [this.state.stripe_account_holder_type, "Can't be blank"];
+    payment_errs.stripe_account_holder_dob = [this.state.stripe_account_holder_dob, "Can't be blank"];
+    payment_errs.stripe_address_line1 = [this.state.stripe_address_line1, "Can't be blank"];
+    payment_errs.stripe_address_city = [this.state.stripe_address_city, "Can't be blank"];
+    payment_errs.stripe_address_state = [this.state.stripe_address_state, "Can't be blank"];
+    payment_errs.stripe_address_postal_code = [this.state.stripe_address_postal_code, "Can't be blank"];
+    payment_errs.stripe_ssn_last_4 = [this.state.stripe_ssn_last_4, "Can't be blank"];
+    payment_errs.stripe_country = [this.state.stripe_country, "Can't be blank"];
+    payment_errs.stripe_routing_number = [routing_num_err, routing_num_err_msg];
+    payment_errs.stripe_account_number = [account_num_err, account_num_err_msg];
+
+    return payment_errs;
   }
 
   verifyStripeAccount(teacher) {
@@ -480,7 +585,7 @@ class TeacherForm extends React.Component {
   async submitForm() {
     await this.setAvailability();
     await this.setInstruments();
-    await this.createStripeAccount()
+    await this.validateTeacherFields();
   }
 
   renderOptions(type) {
@@ -765,18 +870,21 @@ class TeacherForm extends React.Component {
 
               {/*Application Page 2*/}
               <h2 className="section-title">Instruments</h2>
-              <ControlLabel className="marginBot-sm">Which instruments can you teach?</ControlLabel>
-              <div className="form-row">
-                {this.renderInstrumentButtons()}
-              </div>
-              <CSSTransitionGroup
-                transitionName="fade"
-                transitionEnter={true}
-                transitionLeave={true}
-                transitionEnterTimeout={500}
-                transitionLeaveTimeout={300}>
-                {this.renderInstrumentsFields()}
-              </CSSTransitionGroup>
+              <FormGroup validationState={this.getValidationState("instruments")}>
+                <ControlLabel className="marginBot-sm">Which instruments can you teach?</ControlLabel>
+                <div className="form-row">
+                  {this.renderInstrumentButtons()}
+                </div>
+                <CSSTransitionGroup
+                  transitionName="fade"
+                  transitionEnter={true}
+                  transitionLeave={true}
+                  transitionEnterTimeout={500}
+                  transitionLeaveTimeout={300}>
+                  {this.renderInstrumentsFields()}
+                </CSSTransitionGroup>
+                {this.displayErrorMessage("instruments")}
+              </FormGroup>
               <h2 className="section-title">Musical Experience</h2>
               <FormGroup validationState={this.getValidationState("introduction")}>
                 <ControlLabel>Tell us a little bit about yourself and the impact
@@ -1113,7 +1221,7 @@ class TeacherForm extends React.Component {
 
               <FormGroup validationState={this.getValidationState("criminal_charges")}>
                 <ControlLabel>Have you ever been convicted or plead
-                guilty to a crime (other than minor traffic offences) or
+                guilty to a crime (other than minor traffic offenses) or
                 are any criminal charges now pending against you?</ControlLabel>
                 <Radio
                   name="criminal_charges"
