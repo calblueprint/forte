@@ -29,7 +29,8 @@ class StudentShowSerializer < StudentBaseSerializer
               :waiver_date,
               :full_address,
               :full_name,
-              :unmatched_instruments
+              :unmatched_instruments,
+              :customer_id
 
   def is_student
     true

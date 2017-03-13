@@ -29,6 +29,7 @@ class EditableInputGroup extends React.Component {
       return React.cloneElement(child, {
         editable: this.state.editable,
         handleChange: handler,
+        key: index,
       })
     });
 

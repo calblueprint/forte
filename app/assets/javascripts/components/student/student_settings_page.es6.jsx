@@ -219,9 +219,7 @@ class StudentSettingsPage extends UserSettings {
           isEditable={true}
           events={availability_to_events(this.state.availability)} />
 
-        <Button
-          className="button button--outline-orange button--sm"
-          >
+        <Button className="button button--outline-orange button--sm">
           Save
         </Button>
 
