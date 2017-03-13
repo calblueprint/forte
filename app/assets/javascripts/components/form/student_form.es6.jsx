@@ -378,8 +378,6 @@ class StudentForm extends React.Component {
     }
     error_info = Object.assign(error_info, student_errs, instrument_errors);
     this.setState({ errors: error_info });
-    // CALLBACK FOR TOASTR HERE
-    // this.setState({ errors: error_info }, function() );
     return validated;
   }
 
