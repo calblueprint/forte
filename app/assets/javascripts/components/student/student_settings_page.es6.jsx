@@ -243,8 +243,10 @@ class StudentSettingsPage extends UserSettings {
         <EditableInputGroup handleChange={this.handleChange.bind(this)}
                             attemptSave={this.attemptSave.bind(this)}
                             fetchProfile={this.props.fetchProfile}>
-          <EditableInput label="Income Estimate" name="income_range" data={s.income_range} />
-          <EditableInput label="Household Number" name="household_number" data={s.household_number} />
+          <EditableInput label="Income Estimate" name="income_range" data={s.income_range}
+            specialHandler={this.handleIntegerChange.bind(this)} />
+          <EditableInput label="Household Number" name="household_number" data={s.household_number}
+            specialHandler={this.handleIntegerChange.bind(this)} />
         </EditableInputGroup>
       </div>
     );

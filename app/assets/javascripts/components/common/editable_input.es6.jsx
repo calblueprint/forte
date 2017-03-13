@@ -37,11 +37,13 @@ class EditableInput extends React.Component {
 
       switch(this.props.name) {
         case "birthday":
-          inputVal = <Datetime
-                dateFormat="MM/DD/YYYY"
-                timeFormat={false}
-                inputProps={{placeholder: this.props.data}}
-                onChange={(moment) => this.props.specialHandler(moment, 'birthday')} />
+          inputVal = (
+            <Datetime
+              dateFormat="MM/DD/YYYY"
+              timeFormat={false}
+              inputProps={{placeholder: this.props.data}}
+              onChange={(moment) => this.props.specialHandler(moment, 'birthday')} />
+          )
           break;
 
         case "gender":
