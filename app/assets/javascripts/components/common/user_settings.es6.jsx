@@ -27,12 +27,12 @@ class UserSettings extends React.Component {
     );
   }
 
-  attemptCardSave() {
+  attemptCardSave(resolve, reject) {
     this.setState({ editable: false });
-    this.updateStripeCustomer();
+    this.updateStripeCustomer(resolve, reject);
   }
 
-  async updateStripeCustomer() {
+  async updateStripeCustomer(resolve, reject) {
     const {
       card_number,
       cvc,
@@ -57,12 +57,19 @@ class UserSettings extends React.Component {
       address_city: stripe_address_city,
       address_state: stripe_address_state,
       address_zip: stripe_address_zip
-    }, this.stripeResponseHandler.bind(this));
+    }, this.stripeResponseHandler.bind(this, resolve, reject));
   }
 
-  stripeResponseHandler(status, response) {
-    const reject = (response) => { console.log(response) };
-    const resolve = ((response) => { console.log(response) });
+  stripeResponseHandler(success, fail, status, response) {
+    const reject = (response) => {
+      console.log(response);
+      fail();
+    };
+
+    const resolve = ((response) => {
+      console.log(response);
+      success();
+    });
 
     if (response.error) {
       console.log(response.error);
