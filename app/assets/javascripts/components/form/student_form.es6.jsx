@@ -637,7 +637,7 @@ class StudentForm extends React.Component {
               <FormatInput 
                 formName             = "Birthday"
                 inputId              = "birthday"
-                handleDatetimeChange = { (moment) => this.handleDatetimeChange(moment, "birthday") }
+                handleChange = { (moment) => this.handleDatetimeChange(moment, "birthday") }
                 validationState      = { (name) => this.getValidationState(name) }
                 displayErrors        = { (name) => this.displayErrorMessage(name) } />
 
