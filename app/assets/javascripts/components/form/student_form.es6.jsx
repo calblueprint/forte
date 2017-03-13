@@ -115,11 +115,25 @@ class StudentForm extends React.Component {
     this.setState({ [name] : value });
   }
 
-  handleDatetimeChange(moment, name) {
+  handleDatetimeChange(dateTime, name) {
+    // Due to form input, birthday is not a moment but an event
     if (name == 'birthday') {
-      this.setState({ birthday: moment });
+      const name = $(dateTime.target).attr("name");
+      var value = $(dateTime.target).val();
+      if (value.length == 10) {
+        value = moment(value, "MM/DD/YYYY");
+        if (value.isValid()) {
+          this.setState({ birthday: moment(value, "MM/DD/YYYY"), errors: {} });
+        }
+        else {
+          var errors = {};
+          errors.birthday = "Invalid Birth Date"
+          this.setState({errors : errors });
+        }
+      }
+    // waiver date is a moment since we are using the datepicker
     } else if (name == 'waiver_date') {
-      this.setState({ waiver_date: moment });
+      this.setState({ waiver_date: dateTime });
     }
   }
 
@@ -655,7 +669,7 @@ class StudentForm extends React.Component {
                 {this.displayErrorMessage("gender")}
               </FormGroup>
 
-              <FormatInput 
+              <FormatInput
                 formName             = "Birthday"
                 inputId              = "birthday"
                 handleChange = { (moment) => this.handleDatetimeChange(moment, "birthday") }
@@ -699,7 +713,7 @@ class StudentForm extends React.Component {
                 inputId         = "student_phone"
                 handleChange    = { (event) => this.handleChange(event) }
                 validationState = { (name) => this.getValidationState(name) }
-                displayErrors   = { (name) => this.displayErrorMessage(name) } /> 
+                displayErrors   = { (name) => this.displayErrorMessage(name) } />
 
               <FormGroup validationState={this.getValidationState("address")}>
                 <ControlLabel>Address</ControlLabel>
@@ -787,7 +801,7 @@ class StudentForm extends React.Component {
                 inputId         = "guardian_phone"
                 handleChange    = { (event) => this.handleChange(event) }
                 validationState = { (name) => this.getValidationState(name) }
-                displayErrors   = { (name) => this.displayErrorMessage(name) } /> 
+                displayErrors   = { (name) => this.displayErrorMessage(name) } />
 
               <FormGroup validationState={this.getValidationState("email")}>
                 <ControlLabel>Parent/Guardian Email</ControlLabel>

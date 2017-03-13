@@ -105,15 +105,15 @@ class FormatInput extends React.Component {
     } else if (this.props.inputId.indexOf("phone") > -1) {
         var filler = "xxx-xxx-xxxx";
         handleInput = this.handlePhoneInput.bind(this);
-    } 
+    }
 
     return (
       <FormGroup validationState={this.props.validationState(this.props.inputId)}>
         <ControlLabel htmlFor={this.props.inputId}>{this.props.formName}</ControlLabel>
-        <FormControl 
+        <FormControl
           componentClass="input"
           placeholder={filler}
-          id={this.props.inputId}
+          name={this.props.inputId}
           onKeyPress={handleInput}
           onChange={this.props.handleChange} />
         {this.props.displayErrors(this.props.inputId)}
