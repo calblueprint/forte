@@ -46,6 +46,7 @@ class Profile extends React.Component {
 
     if (currTab == 1) {
       return <StudentSettingsPage
+                fetchProfile={this.fetchProfile.bind(this)}
                 id={this.props.id}
                 student={person} />
     } else if (currTab == 2) {
