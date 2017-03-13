@@ -2,69 +2,85 @@ class AboutPage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      people: [
-        'daniel', 'richard', 'rocky',
-        'rachel', 'sahil', 'lancy'
-      ],
-    }
-  }
+    this.individuals = [
+      {
+        name: 'Daniel Kim',
+        position: 'Co-founder & CEO',
+        image: ImageConstants.headshots.daniel,
+        bio: `At his high school, Daniel created a service organization that performed chamber music for
+          the underprivileged. In similar spirit, his team launched Forte seven years later as a nonprofit
+          organization using music to enrich the development of youth in the underserved community. He is a
+          CM 10 pianist and has performed as a bassoonist in several ensembles including the the UC Berkeley
+          University Symphony Orchestra, Stanford Symphony Orchestra, San Jose Youth Philharmonic and Silicon
+          Valley Volunteer Orchestra.
 
-  renderIndividual(option) {
-    switch (option) {
-      case 'daniel':
-        name = 'Daniel Kim';
-        position = 'Co-founder & CEO';
-        image = ImageConstants.headshots.daniel;
-        break;
+          Daniel graduated from UC Berkeley and lives in San Francisco.`
+      }, 
+      {
+        name: 'Richard Donahue',
+        position: 'Co-founder & CFO',
+        image: ImageConstants.headshots.richard,
+        bio: `Since childhood, Richard has explored music through a variety of avenues including teaching, 
+          composing, conducting and performing.  Whether playing oboe on Bizet\'s Carmen Suite in Venice, 
+          conducting a marching band or playing electric guitar in Hollywood\'s House of Blues, he has 
+          enthusiastically shared his love of music with others. In co-founding Forte, he hopes to enable
+          others to do the same.
 
-      case 'richard':
-        name = 'Richard Donahue';
-        position = 'Co-founder & CFO';
-        image = ImageConstants.headshots.richard;
-        break;
+          Richard graduated from UCLA and currently lives in San Francisco.`
+      },
+      {
+        name: 'Rocky Yip',
+        position: 'Director of Campus Recruitment',
+        image: ImageConstants.headshots.rocky,
+        bio: `What started out as a mandatory class turned into a lifelong musical interest when Rocky picked 
+            up the clarinet at age 12.  Since then, he has since enjoyed competing in music festivals and
+            performing in ensembles including British Columbia\'s Provincial Honor Band and Canada\'s National 
+            Wind Orchestra. He is passionate about providing access to music education for all and is currently 
+            looking for people who share his enthusiasm to join the Forte team.
 
-      case 'rocky':
-        name = 'Rocky Yip';
-        position = 'Director of Campus Recruitment';
-        image = ImageConstants.headshots.rocky;
-        break;
+            Rocky is currently an undergraduate student at UC Berkeley.`
+      },
+      {
+        name: 'Rachel Ng',
+        position: 'Business Development',
+        image: ImageConstants.headshots.rachel,
+        bio: `An alumnus of Ruth Asawa San Francisco School of the Arts, Rachel has been involved with music both  
+            as a student and a teacher for over a decade. In addition to personal achievements in piano 
+            competitions and examinations, she also founded a regional, local student music club in the East 
+            Bay. After seeing how music could have a direct, positive impact on children as a volunteer piano 
+            teacher in Oakland Chinatown, she hopes to give back to the community through Forte and its mission.
 
-      case 'rachel':
-        name = 'Rachel Ng';
-        position = 'Business Development';
-        image = ImageConstants.headshots.rachel;
-        break;
+            Rachel is currently an undergraduate student at UC Berkeley.`
+      },
+      {
+        name: 'Sahil Patel',
+        position: 'Business Development',
+        image: ImageConstants.headshots.sahil,
+        bio: `Music has been an active part of Sahil\'s life ever since he was handed a saxophone in 4th grade. 
+            Since then, he has picked up drumsticks as well and has played in jazz groups that volunteer at 
+            nonprofit fundraisers. Wanting to continue his commitment to the music community, he joined Forte 
+            in the hopes of furthering his impact and sharing the energy of music.
 
-      case 'sahil':
-        name = 'Sahil Patel';
-        position = 'Business Development';
-        image = ImageConstants.headshots.sahil;
-        break;
+            Sahil is currently an undergraduate student at UC Berkeley.`
+      },
+      {
+        name: 'Lancy Zhang',
+        position: 'Design Advisor',
+        image: ImageConstants.headshots.lancy,
+        bio: `A tutor for underserved children for four years, Lancy wants to make education more accessible to 
+            everyone and deeply aligns with Forte\'s mission. Fine arts education, from painting to music, 
+            had always been a key component of Lancy\'s upbringing. She hopes to bring her visual design 
+            skills to building Forte’s platform.
 
-      case 'lancy':
-        name = 'Lancy Zhang';
-        position = 'Design Advisor';
-        image = ImageConstants.headshots.lancy;
-        break;
-    }
-    return (
-      <div className="section__individual-container">
-        <img className="section__image" src={image} href="#" />
-        <div className="section__person-info">
-          <h4 className="section__name">
-            {name}
-          </h4>
-          <h5 className="section__position">
-            {position}
-          </h5>
-        </div>
-      </div>
-    );
+            Lancy is currently an undergraduate student at UC Berkeley.`
+      }
+    ];
   }
 
   renderIndividuals() {
-    return this.state.people.map((person) => this.renderIndividual(person));
+    return this.individuals.map((person) => {
+      return <StaffInfo person={person} />
+    });
   }
 
   render() {
