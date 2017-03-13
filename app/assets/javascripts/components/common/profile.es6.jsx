@@ -41,17 +41,31 @@ class Profile extends React.Component {
 
   renderActiveView() {
     const { currTab, person } = this.state;
+    let view;
 
     if (!person) { return; }
 
-    if (currTab == 1) {
-      return <StudentSettingsPage
-                fetchProfile={this.fetchProfile.bind(this)}
-                id={this.props.id}
-                student={person} />
-    } else if (currTab == 2) {
-      return <div>Nothing yet</div>
+    switch(currTab) {
+      case 1:
+        if (this.props.isAdmin) {
+          view = <div>Admin view for profile not implemented yet</div>
+
+        } else if (this.props.isStudent) {
+          view = <StudentSettingsPage
+                   fetchProfile={this.fetchProfile.bind(this)}
+                   id={this.props.id}
+                   student={person} />
+        } else {
+          view = <div>Teacher profile settings not implemented yet</div>
+        }
+        break;
+
+      case 2:
+        view = <div>Nothing yet</div>
+        break;
     }
+
+    return view;
   }
 
   renderQuickInfoBoxText() {
