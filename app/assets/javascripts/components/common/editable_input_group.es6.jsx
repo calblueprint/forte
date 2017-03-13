@@ -24,9 +24,11 @@ class EditableInputGroup extends React.Component {
 
   render() {
     let inputs = this.props.children.map((child, index) => {
+      let handler;
+      handler = this.props.handleChange;
       return React.cloneElement(child, {
         editable: this.state.editable,
-        handleChange: this.props.handleChange,
+        handleChange: handler,
       })
     });
 

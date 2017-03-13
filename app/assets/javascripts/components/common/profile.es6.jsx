@@ -56,7 +56,7 @@ class Profile extends React.Component {
 
   renderQuickInfoBoxText() {
     const { person } = this.state;
-    const age = moment(person.birthday).fromNow().split(" ")[0];;
+    const age = moment().diff(person.birthday, "years");
 
     return (
       <div>
