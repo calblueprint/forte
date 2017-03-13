@@ -3,7 +3,7 @@
 # Table name: teachers
 #
 #  id                     :integer          not null, primary key
-#  is_searching           :boolean          default(FALSE)
+#  is_searching           :boolean          default(TRUE)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  email                  :string           default(""), not null
@@ -55,6 +55,7 @@
 #  bank_id                :string
 #  sign_up_ip             :string
 #  place_id               :string
+#  teach_for_free         :boolean          default(FALSE)
 #
 
 class Teacher < ActiveRecord::Base
@@ -85,6 +86,7 @@ class Teacher < ActiveRecord::Base
   validates :state, presence: true
   validates :zipcode, presence: true
   validates :location_preference, :inclusion => { :in => [true, false] }
+  validates :teach_for_free, :inclusion => { :in => [true, false] }
   validates :travel_distance, presence: true
   validates :background_check, :inclusion => { :in => [true, false] }
   validates :reference1_first_name, presence: true
@@ -101,8 +103,6 @@ class Teacher < ActiveRecord::Base
   validates :youth_participation, :inclusion => { :in => [true, false] }
   validates :waiver_signature, presence: true
   validates :waiver_date, presence: true
-  validates :account_id, presence: true, on: :new
-  validates :bank_id, presence: true, on: :new
 
   has_many :matchings
   has_many :lessons, through: :matchings

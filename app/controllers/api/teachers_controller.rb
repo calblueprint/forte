@@ -135,6 +135,7 @@ class Api::TeachersController < Api::BaseController
       :criminal_explanation,
       :waiver_signature,
       :waiver_date,
+      :teach_for_free,
       :instruments_attributes => [:id, :name, :years_played, :proficiency, :is_primary]
     )
   end

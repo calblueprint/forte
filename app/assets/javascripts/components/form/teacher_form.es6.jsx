@@ -41,6 +41,7 @@ class TeacherForm extends React.Component {
       criminal_explanation: null,
       waiver_signature: null,
       waiver_date: null,
+      teach_for_free: false,
       stripe_country: null,
       stripe_routing_number: null,
       stripe_account_number: null,
@@ -56,7 +57,7 @@ class TeacherForm extends React.Component {
       instruments: {},
       place_id: null, // Google place ID corresponding to the teacher's address
       showWaiverModal: false,
-      errors: {}
+      errors: {},
     }
   }
 
@@ -110,6 +111,13 @@ class TeacherForm extends React.Component {
     const name = $(event.target).attr("name");
     var value = $(event.target).val();
     value = (value == "true");
+    this.setState({ [name] : value });
+  }
+
+  handleCheckboxChange(event) {
+    const name = $(event.target).attr("name");
+    var value = this.state[name];
+    value = (!value);
     this.setState({ [name] : value });
   }
 
@@ -289,6 +297,7 @@ class TeacherForm extends React.Component {
         school_level: this.state.school_level,
         phone: this.state.phone,
         email:this.state.email,
+        teach_for_free: this.state.teach_for_free,
         introduction: this.state.introduction,
         teaching_experience: this.state.teaching_experience,
         training_experience: this.state.training_experience,
@@ -333,21 +342,26 @@ class TeacherForm extends React.Component {
       stripe_routing_number,
       stripe_account_number,
       stripe_account_holder_name,
-      stripe_account_holder_type
+      stripe_account_holder_type,
+      teach_for_free,
     } = this.state;
 
-    var validate_stripe_response = await this.validateTeacherAndStripeCustomer(stripe_routing_number, stripe_account_number, stripe_country, teacher_errs);
+    if (!teach_for_free) {
+      var validate_stripe_response = await this.validateTeacherAndStripeCustomer(stripe_routing_number, stripe_account_number, stripe_country, teacher_errs);
 
-    // Only create customer if stripe validations pass - do not create token if there are stripe errors
-    if (validate_stripe_response) {
-      Stripe.bankAccount.createToken({
-        country: stripe_country,
-        currency: 'USD',
-        routing_number: stripe_routing_number,
-        account_number: stripe_account_number,
-        account_holder_name: stripe_account_holder_name,
-        account_holder_type: stripe_account_holder_type
-      }, this.stripeResponseHandler.bind(this));
+      // Only create customer if stripe validations pass - do not create token if there are stripe errors
+      if (validate_stripe_response) {
+        Stripe.bankAccount.createToken({
+          country: stripe_country,
+          currency: 'USD',
+          routing_number: stripe_routing_number,
+          account_number: stripe_account_number,
+          account_holder_name: stripe_account_holder_name,
+          account_holder_type: stripe_account_holder_type
+        }, this.stripeResponseHandler.bind(this));
+      }
+    } else {
+      this.createTeacher();
     }
   }
 
@@ -501,12 +515,18 @@ class TeacherForm extends React.Component {
   }
 
   createTeacher(accountResponse) {
+    const { teach_for_free } = this.state;
     var reject = (response) => {
       this.setState({ errors: response.errors });
     }
     var resolve = (response) => {
-      this.verifyStripeAccount(response);
-    };
+      if (teach_for_free) {
+        window.location.href = "/";
+      } else {
+        this.verifyStripeAccount(response);
+      }
+    }
+
     var params = {
       teacher: {
         email: this.state.email,
@@ -530,6 +550,7 @@ class TeacherForm extends React.Component {
         state: this.state.state,
         zipcode: this.state.zipcode,
         location_preference: this.state.location_preference,
+        teach_for_free: this.state.teach_for_free,
         travel_distance: this.state.travel_distance,
         availability: this.state.availability,
         background_check: this.state.background_check,
@@ -548,11 +569,16 @@ class TeacherForm extends React.Component {
         criminal_explanation: this.state.criminal_explanation,
         waiver_signature: this.state.waiver_signature,
         waiver_date: this.state.waiver_date,
-        account_id: accountResponse.account.id,
-        bank_id: accountResponse.bank_account.id,
         instruments_attributes: this.state.instruments_attributes,
       }
     };
+
+    if (!teach_for_free) {
+      params.teacher.account_id = accountResponse.account.id
+      params.teacher.bank_id = accountResponse.bank_account.id
+    }
+
+    console.log(params);
     Requester.post(
       ApiConstants.authentication.signup.teacher,
       params,
@@ -662,10 +688,137 @@ class TeacherForm extends React.Component {
   }
 
   renderWaiverModal() {
-    const { showWaiverModal } = this.state;
+    const { showWaiverModal, teach_for_free } = this.state;
     if (showWaiverModal == true) {
       return (
-        <WaiverModal handleClose={() => this.closeWaiver()} />
+        <WaiverModal handleClose={() => this.closeWaiver()} teachForFree={teach_for_free} />
+      );
+    }
+  }
+
+  renderPaymentField() {
+    const { teach_for_free } = this.state;
+    if (!teach_for_free) {
+      return(
+        <div>
+          <h2 className="section-title">Payment</h2>
+            <div className="form-row">
+              <FormGroup validationState={this.getValidationState("stripe_account_holder_name")}>
+                <ControlLabel>Bank Account Holder Name</ControlLabel>
+                <FormControl
+                  componentClass="input"
+                  placeholder="Enter Bank Account Holder Name"
+                  name="stripe_account_holder_name"
+                  onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("stripe_account_holder_name")}
+              </FormGroup>
+              <FormGroup validationState={this.getValidationState("stripe_account_holder_dob")}>
+                <ControlLabel>Bank Account Holder DOB</ControlLabel>
+                <Datetime
+                  dateFormat="MM/DD/YYYY"
+                  timeFormat={false}
+                  inputProps={{placeholder: "MM/DD/YYYY"}}
+                  onChange={(moment) => this.handleDatetimeChange(moment, 'stripe_account_holder_dob')}/>
+                {this.displayErrorMessage("stripe_account_holder_dob")}
+              </FormGroup>
+            </div>
+            <FormGroup validationState={this.getValidationState("stripe_account_holder_type")}>
+              <ControlLabel>Bank Account Holder Type</ControlLabel>
+              <FormControl
+                componentClass="select"
+                name="stripe_account_holder_type"
+                onChange={(event) => this.handleChange(event)}>
+                <option value="" disabled selected>Select Account Type</option>
+                {this.renderOptions('account_holder_type')}
+              </FormControl>
+              {this.displayErrorMessage("stripe_account_holder_type")}
+            </FormGroup>
+            <div className="form-row">
+              <FormGroup validationState={this.getValidationState("stripe_routing_number")}>
+                <ControlLabel>Routing Number</ControlLabel>
+                <FormControl
+                  componentClass="input"
+                  placeholder="Enter Routing Number"
+                  name="stripe_routing_number"
+                  onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("stripe_routing_number")}
+              </FormGroup>
+              <FormGroup validationState={this.getValidationState("stripe_account_number")}>
+                <ControlLabel>Bank Account Number</ControlLabel>
+                <FormControl
+                  componentClass="input"
+                  placeholder="Enter Bank Account Number"
+                  name="stripe_account_number"
+                  onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("stripe_account_number")}
+              </FormGroup>
+            </div>
+            <FormGroup validationState={this.getValidationState("stripe_address_line1")}>
+              <ControlLabel>Address</ControlLabel>
+              <FormControl
+                componentClass="input"
+                placeholder="Enter Address Associated with Banking Account"
+                name="stripe_address_line1"
+                onChange={(event) => this.handleChange(event)}/>
+                {this.displayErrorMessage("stripe_address_line1")}
+            </FormGroup>
+            <div className="form-row">
+              <FormGroup validationState={this.getValidationState("stripe_address_city")}>
+                <ControlLabel>City</ControlLabel>
+                <FormControl
+                  componentClass="input"
+                  placeholder="Enter City"
+                  name="stripe_address_city"
+                  onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("stripe_address_city")}
+              </FormGroup>
+              <FormGroup validationState={this.getValidationState("stripe_address_postal_code")}>
+                <ControlLabel>Postal Code</ControlLabel>
+                <FormControl
+                  componentClass="input"
+                  placeholder="Enter Postal Code"
+                  name="stripe_address_postal_code"
+                  onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("stripe_address_postal_code")}
+              </FormGroup>
+            </div>
+            <div className="form-row">
+              <FormGroup validationState={this.getValidationState("stripe_address_state")}>
+                <ControlLabel>Address State</ControlLabel>
+                <FormControl
+                  componentClass="select"
+                  name="stripe_address_state"
+                  onChange={(event) => this.handleChange(event)}>
+                  <option value="" disabled selected>Select your state</option>
+                  {this.renderOptions('state')}
+                </FormControl>
+                {this.displayErrorMessage("stripe_address_state")}
+              </FormGroup>
+              <FormGroup validationState={this.getValidationState("stripe_ssn_last_4")}>
+                <ControlLabel>Last 4 Digits of SSN</ControlLabel>
+                <FormControl
+                  componentClass="input"
+                  type="password"
+                  maxLength="4"
+                  placeholder="Enter Last 4 Digits of SSN"
+                  name="stripe_ssn_last_4"
+                  onChange={(event) => this.handleChange(event)}/>
+                  {this.displayErrorMessage("stripe_ssn_last_4")}
+              </FormGroup>
+            </div>
+
+            <FormGroup validationState={this.getValidationState("stripe_country")}>
+              <ControlLabel>Bank Account Country</ControlLabel>
+              <FormControl
+                componentClass="select"
+                name="stripe_country"
+                onChange={(event) => this.handleCountryChange(event)}>
+                <option value="" disabled selected>Select Bank Acount Country</option>
+                {this.renderOptions('country')}
+              </FormControl>
+              {this.displayErrorMessage("stripe_country")}
+            </FormGroup>
+          </div>
       );
     }
   }
@@ -847,6 +1000,15 @@ class TeacherForm extends React.Component {
                   {this.displayErrorMessage("zipcode")}
                 </FormGroup>
               </div>
+              <FormGroup validationState={this.getValidationState("teach_for_free")}>
+                <ControlLabel>Teach for Free</ControlLabel>
+                  <Checkbox
+                    name="teach_for_free"
+                    onChange={(event) => this.handleCheckboxChange(event)}>
+                    I am willing to teach lessons to students for free.
+                  </Checkbox>
+                {this.displayErrorMessage("teach_for_free")}
+              </FormGroup>
 
               {/*Application Page 2*/}
               <h2 className="section-title">Instruments</h2>
@@ -914,13 +1076,13 @@ class TeacherForm extends React.Component {
               </FormGroup>
 
               {/*Application Page 3*/}
-
+              {this.renderPaymentField()}
               <h2 className="section-title">Scheduling</h2>
               <FormGroup validationState={this.getValidationState("location_preference")}>
                 <ControlLabel>Location Preference</ControlLabel>
                   <Checkbox
                     name="location_preference"
-                    onChange={(event) => this.handleBooleanChange(event)}>
+                    onChange={(event) => this.handleCheckboxChange(event)}>
                     I am willing to host lessons at my home (earn $10/lesson
                       if hosting; $15 if traveling).
                   </Checkbox>
@@ -947,123 +1109,6 @@ class TeacherForm extends React.Component {
               </FormGroup>
 
               {/*Application Page 4*/}
-              <h2 className="section-title">Payment</h2>
-              <div className="form-row">
-                <FormGroup validationState={this.getValidationState("stripe_account_holder_name")}>
-                  <ControlLabel>Bank Account Holder Name</ControlLabel>
-                  <FormControl
-                    componentClass="input"
-                    placeholder="Enter Bank Account Holder Name"
-                    name="stripe_account_holder_name"
-                    onChange={(event) => this.handleChange(event)}/>
-                    {this.displayErrorMessage("stripe_account_holder_name")}
-                </FormGroup>
-                <FormGroup validationState={this.getValidationState("stripe_account_holder_dob")}>
-                  <ControlLabel>Bank Account Holder DOB</ControlLabel>
-                  <Datetime
-                    dateFormat="MM/DD/YYYY"
-                    timeFormat={false}
-                    inputProps={{placeholder: "MM/DD/YYYY"}}
-                    onChange={(moment) => this.handleDatetimeChange(moment, 'stripe_account_holder_dob')}/>
-                  {this.displayErrorMessage("stripe_account_holder_dob")}
-                </FormGroup>
-              </div>
-              <FormGroup validationState={this.getValidationState("stripe_account_holder_type")}>
-                <ControlLabel>Bank Account Holder Type</ControlLabel>
-                <FormControl
-                  componentClass="select"
-                  name="stripe_account_holder_type"
-                  onChange={(event) => this.handleChange(event)}>
-                  <option value="" disabled selected>Select Account Type</option>
-                  {this.renderOptions('account_holder_type')}
-                </FormControl>
-                {this.displayErrorMessage("stripe_account_holder_type")}
-              </FormGroup>
-              <div className="form-row">
-                <FormGroup validationState={this.getValidationState("stripe_routing_number")}>
-                  <ControlLabel>Routing Number</ControlLabel>
-                  <FormControl
-                    componentClass="input"
-                    placeholder="Enter Routing Number"
-                    name="stripe_routing_number"
-                    onChange={(event) => this.handleChange(event)}/>
-                    {this.displayErrorMessage("stripe_routing_number")}
-                </FormGroup>
-                <FormGroup validationState={this.getValidationState("stripe_account_number")}>
-                  <ControlLabel>Bank Account Number</ControlLabel>
-                  <FormControl
-                    componentClass="input"
-                    placeholder="Enter Bank Account Number"
-                    name="stripe_account_number"
-                    onChange={(event) => this.handleChange(event)}/>
-                    {this.displayErrorMessage("stripe_account_number")}
-                </FormGroup>
-              </div>
-              <FormGroup validationState={this.getValidationState("stripe_address_line1")}>
-                <ControlLabel>Address</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  placeholder="Enter Address Associated with Banking Account"
-                  name="stripe_address_line1"
-                  onChange={(event) => this.handleChange(event)}/>
-                  {this.displayErrorMessage("stripe_address_line1")}
-              </FormGroup>
-              <div className="form-row">
-                <FormGroup validationState={this.getValidationState("stripe_address_city")}>
-                  <ControlLabel>City</ControlLabel>
-                  <FormControl
-                    componentClass="input"
-                    placeholder="Enter City"
-                    name="stripe_address_city"
-                    onChange={(event) => this.handleChange(event)}/>
-                    {this.displayErrorMessage("stripe_address_city")}
-                </FormGroup>
-                <FormGroup validationState={this.getValidationState("stripe_address_postal_code")}>
-                  <ControlLabel>Postal Code</ControlLabel>
-                  <FormControl
-                    componentClass="input"
-                    placeholder="Enter Postal Code"
-                    name="stripe_address_postal_code"
-                    onChange={(event) => this.handleChange(event)}/>
-                    {this.displayErrorMessage("stripe_address_postal_code")}
-                </FormGroup>
-              </div>
-              <div className="form-row">
-                <FormGroup validationState={this.getValidationState("stripe_address_state")}>
-                  <ControlLabel>Address State</ControlLabel>
-                  <FormControl
-                    componentClass="select"
-                    name="stripe_address_state"
-                    onChange={(event) => this.handleChange(event)}>
-                    <option value="" disabled selected>Select your state</option>
-                    {this.renderOptions('state')}
-                  </FormControl>
-                  {this.displayErrorMessage("stripe_address_state")}
-                </FormGroup>
-                <FormGroup validationState={this.getValidationState("stripe_ssn_last_4")}>
-                  <ControlLabel>Last 4 Digits of SSN</ControlLabel>
-                  <FormControl
-                    componentClass="input"
-                    type="password"
-                    maxLength="4"
-                    placeholder="Enter Last 4 Digits of SSN"
-                    name="stripe_ssn_last_4"
-                    onChange={(event) => this.handleChange(event)}/>
-                    {this.displayErrorMessage("stripe_ssn_last_4")}
-                </FormGroup>
-              </div>
-
-              <FormGroup validationState={this.getValidationState("stripe_country")}>
-                <ControlLabel>Bank Account Country</ControlLabel>
-                <FormControl
-                  componentClass="select"
-                  name="stripe_country"
-                  onChange={(event) => this.handleCountryChange(event)}>
-                  <option value="" disabled selected>Select Bank Acount Country</option>
-                  {this.renderOptions('country')}
-                </FormControl>
-                {this.displayErrorMessage("stripe_country")}
-              </FormGroup>
 
               <h2 className="section-title">Eligibility</h2>
               {/*Application Page 5*/}
