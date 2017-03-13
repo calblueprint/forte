@@ -11,8 +11,10 @@ class ForteMailer < ApplicationMailer
   def student_signup_notify_student(student)
     @student = student
     name = student.full_name
-    mail subject: "Forte Student Registration Confirmation | #{name}",
+    if student.student_email
+      mail subject: "Forte Student Registration Confirmation | #{name}",
          to: student.student_email
+    end
   end
 
   def student_signup_notify_parent(student)

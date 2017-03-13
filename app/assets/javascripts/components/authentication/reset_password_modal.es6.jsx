@@ -2,9 +2,9 @@ class ResetPasswordModal extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { 
-      email: '', 
-      errors: '',
+    this.state = {
+      email: '',
+      error: '',
     };
   }
 
@@ -16,12 +16,14 @@ class ResetPasswordModal extends React.Component {
   }
 
   resetPassword() {
-    var reject = (response) => this.setState({ errors: response.error });
+    var reject = (response) => {
+      this.setState({ error: response.message })
+    };
     var params = {
       email: this.state.email
     };
 
-    
+
     if (this.props.type == 'student') {
       var route = ApiConstants.authentication.request_reset_password.student;
       var resolve = (response) => { console.log(response); };
@@ -51,6 +53,17 @@ class ResetPasswordModal extends React.Component {
     }
   }
 
+  renderError() {
+    const { error } = this.state;
+    if (error != '') {
+      return (
+        <Alert bsStyle="danger">
+          {error}
+        </Alert>
+      )
+    };
+  }
+
   render () {
     return(
 
@@ -59,8 +72,8 @@ class ResetPasswordModal extends React.Component {
         <Modal.Header closeButton>
           <Modal.Title>Reset Your Password</Modal.Title>
         </Modal.Header>
-
-        <Modal.Body>    
+        {this.renderError()}
+        <Modal.Body>
             <FormGroup className="reset-password__field">
               <FormControl
                 componentClass="input"
@@ -68,7 +81,7 @@ class ResetPasswordModal extends React.Component {
                 name="email"
                 placeholder="Email Address"
                 onChange={(e) => this.handleChange(e)}
-                onKeyDown={(e) => this.handleEnter(e.nativeEvent)} />  
+                onKeyDown={(e) => this.handleEnter(e.nativeEvent)} />
             </FormGroup>
         </Modal.Body>
 

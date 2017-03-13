@@ -249,10 +249,8 @@ class StudentForm extends React.Component {
     * Validates fields for student form fields
     */
   async validateStudentFields() {
-    var reject = (response) => {
-      this.createStripeCustomer(response)
-    };
-    var resolve = (response) => { this.createStripeCustomer(response) };
+    var reject = (response) => { this.createStripeCustomer(response) };
+    var resolve = (response) => { this.createStripeCustomer({}) };
     var params = {
       student: {
         email: this.state.email,
@@ -313,12 +311,12 @@ class StudentForm extends React.Component {
       stripe_address_city,
       stripe_address_state,
       stripe_address_zip,
-      errors,
     } = this.state;
-    var validate_stripe_response = await this.validateStudentAndStripeCustomer(card_number, exp_month, exp_year, cvc, student_errs);
+
+    var validated_student_and_stripe = await this.validateStudentAndStripeCustomer(card_number, exp_month, exp_year, cvc, student_errs);
 
     // Only create customer if stripe validations pass - do not create token if there are stripe errors
-    if (validate_stripe_response) {
+    if (validated_student_and_stripe) {
       Stripe.card.createToken({
         number: card_number,
         cvc: cvc,
@@ -361,7 +359,10 @@ class StudentForm extends React.Component {
    * @param cvc
    */
   async validateStudentAndStripeCustomer(card_number, exp_month, exp_year, cvc, student_errs) {
+
     var card_errs = await this.stripeValidateFields(card_number, exp_month, exp_year, cvc);
+    var instrument_errors = await this.validateInstruments();
+
     var error_info = {};
     var validated = true;
     for (var err_type in card_errs) {
@@ -372,13 +373,37 @@ class StudentForm extends React.Component {
       }
     }
     // Checks to see if object is null
-    if (!(Object.keys(student_errs).length === 0)) {
+    if (!(Object.keys(student_errs).length === 0) || !(Object.keys(instrument_errors).length === 0)) {
       validated = false;
     }
-    error_info = Object.assign(error_info, student_errs);
+    error_info = Object.assign(error_info, student_errs, instrument_errors);
     this.setState({ errors: error_info });
     return validated;
   }
+
+  /**
+   * Front-end validation for instrument_attributes field
+   */
+  validateInstruments() {
+    const {
+      instruments_attributes,
+    } = this.state;
+
+    var errors = {};
+
+    if (!(instruments_attributes.length)) {
+      errors.instruments = "Can't Be Blank";
+    } else {
+      for (var i = 0; i < instruments_attributes.length; i++) {
+        if ((instruments_attributes[i]['name'] == null) || (instruments_attributes[i]['proficiency'] == null) ||
+          (instruments_attributes[i]['years_played'] == null)) {
+            errors.instruments = "Can't Be Blank";
+        }
+      }
+    }
+    return errors;
+  }
+
 
   /**
    * Calls Stripe validations on the inputted card information
@@ -387,10 +412,12 @@ class StudentForm extends React.Component {
    * @param cvc
    */
   stripeValidateFields(card_number, exp_month, exp_year, cvc) {
+    var card_errs = {};
+
     var num_err = Stripe.card.validateCardNumber(card_number);
     var expiry_err = Stripe.card.validateExpiry(exp_month, exp_year);
     var cvc_err = Stripe.card.validateCVC(cvc);
-    var card_errs = {};
+
     card_errs.cardholder_name = [this.state.cardholder_name, "Can't be blank"];
     card_errs.stripe_address_line1 = [this.state.stripe_address_line1, "Can't be blank"];
     card_errs.stripe_address_city = [this.state.stripe_address_city, "Can't be blank"];
@@ -464,6 +491,8 @@ class StudentForm extends React.Component {
   renderOptions(type) {
     var optionsArray = []
     var retOptions = []
+    var i = 0;
+    var j = 0;
     switch(type) {
       case 'gender':
         optionsArray = GENDERS;
@@ -486,9 +515,12 @@ class StudentForm extends React.Component {
       case 'years_played':
         optionsArray = YEARS_PLAYED;
         break;
+      case 'household_number':
+        optionsArray = HOUSEHOLD_NUMBER;
+        j = 1;
     }
-    for (var i = 0; i < optionsArray.length; i++) {
-      retOptions.push(<option value={i}>{optionsArray[i]}</option>);
+    for (; i < optionsArray.length; i++, j++) {
+      retOptions.push(<option value={j}>{optionsArray[i]}</option>);
     }
     return retOptions;
   }
@@ -550,7 +582,7 @@ class StudentForm extends React.Component {
     const { showWaiverModal } = this.state;
     if (showWaiverModal == true) {
       return (
-        <WaiverModal handleClose={() => this.closeWaiver()} />
+        <WaiverModal isStudent={true} handleClose={() => this.closeWaiver()} />
       );
     }
   }
@@ -973,10 +1005,12 @@ class StudentForm extends React.Component {
               <FormGroup validationState={this.getValidationState("household_number")}>
                 <ControlLabel>Household Number</ControlLabel>
                 <FormControl
-                  componentClass="input"
-                  placeholder="Number of members in household"
+                  componentClass="select"
                   name="household_number"
-                  onChange={(event) => this.handleIntegerChange(event)}/>
+                  onChange={(event) => this.handleIntegerChange(event)}>
+                  <option value="" disabled selected>Select number of members in household</option>
+                  {this.renderOptions('household_number')}
+                </FormControl>
                 {this.displayErrorMessage("household_number")}
               </FormGroup>
 
