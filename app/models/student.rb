@@ -45,7 +45,9 @@
 #  waiver_signature       :string
 #  waiver_date            :datetime
 #  customer_id            :string
-#  place_id               :string
+#  lat                    :decimal(, )
+#  lng                    :decimal(, )
+#  timezone               :string
 #
 
 class Student < ActiveRecord::Base
@@ -120,6 +122,8 @@ class Student < ActiveRecord::Base
 
 
   def submit_signup
+    self.timezone = Timezone.lookup(self.lat, self.lng)
+    self.save()
     ForteMailer.student_signup_notify_admin(self).deliver_now
     ForteMailer.student_signup_notify_student(self).deliver_now
     ForteMailer.student_signup_notify_parent(self).deliver_now

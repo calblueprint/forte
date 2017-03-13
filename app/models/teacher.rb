@@ -54,7 +54,9 @@
 #  account_id             :string
 #  bank_id                :string
 #  sign_up_ip             :string
-#  place_id               :string
+#  lat                    :decimal(, )
+#  lng                    :decimal(, )
+#  timezone               :string
 #  teach_for_free         :boolean          default(FALSE)
 #
 
@@ -131,6 +133,8 @@ class Teacher < ActiveRecord::Base
   end
 
   def submit_signup
+    self.timezone = Timezone.lookup(self.lat, self.lng)
+    self.save()
     ForteMailer.teacher_signup_notify_admin(self).deliver_now
     ForteMailer.teacher_signup_notify_teacher(self).deliver_now
   end

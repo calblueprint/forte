@@ -36,5 +36,6 @@ class TeacherShowSerializer < TeacherBaseSerializer
               :waiver_date,
               :school_level,
               :full_address,
-              :full_name
+              :full_name,
+              :timezone
 end

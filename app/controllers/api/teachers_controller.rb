@@ -60,6 +60,7 @@ class Api::TeachersController < Api::BaseController
     student = Student.find params[:id]
     instrument = params[:instrument]
     all_teachers = Teacher.all.includes(:instruments)
+
     teachers = []
     all_teachers.each do |teacher|
       if (is_valid_matching(teacher, student, instrument) && teacher.is_searching)
@@ -73,12 +74,14 @@ class Api::TeachersController < Api::BaseController
 
   def is_valid_matching(teacher, student, instrument)
     time_overlap = (teacher.availability & student.availability).length != 0
+
     teacher_instrument_valid = false
     teacher.instruments.each do |teacher_instrument|
       if teacher_instrument.name == instrument
         teacher_instrument_valid = true
       end
     end
+
     travel_compatibility = (teacher.travel_distance != :'I am not willing to travel') or (student.travel_distance != :'I am not willing to travel')
     return (time_overlap and teacher_instrument_valid and travel_compatibility)
   end

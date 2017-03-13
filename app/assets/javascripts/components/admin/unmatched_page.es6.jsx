@@ -44,7 +44,7 @@ class UnmatchedPage extends React.Component {
         }
       }
     }
-    return validTeachers
+    return validTeachers;
   }
 
   filterTeachersByDistance(teachers) {

@@ -137,10 +137,10 @@ class MatchingModal extends React.Component {
           <Modal.Body>
             {this.renderErrors()}
             <FormGroup>
-              <ControlLabel>Note that all times are in your local time zone!</ControlLabel>
               <MatchingCalendar 
                 ref="calendar" 
-                availability={overlappingAvailability} /> 
+                availability={overlappingAvailability}
+                timezone={student.timezone} /> 
             </FormGroup>
             <FormGroup>
               <ControlLabel>Location</ControlLabel>

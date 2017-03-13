@@ -47,7 +47,8 @@ class StudentForm extends React.Component {
       activeInstruments: {},
       instruments: {},
       instruments_attributes: [],
-      place_id: null, // Google place ID corresponding to the student's address
+      lat: null,
+      lng: null,
       showWaiverModal: false,
       errors: {}
     }
@@ -152,6 +153,9 @@ class StudentForm extends React.Component {
       };
 
       var place = autocomplete.getPlace();
+      var lat = place["geometry"]["location"]["lat"]();
+      var lng = place["geometry"]["location"]["lng"]();
+      this.setState({ lat: lat, lng: lng });
 
       // Get each component of the address from the place details
       // and fill the corresponding field on the form.
@@ -251,6 +255,21 @@ class StudentForm extends React.Component {
   async validateStudentFields() {
     var reject = (response) => { this.createStripeCustomer(response) };
     var resolve = (response) => { this.createStripeCustomer({}) };
+    if (!this.state.lat && !this.state.lng) {
+      const { address, address_apt, city, state, zipcode } = this.state;
+      var geocoder = new google.maps.Geocoder();
+      var full_address = [address, address_apt, city, state, zipcode].join(" ");
+      geocoder.geocode({"address": full_address}, function(results, status) {
+        if (status === 'OK') {
+          var location = results[0]["geometry"]["location"];
+          var lat = location["lat"]();
+          var lng = location["lng"]();
+          this.setState({ lat: lat, lng: lng });
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+        }
+      }.bind(this));
+    }
     var params = {
       student: {
         email: this.state.email,
@@ -285,6 +304,8 @@ class StudentForm extends React.Component {
         waiver_signature: this.state.waiver_signature,
         waiver_date: this.state.waiver_date,
         instruments_attributes: this.state.instruments_attributes,
+        lat: this.state.lat,
+        lng: this.state.lng,
       },
     }
     Requester.post(
@@ -471,6 +492,8 @@ class StudentForm extends React.Component {
         waiver_date: this.state.waiver_date,
         customer_id: customer.id,
         instruments_attributes: this.state.instruments_attributes,
+        lat: this.state.lat,
+        lng: this.state.lng,
       },
     };
     Requester.post(
