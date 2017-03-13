@@ -27,6 +27,11 @@ class UserSettings extends React.Component {
     );
   }
 
+  attemptCardSave() {
+    this.setState({ editable: false });
+    this.updateStripeCustomer();
+  }
+
   async updateStripeCustomer() {
     const {
       card_number,

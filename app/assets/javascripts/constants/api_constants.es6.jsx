@@ -86,6 +86,7 @@
     get stripe() {
       return {
         createCustomer: '/stripe/customer',
+        updateCustomer: '/stripe/update_customer',
         createAccount: '/stripe/account',
         verifyAccount: '/stripe/verify_account',
         charge: '/stripe/charge',

@@ -84,11 +84,13 @@ class Profile extends React.Component {
 
   render() {
     const { person, currTab } = this.state;
-    const { isStudent } = this.props;
+    const { isStudent, isAdmin } = this.props;
     const personType = isStudent ? "Student" : "Teacher";
+    let header = isAdmin ? <AdminHeader /> : <UserHeader />;
 
     return (
       <div className="page-wrapper profile-page">
+        { header }
         <div className="profile-cover">
           <div className="cover-background">
             <div className="container">

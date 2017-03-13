@@ -227,7 +227,7 @@ class StudentSettingsPage extends UserSettings {
 
         <h2 className="section-title">Payment</h2>
         <EditableInputGroup handleChange={this.handleChange.bind(this)}
-                            attemptSave={this.attemptSave.bind(this)}
+                            attemptSave={this.attemptCardSave.bind(this)}
                             fetchProfile={this.props.fetchProfile}>
           <EditableInput label="Card Number" name="card_number" data={s.card_number} />
           <EditableInput label="CVC" name="cvc" data={s.cvc} />
