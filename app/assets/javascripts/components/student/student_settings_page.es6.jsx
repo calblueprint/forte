@@ -10,20 +10,22 @@ class StudentSettingsPage extends UserSettings {
     super(props);
 
     this.state = {
-      availability: [],
-      instruments: null,
       addModalIsVisible: false,
       removeModalIsVisible: false,
-      card_number: "*****",
-      cvc: "*****",
-      exp_month: "*****",
-      exp_year: "*****",
-      cardholder_name: "*****",
-      stripe_address_line1: "*****",
-      stripe_address_line2: "*****",
-      stripe_address_city: "*****",
-      stripe_address_state: "*****",
-      stripe_address_zip: "*****",
+      person: {
+        availability: [],
+        card_number: "*****",
+        cvc: "*****",
+        exp_month: "*****",
+        exp_year: "*****",
+        cardholder_name: "*****",
+        instruments: null,
+        stripe_address_line1: "*****",
+        stripe_address_line2: "*****",
+        stripe_address_city: "*****",
+        stripe_address_state: "*****",
+        stripe_address_zip: "*****",
+      }
     }
   }
 
@@ -33,31 +35,10 @@ class StudentSettingsPage extends UserSettings {
 
   componentWillReceiveProps(props) {
     const { student } = props;
+    student.instruments = null;
 
     this.setState({
-      first_name: student.first_name,
-      last_name: student.last_name,
-      availability: student.availability,
-      gender: student.gender,
-      birthday: student.birthday,
-      student_email: student.student_email,
-      school: student.school,
-      school_level: student.school_level,
-      student_phone: student.student_phone,
-      address: student.address,
-      address_apt: student.address_apt,
-      city: student.city,
-      state: student.state,
-      zipcode: student.zipcode,
-      guardian_first_name: student.guardian_first_name,
-      guardian_last_name: student.guardian_last_name,
-      guardian_phone: student.guardian_phone,
-      email: student.email,
-      location_preference: student.location_preference,
-      income_range: student.income_range,
-      household_number: student.household_number,
-      email: student.email,
-      customer_id: student.customer_id,
+      person: student,
     })
   }
 
@@ -103,7 +84,11 @@ class StudentSettingsPage extends UserSettings {
 
   fetchInstruments() {
     const route = ApiConstants.students.instruments(this.props.id);
-    const resolve = (response) => this.setState({ instruments: response.instruments });
+    const resolve = (response) => {
+      const student = this.state.person;
+      person.instruments = response.instruments;
+      this.setState({ person });
+    }
     const reject = (response) => console.log(response);
     Requester.get(
       route,
@@ -159,8 +144,8 @@ class StudentSettingsPage extends UserSettings {
 
   render() {
     const { student } = this.props;
-    let avail = availability_to_events(this.state.availability);
-    let s = this.state;
+    let avail = availability_to_events(this.state.person.availability);
+    let s = this.state.person;
     let addInstrumentModal;
 
     if (s.instruments) {
@@ -217,7 +202,7 @@ class StudentSettingsPage extends UserSettings {
         <Calendar
           ref="settingsAvailability"
           isEditable={true}
-          events={availability_to_events(this.state.availability)} />
+          events={availability_to_events(this.state.person.availability)} />
 
         <Button className="button button--outline-orange button--sm">
           Save

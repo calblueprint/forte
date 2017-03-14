@@ -19,6 +19,9 @@ class UserSettings extends React.Component {
     const success = resolve;
     const fail = reject;
 
+    // Remove the person object from state
+    // delete params.person;
+
     Requester.update(
         route,
         params,
