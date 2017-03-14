@@ -41,7 +41,7 @@ class EditableInput extends React.Component {
             <Datetime
               dateFormat="MM/DD/YYYY"
               timeFormat={false}
-              inputProps={{placeholder: this.props.data}}
+              inputProps={{placeholder: moment(this.props.data).format("MM/DD/YYYY")}}
               onChange={(moment) => this.props.specialHandler(moment, 'birthday')} />
           )
           break;
@@ -71,8 +71,12 @@ class EditableInput extends React.Component {
     } else {
       inputVal = this.props.data;
 
+      if (this.props.name == 'birthday') {
+        inputVal = moment(this.props.data).format("MM/DD/YYYY");
+      }
+
       if (this.props.data instanceof moment) {
-        inputVal = this.props.data.format("MM/DD/YY");
+        inputVal = this.props.data.format("MM/DD/YYYY");
       }
     }
 
