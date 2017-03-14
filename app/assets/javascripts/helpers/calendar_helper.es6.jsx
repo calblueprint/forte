@@ -23,7 +23,7 @@ function range_to_array(start, end) {
   return retArray
 }
 
-function availability_to_events(availability) {
+function availability_to_events(availability, timezone) {
   var events = [], rstart, rend;
   for (var i = 0; i < availability.length; i++) {
     rstart = availability[i];
@@ -33,18 +33,19 @@ function availability_to_events(availability) {
       i++;
     }
     events.push({
-      start: number_to_moment(rstart),
-      end: number_to_moment(rend+1), // end of the last time slot
+      start: number_to_moment(rstart, timezone),
+      end: number_to_moment(rend+1, timezone), // end of the last time slot
     });
   }
   return events;
 }
 
-function number_to_moment(number) {
+function number_to_moment(number, timezone) {
   var day = Math.floor(number/96);
   var hour = Math.floor((number%96)/4);
   var minute = ((number%96)%4)*15;
-  return moment().utc().startOf('week').add(day, 'days').add(hour, 'hours').add(minute, 'minutes');
+  var m = moment().utc().startOf('week').add(day, 'days').add(hour, 'hours').add(minute, 'minutes');
+  return moment.tz(m, timezone);
 }
 
 function get_unavailable_availability(availability) {

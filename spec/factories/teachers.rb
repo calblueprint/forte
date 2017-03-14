@@ -3,7 +3,7 @@
 # Table name: teachers
 #
 #  id                     :integer          not null, primary key
-#  is_searching           :boolean          default(FALSE)
+#  is_searching           :boolean          default(TRUE)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  email                  :string           default(""), not null
@@ -54,7 +54,10 @@
 #  account_id             :string
 #  bank_id                :string
 #  sign_up_ip             :string
-#  place_id               :string
+#  lat                    :decimal(, )
+#  lng                    :decimal(, )
+#  timezone               :string
+#  teach_for_free         :boolean          default(FALSE)
 #
 
 FactoryGirl.define do

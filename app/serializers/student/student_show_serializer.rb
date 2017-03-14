@@ -30,6 +30,7 @@ class StudentShowSerializer < StudentBaseSerializer
               :full_address,
               :full_name,
               :unmatched_instruments,
+              :timezone,
               :customer_id
 
   def is_student

@@ -29,3 +29,7 @@ var Label = ReactBootstrap.Label;
 
 /* Modal Related */
 var Modal = ReactBootstrap.Modal;
+
+/* Popover Related */ 
+var Popover = ReactBootstrap.Popover;
+var OverlayTrigger = ReactBootstrap.OverlayTrigger;

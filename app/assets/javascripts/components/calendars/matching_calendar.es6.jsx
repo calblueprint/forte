@@ -3,6 +3,7 @@ class MatchingCalendar extends React.Component {
   static get propTypes() {
     return {
       availability: React.PropTypes.array,
+      timezone: React.PropTypes.string,
     };
   }
 
@@ -14,11 +15,11 @@ class MatchingCalendar extends React.Component {
 
   componentDidMount() {
     const { calendar } = this.refs;
-    const { availability } = this.props;
-    console.log(availability);
-    //calculate unavailabile times to black out in the modal
+    const { availability, timezone } = this.props;
+
+    // Calculate unavailabile times to black out in the modal
     var unavailibility = get_unavailable_availability(availability);
-    var unavailableEvents = availability_to_events(unavailibility);
+    var unavailableEvents = availability_to_events(unavailibility, timezone);
     unavailableEvents.map((event) => {
       event.rendering = 'background';
       event.color = 'grey';
@@ -27,7 +28,7 @@ class MatchingCalendar extends React.Component {
       header: false,
       defaultView: 'agendaWeek',
       columnFormat: 'ddd M/D',
-      timezone: "local", // interpret all times in local timezone
+      timezone: timezone,
       selectable: true,
       editable: true,
       minTime: "08:00",
@@ -75,7 +76,10 @@ class MatchingCalendar extends React.Component {
   }
   render () {
     return (
-      <div ref="calendar"></div>
+      <div>
+        <p>Note: Calendar displayed in timezone <b>{this.props.timezone}</b></p>
+        <div ref="calendar"></div>
+      </div>
     );
   }
 }

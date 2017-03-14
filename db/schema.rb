@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170305222102) do
+ActiveRecord::Schema.define(version: 20170312010120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -129,14 +129,16 @@ ActiveRecord::Schema.define(version: 20170305222102) do
     t.string   "waiver_signature"
     t.datetime "waiver_date"
     t.string   "customer_id"
-    t.string   "place_id"
+    t.decimal  "lat"
+    t.decimal  "lng"
+    t.string   "timezone"
   end
 
   add_index "students", ["email"], name: "index_students_on_email", unique: true, using: :btree
   add_index "students", ["reset_password_token"], name: "index_students_on_reset_password_token", unique: true, using: :btree
 
   create_table "teachers", force: :cascade do |t|
-    t.boolean  "is_searching",           default: false
+    t.boolean  "is_searching",           default: true
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
     t.string   "email",                  default: "",    null: false
@@ -187,7 +189,10 @@ ActiveRecord::Schema.define(version: 20170305222102) do
     t.string   "account_id"
     t.string   "bank_id"
     t.string   "sign_up_ip"
-    t.string   "place_id"
+    t.decimal  "lat"
+    t.decimal  "lng"
+    t.string   "timezone"
+    t.boolean  "teach_for_free",         default: false
   end
 
   add_index "teachers", ["email"], name: "index_teachers_on_email", unique: true, using: :btree

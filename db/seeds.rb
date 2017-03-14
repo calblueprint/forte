@@ -113,6 +113,7 @@ def create_single_teacher(is_searching, n)
     state: address[:state],
     zipcode: address[:zip_code],
     location_preference: Faker::Boolean.boolean,
+    teach_for_free: Faker::Boolean.boolean,
     travel_distance: Faker::Number.between(0, 4),
     background_check: Faker::Boolean.boolean,
     reference1_first_name: Faker::Name.first_name,
@@ -132,6 +133,7 @@ def create_single_teacher(is_searching, n)
     waiver_date: Faker::Date.between(2.days.ago, Date.today),
     account_id: 'acct_19MVqrLZTzaZNknc',
     bank_id: 'ba_19MVqrLZTzaZNknc3j6nq743',
+    timezone: "America/New_York"
   )
   teacher
 end
@@ -184,6 +186,7 @@ def create_single_student(n)
     waiver_signature: Faker::Name.first_name,
     waiver_date: Faker::Date.between(2.days.ago, Date.today),
     customer_id: 'cus_9frHntw1ew0W9H', #TODO: point id to Stripe user id
+    timezone: "America/New_York",
   )
   student
 end
