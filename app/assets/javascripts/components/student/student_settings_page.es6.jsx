@@ -31,6 +31,7 @@ class StudentSettingsPage extends UserSettings {
   }
 
   componentDidMount() {
+    this.props.fetchProfile();
     this.fetchInstruments();
   }
 
