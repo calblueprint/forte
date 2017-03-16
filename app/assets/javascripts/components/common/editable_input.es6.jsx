@@ -62,6 +62,7 @@ class EditableInput extends React.Component {
         default:
           inputVal = (
             <input name={this.props.name} type="text"
+                className="form-control"
                 defaultValue={this.props.data}
                 onChange={this.props.handleChange} />
           );

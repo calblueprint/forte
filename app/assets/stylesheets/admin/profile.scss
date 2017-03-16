@@ -109,7 +109,7 @@ $cover-height: 240px;
     background: white;
     border: 1px solid $grey10;
     padding: 15px;
-    width: 230px;
+    width: 270px;
 
     .box-row {
       display: flex;
@@ -139,5 +139,46 @@ $cover-height: 240px;
     flex: 1;
     margin-left: 30px;
     padding: 25px;
+  }
+
+  .settings-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0;
+    margin-bottom: 30px;
+  }
+
+  .section-title {
+    display: flex;
+    width: 100%;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+
+  .edit-button-container {
+    margin-left: auto;
+    margin-right: 20px;
+  }
+
+  .input-group {
+    display: flex;
+    flex-flow: row wrap;
+    margin-bottom: 50px;
+  }
+
+  .input-container {
+    margin-bottom: 20px;
+    padding-right: 20px;
+    width: 50%;
+
+    label {
+      margin-bottom: 0;
+    }
+  }
+
+  .input-box-container {
+    font-size: 16px;
   }
 }

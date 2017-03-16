@@ -19,9 +19,6 @@ class UserSettings extends React.Component {
     const success = resolve;
     const fail = reject;
 
-    // Remove the person object from state
-    // delete params.person;
-
     Requester.update(
         route,
         params,
@@ -80,7 +77,7 @@ class UserSettings extends React.Component {
       var params = {
         stripe_token: response.id,
         email: this.state.email,
-        customer_id: this.state.customer_id
+        customer_id: this.state.person.customer_id
       };
       console.log(params);
       Requester.post(

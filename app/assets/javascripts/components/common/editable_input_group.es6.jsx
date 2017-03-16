@@ -39,12 +39,16 @@ class EditableInputGroup extends React.Component {
     });
 
     return (
-      <div>
-        { inputs }
+      <div className="input-group">
+        <div className="section-title">
+          {this.props.title}
 
-        <FormEditToggle editable={ this.state.editable }
-            update={ this.toggleEdit.bind(this) }
-            save={ this.attemptSave.bind(this) } />
+          <FormEditToggle editable={ this.state.editable }
+              update={ this.toggleEdit.bind(this) }
+              save={ this.attemptSave.bind(this) } />
+        </div>
+
+        { inputs }
       </div>
     );
   }

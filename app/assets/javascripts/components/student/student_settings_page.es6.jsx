@@ -9,23 +9,24 @@ class StudentSettingsPage extends UserSettings {
   constructor(props) {
     super(props);
 
+    let person = this.props.person || {};
+    person.availability = [];
+    person.card_number = "*****";
+    person.cvc = "*****";
+    person.exp_month = "*****";
+    person.exp_year = "*****";
+    person.cardholder_name = "*****";
+    person.instruments = null;
+    person.stripe_address_line1 = "*****";
+    person.stripe_address_line2 = "*****";
+    person.stripe_address_city = "*****";
+    person.stripe_address_state = "*****";
+    person.stripe_address_zip = "*****";
+
     this.state = {
       addModalIsVisible: false,
       removeModalIsVisible: false,
-      person: {
-        availability: [],
-        card_number: "*****",
-        cvc: "*****",
-        exp_month: "*****",
-        exp_year: "*****",
-        cardholder_name: "*****",
-        instruments: null,
-        stripe_address_line1: "*****",
-        stripe_address_line2: "*****",
-        stripe_address_city: "*****",
-        stripe_address_state: "*****",
-        stripe_address_zip: "*****",
-      }
+      person: person,
     }
   }
 
@@ -36,6 +37,7 @@ class StudentSettingsPage extends UserSettings {
   componentWillReceiveProps(props) {
     const { student } = props;
     student.instruments = null;
+    Object.assign(student, this.state.person)
 
     this.setState({
       person: student,
@@ -85,7 +87,7 @@ class StudentSettingsPage extends UserSettings {
   fetchInstruments() {
     const route = ApiConstants.students.instruments(this.props.id);
     const resolve = (response) => {
-      const student = this.state.person;
+      let person = this.state.person;
       person.instruments = response.instruments;
       this.setState({ person });
     }
@@ -154,33 +156,31 @@ class StudentSettingsPage extends UserSettings {
 
     return (
       <div>
-        <h2 className="title">
-          Settings
-        </h2>
+        <h2 className="settings-title">Your Profile</h2>
 
-        <h2 className="section-title">Student Information</h2>
-        <EditableInputGroup handleChange={this.handleChange.bind(this)}
+        <EditableInputGroup title="Student Information"
+                            handleChange={this.handleChange.bind(this)}
                             attemptSave={this.attemptSave.bind(this)}
                             fetchProfile={this.props.fetchProfile}>
-          <EditableInput label="First Name" name="first_name" data={s.first_name} />
-          <EditableInput label="Last Name" name="last_name" data={s.last_name} />
+          <EditableInput label="First Name" name="first_name" data={s.first_name}  />
+          <EditableInput label="Last Name" name="last_name" data={s.last_name}  />
           <EditableInput label="Gender" name="gender" data={s.gender}
             specialHandler={this.handleIntegerChange.bind(this)} />
           <EditableInput label="Birthday" name="birthday" data={s.birthday}
             specialHandler={this.handleDatetimeChange.bind(this)} />
           <EditableInput label="Email" name="student_email" data={s.student_email} />
-          <EditableInput label="School" name="school" data={s.school} />
-          <EditableInput label="Grade" name="school_level" data={s.school_level} />
+          <EditableInput label="School" name="school" data={s.school}  />
+          <EditableInput label="Grade" name="school_level" data={s.school_level}  />
           <EditableInput label="Phone Number" name="student_phone" data={s.student_phone} />
-          <EditableInput label="Address" name="address" data={s.address} />
-          <EditableInput label="Apt #" name="address_apt" data={s.address_apt} />
-          <EditableInput label="City" name="city" data={s.city} />
-          <EditableInput label="State" name="state" data={s.state} />
-          <EditableInput label="Zip Code" name="zipcode" data={s.zipcode} />
+          <EditableInput label="Address" name="address" data={s.address}  />
+          <EditableInput label="Apt #" name="address_apt" data={s.address_apt}  />
+          <EditableInput label="City" name="city" data={s.city}  />
+          <EditableInput label="State" name="state" data={s.state}  />
+          <EditableInput label="Zip Code" name="zipcode" data={s.zipcode}  />
         </EditableInputGroup>
 
-        <h2 className="section-title">Parent/Guardian Information</h2>
-        <EditableInputGroup handleChange={this.handleChange.bind(this)}
+        <EditableInputGroup title="Parent/Guardian Information"
+                            handleChange={this.handleChange.bind(this)}
                             attemptSave={this.attemptSave.bind(this)}
                             fetchProfile={this.props.fetchProfile}>
           <EditableInput label="Parent/Guardian First Name" name="guardian_first_name" data={s.guardian_first_name} />
@@ -204,12 +204,11 @@ class StudentSettingsPage extends UserSettings {
           isEditable={true}
           events={availability_to_events(this.state.person.availability)} />
 
-        <Button className="button button--outline-orange button--sm">
-          Save
-        </Button>
+        <Button className="button button--outline-orange button--sm">Save</Button>
+        <div className="marginBot-xl"></div>
 
-        <h2 className="section-title">Payment</h2>
-        <EditableInputGroup handleChange={this.handleChange.bind(this)}
+        <EditableInputGroup title="Payment"
+                            handleChange={this.handleChange.bind(this)}
                             attemptSave={this.attemptCardSave.bind(this)}
                             fetchProfile={this.props.fetchProfile}>
           <EditableInput label="Card Number" name="card_number" data={s.card_number} />
@@ -222,8 +221,8 @@ class StudentSettingsPage extends UserSettings {
           <EditableInput label="ZIP" name="stripe_address_zip" data={s.stripe_address_zip} />
         </EditableInputGroup>
 
-        <h2 className="section-title">Eligibility</h2>
-        <EditableInputGroup handleChange={this.handleChange.bind(this)}
+        <EditableInputGroup title="Eligibility"
+                            handleChange={this.handleChange.bind(this)}
                             attemptSave={this.attemptSave.bind(this)}
                             fetchProfile={this.props.fetchProfile}>
           <EditableInput label="Income Estimate" name="income_range" data={s.income_range}
