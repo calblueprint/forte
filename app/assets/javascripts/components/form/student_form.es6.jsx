@@ -50,7 +50,8 @@ class StudentForm extends React.Component {
       lat: null,
       lng: null,
       showWaiverModal: false,
-      errors: {}
+      errors: {},
+      loading: false,
     }
   }
 
@@ -240,6 +241,10 @@ class StudentForm extends React.Component {
     this.setState({ showWaiverModal: false });
   }
 
+  stopLoading() {
+    this.setState({ loading : false });
+  }
+
   setAvailability() {
     const { calendar } = this.refs.availability.refs
     //TODO: not ideal way to do this.. figure out some other way
@@ -248,7 +253,10 @@ class StudentForm extends React.Component {
     for (var i = 0; i < eventArray.length; i++) {
       availabilityArray = availabilityArray.concat(range_to_array(eventArray[i]['start'], eventArray[i]['end']));
     }
-    this.setState({ availability: availabilityArray });
+    this.setState({
+      availability: availabilityArray,
+      loading: true
+    });
   }
 
   setInstruments() {
@@ -364,6 +372,8 @@ class StudentForm extends React.Component {
         address_state: stripe_address_state,
         address_zip: stripe_address_zip
       }, this.stripeResponseHandler.bind(this));
+    } else {
+      this.stopLoading();
     }
   }
 
@@ -466,10 +476,16 @@ class StudentForm extends React.Component {
 
   createStudent(customer) {
     var reject = (response) => {
-      this.setState({ errors: response.errors });
+      this.setState({
+        errors: response.errors,
+        loading: false
+      });
       console.log(response);
     };
-    var resolve = (response) => { window.location = "/" };
+    var resolve = (response) => {
+      this.stopLoading();
+      window.location = "/"
+    };
     var params = {
       student: {
         email: this.state.email,
@@ -625,8 +641,17 @@ class StudentForm extends React.Component {
   }
 
   render () {
+    let loadingContainer;
+
+    if (this.state.loading) {
+      loadingContainer = <div className="loading-container">
+        <div className="loading"></div>
+      </div>
+    }
+
     return (
       <div className="page-wrapper form-wrapper">
+        {loadingContainer}
         <Header />
           <div className="content-wrapper form-page">
             <h1 className="marginBot-lg">Student Application</h1>
