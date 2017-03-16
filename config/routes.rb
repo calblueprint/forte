@@ -54,6 +54,7 @@ Rails.application.routes.draw do
     post :send_contact_email
     get :about
     get :terms
+    get :donate
   end
 
   ##################################################
