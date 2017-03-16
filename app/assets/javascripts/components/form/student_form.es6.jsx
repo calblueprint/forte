@@ -242,7 +242,7 @@ class StudentForm extends React.Component {
   }
 
   stopLoading() {
-    this.setState( {loading : false});
+    this.setState({ loading : false });
   }
 
   setAvailability() {
@@ -253,7 +253,10 @@ class StudentForm extends React.Component {
     for (var i = 0; i < eventArray.length; i++) {
       availabilityArray = availabilityArray.concat(range_to_array(eventArray[i]['start'], eventArray[i]['end']));
     }
-    this.setState({ availability: availabilityArray, loading: true });
+    this.setState({
+      availability: availabilityArray,
+      loading: true
+    });
   }
 
   setInstruments() {
@@ -473,7 +476,10 @@ class StudentForm extends React.Component {
 
   createStudent(customer) {
     var reject = (response) => {
-      this.setState({ errors: response.errors, loading: false });
+      this.setState({
+        errors: response.errors,
+        loading: false
+      });
       console.log(response);
     };
     var resolve = (response) => {

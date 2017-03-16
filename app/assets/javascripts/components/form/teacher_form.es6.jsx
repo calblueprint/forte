@@ -256,7 +256,7 @@ class TeacherForm extends React.Component {
   }
 
   stopLoading() {
-    this.setState( {loading : false});
+    this.setState({ loading : false });
   }
 
   setAvailability() {
@@ -267,7 +267,10 @@ class TeacherForm extends React.Component {
     for (var i = 0; i < eventArray.length; i++) {
       availabilityArray = availabilityArray.concat(range_to_array(eventArray[i]['start'], eventArray[i]['end']));
     }
-    this.setState({ availability: availabilityArray, loading: true })
+    this.setState({
+      availability: availabilityArray,
+      loading: true
+    })
   }
 
   setInstruments() {
@@ -391,7 +394,6 @@ class TeacherForm extends React.Component {
     } else {
       instrument_errors = await this.validateInstruments();
       if (!(Object.keys(instrument_errors).length === 0)) {
-        console.log("wtf");
         this.setState({'errors' : instrument_errors});
         this.stopLoading();
       } else {
@@ -555,7 +557,10 @@ class TeacherForm extends React.Component {
   createTeacher(accountResponse) {
     const { teach_for_free } = this.state;
     var reject = (response) => {
-      this.setState({ errors: response.errors, loading: false });
+      this.setState({
+        errors: response.errors,
+        loading: false
+      });
     }
     var resolve = (response) => {
       if (teach_for_free) {
