@@ -59,6 +59,7 @@ class TeacherForm extends React.Component {
       lng: null,
       showWaiverModal: false,
       errors: {},
+      loading: false,
     }
   }
 
@@ -254,6 +255,10 @@ class TeacherForm extends React.Component {
     this.setState({ showWaiverModal: false });
   }
 
+  stopLoading() {
+    this.setState( {loading : false});
+  }
+
   setAvailability() {
     const { calendar } = this.refs.availability.refs
     //TODO: not ideal way to do this.. figure out some other way
@@ -262,7 +267,7 @@ class TeacherForm extends React.Component {
     for (var i = 0; i < eventArray.length; i++) {
       availabilityArray = availabilityArray.concat(range_to_array(eventArray[i]['start'], eventArray[i]['end']));
     }
-    this.setState({ availability: availabilityArray })
+    this.setState({ availability: availabilityArray, loading: true })
   }
 
   setInstruments() {
@@ -363,6 +368,8 @@ class TeacherForm extends React.Component {
           account_holder_name: stripe_account_holder_name,
           account_holder_type: stripe_account_holder_type
         }, this.stripeResponseHandler.bind(this));
+      } else {
+        this.stopLoading();
       }
     } else {
       this.createTeacher();
@@ -490,7 +497,10 @@ class TeacherForm extends React.Component {
       stripe_ssn_last_4,
     } = this.state
     const reject = (response) => { console.log(response) };
-    const resolve = ((response) => { window.location.href = "/" });
+    const resolve = ((response) => {
+      this.stopLoading();
+      window.location.href = "/"
+    });
 
     var params = {
       dob_day: stripe_account_holder_dob.date(),
@@ -521,16 +531,17 @@ class TeacherForm extends React.Component {
   createTeacher(accountResponse) {
     const { teach_for_free } = this.state;
     var reject = (response) => {
-      this.setState({ errors: response.errors });
+      this.setState({ errors: response.errors, loading: false });
     }
     var resolve = (response) => {
       if (teach_for_free) {
+        this.stopLoading();
         window.location.href = "/";
       } else {
         this.verifyStripeAccount(response);
       }
     };
-    
+
     if (!this.state.lat && !this.state.lng) {
       const { address, address_apt, city, state, zipcode } = this.state;
       var geocoder = new google.maps.Geocoder();
@@ -600,7 +611,6 @@ class TeacherForm extends React.Component {
       params.teacher.bank_id = accountResponse.bank_account.id
     }
 
-    console.log(params);
     Requester.post(
       ApiConstants.authentication.signup.teacher,
       params,
@@ -846,8 +856,17 @@ class TeacherForm extends React.Component {
   }
 
   render () {
+    let loadingContainer;
+
+    if (this.state.loading) {
+      loadingContainer = <div className="loading-container">
+        <div className="loading"></div>
+      </div>
+    }
+
     return (
       <div className="page-wrapper form-wrapper">
+        {loadingContainer}
         <Header />
           <div className="content-wrapper form-page">
             <h1 className="marginBot-lg">Teacher Application</h1>
