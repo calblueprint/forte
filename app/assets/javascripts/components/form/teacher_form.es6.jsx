@@ -337,6 +337,23 @@ class TeacherForm extends React.Component {
         instruments_attributes: this.state.instruments_attributes,
       }
     };
+
+    if (!this.state.lat && !this.state.lng) {
+      const { address, address_apt, city, state, zipcode } = this.state;
+      var geocoder = new google.maps.Geocoder();
+      var full_address = [address, address_apt, city, state, zipcode].join(" ");
+      geocoder.geocode({"address": full_address}, function(results, status) {
+        if (status === 'OK') {
+          var location = results[0]["geometry"]["location"];
+          var lat = location["lat"]();
+          var lng = location["lng"]();
+          this.setState({ lat: lat, lng: lng });
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+        }
+      }.bind(this));
+    }
+
     Requester.post(
       ApiConstants.teachers.validate,
       params,
@@ -372,7 +389,14 @@ class TeacherForm extends React.Component {
         this.stopLoading();
       }
     } else {
-      this.createTeacher();
+      instrument_errors = await this.validateInstruments();
+      if (!(Object.keys(instrument_errors).length === 0)) {
+        console.log("wtf");
+        this.setState({'errors' : instrument_errors});
+        this.stopLoading();
+      } else {
+        this.createTeacher();
+      }
     }
   }
 
@@ -541,22 +565,6 @@ class TeacherForm extends React.Component {
         this.verifyStripeAccount(response);
       }
     };
-
-    if (!this.state.lat && !this.state.lng) {
-      const { address, address_apt, city, state, zipcode } = this.state;
-      var geocoder = new google.maps.Geocoder();
-      var full_address = [address, address_apt, city, state, zipcode].join(" ");
-      geocoder.geocode({"address": full_address}, function(results, status) {
-        if (status === 'OK') {
-          var location = results[0]["geometry"]["location"];
-          var lat = location["lat"]();
-          var lng = location["lng"]();
-          this.setState({ lat: lat, lng: lng });
-        } else {
-          alert('Geocode was not successful for the following reason: ' + status);
-        }
-      }.bind(this));
-    }
 
     var params = {
       teacher: {
