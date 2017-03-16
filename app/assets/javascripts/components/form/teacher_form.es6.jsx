@@ -392,9 +392,9 @@ class TeacherForm extends React.Component {
         this.stopLoading();
       }
     } else {
-      instrument_errors = await this.validateInstruments();
-      if (!(Object.keys(instrument_errors).length === 0)) {
-        this.setState({'errors' : instrument_errors});
+      var teacher_instrument_errs = await this.validateTeacherAndInstruments(teacher_errs);
+
+      if (!(Object.keys(teacher_instrument_errs).length === 0)) {
         this.stopLoading();
       } else {
         this.createTeacher();
@@ -423,6 +423,20 @@ class TeacherForm extends React.Component {
     }
   }
 
+  async validateTeacherAndInstruments(teacher_errs) {
+    var error_info = {};
+    // var validated = true;
+
+    var instrument_errors = await this.validateInstruments();
+    // if (!(Object.keys(teacher_errs).length === 0) || !(Object.keys(instrument_errors).length === 0)) {
+    //   validated = false;
+    // }
+
+    error_info = Object.assign(error_info, teacher_errs, instrument_errors);
+    // this.setState({ errors: error_info });
+    return error_info;
+  }
+
   /**
    * Sets the state of errors to be the errored fields returned from stripeValidateFields
    * @param stripe_routing_number
@@ -433,7 +447,7 @@ class TeacherForm extends React.Component {
   async validateTeacherAndStripeCustomer(stripe_routing_number, stripe_account_number, stripe_country, teacher_errs) {
 
     var payment_errs = await this.stripeValidateFields(stripe_routing_number, stripe_account_number, stripe_country);
-    var instrument_errors = await this.validateInstruments();
+    var teacher_instrument_errs = await this.validateTeacherAndInstruments(teacher_errs);
 
     var error_info = {};
     var validated = true;
@@ -444,10 +458,10 @@ class TeacherForm extends React.Component {
         error_info[err_type] = payment_errs[err_type][1];
       }
     }
-    if (!(Object.keys(teacher_errs).length === 0) || !(Object.keys(instrument_errors).length === 0)) {
+    if (!(Object.keys(teacher_instrument_errs).length === 0)) {
       validated = false;
     }
-    error_info = Object.assign(error_info, teacher_errs, instrument_errors);
+    error_info = Object.assign(error_info, teacher_instrument_errs);
     this.setState({ errors: error_info });
     return validated;
   }
