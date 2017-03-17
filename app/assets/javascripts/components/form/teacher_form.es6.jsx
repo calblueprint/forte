@@ -541,7 +541,6 @@ class TeacherForm extends React.Component {
     } = this.state
     const reject = (response) => { console.log(response) };
     const resolve = ((response) => {
-      toastr.success("Successful Form Submit!");
       this.stopLoading();
       window.location.href = "/"
     });

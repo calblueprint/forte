@@ -373,6 +373,7 @@ class StudentForm extends React.Component {
         address_zip: stripe_address_zip
       }, this.stripeResponseHandler.bind(this));
     } else {
+      toastr.error("There are errors with your form! <br> Please correct them before continuing!");
       this.stopLoading();
     }
   }
