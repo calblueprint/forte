@@ -277,21 +277,7 @@ class StudentForm extends React.Component {
   async validateStudentFields() {
     var reject = (response) => { this.createStripeCustomer(response) };
     var resolve = (response) => { this.createStripeCustomer({}) };
-    if (!this.state.lat && !this.state.lng) {
-      const { address, address_apt, city, state, zipcode } = this.state;
-      var geocoder = new google.maps.Geocoder();
-      var full_address = [address, address_apt, city, state, zipcode].join(" ");
-      geocoder.geocode({"address": full_address}, function(results, status) {
-        if (status === 'OK') {
-          var location = results[0]["geometry"]["location"];
-          var lat = location["lat"]();
-          var lng = location["lng"]();
-          this.setState({ lat: lat, lng: lng });
-        } else {
-          alert('Geocode was not successful for the following reason: ' + status);
-        }
-      }.bind(this));
-    }
+
     var params = {
       student: {
         email: this.state.email,
@@ -356,6 +342,9 @@ class StudentForm extends React.Component {
       stripe_address_zip,
     } = this.state;
 
+    this.validateAddress();
+    console.log(this.state);
+
     var validated_student_and_stripe = await this.validateStudentAndStripeCustomer(card_number, exp_month, exp_year, cvc, student_errs);
 
     // Only create customer if stripe validations pass - do not create token if there are stripe errors
@@ -407,7 +396,9 @@ class StudentForm extends React.Component {
 
     var card_errs = await this.stripeValidateFields(card_number, exp_month, exp_year, cvc);
     var instrument_errors = await this.validateInstruments();
+    var address_errors = this.state.errors;
 
+    console.log(address_errors);
     var error_info = {};
     var validated = true;
     for (var err_type in card_errs) {
@@ -418,10 +409,12 @@ class StudentForm extends React.Component {
       }
     }
     // Checks to see if object is null
-    if (!(Object.keys(student_errs).length === 0) || !(Object.keys(instrument_errors).length === 0)) {
+    if (!(Object.keys(student_errs).length === 0) ||
+        !(Object.keys(instrument_errors).length === 0) ||
+        !Object.keys(address_errors).length == 0) {
       validated = false;
     }
-    error_info = Object.assign(error_info, student_errs, instrument_errors);
+    error_info = Object.assign(error_info, student_errs, instrument_errors, address_errors);
     this.setState({ errors: error_info });
     return validated;
   }
@@ -447,6 +440,30 @@ class StudentForm extends React.Component {
       }
     }
     return errors;
+  }
+
+  /**
+   * Front-end validation for the address field
+   */
+  validateAddress() {
+    const { lat, lng, address, address_apt, city, state, zipcode } = this.state;
+
+    var errors = {};
+
+    if (!lat && !lng) {
+      var geocoder = new google.maps.Geocoder();
+      var full_address = [address, address_apt, city, state, zipcode].join(" ");
+      geocoder.geocode({"address": full_address}, function(results, status) {
+        if (status === 'OK') {
+          var location = results[0]["geometry"]["location"];
+          var lat = location["lat"]();
+          var lng = location["lng"]();
+          this.setState({ lat: lat, lng: lng });
+        } else {
+          this.setState({ errors: { address: "Invalid address" } });
+        }
+      }.bind(this));
+    }
   }
 
 
