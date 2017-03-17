@@ -298,6 +298,8 @@ GEM
     thread_safe (0.3.5)
     tilt (2.0.5)
     timezone (1.2.6)
+    toastr-rails (1.0.3)
+      railties (>= 3.1.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.7.2)
@@ -361,6 +363,7 @@ DEPENDENCIES
   spring
   stripe!
   timezone (~> 1.0)
+  toastr-rails
   uglifier (= 2.7.2)
   web-console (~> 2.0)
 
