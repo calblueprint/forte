@@ -8,6 +8,7 @@ class StudentShowSerializer < StudentBaseSerializer
               :guardian_last_name,
               :guardian_phone,
               :introduction,
+              :is_student,
               :lesson_experience,
               :performance_experience,
               :student_email,
@@ -30,6 +31,11 @@ class StudentShowSerializer < StudentBaseSerializer
               :full_name,
               :unmatched_instruments,
               :timezone,
+              :customer_id
+
+  def is_student
+    true
+  end
 
   def unmatched_instruments
     student_instruments = object.instruments.map &:name

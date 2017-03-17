@@ -3,19 +3,21 @@ class LessonItem extends React.Component {
   static get propTypes() {
     return {
       lesson: React.PropTypes.object,
-      onPersonClick: React.PropTypes.func,
     };
   }
 
   render () {
     const { lesson } = this.props
-    var startTime = moment(lesson.start_time);
-    var endTime = moment(lesson.end_time);
+    let startTime = moment(lesson.start_time);
+    let endTime = moment(lesson.end_time);
+    let studentName = `${lesson.student.first_name} ${lesson.student.last_name}`;
+    let teacherName = `${lesson.teacher.first_name} ${lesson.teacher.last_name}`;
+
     return (
       <div className="lesson-item">
         <div className="lesson-item-header">
-          {this.renderHeaderItem('Student', lesson.student.first_name + ' ' + lesson.student.last_name, (event) => this.props.onPersonClick(this.props.lesson.student))}
-          {this.renderHeaderItem('Teacher', lesson.teacher.first_name + ' ' + lesson.teacher.last_name, (event) => this.props.onPersonClick(this.props.lesson.teacher))}
+          {this.renderHeaderItem('Student', studentName, lesson.student.id)}
+          {this.renderHeaderItem('Teacher', teacherName, lesson.teacher.id)}
         </div>
         <div className="lesson-item-content">
           {this.renderContentItem('Time',
@@ -30,12 +32,21 @@ class LessonItem extends React.Component {
     );
   }
 
-  renderHeaderItem(label, text, onClick=null) {
+  renderHeaderItem(label, text, id) {
+    let link;
+    if (label == "Student") {
+      link = RouteConstants.admin.studentProfile(id);
+    } else {
+      link = RouteConstants.admin.teacherProfile(id);
+    }
+
     return (
-      <div className="lesson-item-header-item">
-        <div className="header-label">{label}</div>
-        <div className="header-text" onClick={onClick}>{text}</div>
-      </div>
+      <a className="lesson-item-header-item" href={link}>
+        <div>
+          <div className="header-label">{label}</div>
+          <div className="header-text">{text}</div>
+        </div>
+      </a>
     );
   }
 

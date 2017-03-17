@@ -11,11 +11,15 @@ Rails.application.routes.draw do
   # Admin
   ##################################################
   get 'admin', to: redirect('admin/matched')
-  namespace :admin do
-    get :matched
-    get :unmatched
-    get :lessons
-    get :roster
+  resources :admin do
+    collection do
+      get :matched
+      get :unmatched
+      get :lessons
+      get :roster
+      get 'roster/students/:id', to: 'admin#student'
+      get 'roster/teachers/:id', to: 'admin#teacher'
+    end
   end
 
   ##################################################
@@ -25,6 +29,7 @@ Rails.application.routes.draw do
   namespace :student do
     get :lessons
     get :settings
+    get :profile
   end
 
   ##################################################
@@ -124,6 +129,7 @@ Rails.application.routes.draw do
   ##################################################
   namespace :stripe do
     post '/customer', to: 'customers#create_customer'
+    post '/update_customer', to: 'customers#update_customer'
     post '/charge', to: 'charges#charge_customer'
     post '/account', to: 'accounts#create_account'
     post '/verify_account', to: 'accounts#update_account'

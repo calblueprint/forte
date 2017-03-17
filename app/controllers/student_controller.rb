@@ -9,4 +9,8 @@ class StudentController < ApplicationController
     @student = current_student
   end
 
+  def profile
+    @user_id = current_student.id
+  end
+
 end
