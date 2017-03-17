@@ -54,7 +54,7 @@ class Profile extends React.Component {
           view = <StudentSettingsPage
                    fetchProfile={this.fetchProfile.bind(this)}
                    id={this.props.id}
-                   student={person} />
+                   person={person} />
         } else {
           view = <div>Teacher profile settings not implemented yet</div>
         }
@@ -84,7 +84,7 @@ class Profile extends React.Component {
             <p className="box-desc">{age} yrs.</p>
           </div>
         </div>
-        <h3 className="box-label">Student Email</h3>
+        <h3 className="box-label">Email</h3>
         <p className="box-desc">
           <a href={`mailto:${person.email}`}>{person.email}</a>
         </p>

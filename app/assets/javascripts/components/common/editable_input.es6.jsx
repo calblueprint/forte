@@ -21,6 +21,12 @@ class EditableInput extends React.Component {
       case 'income_range':
         optionsArray = INCOME_RANGES;
         break;
+      case 'school_level':
+        optionsArray = STUDENT_SCHOOL_LEVELS;
+        break;
+      case 'travel_distance':
+        optionsArray = TRAVEL_DISTANCES;
+        break;
       case 'household_number':
         optionsArray = HOUSEHOLD_NUMBER;
         j = 1;
@@ -46,9 +52,21 @@ class EditableInput extends React.Component {
           )
           break;
 
+        case "student_phone":
+          inputVal = (
+            <FormatInput
+              inputId="student_phone"
+              handleChange={this.props.handleChange}
+              validationState={() => {}}
+              displayErrors={() => {}} />
+          )
+          break;
+
         case "gender":
         case "income_range":
         case "household_number":
+        case "school_level":
+        case "travel_distance":
           inputVal = (
             <FormControl componentClass="select"
               name={this.props.name}

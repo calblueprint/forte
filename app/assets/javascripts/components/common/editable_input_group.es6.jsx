@@ -18,7 +18,7 @@ class EditableInputGroup extends React.Component {
 
   attemptSave() {
     const resolve = () => {
-      this.setState({ editable: false, });
+      this.setState({ editable: false });
       this.props.fetchProfile();
     }
 
