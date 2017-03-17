@@ -181,4 +181,22 @@ $cover-height: 240px;
   .input-box-container {
     font-size: 16px;
   }
+
+  .instrument {
+    display: flex;
+    margin-bottom: 10px;
+
+    .instrumentName {
+      font-weight: 600;
+      margin-right: 20px;
+    }
+
+    .link {
+      cursor: pointer;
+    }
+  }
+
+  .availability-save-btn {
+    margin: 40px 0;
+  }
 }

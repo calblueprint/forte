@@ -112,14 +112,11 @@ class StudentSettingsPage extends UserSettings {
         <div className="instrumentName">
           {instrument.name}
         </div>
-        <div className="delete">
-          <Button
-            className="button button--outline-orange button--sm"
-            onClick={() => this.openRemoveModal()}>
-            Remove
-          </Button>
-          {this.renderRemoveModal(instrument)}
-        </div>
+        <a className="link"
+          onClick={() => this.openRemoveModal()}>
+          [Remove]
+        </a>
+        {this.renderRemoveModal(instrument)}
       </div>
     );
   }
@@ -201,9 +198,9 @@ class StudentSettingsPage extends UserSettings {
 
         <h2 className="section-title">Musical Experience</h2>
         {this.renderInstruments()}
-        <Button className="button button--outline-orange button--sm"
+        <Button className="button button--outline-orange button--sm marginTop-md"
           onClick={() => this.openAddModal()}>
-          Add
+          Add Another Instrument
         </Button>
         {addInstrumentModal}
 
@@ -214,8 +211,7 @@ class StudentSettingsPage extends UserSettings {
           isEditable={true}
           events={availability_to_events(this.state.person.availability)} />
 
-        <Button className="button button--outline-orange button--sm">Save</Button>
-        <div className="marginBot-xl"></div>
+        <Button className="button button--outline-orange button--sm availability-save-btn">Save</Button>
 
         <EditableInputGroup title="Payment"
                             handleChange={this.handleChange.bind(this)}

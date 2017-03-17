@@ -101,6 +101,16 @@ class Profile extends React.Component {
     const { isStudent, isAdmin } = this.props;
     const personType = isStudent ? "Student" : "Teacher";
     let header = isAdmin ? <AdminHeader /> : <UserHeader />;
+    let lessonTab;
+
+    if (isAdmin) {
+      lessonTab = (
+        <li className={"tab " + (currTab == 2 ? "active" : "inactive")}
+          onClick={() => this.switchTab(2)}>
+          Lessons
+        </li>
+      )
+    }
 
     return (
       <div className="page-wrapper profile-page">
@@ -120,9 +130,7 @@ class Profile extends React.Component {
                 <li className={"tab " + (currTab == 1 ? "active" : "inactive")}
                   onClick={() => this.switchTab(1)}>
                   {personType} Info</li>
-                <li className={"tab " + (currTab == 2 ? "active" : "inactive")}
-                  onClick={() => this.switchTab(2)}>
-                  Lessons</li>
+                { lessonTab }
               </ul>
             </div>
           </div>
