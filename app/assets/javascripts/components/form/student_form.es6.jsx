@@ -275,7 +275,7 @@ class StudentForm extends React.Component {
     * Validates fields for student form fields
     */
   async validateStudentFields() {
-    var reject = (response) => { this.createStripeCustomer(response) };
+    var reject = (response) => { this.validateAddress(response) };
     var resolve = (response) => { this.createStripeCustomer({}) };
 
     var params = {
@@ -328,7 +328,7 @@ class StudentForm extends React.Component {
     * Creates a Stripe Customer on the Rails side
     * @param student_errs Object
     */
-  async createStripeCustomer(student_errs) {
+  async createStripeCustomer(student_errs, address_errors) {
     const {
       card_number,
       cvc,
@@ -342,10 +342,7 @@ class StudentForm extends React.Component {
       stripe_address_zip,
     } = this.state;
 
-    this.validateAddress();
-    console.log(this.state);
-
-    var validated_student_and_stripe = await this.validateStudentAndStripeCustomer(card_number, exp_month, exp_year, cvc, student_errs);
+    var validated_student_and_stripe = await this.validateStudentAndStripeCustomer(student_errs, address_errors);
 
     // Only create customer if stripe validations pass - do not create token if there are stripe errors
     if (validated_student_and_stripe) {
@@ -392,13 +389,11 @@ class StudentForm extends React.Component {
    * @param exp_month, exp_year
    * @param cvc
    */
-  async validateStudentAndStripeCustomer(card_number, exp_month, exp_year, cvc, student_errs) {
+  async validateStudentAndStripeCustomer(student_errs, address_errors) {
 
-    var card_errs = await this.stripeValidateFields(card_number, exp_month, exp_year, cvc);
+    var card_errs = await this.stripeValidateFields();
     var instrument_errors = await this.validateInstruments();
-    var address_errors = this.state.errors;
 
-    console.log(address_errors);
     var error_info = {};
     var validated = true;
     for (var err_type in card_errs) {
@@ -411,7 +406,7 @@ class StudentForm extends React.Component {
     // Checks to see if object is null
     if (!(Object.keys(student_errs).length === 0) ||
         !(Object.keys(instrument_errors).length === 0) ||
-        !Object.keys(address_errors).length == 0) {
+        !(Object.keys(address_errors).length == 0)) {
       validated = false;
     }
     error_info = Object.assign(error_info, student_errs, instrument_errors, address_errors);
@@ -423,9 +418,7 @@ class StudentForm extends React.Component {
    * Front-end validation for instrument_attributes field
    */
   validateInstruments() {
-    const {
-      instruments_attributes,
-    } = this.state;
+    const { instruments_attributes } = this.state;
 
     var errors = {};
 
@@ -445,10 +438,10 @@ class StudentForm extends React.Component {
   /**
    * Front-end validation for the address field
    */
-  validateAddress() {
+  validateAddress(student_errs) {
     const { lat, lng, address, address_apt, city, state, zipcode } = this.state;
 
-    var errors = {};
+    var address_errors = {};
 
     if (!lat && !lng) {
       var geocoder = new google.maps.Geocoder();
@@ -460,8 +453,9 @@ class StudentForm extends React.Component {
           var lng = location["lng"]();
           this.setState({ lat: lat, lng: lng });
         } else {
-          this.setState({ errors: { address: "Invalid address" } });
+          address_errors.address = "Invalid address";
         }
+        this.createStripeCustomer(student_errs, address_errors);
       }.bind(this));
     }
   }
@@ -473,7 +467,9 @@ class StudentForm extends React.Component {
    * @param exp_month, exp_year
    * @param cvc
    */
-  stripeValidateFields(card_number, exp_month, exp_year, cvc) {
+  stripeValidateFields() {
+    const { card_number, exp_month, exp_year, cvc } = this.state;
+
     var card_errs = {};
 
     var num_err = Stripe.card.validateCardNumber(card_number);
