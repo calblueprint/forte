@@ -31,6 +31,7 @@ gem 'uglifier', '2.7.2'
 gem 'faker'
 gem 'date_validator'
 gem 'fullcalendar-rails'
+gem 'toastr-rails'
 
 group :development, :staging, :test do
 end

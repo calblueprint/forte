@@ -389,12 +389,15 @@ class TeacherForm extends React.Component {
           account_holder_type: stripe_account_holder_type
         }, this.stripeResponseHandler.bind(this));
       } else {
+        toastr.error("There are errors with your form! <br> Please correct them before continuing!");
         this.stopLoading();
       }
     } else {
       var teacher_instrument_errs = await this.validateTeacherAndInstruments(teacher_errs);
 
       if (!(Object.keys(teacher_instrument_errs).length === 0)) {
+        toastr.error("There are errors with your form! <br> Please correct them before continuing!");
+        this.setState({ errors: teacher_instrument_errs });
         this.stopLoading();
       } else {
         this.createTeacher();
@@ -538,6 +541,7 @@ class TeacherForm extends React.Component {
     } = this.state
     const reject = (response) => { console.log(response) };
     const resolve = ((response) => {
+      toastr.success("Successful Form Submit!");
       this.stopLoading();
       window.location.href = "/"
     });
