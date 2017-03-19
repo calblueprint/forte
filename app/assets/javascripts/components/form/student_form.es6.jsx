@@ -276,7 +276,7 @@ class StudentForm extends React.Component {
     */
   async validateStudentFields() {
     var reject = (response) => { this.validateAddress(response) };
-    var resolve = (response) => { this.createStripeCustomer({}) };
+    var resolve = (response) => { this.validateAddress({}) };
 
     var params = {
       student: {
