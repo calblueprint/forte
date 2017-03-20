@@ -191,6 +191,7 @@ class LessonCard extends React.Component {
     }
     var paidLabelText = is_paid ? 'Paid' : 'Unpaid';
     var paidLabelStyle = is_paid ? 'success' : 'danger';
+    var floatPrice = parseFloat(price).toFixed(2);
 
     return (
       <div className="lesson-card">
@@ -202,7 +203,7 @@ class LessonCard extends React.Component {
           <h4>{matching.instrument} Lesson</h4>
           <div className="cost">
             <div className="info-row">
-              <h5>${price}</h5>
+              <h5>${floatPrice}</h5>
               <Label bsStyle={paidLabelStyle}>{paidLabelText}</Label>
             </div>
           </div>
