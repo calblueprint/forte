@@ -40,12 +40,17 @@ class MatchingItem extends React.Component {
   }
 
   renderEditModal() {
+    const { matching } = this.props;
+    const { student, teacher } = matching;
+
     if (this.state.showEditModal) {
       return (
         <EditMatchModal show={this.state.showEditModal}
           handleClose={this.hideEditModal.bind(this)}
-          matching={this.props.matching.match_info}
-          refetch={this.props.fetchMatchings} />
+          refetch={this.props.fetchMatchings}
+          matching={matching.match_info}
+          student={student}
+          teacher={teacher}  />
       )
     }
   }
