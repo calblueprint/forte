@@ -8,7 +8,13 @@ class UserSettings extends React.Component {
 
   handleChange(event) {
     let target = $(event.target);
-    this.setState({ [target.attr('name')] : target.val() });
+    let val = target.val();
+
+    if (target.attr('name') == 'birthday') {
+      val = moment(val);
+    }
+
+    this.setState({ [target.attr('name')] : val });
   }
 
   attemptSave(resolve, reject) {

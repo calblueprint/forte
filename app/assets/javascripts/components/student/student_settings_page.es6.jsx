@@ -141,12 +141,9 @@ class StudentSettingsPage extends UserSettings {
   }
 
   handleDatetimeChange(moment, name) {
-    if (name == 'birthday') {
-      this.setState({ birthday: moment });
-    } else if (name == 'waiver_date') {
+    if (name == 'waiver_date') {
       this.setState({ waiver_date: moment });
     }
-    console.log("datetime change " + this.state.birthday);
   }
 
   render() {
