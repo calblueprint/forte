@@ -3,6 +3,7 @@
  * @prop formName        - Name for integration with Rails form submission
  * @prop inputId         - ID for the HTML input element
  * @prop handleChange    - callback function to update state
+ * @prop data            - previous data to inject
  * @prop validationState - check for errors
  * @prop displayErrors   - display error messages
  */
@@ -14,8 +15,10 @@ class FormatInput extends React.Component {
       formName        : React.PropTypes.string.isRequired,
       inputId         : React.PropTypes.string.isRequired,
       handleChange    : React.PropTypes.func.isRequired,
-      validationState : React.PropTypes.func.isRequired,
-      displayErrors   : React.PropTypes.func.isRequired,
+      data            : React.PropTypes.string,
+      validationState : React.PropTypes.func,
+      displayErrors   : React.PropTypes.func,
+
     };
   }
 
@@ -100,10 +103,10 @@ class FormatInput extends React.Component {
 
   render() {
     if (this.props.inputId == "birthday") {
-        var filler = "MM/DD/YYYY";
+        var filler = this.props.data || "MM/DD/YYYY";
         handleInput = this.handleDateInput.bind(this);
     } else if (this.props.inputId.indexOf("phone") > -1) {
-        var filler = "xxx-xxx-xxxx";
+        var filler = this.props.data || "xxx-xxx-xxxx";
         handleInput = this.handlePhoneInput.bind(this);
     }
 
@@ -112,6 +115,7 @@ class FormatInput extends React.Component {
         <ControlLabel htmlFor={this.props.inputId}>{this.props.formName}</ControlLabel>
         <FormControl
           componentClass="input"
+          defaultValue={this.props.data}
           placeholder={filler}
           name={this.props.inputId}
           onKeyPress={handleInput}
