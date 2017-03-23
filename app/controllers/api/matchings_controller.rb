@@ -1,7 +1,24 @@
 class Api::MatchingsController < Api::BaseController
+
   def index
     matchings = Matching.all
     render json: matchings
+  end
+
+  def matched_pairs
+    matchings = Matching.all
+    matching_info = []
+    matchings.each do |matching|
+      matching_info.push({
+        "match_info": matching,
+        "teacher": matching.teacher,
+        "student": matching.student
+      })
+    end
+
+    render json: matching_info,
+           root: false
+
   end
 
   def create

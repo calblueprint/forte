@@ -1,25 +1,42 @@
 class MatchedPage extends React.Component {
 
-  constructor(props) {
-    super();
-  }
-
   static get propTypes() {
     return {
       matchings: React.PropTypes.array,
     };
   }
 
-  renderMatching(matching) {
-    return (
-      <MatchingItem matching={matching}/>
-    );
+  constructor(props) {
+    super(props);
+    this.state = {
+      matchings: [],
+    };
+  }
+
+  componentDidMount() {
+    this.fetchMatchings();
+  }
+
+  fetchMatchings() {
+    const route = ApiConstants.matchings.pairs;
+    const resolve = (response) => this.setState({ matchings: response });
+    const reject = (response) => console.log(response);
+
+    Requester.get(route, resolve, reject);
   }
 
   renderMatchings() {
-    return this.props.matchings.map((matching, index) => {
-      return <MatchingItem matching={matching} key={index} />
-    });
+    const { matchings } = this.state;
+
+    if (matchings) {
+      return matchings.map((matching, index) => {
+        return (
+          <MatchingItem matching={matching}
+                        fetchMatchings={this.fetchMatchings.bind(this)}
+                        key={index} />
+        )
+      });
+    }
   }
 
   render () {

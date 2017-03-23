@@ -100,6 +100,31 @@
   }
 }
 
+.delete-matching-summary {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  .delete-matching-item {
+    padding: 0 10px;
+    width: 33.33%;
+
+    &:first-of-type { padding-left: 0; }
+  }
+
+  .delete-label {
+    color: $orange;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+  }
+
+  .delete-info {
+    margin: 0;
+  }
+}
+
 @media (max-width: 550px) {
   .matching-item .matching-item-content {
     justify-content: flex-start;

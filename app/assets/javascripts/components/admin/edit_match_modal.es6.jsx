@@ -2,7 +2,7 @@ class EditMatchModal extends React.Component {
 
   static get propTypes() {
     return {
-      show: React.PropTypes.boolean,
+      show: React.PropTypes.bool,
       handleClose: React.PropTypes.func,
       matching: React.PropTypes.object,
     };

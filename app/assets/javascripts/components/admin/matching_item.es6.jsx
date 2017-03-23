@@ -2,7 +2,9 @@ class MatchingItem extends React.Component {
 
   static get propTypes() {
     return {
-      matching: React.PropTypes.object,
+      matching: React.PropTypes.object.isRequired,
+      fetchMatchings: React.PropTypes.func.isRequired,
+      key: React.PropTypes.number,
     };
   }
 
@@ -21,11 +23,18 @@ class MatchingItem extends React.Component {
   hideDeleteModal() { this.setState({ showDeleteModal: false, }); }
 
   renderDeleteModal() {
+    const { matching } = this.props;
+    let studentName = `${matching.student.first_name} ${matching.student.last_name}`;
+    let teacherName = `${matching.teacher.first_name} ${matching.teacher.last_name}`;
+
     if (this.state.showDeleteModal) {
       return (
         <DeleteMatchModal show={this.state.showDeleteModal}
           handleClose={this.hideDeleteModal.bind(this)}
-          matching={this.props.matching.matching} />
+          refetch={this.props.fetchMatchings}
+          matching={matching.match_info}
+          studentName={studentName}
+          teacherName={teacherName} />
       )
     }
   }
@@ -35,14 +44,15 @@ class MatchingItem extends React.Component {
       return (
         <EditMatchModal show={this.state.showEditModal}
           handleClose={this.hideEditModal.bind(this)}
-          matching={this.props.matching.matching} />
+          matching={this.props.matching.match_info}
+          refetch={this.props.fetchMatchings} />
       )
     }
   }
 
   render() {
     const { matching } = this.props;
-    let startTime = moment(this.props.matching.matching.lesson_time[0]);
+    let startTime = moment(matching.match_info.lesson_time[0]);
     let studentName = `${matching.student.first_name} ${matching.student.last_name}`;
     let teacherName = `${matching.teacher.first_name} ${matching.teacher.last_name}`;
 
@@ -51,21 +61,13 @@ class MatchingItem extends React.Component {
         <div className="matching-item-header">
           {this.renderHeaderItem('Student', studentName, matching.student.id)}
           {this.renderHeaderItem('Teacher', teacherName, matching.teacher.id)}
-          <DropdownButton bsStyle="link matching-options" title="Options">
-            <MenuItem eventKey="1"
-              onClick={this.showEditModal.bind(this)}>Edit Matching</MenuItem>
-            <MenuItem divider />
-            <MenuItem eventKey="2"
-              onClick={this.showDeleteModal.bind(this)}>Delete</MenuItem>
-            {this.renderEditModal()}
-            {this.renderDeleteModal()}
-          </DropdownButton>
+          {this.renderDropdownButton()}
         </div>
         <div className="matching-item-content">
-          {this.renderContentItem('Instrument', this.props.matching.matching.instrument)}
-          {this.renderContentItem('Location', this.props.matching.matching.location, "matching-item-location")}
+          {this.renderContentItem('Instrument', matching.match_info.instrument)}
+          {this.renderContentItem('Location', matching.match_info.location, "matching-item-location")}
           {this.renderContentItem('Time', startTime.format('ddd h:mm A'))}
-          {this.renderContentItem('Price', `$${this.props.matching.matching.default_price}`)}
+          {this.renderContentItem('Price', `$${matching.match_info.default_price}`)}
         </div>
       </div>
     );
@@ -96,5 +98,22 @@ class MatchingItem extends React.Component {
         <div className="content-text">{text}</div>
       </div>
     );
+  }
+
+  renderDropdownButton() {
+    return (
+      <div className="matching-options">
+        <DropdownButton bsStyle="link" title="Options" pullRight={true}>
+          <MenuItem eventKey="1">Show All Lessons</MenuItem>
+          <MenuItem eventKey="2"
+            onClick={this.showEditModal.bind(this)}>Edit Matching</MenuItem>
+          <MenuItem divider />
+          <MenuItem eventKey="3"
+            onClick={this.showDeleteModal.bind(this)}>Delete</MenuItem>
+          {this.renderEditModal()}
+          {this.renderDeleteModal()}
+        </DropdownButton>
+      </div>
+    )
   }
 }

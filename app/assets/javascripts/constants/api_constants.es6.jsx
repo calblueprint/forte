@@ -77,6 +77,7 @@
       return {
         create: '/api/matchings',
         index: '/api/matchings',
+        pairs: '/api/matchings/pairs',
         delete: (id) => `/api/matchings/${id}`,
         update: (id) => `/api/matchings/${id}`,
         show: (id) => `/api/matchings/${id}`,
