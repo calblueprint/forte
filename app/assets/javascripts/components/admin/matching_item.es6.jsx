@@ -6,6 +6,40 @@ class MatchingItem extends React.Component {
     };
   }
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showDeleteModal: false,
+      showEditModal: false,
+    };
+  }
+
+  showEditModal() { this.setState({ showEditModal: true, }); }
+  hideEditModal() { this.setState({ showEditModal: false, }); }
+  showDeleteModal() { this.setState({ showDeleteModal: true, }); }
+  hideDeleteModal() { this.setState({ showDeleteModal: false, }); }
+
+  renderDeleteModal() {
+    if (this.state.showDeleteModal) {
+      return (
+        <DeleteMatchModal show={this.state.showDeleteModal}
+          handleClose={this.hideDeleteModal.bind(this)}
+          matching={this.props.matching.matching} />
+      )
+    }
+  }
+
+  renderEditModal() {
+    if (this.state.showEditModal) {
+      return (
+        <EditMatchModal show={this.state.showEditModal}
+          handleClose={this.hideEditModal.bind(this)}
+          matching={this.props.matching.matching} />
+      )
+    }
+  }
+
   render() {
     const { matching } = this.props;
     let startTime = moment(this.props.matching.matching.lesson_time[0]);
@@ -18,15 +52,20 @@ class MatchingItem extends React.Component {
           {this.renderHeaderItem('Student', studentName, matching.student.id)}
           {this.renderHeaderItem('Teacher', teacherName, matching.teacher.id)}
           <DropdownButton bsStyle="link matching-options" title="Options">
-            <MenuItem eventKey="1">Edit Matching</MenuItem>
+            <MenuItem eventKey="1"
+              onClick={this.showEditModal.bind(this)}>Edit Matching</MenuItem>
             <MenuItem divider />
-            <MenuItem eventKey="2">Delete</MenuItem>
+            <MenuItem eventKey="2"
+              onClick={this.showDeleteModal.bind(this)}>Delete</MenuItem>
+            {this.renderEditModal()}
+            {this.renderDeleteModal()}
           </DropdownButton>
         </div>
         <div className="matching-item-content">
           {this.renderContentItem('Instrument', this.props.matching.matching.instrument)}
           {this.renderContentItem('Location', this.props.matching.matching.location, "matching-item-location")}
           {this.renderContentItem('Time', startTime.format('ddd h:mm A'))}
+          {this.renderContentItem('Price', `$${this.props.matching.matching.default_price}`)}
         </div>
       </div>
     );
