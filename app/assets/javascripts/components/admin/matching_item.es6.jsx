@@ -17,11 +17,16 @@ class MatchingItem extends React.Component {
         <div className="matching-item-header">
           {this.renderHeaderItem('Student', studentName, matching.student.id)}
           {this.renderHeaderItem('Teacher', teacherName, matching.teacher.id)}
+          <DropdownButton bsStyle="link matching-options" title="Options">
+            <MenuItem eventKey="1">Edit Matching</MenuItem>
+            <MenuItem divider />
+            <MenuItem eventKey="2">Delete</MenuItem>
+          </DropdownButton>
         </div>
         <div className="matching-item-content">
           {this.renderContentItem('Instrument', this.props.matching.matching.instrument)}
           {this.renderContentItem('Location', this.props.matching.matching.location, "matching-item-location")}
-          {this.renderContentItem('Time', startTime.format('ddd') + ' ' + startTime.format('h:mm A').toUpperCase())}
+          {this.renderContentItem('Time', startTime.format('ddd h:mm A'))}
         </div>
       </div>
     );
