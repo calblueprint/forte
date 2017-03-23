@@ -27,6 +27,9 @@ class EditableInput extends React.Component {
       case 'travel_distance':
         optionsArray = TRAVEL_DISTANCES;
         break;
+      case 'state':
+        optionsArray = STATES;
+        break;
       case 'household_number':
         optionsArray = HOUSEHOLD_NUMBER;
         j = 1;
@@ -43,19 +46,12 @@ class EditableInput extends React.Component {
 
       switch(this.props.name) {
         case "birthday":
-          inputVal = (
-            <Datetime
-              dateFormat="MM/DD/YYYY"
-              timeFormat={false}
-              inputProps={{placeholder: moment(this.props.data).format("MM/DD/YYYY")}}
-              onChange={(moment) => this.props.specialHandler(moment, 'birthday')} />
-          )
-          break;
-
+          this.props.data = moment(this.props.data).format("MM/DD/YYYY");
         case "student_phone":
           inputVal = (
             <FormatInput
-              inputId="student_phone"
+              data={this.props.data}
+              inputId={this.props.name}
               handleChange={this.props.handleChange}
               validationState={() => {}}
               displayErrors={() => {}} />
@@ -67,6 +63,7 @@ class EditableInput extends React.Component {
         case "household_number":
         case "school_level":
         case "travel_distance":
+        case "state":
           inputVal = (
             <FormControl componentClass="select"
               name={this.props.name}

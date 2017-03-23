@@ -27,6 +27,7 @@ class StudentSettingsPage extends UserSettings {
       addModalIsVisible: false,
       removeModalIsVisible: false,
       person: person,
+      id: this.props.id,
     }
   }
 
@@ -140,12 +141,9 @@ class StudentSettingsPage extends UserSettings {
   }
 
   handleDatetimeChange(moment, name) {
-    if (name == 'birthday') {
-      this.setState({ birthday: moment });
-    } else if (name == 'waiver_date') {
+    if (name == 'waiver_date') {
       this.setState({ waiver_date: moment });
     }
-    console.log("datetime change " + this.state.birthday);
   }
 
   render() {
@@ -170,8 +168,7 @@ class StudentSettingsPage extends UserSettings {
           <EditableInput label="Last Name" name="last_name" data={s.last_name} />
           <EditableInput label="Gender" name="gender" data={s.gender}
             specialHandler={this.handleIntegerChange.bind(this)} />
-          <EditableInput label="Birthday" name="birthday" data={s.birthday}
-            specialHandler={this.handleDatetimeChange.bind(this)} />
+          <EditableInput label="Birthday" name="birthday" data={moment(s.birthday).format("MM/DD/YYYY")} />
           <EditableInput label="Email" name="student_email" data={s.student_email} />
           <EditableInput label="School" name="school" data={s.school} />
           <EditableInput label="Grade" name="school_level" data={s.school_level}
@@ -180,7 +177,8 @@ class StudentSettingsPage extends UserSettings {
           <EditableInput label="Address" name="address" data={s.address} />
           <EditableInput label="Apt #" name="address_apt" data={s.address_apt} />
           <EditableInput label="City" name="city" data={s.city} />
-          <EditableInput label="State" name="state" data={s.state} />
+          <EditableInput label="State" name="state" data={s.state}
+            specialHandler={this.handleIntegerChange.bind(this)} />
           <EditableInput label="Zip Code" name="zipcode" data={s.zipcode} />
           <EditableInput label="Distance Willing to Travel" name="travel_distance"
             data={s.travel_distance} specialHandler={this.handleIntegerChange.bind(this)} />
