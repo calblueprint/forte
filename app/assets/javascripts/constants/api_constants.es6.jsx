@@ -81,6 +81,7 @@
         delete: (id) => `/api/matchings/${id}`,
         update: (id) => `/api/matchings/${id}`,
         show: (id) => `/api/matchings/${id}`,
+        lessons: (id) => `/api/matchings/${id}/lessons`,
       };
     }
 

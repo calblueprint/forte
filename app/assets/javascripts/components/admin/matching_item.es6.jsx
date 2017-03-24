@@ -14,6 +14,7 @@ class MatchingItem extends React.Component {
     this.state = {
       showDeleteModal: false,
       showEditModal: false,
+      showLessonsModal: false,
     };
   }
 
@@ -21,6 +22,8 @@ class MatchingItem extends React.Component {
   hideEditModal() { this.setState({ showEditModal: false, }); }
   showDeleteModal() { this.setState({ showDeleteModal: true, }); }
   hideDeleteModal() { this.setState({ showDeleteModal: false, }); }
+  showLessonsModal() { this.setState({ showLessonsModal: true, }); }
+  hideLessonsModal() { this.setState({ showLessonsModal: false, }); }
 
   renderDeleteModal() {
     const { matching } = this.props;
@@ -50,7 +53,20 @@ class MatchingItem extends React.Component {
           refetch={this.props.fetchMatchings}
           matching={matching.match_info}
           student={student}
-          teacher={teacher}  />
+          teacher={teacher} />
+      )
+    }
+  }
+
+  renderLessonsModal() {
+    const { matching } = this.props;
+
+    if (this.state.showLessonsModal) {
+      return (
+        <MatchingLessonsModal show={this.state.showLessonsModal}
+          id={matching.match_info.id}
+          handleClose={this.hideLessonsModal.bind(this)}
+          refetch={this.props.fetchMatchings} />
       )
     }
   }
@@ -109,12 +125,14 @@ class MatchingItem extends React.Component {
     return (
       <div className="matching-options">
         <DropdownButton bsStyle="link" title="Options" pullRight={true}>
-          <MenuItem eventKey="1">Show All Lessons</MenuItem>
+          <MenuItem eventKey="1"
+            onClick={this.showLessonsModal.bind(this)}>Show All Lessons</MenuItem>
           <MenuItem eventKey="2"
             onClick={this.showEditModal.bind(this)}>Edit Matching</MenuItem>
           <MenuItem divider />
           <MenuItem eventKey="3"
             onClick={this.showDeleteModal.bind(this)}>Delete</MenuItem>
+          {this.renderLessonsModal()}
           {this.renderEditModal()}
           {this.renderDeleteModal()}
         </DropdownButton>

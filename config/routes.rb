@@ -155,6 +155,7 @@ Rails.application.routes.draw do
     # Matchings
     ##################################################
     get '/matchings/pairs', to: 'matchings#matched_pairs'
+    get '/matchings/:id/lessons', to: 'matchings#past_lessons'
     resources :matchings, only: [:index, :create, :destroy, :show, :update]
 
     ##################################################

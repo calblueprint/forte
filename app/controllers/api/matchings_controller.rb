@@ -21,6 +21,16 @@ class Api::MatchingsController < Api::BaseController
 
   end
 
+  def past_lessons
+    lessons = (Matching.find params[:id])
+                .lessons
+                .where('end_time <= ?', DateTime.now)
+                .order(end_time: :desc)
+
+    render json: lessons,
+           root: false
+  end
+
   def create
     matching = Matching.new matching_params
     if matching.save
