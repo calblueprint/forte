@@ -11,6 +11,7 @@ class UnmatchedPage extends React.Component {
       teacher: null,
       instrument: null,
       showMatchingModal: false,
+      loading: false,
     };
   }
 
@@ -65,7 +66,10 @@ class UnmatchedPage extends React.Component {
 
     function googleMapsCallback(response, status) {
       if (status == 'OK') {
-        this.setState({ teachers: this.processGoogleMapsResponse(response["rows"][0]["elements"], teachers) });
+        this.setState({
+          teachers: this.processGoogleMapsResponse(response["rows"][0]["elements"], teachers),
+          loading: false,
+        });
       } else {
         console.log(response);
       }
@@ -79,6 +83,7 @@ class UnmatchedPage extends React.Component {
         fullStudent: true,
         student: response.student,
         instrument: instrument.name,
+        loading: true,
       });
       var teacherRoute = ApiConstants.teachers.possibleTeachers(studentId, instrument.name);
       var teacherResolve = (response) => this.filterTeachersByDistance(response["teachers"]);
@@ -238,7 +243,13 @@ class UnmatchedPage extends React.Component {
   }
 
   render () {
-    let footer;
+    let footer, loadingContainer;
+
+    if (this.state.loading) {
+      loadingContainer = <div className="loading-container">
+        <div className="loading"></div>
+      </div>
+    }
 
     if (this.state.fullTeacher) {
       footer =
@@ -250,6 +261,7 @@ class UnmatchedPage extends React.Component {
 
     return (
       <div className="page-wrapper unmatched-page-wrapper">
+        {loadingContainer}
         <AdminHeader />
         <div className="container">
           <div className="content-wrapper unmatched-page">
