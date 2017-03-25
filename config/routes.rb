@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   get 'teacher', to: redirect('teacher/lessons')
   namespace :teacher do
     get :lessons
+    get :settings
     get :profile
   end
 

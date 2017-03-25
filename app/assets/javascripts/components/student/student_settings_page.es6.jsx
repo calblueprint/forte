@@ -32,8 +32,6 @@ class StudentSettingsPage extends UserSettings {
   }
 
   componentDidMount() {
-    console.log("hi");
-    console.log(this.state.person);
     this.fetchProfile();
     this.fetchInstruments();
   }
@@ -152,7 +150,6 @@ class StudentSettingsPage extends UserSettings {
     const { person } = this.props;
     let avail = availability_to_events(this.state.person.availability);
     let s = this.state.person;
-    console.log(s);
     let addInstrumentModal;
 
     if (s.instruments) {

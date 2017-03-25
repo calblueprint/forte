@@ -8,6 +8,7 @@ class TeacherSettingsPage extends UserSettings {
 
   constructor(props) {
     super(props);
+    console.log(props);
 
     let person = this.props.person || {};
     person.availability = [];
@@ -26,7 +27,7 @@ class TeacherSettingsPage extends UserSettings {
     this.state = {
       addModalIsVisible: false,
       removeModalIsVisible: false,
-      person: person,
+      person: this.props.person,
       id: this.props.id,
     }
   }
@@ -42,7 +43,7 @@ class TeacherSettingsPage extends UserSettings {
     const resolve = (response) => {
       this.props.fetchProfile();
       const { person } = this.state;
-      Object.assign(person, response.student)
+      Object.assign(person, response.teacher)
 
       this.setState({ person: person });
     }
@@ -308,7 +309,6 @@ class TeacherSettingsPage extends UserSettings {
     const { person } = this.props;
     let avail = availability_to_events(this.state.person.availability);
     let s = this.state.person;
-    console.log(s);
     let addInstrumentModal;
 
     if (s.instruments) {
