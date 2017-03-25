@@ -84,8 +84,9 @@ class TeacherSettingsPage extends UserSettings {
   }
 
   renderAddModal() {
-    const { addModalIsVisible, instruments } = this.state;
-    const { teacher } = this.props;
+    const { addModalIsVisible } = this.state;
+    const { instruments } = this.state.person;
+    const { person } = this.props;
 
     if (addModalIsVisible) {
       return (
@@ -94,17 +95,19 @@ class TeacherSettingsPage extends UserSettings {
           handleClose={() => this.closeAddModal()}
           fetchInstruments={() => this.fetchInstruments()}
           instruments={instruments}
-          instrumentable={teacher}
+          instrumentable={person}
         />
       )
     }
   }
 
   fetchInstruments() {
-    const { teacher } = this.props;
-    let s = this.state.person;
-    const route = ApiConstants.teachers.instruments(s.id);
-    const resolve = (response) => this.setState({ instruments: response.instruments });
+    const route = ApiConstants.teachers.instruments(this.props.id);
+    const resolve = (response) => {
+      let person = this.state.person;
+      person.instruments = response.instruments;
+      this.setState({ person });
+    }
     const reject = (response) => console.log(response);
     Requester.get(
       route,
@@ -119,20 +122,17 @@ class TeacherSettingsPage extends UserSettings {
         <div className="instrumentName">
           {instrument.name}
         </div>
-        <div className="delete">
-          <Button
-            className="button button--outline-orange button--sm"
-            onClick={() => this.openRemoveModal()}>
-            Remove
-          </Button>
-          {this.renderRemoveModal(instrument)}
-        </div>
+        <a className="link"
+          onClick={() => this.openRemoveModal()}>
+          [Remove]
+        </a>
+        {this.renderRemoveModal(instrument)}
       </div>
     );
   }
 
   renderInstruments() {
-    const { instruments } = this.state;
+    const { instruments } = this.state.person;
     if (instruments) {
       return instruments.map((instrument) => this.renderInstrument(instrument));
     }
