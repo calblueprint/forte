@@ -30,6 +30,14 @@ class FormatInput extends React.Component {
     input.value = value;
   }
 
+  insertValueInMiddle(e, cursor, rawNum) {
+    var newInputKey = (e.keyCode ? e.keyCode : e.which);
+    newInputValue = newInputKey - 48; // converting key code to keyboard value
+    rawNum = rawNum.substring(0, cursor) + newInputValue + rawNum.substring(cursor, rawNum.length);
+    e.preventDefault();
+    return rawNum;
+  }
+
   handlePhoneInput(e) {
     // Validate the input to allow numbers only
     let entry = parseInt(e.key);
@@ -42,11 +50,26 @@ class FormatInput extends React.Component {
       return true;
     }
 
-    let input = e.target.value;
-    let rawNum = input.split("-").join("");
+    let inputValue = e.target.value;
+    let rawNum = inputValue.split("-").join("");
     let formattedNum;
 
-    if (rawNum.length >= 10) {
+    // Find position of cursor as if there were no formatting
+    let cursor;
+    if (e.target.selectionStart > 3 && e.target.selectionStart < 8) {
+      cursor = e.target.selectionStart - 1;
+    } else if (e.target.selectionStart > 7) {
+      cursor = e.target.selectionStart - 2;
+    } else {
+      cursor = e.target.selectionStart;
+    }
+
+    // Edge case: user is editing middle of input
+    if (cursor != rawNum.length) {
+      rawNum = this.insertValueInMiddle(e, cursor, rawNum);
+    }
+
+    if (rawNum.length > 10) {
       e.preventDefault();
       return;
     }
@@ -73,18 +96,34 @@ class FormatInput extends React.Component {
       e.preventDefault();
     }
 
-    // If the user has selected text, resume default behavior
+    // If the user has selected several digits, resume default behavior
     if (this.checkTextSelected(e.target)) {
       return true;
     }
 
-    let input = e.target.value;
-    let rawNum = input.split("/").join("");
+    let inputValue = e.target.value;
+
+    let rawNum = inputValue.split("/").join("");
     let formattedNum;
+
+    // Find position of cursor as if there were no formatting
+    let cursor;
+    if (e.target.selectionStart > 2 && e.target.selectionStart < 6) {
+        cursor = e.target.selectionStart - 1;
+    } else if (e.target.selectionStart > 5) {
+      cursor = e.target.selectionStart - 2;
+    } else {
+      cursor = e.target.selectionStart;
+    }
 
     if (rawNum.length >= 8) {
       e.preventDefault();
       return;
+    }
+
+    // Edge case: user is editing middle of input
+    if (cursor != rawNum.length) {
+      rawNum = this.insertValueInMiddle(e, cursor, rawNum);
     }
 
     if (rawNum.length == 2) {
