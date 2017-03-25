@@ -53,6 +53,7 @@
         possibleTeachers: (id, instrument) => `/api/teachers/possible_teachers?id=${id}&instrument=${instrument}`,
         upcomingLessons: (id) => `/api/teachers/upcoming_lessons/${id}`,
         recentLessons: (id) => `/api/teachers/recent_lessons/${id}`,
+        instruments: (id) => `/api/teachers/${id}/instruments`,
       };
     }
 

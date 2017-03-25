@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   get 'teacher', to: redirect('teacher/lessons')
   namespace :teacher do
     get :lessons
+    get :profile
   end
 
   ##################################################
@@ -180,6 +181,7 @@ Rails.application.routes.draw do
     get '/teachers/recent_lessons/:id', to: 'teachers#recent_lessons'
     get '/teachers/upcoming_lessons/:id', to: 'teachers#upcoming_lessons'
     get '/teachers/possible_teachers', to: 'teachers#possible_teachers'
+    get '/teachers/:id/instruments', to: 'teachers#instruments'
     post '/teachers/validate', to: 'teachers#validate'
     resources :teachers, only: [:index, :destroy, :show, :update]
 
