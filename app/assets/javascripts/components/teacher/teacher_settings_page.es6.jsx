@@ -165,10 +165,12 @@ class TeacherSettingsPage extends UserSettings {
   }
 
   handleIntegerChange(event) {
-    const name = $(event.target).attr("name");
+    let name = $(event.target).attr("name");
+    if (name === "teacher_school_level") {
+      name = "school_level";
+    }
     var value = $(event.target).val();
     value = parseInt(value);
-    console.log(value);
     this.setState({ [name] : value });
   }
 
@@ -186,6 +188,12 @@ class TeacherSettingsPage extends UserSettings {
     let s = this.state.person;
     // let avail = availability_to_events(s.availability, s.timezone);
     // console.log(avail);
+    let school_level = s.school_level;
+    if (school_level === 'high_school') {
+      school_level = 'High School';
+    } else {
+      school_level = 'College';
+    }
     let addInstrumentModal;
     if (s.instruments) {
       addInstrumentModal = this.renderAddModal();
@@ -206,7 +214,7 @@ class TeacherSettingsPage extends UserSettings {
         <EditableInput label="Birthday" name="birthday" data={moment(s.birthday).format("MM/DD/YYYY")} />
         <EditableInput label="Email" name="teacher_email" data={s.email} />
         <EditableInput label="School" name="school" data={s.school} />
-        <EditableInput label="Grade" name="school_level" data={s.school_level}
+        <EditableInput label="Class Level" name="teacher_school_level" data={school_level}
           specialHandler={this.handleIntegerChange.bind(this)} />
         <EditableInput label="Teacher Phone Number" name="teacher_phone" data={s.phone} />
         <EditableInput label="Address" name="address" data={s.address} />
