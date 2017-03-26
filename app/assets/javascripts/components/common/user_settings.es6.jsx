@@ -111,12 +111,12 @@ class UserSettings extends React.Component {
     }
   }
 
-  attemptStripeAccountSave() {
+  attemptStripeAccountSave(resolve, reject) {
     this.setState({ editable: false });
-    this.updateStripeAccount();
+    this.updateStripeAccount(resolve, reject);
   }
 
-  async updateStripeAccount() {
+  async updateStripeAccount(resolve, reject) {
     const {
       stripe_country,
       stripe_routing_number,
@@ -133,13 +133,20 @@ class UserSettings extends React.Component {
       account_number: stripe_account_number,
       account_holder_name: stripe_account_holder_name,
       account_holder_type: stripe_account_holder_type,
-    }, this.stripeAccountResponseHandler.bind(this));
+    }, this.stripeAccountResponseHandler.bind(this, resolve, reject));
 
   }
 
-  stripeAccountResponseHandler(status, response) {
-    const reject = (response) => { console.log("bad " + response) };
-    const resolve = ((response) => { console.log("good" + response) });
+  stripeAccountResponseHandler(success, fail, status, response) {
+    const reject = (response) => {
+      console.log(response);
+      fail();
+    };
+
+    const resolve = ((response) => {
+      console.log(response);
+      success();
+    });
 
     if (response.error) {
       console.log(response.error);
