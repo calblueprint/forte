@@ -20,7 +20,7 @@ class TeacherSettingsPage extends UserSettings {
     person.stripe_account_holder_dob = "*****";
     person.stripe_account_holder_type = "*****";
     person.stripe_account_holder_name = "*****";
-    person.stripe_country = "US";
+    person.stripe_country = "*****";
     person.stripe_ssn_last_4 = "*****";
 
     this.state = {
@@ -42,7 +42,6 @@ class TeacherSettingsPage extends UserSettings {
     const resolve = (response) => {
       this.props.fetchProfile();
       const { person } = this.state;
-      console.log(route);
       Object.assign(person, response.teacher)
 
       this.setState({ person: person });
@@ -169,6 +168,7 @@ class TeacherSettingsPage extends UserSettings {
     const name = $(event.target).attr("name");
     var value = $(event.target).val();
     value = parseInt(value);
+    console.log(value);
     this.setState({ [name] : value });
   }
 
@@ -311,7 +311,6 @@ class TeacherSettingsPage extends UserSettings {
 
     let s = this.state.person;
     let addInstrumentModal;
-
     if (s.instruments) {
       addInstrumentModal = this.renderAddModal();
     }
@@ -371,9 +370,8 @@ class TeacherSettingsPage extends UserSettings {
                             fetchProfile={this.fetchProfile.bind(this)}>
           <EditableInput label="Bank Account Holder Name" name="stripe_account_holder_name" data={s.stripe_account_holder_name} />
           <EditableInput label="Bank Account Holder DOB" name="stripe_account_holder_dob" data={s.stripe_account_holder_dob} />
-          <EditableInput label="Bank Account Holder Type" name="stripe_account_holder_type"
-            data={s.stripe_account_holder_type}
-            specialHandler={this.handleIntegerChange.bind(this)} />
+          <EditableInput label="Bank Account Holder Type" name="stripe_account_holder_type" data={s.stripe_account_holder_type} />
+
           <EditableInput label="Routing Number" name="stripe_routing_number" data={s.stripe_routing_number} />
           <EditableInput label="Bank Account Number" name="stripe_account_number" data={s.stripe_account_number} />
           <EditableInput label="Address" name="stripe_address_line1" data={s.stripe_address_line1} />
@@ -381,6 +379,7 @@ class TeacherSettingsPage extends UserSettings {
           <EditableInput label="State" name="stripe_address_state"
             data={s.stripe_address_state}
             specialHandler={this.handleIntegerChange.bind(this)} />
+          <EditableInput label="Country" name="stripe_country" data={s.stripe_country} />
           <EditableInput label="Postal Code" name="stripe_address_postal_code" data={s.stripe_address_postal_code} />
           <EditableInput label="Last 4 Digits SSN" name="stripe_ssn_last_4" data={s.stripe_ssn_last_4} />
         </EditableInputGroup>

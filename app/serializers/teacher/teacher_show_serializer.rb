@@ -16,7 +16,7 @@ class TeacherShowSerializer < TeacherBaseSerializer
               :address2,
               :state,
               :zipcode,
-              :location_preference, 
+              :location_preference,
               :travel_distance,
               :background_check,
               :reference1_first_name,
@@ -37,5 +37,7 @@ class TeacherShowSerializer < TeacherBaseSerializer
               :school_level,
               :full_address,
               :full_name,
-              :timezone
+              :timezone,
+              :account_id,
+              :bank_id
 end

@@ -36,11 +36,13 @@ class EditableInput extends React.Component {
       case 'household_number':
         optionsArray = HOUSEHOLD_NUMBER;
         j = 1;
-      case 'stripe_account_holder_type':
-        for (var i = 0; i < ACCOUNT_HOLDER_TYPE.length; i++) {
-          retOptions.push(<option value={ACCOUNT_HOLDER_TYPE[i]}>{ACCOUNT_HOLDER_TYPE[i]}</option>);
-        }
-        return retOptions
+      // case 'stripe_account_holder_type':
+      //   for (var i = 0; i < ACCOUNT_HOLDER_TYPE.length; i++) {
+      //     retOptions.push(<option value={ACCOUNT_HOLDER_TYPE[i]}>{ACCOUNT_HOLDER_TYPE[i]}</option>);
+      //   }
+      //   return retOptions
+      //   // optionsArray = ACCOUNT_HOLDER_TYPE;
+      //   // break;
       case 'stripe_country':
         for (var i = 0; i < COUNTRY_CODES.length; i++) {
           retOptions.push(<option value={COUNTRY_CODES[i].name}>{COUNTRY_CODES[i].name}</option>);
@@ -77,9 +79,10 @@ class EditableInput extends React.Component {
         case "school_level":
         case "travel_distance":
         case "state":
-        case "stripe_account_holder_type":
+        // case "stripe_account_holder_type":
         case "stripe_country":
         case "stripe_address_state":
+          console.log(this.props.data);
           inputVal = (
             <FormControl componentClass="select"
               name={this.props.name}

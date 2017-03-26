@@ -2,8 +2,7 @@ class UserSettings extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(this.props.person.account_id);
-    console.log(this.props.person.bank_id);
+
     this.state = {
     };
   }
@@ -103,7 +102,6 @@ class UserSettings extends React.Component {
         email: this.state.email,
         customer_id: this.state.person.customer_id
       };
-      console.log(params);
       Requester.post(
         ApiConstants.stripe.updateCustomer,
         params,
@@ -119,7 +117,6 @@ class UserSettings extends React.Component {
   }
 
   async updateStripeAccount() {
-    console.log("update stripe");
     const {
       stripe_country,
       stripe_routing_number,
@@ -128,7 +125,7 @@ class UserSettings extends React.Component {
       stripe_account_holder_type
     } = this.state;
     console.log("here");
-    console.log(this.props.id);
+    console.log(this.state);
     Stripe.bankAccount.createToken({
       country: "US",
       currency: 'USD',
@@ -141,17 +138,12 @@ class UserSettings extends React.Component {
   }
 
   stripeAccountResponseHandler(status, response) {
-    console.log("stripe account response handler");
     const reject = (response) => { console.log("bad " + response) };
     const resolve = ((response) => { console.log("good" + response) });
-    console.log(response);
 
     if (response.error) {
-      console.log("err");
       console.log(response.error);
     } else {
-      console.log(this.props.person.account_id);
-      console.log("yooyoyoyoy");
       var params = {
         stripe_token: response.id,
         email: this.props.person.email,
