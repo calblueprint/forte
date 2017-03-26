@@ -8,7 +8,6 @@ class TeacherSettingsPage extends UserSettings {
 
   constructor(props) {
     super(props);
-    console.log(props);
 
     let person = this.props.person || {};
     person.availability = [];
@@ -19,9 +18,9 @@ class TeacherSettingsPage extends UserSettings {
     person.stripe_address_state = "*****";
     person.stripe_address_postal_code = "*****";
     person.stripe_account_holder_dob = "*****";
-    person.stripe_account_holder_type = "*****";
+    person.stripe_account_holder_type = "Individual";
     person.stripe_account_holder_name = "*****";
-    person.stripe_country = "*****";
+    person.stripe_country = "US";
     person.stripe_ssn_last_4 = "*****";
 
     this.state = {
@@ -307,7 +306,8 @@ class TeacherSettingsPage extends UserSettings {
 */
   render() {
     const { person } = this.props;
-    let avail = availability_to_events(this.state.person.availability);
+    // let avail = availability_to_events(this.state.person.availability);
+
     let s = this.state.person;
     let addInstrumentModal;
 
@@ -320,7 +320,7 @@ class TeacherSettingsPage extends UserSettings {
         <h2 className="settings-title">Your Profile</h2>
         <EditableInputGroup title="Teacher Information"
                             handleChange={this.handleChange.bind(this)}
-                            attemptSave={this.attemptSave.bind(this)}
+                            attemptSave={this.attemptTeacherSave.bind(this)}
                             fetchProfile={this.fetchProfile.bind(this)}>
 
         <EditableInput label="First Name" name="first_name" data={s.first_name} />
@@ -356,17 +356,17 @@ class TeacherSettingsPage extends UserSettings {
       <Calendar
         ref="settingsAvailability"
         isEditable={true}
-        events={availability_to_events(this.state.person.availability)} />
+        events={availability_to_events(s.availability)} />
 
       <Button
         className="button button--outline-orange button--sm availability-save-btn"
-        onClick={() => this.saveAvailability(this.state.availability)}>
+        onClick={() => this.saveAvailability(s.availability)}>
         Save
       </Button>
 
       <EditableInputGroup title="Payment"
                             handleChange={this.handleChange.bind(this)}
-                            attemptSave={this.attemptCardSave.bind(this)}
+                            attemptSave={this.attemptStripeAccountSave.bind(this)}
                             fetchProfile={this.fetchProfile.bind(this)}>
           <EditableInput label="Bank Account Holder Name" name="stripe_account_holder_name" data={s.stripe_account_holder_name} />
           <EditableInput label="Bank Account Holder DOB" name="stripe_account_holder_dob" data={s.stripe_account_holder_type} />
@@ -381,7 +381,7 @@ class TeacherSettingsPage extends UserSettings {
 
         <EditableInputGroup title="Eligibility"
                             handleChange={this.handleChange.bind(this)}
-                            attemptSave={this.attemptSave.bind(this)}
+                            attemptSave={this.attemptTeacherSave.bind(this)}
                             fetchProfile={this.fetchProfile.bind(this)}>
           <EditableInput label="Reference 1 First Name" name="reference1_first_name" data={s.reference1_first_name} />
           <EditableInput label="Reference 1 Last Name" name="reference1_last_name" data={s.reference1_last_name} />
