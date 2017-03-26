@@ -147,7 +147,7 @@ class TeacherSettingsPage extends UserSettings {
     }
     this.setState({ availability: availabilityArray});
 
-    const route = ApiConstants.teachers.update(this.props.teacher.id);
+    const route = ApiConstants.teachers.update(this.props.id);
     const params = {availability: availabilityArray};
     const success = (response) => {
       console.log("success");
@@ -180,136 +180,12 @@ class TeacherSettingsPage extends UserSettings {
     }
   }
 
-  /*toggleEdit(editType) {
-    this.setState({ editable : !this.state.editable,
-                    editing_type: editType });
-  }
-
-  handleChange(event) {
-    let target = $(event.target);
-    this.setState({ [target.attr('name')] : target.val() });
-  }
-
-  formFields() {
-    // Necessary because bootstrap-select does not fire onChange events
-    const extraFields = { };
-    $('.selectpicker').each((index, element) => {
-      extraFields[$(element).attr("name")] = $(element).val();
-    });
-    return $.extend({}, this.state, extraFields);
-  }
-
-  attemptSave() {
-    const route = ApiConstants.teachers.update(this.props.teacher.id);
-    const params = this.formFields();
-    const success = (response) => {
-      this.setState({ editable: false });
-    };
-    const fail = (response) => {
-      this.setState({ editable: true });
-    };
-
-    Requester.update(
-        route,
-        params,
-        success,
-        fail
-    );
-  }
-
-  attemptStripeAccountSave() {
-    // const route = ApiConstants.students.update(this.props.student.id);
-    // const params = this.formFields();
-    // console.log(params);
-
-    // const success = (response) => {
-    //   this.updateStripeCustomer(response);
-    //   this.setState({ editable: false });
-    // };
-    // const fail = (response) => {
-    //   this.updateStripeCustomer(response);
-    //   this.setState({ editable: true });
-    // };
-    this.setState({ editable: false });
-    this.updateStripeCustomer();
-
-    // Requester.update(
-        // route,
-        // params,
-        // success,
-        // fail
-    // );
-  }
-
-  async updateStripeCustomer() {
-    const {
-      stripe_country,
-      stripe_routing_number,
-      stripe_account_number,
-      stripe_account_holder_name,
-      stripe_account_holder_type
-    } = this.state;
-
-    // Only create customer if stripe validations pass - do not create token if there are stripe errors
-    Stripe.bankAccount.createToken({
-      country: stripe_country,
-      currency: 'USD',
-      routing_number: stripe_routing_number,
-      account_number: stripe_account_number,
-      account_holder_name: stripe_account_holder_name,
-      account_holder_type: stripe_account_holder_type,
-    }, this.stripeResponseHandler.bind(this));
-
-  }
-
-  // changeBankId(accountResponse) {
-  //   // params.teacher.account_id = accountResponse.account.id;
-  //   this.setState({ bank_id: accountResponse.bank_account.id });
-  // }
-
-  stripeResponseHandler(status, response) {
-    const reject = (response) => { console.log("bad " + response) };
-    const resolve = ((response) => { console.log("good" + response) });
-
-    if (response.error) {
-      console.log("error " + response.error);
-    } else {
-      var params = {
-        stripe_token: response.id,
-        email: this.state.email,
-        country: this.state.stripe_country,
-        account_id: this.state.account_id,
-        bank_id: this.state.bank_id,
-        teacher_id: this.state.teacher_id,
-      };
-      Requester.post(
-        ApiConstants.stripe.changeAccount,
-        params,
-        resolve,
-        reject
-      );
-    }
-  }
-
-  showInput(label, name, data, editableType) {
-    return (
-        <EditableInput label        = { label }
-                       name         = { name }
-                       data         = { data }
-                       editable     = { this.state.editable }
-                       editableType = { editableType }
-                       editingType = { this.state.editing_type }
-                       handleChange = { this.handleChange.bind(this) }
-                       handleIntegerChange = { this.handleIntegerChange.bind(this) }
-                       handleDatetimeChange = {this.handleDatetimeChange.bind(this) }/>
-    );
-  }
-*/
   render() {
     const { person } = this.props;
-    // let avail = availability_to_events(this.state.person.availability);
 
     let s = this.state.person;
+    // let avail = availability_to_events(s.availability, s.timezone);
+    // console.log(avail);
     let addInstrumentModal;
     if (s.instruments) {
       addInstrumentModal = this.renderAddModal();
@@ -334,7 +210,7 @@ class TeacherSettingsPage extends UserSettings {
           specialHandler={this.handleIntegerChange.bind(this)} />
         <EditableInput label="Teacher Phone Number" name="teacher_phone" data={s.phone} />
         <EditableInput label="Address" name="address" data={s.address} />
-        <EditableInput label="Apt #" name="address_apt" data={s.address_apt} />
+        <EditableInput label="Apt #" name="address2" data={s.address2} />
         <EditableInput label="City" name="city" data={s.city} />
         <EditableInput label="State" name="state" data={s.state}
           specialHandler={this.handleIntegerChange.bind(this)} />
@@ -357,7 +233,6 @@ class TeacherSettingsPage extends UserSettings {
         ref="settingsAvailability"
         isEditable={true}
         events={availability_to_events(s.availability, s.timezone)} />
-
       <Button
         className="button button--outline-orange button--sm availability-save-btn"
         onClick={() => this.saveAvailability(s.availability)}>
