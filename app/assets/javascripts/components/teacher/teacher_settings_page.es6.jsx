@@ -18,9 +18,9 @@ class TeacherSettingsPage extends UserSettings {
     person.stripe_address_state = "*****";
     person.stripe_address_postal_code = "*****";
     person.stripe_account_holder_dob = "*****";
-    person.stripe_account_holder_type = "Individual";
+    person.stripe_account_holder_type = "*****";
     person.stripe_account_holder_name = "*****";
-    person.stripe_country = "US";
+    person.stripe_country = "*****";
     person.stripe_ssn_last_4 = "*****";
 
     this.state = {
@@ -356,7 +356,7 @@ class TeacherSettingsPage extends UserSettings {
       <Calendar
         ref="settingsAvailability"
         isEditable={true}
-        events={availability_to_events(s.availability)} />
+        events={availability_to_events(s.availability, s.timezone)} />
 
       <Button
         className="button button--outline-orange button--sm availability-save-btn"
@@ -371,7 +371,6 @@ class TeacherSettingsPage extends UserSettings {
           <EditableInput label="Bank Account Holder Name" name="stripe_account_holder_name" data={s.stripe_account_holder_name} />
           <EditableInput label="Bank Account Holder DOB" name="stripe_account_holder_dob" data={s.stripe_account_holder_dob} />
           <EditableInput label="Bank Account Holder Type" name="stripe_account_holder_type" data={s.stripe_account_holder_type} />
-
           <EditableInput label="Routing Number" name="stripe_routing_number" data={s.stripe_routing_number} />
           <EditableInput label="Bank Account Number" name="stripe_account_number" data={s.stripe_account_number} />
           <EditableInput label="Address" name="stripe_address_line1" data={s.stripe_address_line1} />
