@@ -133,8 +133,7 @@ class UserSettings extends React.Component {
       stripe_account_holder_name,
       stripe_account_holder_type
     } = this.state;
-    console.log("here");
-    console.log(this.state);
+
     Stripe.bankAccount.createToken({
       country: "US",
       currency: 'USD',
