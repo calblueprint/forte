@@ -192,11 +192,11 @@ class TeacherSettingsPage extends UserSettings {
         <EditableInput label="Gender" name="gender" data={s.gender}
           specialHandler={this.handleIntegerChange.bind(this)} />
         <EditableInput label="Birthday" name="birthday" data={moment(s.birthday).format("MM/DD/YYYY")} />
-        <EditableInput label="Email" name="teacher_email" data={s.email} />
+        <EditableInput label="Email" name="email" data={s.email} />
         <EditableInput label="School" name="school" data={s.school} />
         <EditableInput label="Class Level" name="teacher_school_level" data={school_level}
           specialHandler={this.handleIntegerChange.bind(this)} />
-        <EditableInput label="Teacher Phone Number" name="teacher_phone" data={s.phone} />
+        <EditableInput label="Teacher Phone Number" name="phone" data={s.phone} />
         <EditableInput label="Address" name="address" data={s.address} />
         <EditableInput label="Apt #" name="address2" data={s.address2} />
         <EditableInput label="City" name="city" data={s.city} />
