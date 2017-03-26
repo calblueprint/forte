@@ -11,11 +11,15 @@ Rails.application.routes.draw do
   # Admin
   ##################################################
   get 'admin', to: redirect('admin/matched')
-  namespace :admin do
-    get :matched
-    get :unmatched
-    get :lessons
-    get :roster
+  resources :admin do
+    collection do
+      get :matched
+      get :unmatched
+      get :lessons
+      get :roster
+      get 'roster/students/:id', to: 'admin#student'
+      get 'roster/teachers/:id', to: 'admin#teacher'
+    end
   end
 
   ##################################################
@@ -25,6 +29,7 @@ Rails.application.routes.draw do
   namespace :student do
     get :lessons
     get :settings
+    get :profile
   end
 
   ##################################################
@@ -33,6 +38,8 @@ Rails.application.routes.draw do
   get 'teacher', to: redirect('teacher/lessons')
   namespace :teacher do
     get :lessons
+    get :settings
+    get :profile
   end
 
   ##################################################
@@ -125,9 +132,11 @@ Rails.application.routes.draw do
   ##################################################
   namespace :stripe do
     post '/customer', to: 'customers#create_customer'
+    post '/update_customer', to: 'customers#update_customer'
     post '/charge', to: 'charges#charge_customer'
     post '/account', to: 'accounts#create_account'
     post '/verify_account', to: 'accounts#update_account'
+    post '/change_account', to: 'accounts#change_account'
   end
 
   ##################################################
@@ -175,6 +184,7 @@ Rails.application.routes.draw do
     get '/teachers/recent_lessons/:id', to: 'teachers#recent_lessons'
     get '/teachers/upcoming_lessons/:id', to: 'teachers#upcoming_lessons'
     get '/teachers/possible_teachers', to: 'teachers#possible_teachers'
+    get '/teachers/:id/instruments', to: 'teachers#instruments'
     post '/teachers/validate', to: 'teachers#validate'
     resources :teachers, only: [:index, :destroy, :show, :update]
 

@@ -9,32 +9,14 @@ class AdminLessonsPage extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      showPersonModal: false,
       person: null,
     };
   }
 
   renderLesson(lesson) {
     return (
-      <LessonItem lesson={lesson} onPersonClick={(person) => this.onPersonClick(person)}/>
+      <LessonItem lesson={lesson} />
     );
-  }
-
-  onPersonClick(person) {
-    this.setState({ showPersonModal: true, person: person })
-  }
-
-  closePersonModal() {
-    this.setState({ showPersonModal: false, person: null });
-  }
-
-  renderPersonModal() {
-    const { showPersonModal } = this.state;
-    if (showPersonModal == true) {
-      return (
-        <PersonModal handleClose={() => this.closePersonModal()} person={this.state.person} />
-      );
-    }
   }
 
   renderLessons() {
@@ -43,15 +25,14 @@ class AdminLessonsPage extends React.Component {
 
   render () {
     return (
-      <div className="page-wrapper">
+      <div className="page-wrapper admin-lessons-page container">
         <AdminHeader />
         <div className="content-wrapper lesson-content-wrapper">
-          <h1 >Lessons</h1>
+          <h1>Lessons</h1>
           <div className="lessons-container">
             {this.renderLessons()}
           </div>
         </div>
-        {this.renderPersonModal()}
       </div>
     );
   }

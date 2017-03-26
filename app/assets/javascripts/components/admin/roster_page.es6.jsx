@@ -3,9 +3,8 @@ class RosterPage extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      people: null,
-      showPersonModal: false,
-      person: null,
+      hasResult: true,
+      people: [],
       filter: "All",
       searchInput: "",
     };
@@ -17,7 +16,10 @@ class RosterPage extends React.Component {
 
   fetchPeople() {
     const route = ApiConstants.searchables.roster;
-    const resolve = (response) => this.setState({ people: response.searchables });
+    const resolve = (response) => {
+      this.setState({ people: response.searchables });
+      console.log(response)
+    }
     const reject = (response) => console.log(response);
     Requester.get(
       route,
@@ -26,44 +28,13 @@ class RosterPage extends React.Component {
     );
   }
 
-  onPersonClick(person) {
-    this.setState({ showPersonModal: true, person: person });
-  }
+  filter(type) {
+    this.setState({
+      filter: type,
+      people: [],
+    })
 
-  closePersonModal() {
-    this.setState({ showPersonModal: false, person: null });
-  }
-
-  filterByStudent() {
-    this.setState({ filter: "Students" });
-    this.loadFilteredPeople(this.state.searchInput, "Students");
-  }
-
-  filterByTeacher() {
-    this.setState({ filter: "Teachers" });
-    this.loadFilteredPeople(this.state.searchInput, "Teachers");
-  }
-
-  filterByAll() {
-    this.setState({ filter: "All" });
-    this.loadFilteredPeople(this.state.searchInput, "All");
-  }
-
-  renderPersonModal() {
-    const { showPersonModal } = this.state;
-    if (showPersonModal == true) {
-      return (
-        <PersonModal
-          handleClose={() => this.closePersonModal()}
-          person={this.state.person} />
-      );
-    }
-  }
-
-  renderPeople() {
-    return this.state.people.map((person) => {
-      return <RosterItem person={person} onPersonClick={(person)=>this.onPersonClick(person)} />
-    });
+    this.loadFilteredPeople(this.state.searchInput, type);
   }
 
   onSearchChange(event) {
@@ -78,7 +49,16 @@ class RosterPage extends React.Component {
         this.fetchPeople();
       } else if (filter == "Teachers") {
         const route = ApiConstants.teachers.index;
-        const resolve = (response) => this.setState({ people: response.teachers });
+        const resolve = (response) => {
+          let hasResult = false;
+          if (response.teachers.length != 0) {
+            hasResult = true;
+          }
+          this.setState({
+            people: response.teachers,
+            hasResult: hasResult,
+          });
+        }
         const reject = (response) => console.log(response);
         Requester.get(
           route,
@@ -87,7 +67,16 @@ class RosterPage extends React.Component {
         );
       } else if (filter == "Students") {
         const route = ApiConstants.students.index;
-        const resolve = (response) => this.setState({ people: response.students });
+        const resolve = (response) => {
+          let hasResult = false;
+          if (response.students.length != 0) {
+            hasResult = true;
+          }
+          this.setState({
+            people: response.students,
+            hasResult: hasResult,
+          });
+        }
         const reject = (response) => console.log(response);
         Requester.get(
           route,
@@ -95,9 +84,19 @@ class RosterPage extends React.Component {
           reject,
         );
       }
+
     } else {
       const route = ApiConstants.searchables.users(input, filter);
-      const resolve = (response) => this.setState({ people: response.searchables });
+      const resolve = (response) => {
+        let hasResult = false;
+        if (response.searchables.length != 0) {
+          hasResult = true;
+        }
+        this.setState({
+          people: response.searchables,
+          hasResult: hasResult,
+        });
+      }
       const reject = (response) => console.log(response);
       Requester.get(
         route,
@@ -107,53 +106,79 @@ class RosterPage extends React.Component {
     }
   }
 
-  renderFilterButton(label, onClick) {
-    if (label == this.state.filter) {
-      return (
-        <Button className="button button--solid-orange" onClick={onClick}>{label}</Button>
-      );
-    } else {
-      return (
-        <Button className="button button--outline-orange" onClick={onClick}>{label}</Button>
-      );
-    }
+  renderFilterButton(label) {
+    let btnType = (label == this.state.filter) ? "solid" : "outline";
+
+    return (
+      <button className={`button filter-btn btn-${btnType}`}
+              onClick={() => this.filter(label)}>{label}</button>
+    )
   }
 
   render() {
-    if (this.state.people == null) {
-      return (
-        <div />
-      );
+    let people;
+
+    if (this.state.people.length != 0) {
+      people = this.state.people.map((person, index) => {
+        return <RosterTableRow filter={this.state.filter}
+                               person={person}
+                               key={index} />
+
+      });
+    } else if (this.state.hasResult) {
+      const span = this.state.filter == "All" ? 6 : 5;
+      people = <tr>
+                 <td className="roster-loading" colSpan={span}>
+                     Loading...
+                 </td>
+               </tr>
     } else {
-      return (
-        <div className="page-wrapper">
-          <AdminHeader />
-          <div className="content-wrapper roster-page">
+      const span = this.state.filter == "All" ? 6 : 5;
+      people = <tr>
+                 <td className="roster-loading" colSpan={span}>
+                     No Results
+                 </td>
+               </tr>
+    }
+
+    return (
+      <div className="page-wrapper">
+        <AdminHeader />
+        <div className="content-wrapper roster-page container">
+          <div className="roster-header">
             <h1 className="roster-title">Roster</h1>
-             <FormGroup className="searchbar">
-              <InputGroup>
-                <FormControl
-                  componentClass="input"
-                  placeholder="Search"
-                  name="first_name"
-                  onChange={(event) => this.onSearchChange(event)}/>
-                <InputGroup.Addon>
-                  <Glyphicon glyph="search" />
-                </InputGroup.Addon>
-              </InputGroup>
-            </FormGroup>
-            <ButtonGroup className="filter-buttons">
-              {this.renderFilterButton('All', (event) => this.filterByAll())}
-              {this.renderFilterButton('Students', (event) => this.filterByStudent())}
-              {this.renderFilterButton('Teachers', (event) => this.filterByTeacher())}
-            </ButtonGroup>
-            <div className="roster-container">
-              {this.renderPeople()}
+            <div className="roster-header-controls">
+              <div className="filter-buttons">
+                {this.renderFilterButton('All')}
+                {this.renderFilterButton('Students')}
+                {this.renderFilterButton('Teachers')}
+              </div>
+              <div className="searchbar">
+                <input type="text" name="first_name" className="form-control"
+                  onChange={(e) => this.onSearchChange(e)}
+                  placeholder="Search for a person" />
+              </div>
             </div>
-            {this.renderPersonModal()}
+          </div>
+          <div className="roster-container">
+            <table className="interactive roster-table">
+              <thead id="table-head">
+                <tr>
+                  <th>Name</th>
+                  <th hidden={this.state.filter != "All"}>Type</th>
+                  <th>Gender</th>
+                  <th>Email</th>
+                  <th>City</th>
+                  <th>Instrument</th>
+                </tr>
+              </thead>
+              <tbody>
+                {people}
+              </tbody>
+            </table>
           </div>
         </div>
-      );
-    }
+      </div>
+    );
   }
 }

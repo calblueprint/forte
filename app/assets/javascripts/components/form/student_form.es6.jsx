@@ -50,7 +50,8 @@ class StudentForm extends React.Component {
       lat: null,
       lng: null,
       showWaiverModal: false,
-      errors: {}
+      errors: {},
+      loading: false,
     }
   }
 
@@ -240,6 +241,10 @@ class StudentForm extends React.Component {
     this.setState({ showWaiverModal: false });
   }
 
+  stopLoading() {
+    this.setState({ loading : false });
+  }
+
   setAvailability() {
     const { calendar } = this.refs.availability.refs
     //TODO: not ideal way to do this.. figure out some other way
@@ -248,7 +253,10 @@ class StudentForm extends React.Component {
     for (var i = 0; i < eventArray.length; i++) {
       availabilityArray = availabilityArray.concat(range_to_array(eventArray[i]['start'], eventArray[i]['end']));
     }
-    this.setState({ availability: availabilityArray });
+    this.setState({
+      availability: availabilityArray,
+      loading: true
+    });
   }
 
   setInstruments() {
@@ -267,23 +275,9 @@ class StudentForm extends React.Component {
     * Validates fields for student form fields
     */
   async validateStudentFields() {
-    var reject = (response) => { this.createStripeCustomer(response) };
-    var resolve = (response) => { this.createStripeCustomer({}) };
-    if (!this.state.lat && !this.state.lng) {
-      const { address, address_apt, city, state, zipcode } = this.state;
-      var geocoder = new google.maps.Geocoder();
-      var full_address = [address, address_apt, city, state, zipcode].join(" ");
-      geocoder.geocode({"address": full_address}, function(results, status) {
-        if (status === 'OK') {
-          var location = results[0]["geometry"]["location"];
-          var lat = location["lat"]();
-          var lng = location["lng"]();
-          this.setState({ lat: lat, lng: lng });
-        } else {
-          alert('Geocode was not successful for the following reason: ' + status);
-        }
-      }.bind(this));
-    }
+    var reject = (response) => { this.validateAddress(response) };
+    var resolve = (response) => { this.validateAddress({}) };
+
     var params = {
       student: {
         email: this.state.email,
@@ -334,7 +328,7 @@ class StudentForm extends React.Component {
     * Creates a Stripe Customer on the Rails side
     * @param student_errs Object
     */
-  async createStripeCustomer(student_errs) {
+  async createStripeCustomer(student_errs, address_errors) {
     const {
       card_number,
       cvc,
@@ -348,7 +342,7 @@ class StudentForm extends React.Component {
       stripe_address_zip,
     } = this.state;
 
-    var validated_student_and_stripe = await this.validateStudentAndStripeCustomer(card_number, exp_month, exp_year, cvc, student_errs);
+    var validated_student_and_stripe = await this.validateStudentAndStripeCustomer(student_errs, address_errors);
 
     // Only create customer if stripe validations pass - do not create token if there are stripe errors
     if (validated_student_and_stripe) {
@@ -364,6 +358,9 @@ class StudentForm extends React.Component {
         address_state: stripe_address_state,
         address_zip: stripe_address_zip
       }, this.stripeResponseHandler.bind(this));
+    } else {
+      toastr.error("There are errors with your form! <br> Please correct them before continuing!");
+      this.stopLoading();
     }
   }
 
@@ -393,9 +390,9 @@ class StudentForm extends React.Component {
    * @param exp_month, exp_year
    * @param cvc
    */
-  async validateStudentAndStripeCustomer(card_number, exp_month, exp_year, cvc, student_errs) {
+  async validateStudentAndStripeCustomer(student_errs, address_errors) {
 
-    var card_errs = await this.stripeValidateFields(card_number, exp_month, exp_year, cvc);
+    var card_errs = await this.stripeValidateFields();
     var instrument_errors = await this.validateInstruments();
 
     var error_info = {};
@@ -408,10 +405,12 @@ class StudentForm extends React.Component {
       }
     }
     // Checks to see if object is null
-    if (!(Object.keys(student_errs).length === 0) || !(Object.keys(instrument_errors).length === 0)) {
+    if (!(Object.keys(student_errs).length === 0) ||
+        !(Object.keys(instrument_errors).length === 0) ||
+        !(Object.keys(address_errors).length == 0)) {
       validated = false;
     }
-    error_info = Object.assign(error_info, student_errs, instrument_errors);
+    error_info = Object.assign(error_info, student_errs, instrument_errors, address_errors);
     this.setState({ errors: error_info });
     return validated;
   }
@@ -420,9 +419,7 @@ class StudentForm extends React.Component {
    * Front-end validation for instrument_attributes field
    */
   validateInstruments() {
-    const {
-      instruments_attributes,
-    } = this.state;
+    const { instruments_attributes } = this.state;
 
     var errors = {};
 
@@ -439,6 +436,31 @@ class StudentForm extends React.Component {
     return errors;
   }
 
+  /**
+   * Front-end validation for the address field
+   */
+  validateAddress(student_errs) {
+    const { lat, lng, address, address_apt, city, state, zipcode } = this.state;
+
+    var address_errors = {};
+
+    if (!lat && !lng) {
+      var geocoder = new google.maps.Geocoder();
+      var full_address = [address, address_apt, city, state, zipcode].join(" ");
+      geocoder.geocode({"address": full_address}, function(results, status) {
+        if (status === 'OK') {
+          var location = results[0]["geometry"]["location"];
+          var lat = location["lat"]();
+          var lng = location["lng"]();
+          this.setState({ lat: lat, lng: lng });
+        } else {
+          address_errors.address = "Invalid address";
+        }
+        this.createStripeCustomer(student_errs, address_errors);
+      }.bind(this));
+    }
+  }
+
 
   /**
    * Calls Stripe validations on the inputted card information
@@ -446,7 +468,9 @@ class StudentForm extends React.Component {
    * @param exp_month, exp_year
    * @param cvc
    */
-  stripeValidateFields(card_number, exp_month, exp_year, cvc) {
+  stripeValidateFields() {
+    const { card_number, exp_month, exp_year, cvc } = this.state;
+
     var card_errs = {};
 
     var num_err = Stripe.card.validateCardNumber(card_number);
@@ -466,10 +490,16 @@ class StudentForm extends React.Component {
 
   createStudent(customer) {
     var reject = (response) => {
-      this.setState({ errors: response.errors });
+      this.setState({
+        errors: response.errors,
+        loading: false
+      });
       console.log(response);
     };
-    var resolve = (response) => { window.location = "/" };
+    var resolve = (response) => {
+      this.stopLoading();
+      window.location = "/"
+    };
     var params = {
       student: {
         email: this.state.email,
@@ -625,8 +655,17 @@ class StudentForm extends React.Component {
   }
 
   render () {
+    let loadingContainer;
+
+    if (this.state.loading) {
+      loadingContainer = <div className="loading-container">
+        <div className="loading"></div>
+      </div>
+    }
+
     return (
       <div className="page-wrapper form-wrapper">
+        {loadingContainer}
         <Header />
           <div className="content-wrapper form-page">
             <h1 className="marginBot-lg">Student Application</h1>

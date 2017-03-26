@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
  before_action :authenticate_admin!
- 
+
   def matched
     matchings = Matching.all
     @matching_info = []
@@ -22,5 +22,13 @@ class AdminController < ApplicationController
   end
 
   def unmatched
+  end
+
+  def student
+    @student = Student.find params[:id]
+  end
+
+  def teacher
+    @teacher = Teacher.find params[:id]
   end
 end

@@ -119,6 +119,7 @@ class Api::StudentsController < Api::BaseController
       :criminal_charges,
       :waiver_signature,
       :waiver_date,
+      :customer_id,
       :instruments_attributes => [:id, :name, :years_played, :proficiency, :is_primary]
     )
   end

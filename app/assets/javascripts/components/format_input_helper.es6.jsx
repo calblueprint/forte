@@ -3,6 +3,7 @@
  * @prop formName        - Name for integration with Rails form submission
  * @prop inputId         - ID for the HTML input element
  * @prop handleChange    - callback function to update state
+ * @prop data            - previous data to inject
  * @prop validationState - check for errors
  * @prop displayErrors   - display error messages
  */
@@ -14,8 +15,10 @@ class FormatInput extends React.Component {
       formName        : React.PropTypes.string.isRequired,
       inputId         : React.PropTypes.string.isRequired,
       handleChange    : React.PropTypes.func.isRequired,
-      validationState : React.PropTypes.func.isRequired,
-      displayErrors   : React.PropTypes.func.isRequired,
+      data            : React.PropTypes.string,
+      validationState : React.PropTypes.func,
+      displayErrors   : React.PropTypes.func,
+
     };
   }
 
@@ -25,6 +28,14 @@ class FormatInput extends React.Component {
 
   setInputVal(input, value) {
     input.value = value;
+  }
+
+  insertValueInMiddle(e, cursor, rawNum) {
+    var newInputKey = (e.keyCode ? e.keyCode : e.which);
+    newInputValue = newInputKey - 48; // converting key code to keyboard value
+    rawNum = rawNum.substring(0, cursor) + newInputValue + rawNum.substring(cursor, rawNum.length);
+    e.preventDefault();
+    return rawNum;
   }
 
   handlePhoneInput(e) {
@@ -39,11 +50,26 @@ class FormatInput extends React.Component {
       return true;
     }
 
-    let input = e.target.value;
-    let rawNum = input.split("-").join("");
+    let inputValue = e.target.value;
+    let rawNum = inputValue.split("-").join("");
     let formattedNum;
 
-    if (rawNum.length >= 10) {
+    // Find position of cursor as if there were no formatting
+    let cursor;
+    if (e.target.selectionStart > 3 && e.target.selectionStart < 8) {
+      cursor = e.target.selectionStart - 1;
+    } else if (e.target.selectionStart > 7) {
+      cursor = e.target.selectionStart - 2;
+    } else {
+      cursor = e.target.selectionStart;
+    }
+
+    // Edge case: user is editing middle of input
+    if (cursor != rawNum.length) {
+      rawNum = this.insertValueInMiddle(e, cursor, rawNum);
+    }
+
+    if (rawNum.length > 10) {
       e.preventDefault();
       return;
     }
@@ -70,18 +96,34 @@ class FormatInput extends React.Component {
       e.preventDefault();
     }
 
-    // If the user has selected text, resume default behavior
+    // If the user has selected several digits, resume default behavior
     if (this.checkTextSelected(e.target)) {
       return true;
     }
 
-    let input = e.target.value;
-    let rawNum = input.split("/").join("");
+    let inputValue = e.target.value;
+
+    let rawNum = inputValue.split("/").join("");
     let formattedNum;
+
+    // Find position of cursor as if there were no formatting
+    let cursor;
+    if (e.target.selectionStart > 2 && e.target.selectionStart < 6) {
+        cursor = e.target.selectionStart - 1;
+    } else if (e.target.selectionStart > 5) {
+      cursor = e.target.selectionStart - 2;
+    } else {
+      cursor = e.target.selectionStart;
+    }
 
     if (rawNum.length >= 8) {
       e.preventDefault();
       return;
+    }
+
+    // Edge case: user is editing middle of input
+    if (cursor != rawNum.length) {
+      rawNum = this.insertValueInMiddle(e, cursor, rawNum);
     }
 
     if (rawNum.length == 2) {
@@ -100,10 +142,10 @@ class FormatInput extends React.Component {
 
   render() {
     if (this.props.inputId == "birthday") {
-        var filler = "MM/DD/YYYY";
+        var filler = this.props.data || "MM/DD/YYYY";
         handleInput = this.handleDateInput.bind(this);
     } else if (this.props.inputId.indexOf("phone") > -1) {
-        var filler = "xxx-xxx-xxxx";
+        var filler = this.props.data || "xxx-xxx-xxxx";
         handleInput = this.handlePhoneInput.bind(this);
     }
 
@@ -112,6 +154,7 @@ class FormatInput extends React.Component {
         <ControlLabel htmlFor={this.props.inputId}>{this.props.formName}</ControlLabel>
         <FormControl
           componentClass="input"
+          defaultValue={this.props.data}
           placeholder={filler}
           name={this.props.inputId}
           onKeyPress={handleInput}

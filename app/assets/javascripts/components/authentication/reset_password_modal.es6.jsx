@@ -4,7 +4,7 @@ class ResetPasswordModal extends React.Component {
     super(props);
     this.state = {
       email: '',
-      error: '',
+      error: null,
     };
   }
 
@@ -16,6 +16,7 @@ class ResetPasswordModal extends React.Component {
   }
 
   resetPassword() {
+    const { handleClose } = this.props;
     var reject = (response) => {
       this.setState({ error: response.message })
     };
@@ -26,13 +27,22 @@ class ResetPasswordModal extends React.Component {
 
     if (this.props.type == 'student') {
       var route = ApiConstants.authentication.request_reset_password.student;
-      var resolve = (response) => { console.log(response); };
+      var resolve = (response) => {
+        toastr.success("Email has been sent to reset password!");
+        handleClose();
+      };
     } else if (this.props.type == 'teacher') {
       var route = ApiConstants.authentication.request_reset_password.teacher;
-      var resolve = (response) => { console.log(response); };
+      var resolve = (response) => {
+        toastr.success("Email has been sent to reset password!");
+        handleClose();
+      };
     } else if (this.props.type == 'admin') {
       var route = ApiConstants.authentication.request_reset_password.admin;
-      var resolve = (response) => { console.log(response); };
+      var resolve = (response) => {
+        toastr.success("Email has been sent to reset password!");
+        handleClose();
+      };
     }
 
     Requester.post(
@@ -55,7 +65,7 @@ class ResetPasswordModal extends React.Component {
 
   renderError() {
     const { error } = this.state;
-    if (error != '') {
+    if (error) {
       return (
         <Alert bsStyle="danger">
           {error}

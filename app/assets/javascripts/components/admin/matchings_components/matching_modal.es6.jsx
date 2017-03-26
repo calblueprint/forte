@@ -67,10 +67,10 @@ class MatchingModal extends React.Component {
     if (eventArray.length != 1) {
       this.setState({ errors: "Make sure only one lesson time is selected." });
       return false;
-    } 
+    }
     var lessonTime = range_to_array(eventArray[0]['start'], eventArray[0]['end']);
-    if (lessonTime.length != 3) {
-      this.setState({ errors: "Make sure the lesson time is 45 minutes long." });
+    if (lessonTime.length < 2 || lessonTime.length > 4) {
+      this.setState({ errors: "Make sure the lesson is 30-60 minutes long." });
       return false;
     }
     this.setState({ lessonTime: lessonTime });
@@ -102,7 +102,7 @@ class MatchingModal extends React.Component {
       reject,
     );
   }
-  
+
   renderErrors() {
     const { errors } = this.state;
     if (errors != '') {
@@ -122,7 +122,7 @@ class MatchingModal extends React.Component {
       return (
         <div>
           <Modal.Body>
-            Are you sure you wish to match student {student.full_name} with teacher {teacher.full_name}? Emails will 
+            Are you sure you wish to match student {student.full_name} with teacher {teacher.full_name}? Emails will
             be sent out to both of them notifying them of their match.
           </Modal.Body>
           <Modal.Footer>
@@ -137,10 +137,10 @@ class MatchingModal extends React.Component {
           <Modal.Body>
             {this.renderErrors()}
             <FormGroup>
-              <MatchingCalendar 
-                ref="calendar" 
+              <MatchingCalendar
+                ref="calendar"
                 availability={overlappingAvailability}
-                timezone={student.timezone} /> 
+                timezone={student.timezone} />
             </FormGroup>
             <FormGroup>
               <ControlLabel>Location</ControlLabel>
@@ -149,7 +149,7 @@ class MatchingModal extends React.Component {
                 name="location"
                 onChange={(event) => this.handleChange(event)}>
                 <option value="" disabled selected>Select a lesson location</option>
-                <option 
+                <option
                   value={teacher.full_address}>
                   Teacher's House
                 </option>

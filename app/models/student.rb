@@ -124,8 +124,10 @@ class Student < ActiveRecord::Base
   def submit_signup
     self.timezone = Timezone.lookup(self.lat, self.lng)
     self.save()
+    if self.student_email
+      ForteMailer.student_signup_notify_student(self).deliver_now
+    end
     ForteMailer.student_signup_notify_admin(self).deliver_now
-    ForteMailer.student_signup_notify_student(self).deliver_now
     ForteMailer.student_signup_notify_parent(self).deliver_now
   end
 
