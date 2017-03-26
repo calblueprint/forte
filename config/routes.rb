@@ -135,6 +135,7 @@ Rails.application.routes.draw do
     post '/charge', to: 'charges#charge_customer'
     post '/account', to: 'accounts#create_account'
     post '/verify_account', to: 'accounts#update_account'
+    post '/change_account', to: 'accounts#change_account'
   end
 
   ##################################################

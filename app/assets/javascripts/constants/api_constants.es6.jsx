@@ -90,6 +90,7 @@
         updateCustomer: '/stripe/update_customer',
         createAccount: '/stripe/account',
         verifyAccount: '/stripe/verify_account',
+        changeAccount: '/stripe/change_account',
         charge: '/stripe/charge',
       }
     }
