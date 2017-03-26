@@ -18,7 +18,7 @@ class TeacherSettingsPage extends UserSettings {
     person.stripe_address_state = "*****";
     person.stripe_address_postal_code = "*****";
     person.stripe_account_holder_dob = "*****";
-    person.stripe_account_holder_type = "Individual";
+    person.stripe_account_holder_type = "*****";
     person.stripe_account_holder_name = "*****";
     person.stripe_country = "US";
     person.stripe_ssn_last_4 = "*****";
@@ -42,6 +42,7 @@ class TeacherSettingsPage extends UserSettings {
     const resolve = (response) => {
       this.props.fetchProfile();
       const { person } = this.state;
+      console.log(route);
       Object.assign(person, response.teacher)
 
       this.setState({ person: person });
@@ -328,11 +329,11 @@ class TeacherSettingsPage extends UserSettings {
         <EditableInput label="Gender" name="gender" data={s.gender}
           specialHandler={this.handleIntegerChange.bind(this)} />
         <EditableInput label="Birthday" name="birthday" data={moment(s.birthday).format("MM/DD/YYYY")} />
-        <EditableInput label="Email" name="student_email" data={s.student_email} />
+        <EditableInput label="Email" name="teacher_email" data={s.email} />
         <EditableInput label="School" name="school" data={s.school} />
         <EditableInput label="Grade" name="school_level" data={s.school_level}
           specialHandler={this.handleIntegerChange.bind(this)} />
-        <EditableInput label="Student Phone Number" name="student_phone" data={s.student_phone} />
+        <EditableInput label="Teacher Phone Number" name="teacher_phone" data={s.phone} />
         <EditableInput label="Address" name="address" data={s.address} />
         <EditableInput label="Apt #" name="address_apt" data={s.address_apt} />
         <EditableInput label="City" name="city" data={s.city} />
@@ -369,12 +370,17 @@ class TeacherSettingsPage extends UserSettings {
                             attemptSave={this.attemptStripeAccountSave.bind(this)}
                             fetchProfile={this.fetchProfile.bind(this)}>
           <EditableInput label="Bank Account Holder Name" name="stripe_account_holder_name" data={s.stripe_account_holder_name} />
-          <EditableInput label="Bank Account Holder DOB" name="stripe_account_holder_dob" data={s.stripe_account_holder_type} />
+          <EditableInput label="Bank Account Holder DOB" name="stripe_account_holder_dob" data={s.stripe_account_holder_dob} />
+          <EditableInput label="Bank Account Holder Type" name="stripe_account_holder_type"
+            data={s.stripe_account_holder_type}
+            specialHandler={this.handleIntegerChange.bind(this)} />
           <EditableInput label="Routing Number" name="stripe_routing_number" data={s.stripe_routing_number} />
           <EditableInput label="Bank Account Number" name="stripe_account_number" data={s.stripe_account_number} />
           <EditableInput label="Address" name="stripe_address_line1" data={s.stripe_address_line1} />
           <EditableInput label="City" name="stripe_address_city" data={s.stripe_address_city} />
-          <EditableInput label="State" name="stripe_address_state" data={s.stripe_address_state} />
+          <EditableInput label="State" name="stripe_address_state"
+            data={s.stripe_address_state}
+            specialHandler={this.handleIntegerChange.bind(this)} />
           <EditableInput label="Postal Code" name="stripe_address_postal_code" data={s.stripe_address_postal_code} />
           <EditableInput label="Last 4 Digits SSN" name="stripe_ssn_last_4" data={s.stripe_ssn_last_4} />
         </EditableInputGroup>

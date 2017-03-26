@@ -150,6 +150,8 @@ class UserSettings extends React.Component {
       console.log("err");
       console.log(response.error);
     } else {
+      console.log(this.props.person.account_id);
+      console.log("yooyoyoyoy");
       var params = {
         stripe_token: response.id,
         email: this.props.person.email,
