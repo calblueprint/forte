@@ -49,6 +49,14 @@ class UserHeader extends React.Component {
       );
     } else if (signed_in_type == 'teacher') {
       // TODO: Add when RouteConstants for teachers is finished.
+      return (
+        <Nav
+          pullRight
+          className="link-container">
+          <NavItem href={RouteConstants.teacher.lessons}>My Lessons</NavItem>
+          <NavItem href={RouteConstants.teacher.profile}>Profile</NavItem>
+        </Nav>
+      );
     }
   }
 

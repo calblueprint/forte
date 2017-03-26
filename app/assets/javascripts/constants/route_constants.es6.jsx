@@ -35,6 +35,7 @@
     get teacher() {
       return {
         lessons: '/teacher/lessons',
+        profile: '/teacher/profile',
       }
     }
 

@@ -6,6 +6,14 @@ class Api::TeachersController < Api::BaseController
     render json: teachers
   end
 
+  def instruments
+    teacher = Teacher.find params[:id]
+    instruments = teacher.instruments
+    render json: instruments,
+           each_serializer: InstrumentIndexSerializer,
+           root: "instruments"
+  end
+
   def update
     teacher = Teacher.find params[:id]
     if teacher.update_attributes teacher_params

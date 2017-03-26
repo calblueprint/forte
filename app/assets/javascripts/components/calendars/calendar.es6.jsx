@@ -1,5 +1,5 @@
 class Calendar extends React.Component {
-  
+
   static get propTypes() {
     return {
       events: React.PropTypes.array,
@@ -23,7 +23,7 @@ class Calendar extends React.Component {
       columnFormat: 'ddd',
       timezone: "local", // interpret all times in local timezone
       editable: isEditable, // can edit existing events
-      selectable: isEditable, // can create events 
+      selectable: isEditable, // can create events
       minTime: "08:00",
       maxTime: "22:00",
       allDaySlot: false,
@@ -41,9 +41,9 @@ class Calendar extends React.Component {
           $(calendar).fullCalendar('unselect');
       },
       selectHelper: true,
-      selectConstraint:{ //won't let you drag to the next day 
-        start: '00:01', 
-        end: '23:59', 
+      selectConstraint:{ //won't let you drag to the next day
+        start: '00:01',
+        end: '23:59',
       },
       eventConstraint: { //can't drag events out of bound
         start: "08:00",
@@ -72,6 +72,6 @@ class Calendar extends React.Component {
   }
 }
 
-/** 
-Use this as an availability tool 
+/**
+Use this as an availability tool
 **/
