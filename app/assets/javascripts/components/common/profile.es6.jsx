@@ -27,6 +27,8 @@ class Profile extends React.Component {
       if (isStudent) {
         this.setState({ person: response.student });
       } else {
+        console.log("response");
+        console.log(response.teacher);
         this.setState({ person: response.teacher });
       }
     }
@@ -56,6 +58,8 @@ class Profile extends React.Component {
                    id={this.props.id}
                    person={person} />
         } else {
+          console.log("hi");
+          console.log(person);
           view = <TeacherSettingsPage
                    fetchProfile={this.fetchProfile.bind(this)}
                    id={this.props.id}

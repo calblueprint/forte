@@ -18,9 +18,9 @@ class TeacherSettingsPage extends UserSettings {
     person.stripe_address_state = "*****";
     person.stripe_address_postal_code = "*****";
     person.stripe_account_holder_dob = "*****";
-    person.stripe_account_holder_type = "*****";
+    person.stripe_account_holder_type = "Individual";
     person.stripe_account_holder_name = "*****";
-    person.stripe_country = "*****";
+    person.stripe_country = "US";
     person.stripe_ssn_last_4 = "*****";
 
     this.state = {

@@ -62,12 +62,14 @@ class Stripe::AccountsController < Stripe::BaseController
     token = params[:stripe_token]
     email = params[:email]
     # country = params[:country]
+
     puts params[:account_id]
     account = Stripe::Account.retrieve(params[:account_id])
     account.email = email
     # account.country = country
     puts "heyeyeye"
     puts params[:bank_id]
+
     old_bank_account = account.external_accounts.retrieve(params[:bank_id]) #how to update bank_id when delete
 
     bank_account = account.external_accounts.create(
