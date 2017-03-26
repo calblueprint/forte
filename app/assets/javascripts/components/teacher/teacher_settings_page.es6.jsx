@@ -164,30 +164,10 @@ class TeacherSettingsPage extends UserSettings {
     );
   }
 
-  handleIntegerChange(event) {
-    let name = $(event.target).attr("name");
-    if (name === "teacher_school_level") {
-      name = "school_level";
-    }
-    var value = $(event.target).val();
-    value = parseInt(value);
-    this.setState({ [name] : value });
-  }
-
-  handleDatetimeChange(moment, name) {
-    if (name == 'birthday') {
-      this.setState({ birthday: moment });
-    } else if (name == 'waiver_date') {
-      this.setState({ waiver_date: moment });
-    }
-  }
-
   render() {
     const { person } = this.props;
 
     let s = this.state.person;
-    // let avail = availability_to_events(s.availability, s.timezone);
-    // console.log(avail);
     let school_level = s.school_level;
     if (school_level === 'high_school') {
       school_level = 'High School';

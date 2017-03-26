@@ -61,16 +61,11 @@ class Stripe::AccountsController < Stripe::BaseController
   def change_account
     token = params[:stripe_token]
     email = params[:email]
-    # country = params[:country]
 
-    puts params[:account_id]
     account = Stripe::Account.retrieve(params[:account_id])
     account.email = email
-    # account.country = country
-    puts "heyeyeye"
-    puts params[:bank_id]
 
-    old_bank_account = account.external_accounts.retrieve(params[:bank_id]) #how to update bank_id when delete
+    old_bank_account = account.external_accounts.retrieve(params[:bank_id])
 
     bank_account = account.external_accounts.create(
       :external_account => token,

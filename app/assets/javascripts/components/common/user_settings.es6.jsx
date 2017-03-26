@@ -3,19 +3,28 @@ class UserSettings extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-    };
+    this.state = {};
   }
 
   handleChange(event) {
     let target = $(event.target);
     let val = target.val();
 
-    if (target.attr('name') == 'birthday') {
+    if (target.attr('name') == 'birthday' || target.attr('name') == 'stripe_account_holder_dob') {
       val = moment(val);
     }
 
     this.setState({ [target.attr('name')] : val });
+  }
+
+  handleIntegerChange(event) {
+    let name = $(event.target).attr("name");
+    if (name === "teacher_school_level") {
+      name = "school_level";
+    }
+    var value = $(event.target).val();
+    value = parseInt(value);
+    this.setState({ [name] : value });
   }
 
   attemptSave(resolve, reject) {
