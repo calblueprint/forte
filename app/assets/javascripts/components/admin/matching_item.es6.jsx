@@ -64,9 +64,8 @@ class MatchingItem extends React.Component {
     if (this.state.showLessonsModal) {
       return (
         <MatchingLessonsModal show={this.state.showLessonsModal}
-          id={matching.match_info.id}
           handleClose={this.hideLessonsModal.bind(this)}
-          refetch={this.props.fetchMatchings} />
+          matching={matching.match_info} />
       )
     }
   }
