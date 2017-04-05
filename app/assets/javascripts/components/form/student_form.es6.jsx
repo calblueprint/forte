@@ -31,7 +31,6 @@ class StudentForm extends React.Component {
       household_number: null,
       disciplinary_action: null,
       criminal_charges: null,
-      criminal_explanation: null,
       waiver_signature: null,
       waiver_date: null,
       card_number: null,
@@ -118,16 +117,17 @@ class StudentForm extends React.Component {
 
   handleDatetimeChange(dateTime, name) {
     // Due to form input, birthday is not a moment but an event
+    const { errors } = this.state;
     if (name == 'birthday') {
       const name = $(dateTime.target).attr("name");
       var value = $(dateTime.target).val();
       if (value.length == 10) {
         value = moment(value, "MM/DD/YYYY");
         if (value.isValid()) {
-          this.setState({ birthday: moment(value, "MM/DD/YYYY"), errors: {} });
+          delete errors['birthday'];
+          this.setState({ birthday: moment(value, "MM/DD/YYYY"), errors: errors });
         }
         else {
-          var errors = {};
           errors.birthday = "Invalid Birth Date"
           this.setState({errors : errors });
         }
@@ -458,6 +458,8 @@ class StudentForm extends React.Component {
         }
         this.createStripeCustomer(student_errs, address_errors);
       }.bind(this));
+    } else {
+      this.createStripeCustomer(student_errs, address_errors);
     }
   }
 
@@ -531,7 +533,6 @@ class StudentForm extends React.Component {
         household_number: this.state.household_number,
         disciplinary_action: this.state.disciplinary_action,
         criminal_charges: this.state.criminal_charges,
-        criminal_explanation: this.state.criminal_explanation,
         waiver_signature: this.state.waiver_signature,
         waiver_date: this.state.waiver_date,
         customer_id: customer.id,
@@ -937,7 +938,7 @@ class StudentForm extends React.Component {
                   <Checkbox
                     name="location_preference"
                     onChange={(event) => this.handleBooleanChange(event)}>
-                    I am willing to host lessons at my home ($20/lesson).
+                    I am willing to host lessons at my home.
                   </Checkbox>
                 {this.displayErrorMessage("location_preference")}
               </FormGroup>
@@ -962,7 +963,73 @@ class StudentForm extends React.Component {
               </FormGroup>
 
               {/*Application Page 4*/}
+              <h2 className="section-title">Eligibility</h2>
+              <FormGroup validationState={this.getValidationState("income_range")}>
+                <ControlLabel>Income Estimate</ControlLabel>
+                <FormControl
+                  componentClass="select"
+                  name="income_range"
+                  onChange={(event) => this.handleIntegerChange(event)}>
+                  <option value="" disabled selected>Enter income range</option>
+                  {this.renderOptions('income_range')}
+                </FormControl>
+                {this.displayErrorMessage("income_range")}
+              </FormGroup>
+
+              <FormGroup validationState={this.getValidationState("household_number")}>
+                <ControlLabel>Household Number</ControlLabel>
+                <FormControl
+                  componentClass="select"
+                  name="household_number"
+                  onChange={(event) => this.handleIntegerChange(event)}>
+                  <option value="" disabled selected>Select number of members in household</option>
+                  {this.renderOptions('household_number')}
+                </FormControl>
+                {this.displayErrorMessage("household_number")}
+              </FormGroup>
+
+              <FormGroup validationState={this.getValidationState("disciplinary_action")}>
+                <ControlLabel>Has your student ever been subject to
+                disciplinary action?</ControlLabel>
+                <Radio
+                  name="disciplinary_action"
+                  value={true}
+                  onChange={(event) => this.handleBooleanChange(event)}>
+                  Yes
+                </Radio>
+                <Radio
+                  name="disciplinary_action"
+                  value={false}
+                  onChange={(event) => this.handleBooleanChange(event)}>
+                  No
+                </Radio>
+                {this.displayErrorMessage("disciplinary_action")}
+              </FormGroup>
+
+              <FormGroup validationState={this.getValidationState("criminal_charges")}>
+                <ControlLabel>Has your student ever been convicted or plead
+                guilty to a crime (other than minor traffic offences)?</ControlLabel>
+                <Radio
+                  name="criminal_charges"
+                  value={Boolean("true")}
+                  onChange={(event) => this.handleBooleanChange(event)}>
+                  Yes
+                </Radio>
+                <Radio
+                  name="criminal_charges"
+                  value={Boolean("false")}
+                  onChange={(event) => this.handleBooleanChange(event)}>
+                  No
+                </Radio>
+                {this.displayErrorMessage("criminal_charges")}
+              </FormGroup>
+
+              {/*Application Page 5*/}
               <h2 className="section-title">Payment</h2>
+
+              <p className="form-input-description">Please note all payment processing is handled securely by Stripe and
+              Forte does not hold any sensitive information. You will only be charged when a lesson has been completed.</p>
+
               <FormGroup validationState={this.getValidationState("cardholder_name")}>
                 <ControlLabel>Cardholder Name</ControlLabel>
                 <FormControl
@@ -987,11 +1054,13 @@ class StudentForm extends React.Component {
                   <div className="form-row form-row-input">
                     <FormControl
                     componentClass="input"
+                    maxLength="2"
                     placeholder="MM"
                     name="exp_month"
                     onChange={(event) => this.handleIntegerChange(event)}/>
                   <FormControl
                     componentClass="input"
+                    maxLength="4"
                     placeholder="YYYY"
                     name="exp_year"
                     onChange={(event) => this.handleIntegerChange(event)}/>
@@ -1061,79 +1130,6 @@ class StudentForm extends React.Component {
                   {this.displayErrorMessage("stripe_address_state")}
                 </FormGroup>
               </div>
-
-              {/*Application Page 5*/}
-              <h2 className="section-title">Eligibility</h2>
-              <FormGroup validationState={this.getValidationState("income_range")}>
-                <ControlLabel>Income Estimate</ControlLabel>
-                <FormControl
-                  componentClass="select"
-                  name="income_range"
-                  onChange={(event) => this.handleIntegerChange(event)}>
-                  <option value="" disabled selected>Enter income range</option>
-                  {this.renderOptions('income_range')}
-                </FormControl>
-                {this.displayErrorMessage("income_range")}
-              </FormGroup>
-
-              <FormGroup validationState={this.getValidationState("household_number")}>
-                <ControlLabel>Household Number</ControlLabel>
-                <FormControl
-                  componentClass="select"
-                  name="household_number"
-                  onChange={(event) => this.handleIntegerChange(event)}>
-                  <option value="" disabled selected>Select number of members in household</option>
-                  {this.renderOptions('household_number')}
-                </FormControl>
-                {this.displayErrorMessage("household_number")}
-              </FormGroup>
-
-              <FormGroup validationState={this.getValidationState("disciplinary_action")}>
-                <ControlLabel>Has your student ever been subject to
-                disciplinary action?</ControlLabel>
-                <Radio
-                  name="disciplinary_action"
-                  value={true}
-                  onChange={(event) => this.handleBooleanChange(event)}>
-                  Yes
-                </Radio>
-                <Radio
-                  name="disciplinary_action"
-                  value={false}
-                  onChange={(event) => this.handleBooleanChange(event)}>
-                  No
-                </Radio>
-                {this.displayErrorMessage("disciplinary_action")}
-              </FormGroup>
-
-              <FormGroup validationState={this.getValidationState("criminal_charges")}>
-                <ControlLabel>Has your student ever been convicted or plead
-                guilty to a crime (other than minor traffic offences)?</ControlLabel>
-                <Radio
-                  name="criminal_charges"
-                  value={Boolean("true")}
-                  onChange={(event) => this.handleBooleanChange(event)}>
-                  Yes
-                </Radio>
-                <Radio
-                  name="criminal_charges"
-                  value={Boolean("false")}
-                  onChange={(event) => this.handleBooleanChange(event)}>
-                  No
-                </Radio>
-                {this.displayErrorMessage("criminal_charges")}
-              </FormGroup>
-
-              <FormGroup validationState={this.getValidationState("criminal_explanation")}>
-                <ControlLabel>Explanation of Criminal Charges If Any</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  componentClass="textarea"
-                  placeholder="Enter text"
-                  name="criminal_explanation"
-                  onChange={(event) => this.handleChange(event)}/>
-                {this.displayErrorMessage("criminal_explanation")}
-              </FormGroup>
 
               {/*Application Page 6*/}
               <h2 className="section-title">Waiver</h2>

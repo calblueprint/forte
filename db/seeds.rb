@@ -182,7 +182,6 @@ def create_single_student(n)
     household_number: Faker::Number.between(0, 10),
     disciplinary_action: Faker::Boolean.boolean,
     criminal_charges: Faker::Boolean.boolean,
-    criminal_explanation: Faker::Lorem.paragraph(4),
     waiver_signature: Faker::Name.first_name,
     waiver_date: Faker::Date.between(2.days.ago, Date.today),
     customer_id: 'cus_9frHntw1ew0W9H', #TODO: point id to Stripe user id

@@ -77,7 +77,6 @@ before_filter :configure_sign_up_params, only: [:create]
         :household_number,
         :disciplinary_action,
         :criminal_charges,
-        :criminal_explanation,
         :waiver_signature,
         :waiver_date,
         :customer_id,

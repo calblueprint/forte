@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170312010120) do
+ActiveRecord::Schema.define(version: 20170405002359) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -125,7 +125,6 @@ ActiveRecord::Schema.define(version: 20170312010120) do
     t.integer  "household_number"
     t.boolean  "disciplinary_action"
     t.boolean  "criminal_charges"
-    t.text     "criminal_explanation"
     t.string   "waiver_signature"
     t.datetime "waiver_date"
     t.string   "customer_id"

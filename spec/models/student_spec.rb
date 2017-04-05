@@ -41,7 +41,6 @@
 #  household_number       :integer
 #  disciplinary_action    :boolean
 #  criminal_charges       :boolean
-#  criminal_explanation   :text
 #  waiver_signature       :string
 #  waiver_date            :datetime
 #  customer_id            :string
