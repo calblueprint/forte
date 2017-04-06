@@ -59,7 +59,6 @@ class EditableInput extends React.Component {
           this.props.data = moment(this.props.data).format("MM/DD/YYYY");
         case "phone":
         case "reference1_phone":
-        case "reference2_phone":
         case "student_phone":
           inputVal = (
             <FormatInput

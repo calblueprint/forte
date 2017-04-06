@@ -31,11 +31,6 @@ class TeacherForm extends React.Component {
       reference1_relation: null,
       reference1_email: null,
       reference1_phone: null,
-      reference2_first_name: null,
-      reference2_last_name: null,
-      reference2_relation: null,
-      reference2_email: null,
-      reference2_phone: null,
       criminal_charges: null,
       youth_participation: null,
       criminal_explanation: null,
@@ -327,11 +322,6 @@ class TeacherForm extends React.Component {
         reference1_relation: this.state.reference1_relation,
         reference1_email: this.state.reference1_email,
         reference1_phone: this.state.reference1_phone,
-        reference2_first_name: this.state.reference2_first_name,
-        reference2_last_name: this.state.reference2_last_name,
-        reference2_relation: this.state.reference2_relation,
-        reference2_email: this.state.reference2_email,
-        reference2_phone: this.state.reference2_phone,
         criminal_charges: this.state.criminal_charges,
         youth_participation: this.state.youth_participation,
         criminal_explanation: this.state.criminal_explanation,
@@ -620,11 +610,6 @@ class TeacherForm extends React.Component {
         reference1_relation: this.state.reference1_relation,
         reference1_email: this.state.reference1_email,
         reference1_phone: this.state.reference1_phone,
-        reference2_first_name: this.state.reference2_first_name,
-        reference2_last_name: this.state.reference2_last_name,
-        reference2_relation: this.state.reference2_relation,
-        reference2_email: this.state.reference2_email,
-        reference2_phone: this.state.reference2_phone,
         criminal_charges: this.state.criminal_charges,
         youth_participation: this.state.youth_participation,
         criminal_explanation: this.state.criminal_explanation,
@@ -1203,7 +1188,7 @@ class TeacherForm extends React.Component {
               </FormGroup>
 
               <h3 className="section-subtitle">References</h3>
-              <p className="form-input-description">Choose a few references who can tell us more about you.</p>
+              <p className="form-input-description">Choose a reference who can tell us more about you.</p>
 
               <h4 className="reference-group-label marginTop-md">Reference #1</h4>
               <div className="form-row">
@@ -1257,61 +1242,6 @@ class TeacherForm extends React.Component {
                     name="reference1_phone"
                     onChange={(event) => this.handleChange(event)}/>
                   {this.displayErrorMessage("reference1_phone")}
-                </FormGroup>
-              </div>
-
-              <h4 className="reference-group-label marginTop-xl">Reference #2</h4>
-              <div className="form-row">
-                <FormGroup validationState={this.getValidationState("reference2_first_name")}>
-                  <ControlLabel>First Name</ControlLabel>
-                  <FormControl
-                    componentClass="input"
-                    placeholder="First Name"
-                    name="reference2_first_name"
-                    onChange={(event) => this.handleChange(event)}/>
-                  {this.displayErrorMessage("reference2_first_name")}
-                </FormGroup>
-
-                <FormGroup validationState={this.getValidationState("reference2_last_name")}>
-                  <ControlLabel>Last Name</ControlLabel>
-                  <FormControl
-                    componentClass="input"
-                    placeholder="Last Name"
-                    name="reference2_last_name"
-                    onChange={(event) => this.handleChange(event)}/>
-                  {this.displayErrorMessage("reference2_last_name")}
-                </FormGroup>
-
-                <FormGroup validationState={this.getValidationState("reference2_relation")}>
-                  <ControlLabel>Relationship</ControlLabel>
-                  <FormControl
-                    componentClass="input"
-                    placeholder="Relationship"
-                    name="reference2_relation"
-                    onChange={(event) => this.handleChange(event)}/>
-                  {this.displayErrorMessage("reference2_relation")}
-                </FormGroup>
-              </div>
-
-              <div className="form-row">
-                <FormGroup validationState={this.getValidationState("reference2_email")}>
-                  <ControlLabel>Email</ControlLabel>
-                  <FormControl
-                    componentClass="input"
-                    placeholder="Email"
-                    name="reference2_email"
-                    onChange={(event) => this.handleChange(event)}/>
-                  {this.displayErrorMessage("reference2_email")}
-                </FormGroup>
-
-                <FormGroup validationState={this.getValidationState("reference2_phone")}>
-                  <ControlLabel>Phone</ControlLabel>
-                  <FormControl
-                    componentClass="input"
-                    placeholder="Phone"
-                    name="reference2_phone"
-                    onChange={(event) => this.handleChange(event)}/>
-                  {this.displayErrorMessage("reference2_phone")}
                 </FormGroup>
               </div>
 
