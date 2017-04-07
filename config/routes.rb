@@ -78,7 +78,6 @@ Rails.application.routes.draw do
     sessions: 'authentication/teachers/sessions',
     registrations: 'authentication/teachers/registrations',
     passwords: 'authentication/teachers/passwords'
-
   }
 
   devise_for :admins, controllers: {
@@ -188,6 +187,10 @@ Rails.application.routes.draw do
     get '/teachers/:id/matchings', to: 'students#matchings'
     post '/teachers/validate', to: 'teachers#validate'
     resources :teachers, only: [:index, :destroy, :show, :update]
-
   end
+
+  ##################################################
+    # Admins
+  ##################################################  
+  post '/admins/add', to: 'admin#add_admin'
 end

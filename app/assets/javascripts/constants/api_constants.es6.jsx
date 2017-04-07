@@ -59,6 +59,12 @@
       };
     }
 
+    get admins() {
+      return {
+        add: '/admins/add',
+      };
+    }
+
     get searchables() {
       return {
         users: (prefix, filter) => `/api/searchables/users?prefix=${prefix}&filter=${filter}`,

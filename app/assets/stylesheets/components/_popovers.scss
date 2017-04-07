@@ -21,6 +21,7 @@
   &.toast-error {
     background: $red;
     color: white;
+    z-index: 1500;
   }
 
   &.toast-success {

@@ -7,6 +7,7 @@ class RosterPage extends React.Component {
       people: [],
       filter: "All",
       searchInput: "",
+      addAdminModal: false,
     };
   }
 
@@ -115,6 +116,30 @@ class RosterPage extends React.Component {
     )
   }
 
+  renderAddAdminButton() {
+    return (
+      <Button className="add-admin-btn"
+              onClick={() => this.openAddAdmin()}>Add Admin</Button>
+    )
+  }
+
+  openAddAdmin() {
+    this.setState({ addAdminModal: true });
+  }
+
+  closeAddAdmin() {
+    this.setState({ addAdminModal: false });
+  }
+
+  renderAddAdminModal() {
+    const { addAdminModal } = this.state;
+    if (addAdminModal) {
+      return ( 
+        <AddAdminModal handleClose = {() => this.closeAddAdmin() } />
+      );
+    }
+  }
+
   render() {
     let people;
 
@@ -152,6 +177,10 @@ class RosterPage extends React.Component {
                 {this.renderFilterButton('All')}
                 {this.renderFilterButton('Students')}
                 {this.renderFilterButton('Teachers')}
+              </div>
+              <div className="add-admin-button">
+                {this.renderAddAdminButton()}
+                {this.renderAddAdminModal()}
               </div>
               <div className="searchbar">
                 <input type="text" name="first_name" className="form-control"
