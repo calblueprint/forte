@@ -40,6 +40,7 @@
         upcomingLessons: (id) => `/api/students/upcoming_lessons/${id}`,
         recentLessons: (id) => `/api/students/recent_lessons/${id}`,
         instruments: (id) => `/api/students/${id}/instruments`,
+        matchings: (id) => `/api/students/${id}/matchings`,
       };
     }
 
@@ -54,6 +55,7 @@
         upcomingLessons: (id) => `/api/teachers/upcoming_lessons/${id}`,
         recentLessons: (id) => `/api/teachers/recent_lessons/${id}`,
         instruments: (id) => `/api/teachers/${id}/instruments`,
+        matchings: (id) => `/api/teachers/${id}/matchings`,
       };
     }
 
