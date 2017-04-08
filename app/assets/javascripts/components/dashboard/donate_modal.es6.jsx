@@ -24,63 +24,6 @@ class DonateModal extends React.Component {
     this.setState({ [name] : value });
   }
 
-  makePayment() {
-    var stripe = Stripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
-    var elements = stripe.elements();
-    // Custom styling can be passed to options when creating an Element.
-    var style = {
-      base: {
-        // Add your base input styles here. For example:
-        fontSize: '16px',
-        lineHeight: '24px'
-      }
-    };
-
-    // Create an instance of the card Element
-    var card = elements.create('card', {style: style});
-    // Add an instance of the card Element into the `card-element` <div>
-    card.mount('#card-element');
-
-    card.addEventListener('change', function(event) {
-    var displayError = document.getElementById('card-errors');
-      if (event.error) {
-        displayError.textContent = event.error.message;
-      } else {
-        displayError.textContent = '';
-      }
-    });
-
-    // Create a token or display an error the form is submitted.
-    var form = document.getElementById('payment-form');
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      stripe.createToken(card).then(function(result) {
-        if (result.error) {
-          // Inform the user if there was an error
-          var errorElement = document.getElementById('card-errors');
-          errorElement.textContent = result.error.message;
-        } else {
-          // Send the token to your server
-          stripeTokenHandler(result.token);
-        }
-      });
-    });
-  }
-
-  stripeTokenHandler(token) {
-    // Insert the token ID into the form so it gets submitted to the server
-    var form = document.getElementById('payment-form');
-    var hiddenInput = document.createElement('input');
-    hiddenInput.setAttribute('type', 'hidden');
-    hiddenInput.setAttribute('name', 'stripeToken');
-    hiddenInput.setAttribute('value', token.id);
-    form.appendChild(hiddenInput);
-
-    // Submit the form
-    form.submit();
-  }
-
   renderDonateModal() {
     //on Done: send email to admin with donor info
     //look at contact_page send_contact_email
@@ -92,11 +35,10 @@ class DonateModal extends React.Component {
       return (
         <div>
           <Modal.Body>
-            {this.state.donation_amount}
+            Thank you for your donation!
           </Modal.Body>
           <Modal.Footer>
             <Button className="button button--outline-orange" onClick={handleClose}>Close</Button>
-            <Button className="button button--solid-orange" onClick={() => this.makePayment()}>Done</Button>
           </Modal.Footer>
         </div>
       );
@@ -140,13 +82,11 @@ class DonateModal extends React.Component {
               onChange={(event) => this.handleChange(event)}
               />
             <ControlLabel>Card Information</ControlLabel>
-            <Button onClick={() => this.makePayment()}>Enter Payment Information</Button>
-            <div id="card-element"></div>
-            <div id="card-errors"></div>
+            <StripeElement></StripeElement>
           </Modal.Body>
           <Modal.Footer>
-            <Button className="button button--outline-orange" onClick={handleClose}>Close</Button>
-            <Button className="button button--solid-orange" onClick={() => this.handleNext()}>Confirm Payment</Button>
+            <Button className="button button--outline-orange" onClick={handleClose}>Cancel</Button>
+            <Button className="button button--solid-orange" onClick={() => this.handleNext()}>Done</Button>
           </Modal.Footer>
         </div>
       );
