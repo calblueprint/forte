@@ -10,6 +10,13 @@
 
 class FormatInput extends React.Component {
 
+  constructor() {
+    super();
+    this.state = {
+      editing: false,
+    }
+  }
+
   static get propTypes() {
     return {
       formName        : React.PropTypes.string.isRequired,
@@ -34,6 +41,8 @@ class FormatInput extends React.Component {
     var newInputKey = (e.keyCode ? e.keyCode : e.which);
     newInputValue = newInputKey - 48; // converting key code to keyboard value
     rawNum = rawNum.substring(0, cursor) + newInputValue + rawNum.substring(cursor, rawNum.length);
+    console.log(rawNum.length);
+    console.log(rawNum);
     e.preventDefault();
     return rawNum;
   }
@@ -67,9 +76,10 @@ class FormatInput extends React.Component {
     // Edge case: user is editing middle of input
     if (cursor != rawNum.length) {
       rawNum = this.insertValueInMiddle(e, cursor, rawNum);
+      this.state.editing = true;
     }
 
-    if (rawNum.length >= 10) {
+    if ((rawNum.length >= 10 && !this.state.editing) || (rawNum.length > 10 && this.state.editing)) {
       e.preventDefault();
       return;
     }
@@ -86,6 +96,7 @@ class FormatInput extends React.Component {
     }
 
     this.setInputVal(e.target, formattedNum);
+    this.state.editing = false;
   }
 
   handleDateInput(e) {
