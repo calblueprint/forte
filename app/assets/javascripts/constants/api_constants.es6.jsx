@@ -92,6 +92,7 @@
         verifyAccount: '/stripe/verify_account',
         changeAccount: '/stripe/change_account',
         charge: '/stripe/charge',
+        donationCharge: '/stripe/donation_charge',
       }
     }
 

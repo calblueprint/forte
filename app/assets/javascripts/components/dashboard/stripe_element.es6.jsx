@@ -1,5 +1,6 @@
 class StripeElement extends React.Component {
-
+  //need to create stripe charge endpoint
+  //make the charge go through and figure out what to do when you submit form, what should the action be?
   static get propTypes() {
     return {
     };
@@ -43,23 +44,32 @@ class StripeElement extends React.Component {
     });
 
     // Create a token or display an error the form is submitted.
+    console.log("before event submit");
     var form = document.getElementById('payment-form');
     form.addEventListener('submit', function(event) {
       event.preventDefault();
       stripe.createToken(card).then(function(result) {
+        console.log(result);
         if (result.error) {
           // Inform the user if there was an error
           var errorElement = document.getElementById('card-errors');
           errorElement.textContent = result.error.message;
         } else {
-          var form = document.getElementById('payment-form');
-          var hiddenInput = document.createElement('input');
-          hiddenInput.setAttribute('type', 'hidden');
-          hiddenInput.setAttribute('name', 'stripeToken');
-          hiddenInput.setAttribute('value', result.token.id);
-          form.appendChild(hiddenInput);
-          // Submit the form
-          form.submit();
+          console.log(result.token);
+          const resolve = (result) => { console.log(result) };
+          const reject = (result) => { console.log(result) };
+
+          var params = {
+            amount: 10,
+            stripe_token: result.token.id,
+          };
+
+          Requester.post(
+            ApiConstants.stripe.donationCharge,
+            params,
+            resolve,
+            reject,
+          );
         }
       });
     });
@@ -67,7 +77,7 @@ class StripeElement extends React.Component {
 
   render() {
     return (
-      <form action="#" method="post" id="payment-form">
+      <form id="payment-form">
         <div id="card-element"></div>
         <div id="card-errors"></div>
         <Button type="submit">Submit Donation</Button>
