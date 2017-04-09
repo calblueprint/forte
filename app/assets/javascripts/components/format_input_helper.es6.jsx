@@ -69,7 +69,7 @@ class FormatInput extends React.Component {
       rawNum = this.insertValueInMiddle(e, cursor, rawNum);
     }
 
-    if (rawNum.length > 10) {
+    if (rawNum.length >= 10) {
       e.preventDefault();
       return;
     }
@@ -141,7 +141,7 @@ class FormatInput extends React.Component {
   }
 
   render() {
-    if (this.props.inputId == "birthday") {
+    if (this.props.inputId == "birthday" || this.props.inputId == "stripe_account_holder_dob") {
         var filler = this.props.data || "MM/DD/YYYY";
         handleInput = this.handleDateInput.bind(this);
     } else if (this.props.inputId.indexOf("phone") > -1) {
