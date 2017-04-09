@@ -75,6 +75,7 @@ class MatchingItem extends React.Component {
     let startTime = moment(matching.match_info.lesson_time[0]);
     let studentName = `${matching.student.first_name} ${matching.student.last_name}`;
     let teacherName = `${matching.teacher.first_name} ${matching.teacher.last_name}`;
+    let price = `$${parseFloat(matching.match_info.default_price).toFixed(2)}`;
 
     return (
       <div className="matching-item">
@@ -87,7 +88,7 @@ class MatchingItem extends React.Component {
           {this.renderContentItem('Instrument', matching.match_info.instrument)}
           {this.renderContentItem('Location', matching.match_info.location, "matching-item-location")}
           {this.renderContentItem('Time', startTime.format('ddd h:mm A'))}
-          {this.renderContentItem('Price', `$${matching.match_info.default_price}`)}
+          {this.renderContentItem('Price', price)}
         </div>
       </div>
     );
@@ -125,7 +126,7 @@ class MatchingItem extends React.Component {
       <div className="matching-options">
         <DropdownButton bsStyle="link" title="Options" pullRight={true}>
           <MenuItem eventKey="1"
-            onClick={this.showLessonsModal.bind(this)}>Show All Lessons</MenuItem>
+            onClick={this.showLessonsModal.bind(this)}>Show Past Lessons</MenuItem>
           <MenuItem eventKey="2"
             onClick={this.showEditModal.bind(this)}>Edit Matching</MenuItem>
           <MenuItem divider />

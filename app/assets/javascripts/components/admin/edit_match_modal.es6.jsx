@@ -11,12 +11,33 @@ class EditMatchModal extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
   }
 
   handleChange(event) {
     this.setState({
       [$(event.target).attr("name")] : $(event.target).val(),
     });
+  }
+
+  handleEdit() {
+    const { id } = this.props.matching;
+
+    const route = ApiConstants.matchings.update(id);
+    const params = this.state;
+    const resolve = (response) => {
+      this.props.refetch();
+      this.props.handleClose();
+      toastr.success("Matching successfully updated!");
+    }
+
+    const reject = (response) => {
+      console.log(response);
+      this.props.handleClose();
+      toastr.success("An error has occurred. Please try again!");
+    }
+
+    Requester.update(route, params, resolve, reject);
   }
 
   renderSummary() {
@@ -62,7 +83,7 @@ class EditMatchModal extends React.Component {
                 <InputGroup.Addon>$</InputGroup.Addon>
                 <FormControl type="input"
                   name="default_price"
-                  defaultValue={matching.default_price}
+                  defaultValue={parseFloat(matching.default_price).toFixed(2)}
                   onChange={this.handleChange} />
               </InputGroup>
             </FormGroup>
@@ -85,7 +106,7 @@ class EditMatchModal extends React.Component {
           <Button className="button button--outline-orange button--left"
             onClick={this.props.handleClose}>Cancel Edit</Button>
           <Button className="button button--solid-orange"
-            onClick={this.props.handleClose}>Submit</Button>
+            onClick={this.handleEdit}>Submit</Button>
         </Modal.Footer>
       </Modal>
     );

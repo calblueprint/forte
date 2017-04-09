@@ -75,8 +75,6 @@ class MatchingLessonsModal extends React.Component {
   }
 }
 
-
-
 class MatchingLessonRow extends React.Component {
 
   render() {
