@@ -10,6 +10,13 @@
 
 class FormatInput extends React.Component {
 
+  constructor() {
+    super();
+    this.state = {
+      editing: false,
+    }
+  }
+
   static get propTypes() {
     return {
       formName        : React.PropTypes.string.isRequired,
@@ -67,9 +74,10 @@ class FormatInput extends React.Component {
     // Edge case: user is editing middle of input
     if (cursor != rawNum.length) {
       rawNum = this.insertValueInMiddle(e, cursor, rawNum);
+      this.state.editing = true;
     }
 
-    if (rawNum.length > 10) {
+    if ((rawNum.length >= 10 && !this.state.editing) || (rawNum.length > 10 && this.state.editing)) {
       e.preventDefault();
       return;
     }
@@ -86,6 +94,7 @@ class FormatInput extends React.Component {
     }
 
     this.setInputVal(e.target, formattedNum);
+    this.state.editing = false;
   }
 
   handleDateInput(e) {
@@ -141,7 +150,7 @@ class FormatInput extends React.Component {
   }
 
   render() {
-    if (this.props.inputId == "birthday") {
+    if (this.props.inputId == "birthday" || this.props.inputId == "stripe_account_holder_dob") {
         var filler = this.props.data || "MM/DD/YYYY";
         handleInput = this.handleDateInput.bind(this);
     } else if (this.props.inputId.indexOf("phone") > -1) {

@@ -15,7 +15,6 @@ Rails.application.routes.draw do
     collection do
       get :matched
       get :unmatched
-      get :lessons
       get :roster
       get 'roster/students/:id', to: 'admin#student'
       get 'roster/teachers/:id', to: 'admin#teacher'
@@ -28,7 +27,6 @@ Rails.application.routes.draw do
   get 'student', to: redirect('student/lessons')
   namespace :student do
     get :lessons
-    get :settings
     get :profile
   end
 
@@ -38,7 +36,6 @@ Rails.application.routes.draw do
   get 'teacher', to: redirect('teacher/lessons')
   namespace :teacher do
     get :lessons
-    get :settings
     get :profile
   end
 
@@ -193,6 +190,6 @@ Rails.application.routes.draw do
 
   ##################################################
     # Admins
-  ##################################################  
+  ##################################################
   post '/admins/add', to: 'admin#add_admin'
 end

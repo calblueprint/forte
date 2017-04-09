@@ -23,19 +23,6 @@ class UserHeader extends React.Component {
     );
   }
 
-  renderSettings() {
-    const { signed_in_type } = this.state;
-    if (signed_in_type == 'student') {
-      return (
-        <MenuItem href={RouteConstants.student.settings}>SETTINGS</MenuItem>
-      );
-    } else if (signed_in_type == 'teacher') {
-      return (
-        <MenuItem href={RouteConstants.student.settings}>SETTINGS</MenuItem>
-      );
-    }
-  }
-
   renderLinks() {
     const { signed_in_type } = this.state;
     if (signed_in_type == 'student') {
@@ -79,7 +66,6 @@ class UserHeader extends React.Component {
         <Navbar.Collapse>
           <Nav pullRight>
             <NavDropdown title={"Welcome,  " + name}>
-              {this.renderSettings()}
               <MenuItem onClick={() => this.logout()}>LOG OUT</MenuItem>
             </NavDropdown>
           </Nav>
