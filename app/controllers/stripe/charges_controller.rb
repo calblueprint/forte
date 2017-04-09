@@ -20,16 +20,16 @@ class Stripe::ChargesController < Stripe::BaseController
 
   def donation_charge
     Stripe.api_key = "sk_test_oh7F8cfhKpQ4nyhc6zSuSn5M"
-    puts 'donation stuff'
     amount = params[:amount]
     token = params[:stripe_token]
-    puts 'token'
-    puts token
+    customer = Stripe::Customer.create(
+      :source => token,
+    )
     charge = Stripe::Charge.create(
-      :amount => amount,
+      :amount => amount*100,
       :currency => "usd",
       :description => "Forte Donation Charge",
-      :source => token,
+      :customer => customer.id,
     )
     render json: charge, status: 201
   end

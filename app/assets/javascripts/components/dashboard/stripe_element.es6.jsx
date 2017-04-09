@@ -18,7 +18,7 @@ class StripeElement extends React.Component {
   }
 
   createStripeElement() {
-    var stripe = Stripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
+    var stripe = Stripe('pk_test_kWV5HAQuTjQRu7CRuQhDd1nj');
     var elements = stripe.elements();
     // Custom styling can be passed to options when creating an Element.
     var style = {
