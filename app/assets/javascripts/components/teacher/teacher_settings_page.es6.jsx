@@ -255,11 +255,6 @@ class TeacherSettingsPage extends UserSettings {
           <EditableInput label="Reference 1 Relationship" name="reference1_relation" data={s.reference1_relation} />
           <EditableInput label="Reference 1 Email" name="reference1_email" data={s.reference1_email} />
           <EditableInput label="Reference 1 Phone" name="reference1_phone" data={s.reference1_phone} />
-          <EditableInput label="Reference 2 First Name" name="reference2_first_name" data={s.reference2_first_name} />
-          <EditableInput label="Reference 2 Last Name" name="reference2_last_name" data={s.reference2_last_name} />
-          <EditableInput label="Reference 2 Relationship" name="reference2_relation" data={s.reference2_relation} />
-          <EditableInput label="Reference 2 Email" name="reference2_email" data={s.reference2_email} />
-          <EditableInput label="Reference 2 Phone" name="reference2_phone" data={s.reference2_phone} />
         </EditableInputGroup>
     </div>
     );

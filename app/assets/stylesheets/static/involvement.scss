@@ -49,6 +49,19 @@
     }
   }
 
+  .teacher-icon {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    height: 75px;
+    position: relative;
+    margin-top: 30px;
+    margin-bottom: 50px;
+    img {
+      height: 125px;
+    }
+  }
+
   .option-title {
     color: $orange;
   }

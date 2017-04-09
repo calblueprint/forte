@@ -2,6 +2,7 @@ class InvolvementPage extends React.Component {
 
   renderOption(option) {
     middle = false;
+    let imgSize;
     switch (option) {
       case 'student':
         optionIcon = ImageConstants.roles.student;
@@ -9,6 +10,11 @@ class InvolvementPage extends React.Component {
         optionDescription = 'Learn your dream instrument at deeply discounted rates.';
         buttonText = 'Apply to Learn';
         url = RouteConstants.form.student;
+        imgSize = (
+          <div className="option-icon">
+            <img src={optionIcon} href="#" />
+          </div>
+        );
         break;
       case 'teacher':
         optionIcon = ImageConstants.instruments.piano;
@@ -17,6 +23,11 @@ class InvolvementPage extends React.Component {
         buttonText = 'Apply to Teach';
         url = RouteConstants.form.teacher;
         middle = true;
+        imgSize = (
+          <div className="teacher-icon">
+            <img src={optionIcon} href="#" />
+          </div>
+        );
         break;
       case 'donor':
         optionIcon = ImageConstants.roles.donor;
@@ -29,9 +40,7 @@ class InvolvementPage extends React.Component {
 
     return (
       <div className={"option " + (middle ? "middle" : "")}>
-        <div className="option-icon">
-          <img src={optionIcon} href="#" />
-        </div>
+        {imgSize}
         <h2 className="option-title">{optionTitle}</h2>
         <div className="separator"/>
         <div className="option-description">

@@ -40,11 +40,6 @@
 #  reference1_relation    :string
 #  reference1_email       :string
 #  reference1_phone       :string
-#  reference2_first_name  :string
-#  reference2_last_name   :string
-#  reference2_relation    :string
-#  reference2_email       :string
-#  reference2_phone       :string
 #  criminal_charges       :boolean
 #  youth_participation    :boolean
 #  criminal_explanation   :text
@@ -96,11 +91,6 @@ class Teacher < ActiveRecord::Base
   validates :reference1_relation, presence: true
   validates :reference1_email, presence: true
   validates :reference1_phone, presence: true
-  validates :reference2_first_name, presence: true
-  validates :reference2_last_name, presence: true
-  validates :reference2_relation, presence: true
-  validates :reference2_email, presence: true
-  validates :reference2_phone, presence: true
   validates :criminal_charges, :inclusion => { :in => [true, false] }
   validates :youth_participation, :inclusion => { :in => [true, false] }
   validates :waiver_signature, presence: true
@@ -113,7 +103,7 @@ class Teacher < ActiveRecord::Base
 
   accepts_nested_attributes_for :instruments
 
-  enum school_level: [ :high_school, :college ]
+  enum school_level: [ :high_school, :college, :other ]
   enum state: [ :AL, :AK, :AZ, :AR, :CA, :CO, :CT, :DE, :FL, :GA,
                 :HI, :ID, :IL, :IN, :IA, :KS, :KY, :LA, :ME, :MD,
                 :MA, :MI, :MN, :MS, :MO, :MT, :NE, :NV, :NH, :NJ,

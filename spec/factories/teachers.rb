@@ -40,11 +40,6 @@
 #  reference1_relation    :string
 #  reference1_email       :string
 #  reference1_phone       :string
-#  reference2_first_name  :string
-#  reference2_last_name   :string
-#  reference2_relation    :string
-#  reference2_email       :string
-#  reference2_phone       :string
 #  criminal_charges       :boolean
 #  youth_participation    :boolean
 #  criminal_explanation   :text

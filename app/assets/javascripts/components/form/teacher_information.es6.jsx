@@ -210,47 +210,6 @@ class TeacherInformation extends React.Component {
                 </FormGroup>
               </div>
 
-              <div className="form-row">
-                <FormGroup>
-                  <ControlLabel>Reference #2 First Name</ControlLabel>
-                  <FormControl
-                    readOnly
-                    componentClass="input"
-                    value={teacher.reference2_first_name} />
-                </FormGroup>
-                <FormGroup>
-                  <ControlLabel>Reference #2 Last Name</ControlLabel>
-                  <FormControl
-                    readOnly
-                    componentClass="input"
-                    value={teacher.reference2_last_name} />
-                </FormGroup>
-              </div>
-              <FormGroup>
-                <ControlLabel>Reference #2 Relationship</ControlLabel>
-                <FormControl
-                  readOnly
-                  componentClass="input"
-                  value={teacher.reference2_relation} />
-              </FormGroup>
-
-              <div className="form-row">
-                <FormGroup>
-                  <ControlLabel>Reference #2 Email</ControlLabel>
-                  <FormControl
-                    readOnly
-                    componentClass="input"
-                    value={teacher.reference2_email} />
-                </FormGroup>
-                <FormGroup>
-                  <ControlLabel>Reference #2 Phone</ControlLabel>
-                  <FormControl
-                    readOnly
-                    componentClass="input"
-                    value={teacher.reference2_phone} />
-                </FormGroup>
-              </div>
-
               <FormGroup>
                 <ControlLabel>Have you ever been convicted or plead
                 guilty to a crime (other than minor traffic offences) or

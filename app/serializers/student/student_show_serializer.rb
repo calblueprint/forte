@@ -24,7 +24,6 @@ class StudentShowSerializer < StudentBaseSerializer
               :household_number,
               :disciplinary_action,
               :criminal_charges,
-              :criminal_explanation,
               :waiver_signature,
               :waiver_date,
               :full_address,

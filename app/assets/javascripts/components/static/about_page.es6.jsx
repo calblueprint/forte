@@ -14,40 +14,40 @@ class AboutPage extends React.Component {
           University Symphony Orchestra, Stanford Symphony Orchestra, San Jose Youth Philharmonic and Silicon
           Valley Volunteer Orchestra.
 
-          Daniel graduated from UC Berkeley and lives in San Francisco.`
-      }, 
+          Daniel graduated from UC Berkeley and lives in New York City.`
+      },
       {
         name: 'Richard Donahue',
         position: 'Co-founder & CFO',
         image: ImageConstants.headshots.richard,
-        bio: `Since childhood, Richard has explored music through a variety of avenues including teaching, 
-          composing, conducting and performing.  Whether playing oboe on Bizet\'s Carmen Suite in Venice, 
-          conducting a marching band or playing electric guitar in Hollywood\'s House of Blues, he has 
+        bio: `Since childhood, Richard has explored music through a variety of avenues including teaching,
+          composing, conducting and performing.  Whether playing oboe on Bizet\'s Carmen Suite in Venice,
+          conducting a marching band or playing electric guitar in Hollywood\'s House of Blues, he has
           enthusiastically shared his love of music with others. In co-founding Forte, he hopes to enable
           others to do the same.
 
-          Richard graduated from UCLA and currently lives in San Francisco.`
+          Richard graduated from UCLA and currently lives in Los Angeles.`
       },
       {
         name: 'Rocky Yip',
         position: 'Director of Campus Recruitment',
         image: ImageConstants.headshots.rocky,
-        bio: `What started out as a mandatory class turned into a lifelong musical interest when Rocky picked 
+        bio: `What started out as a mandatory class turned into a lifelong musical interest when Rocky picked
             up the clarinet at age 12.  Since then, he has since enjoyed competing in music festivals and
-            performing in ensembles including British Columbia\'s Provincial Honor Band and Canada\'s National 
-            Wind Orchestra. He is passionate about providing access to music education for all and is currently 
+            performing in ensembles including British Columbia\'s Provincial Honor Band and Canada\'s National
+            Wind Orchestra. He is passionate about providing access to music education for all and is currently
             looking for people who share his enthusiasm to join the Forte team.
 
-            Rocky is currently an undergraduate student at UC Berkeley.`
+            Rocky graduated from UC Berkeley and lives in San Francisco.`
       },
       {
         name: 'Rachel Ng',
         position: 'Business Development',
         image: ImageConstants.headshots.rachel,
-        bio: `An alumnus of Ruth Asawa San Francisco School of the Arts, Rachel has been involved with music both  
-            as a student and a teacher for over a decade. In addition to personal achievements in piano 
-            competitions and examinations, she also founded a regional, local student music club in the East 
-            Bay. After seeing how music could have a direct, positive impact on children as a volunteer piano 
+        bio: `An alumnus of Ruth Asawa San Francisco School of the Arts, Rachel has been involved with music both
+            as a student and a teacher for over a decade. In addition to personal achievements in piano
+            competitions and examinations, she also founded a regional, local student music club in the East
+            Bay. After seeing how music could have a direct, positive impact on children as a volunteer piano
             teacher in Oakland Chinatown, she hopes to give back to the community through Forte and its mission.
 
             Rachel is currently an undergraduate student at UC Berkeley.`
@@ -56,9 +56,9 @@ class AboutPage extends React.Component {
         name: 'Sahil Patel',
         position: 'Business Development',
         image: ImageConstants.headshots.sahil,
-        bio: `Music has been an active part of Sahil\'s life ever since he was handed a saxophone in 4th grade. 
-            Since then, he has picked up drumsticks as well and has played in jazz groups that volunteer at 
-            nonprofit fundraisers. Wanting to continue his commitment to the music community, he joined Forte 
+        bio: `Music has been an active part of Sahil\'s life ever since he was handed a saxophone in 4th grade.
+            Since then, he has picked up drumsticks as well and has played in jazz groups that volunteer at
+            nonprofit fundraisers. Wanting to continue his commitment to the music community, he joined Forte
             in the hopes of furthering his impact and sharing the energy of music.
 
             Sahil is currently an undergraduate student at UC Berkeley.`
@@ -67,12 +67,12 @@ class AboutPage extends React.Component {
         name: 'Lancy Zhang',
         position: 'Design Advisor',
         image: ImageConstants.headshots.lancy,
-        bio: `A tutor for underserved children for four years, Lancy wants to make education more accessible to 
-            everyone and deeply aligns with Forte\'s mission. Fine arts education, from painting to music, 
-            had always been a key component of Lancy\'s upbringing. She hopes to bring her visual design 
+        bio: `A tutor for underserved children for four years, Lancy wants to make education more accessible to
+            everyone and deeply aligns with Forte\'s mission. Fine arts education, from painting to music,
+            had always been a key component of Lancy\'s upbringing. She hopes to bring her visual design
             skills to building Forte’s platform.
 
-            Lancy is currently an undergraduate student at UC Berkeley.`
+            Lancy graduated from UC Berkeley and lives in San Francisco.`
       }
     ];
   }
@@ -89,9 +89,9 @@ class AboutPage extends React.Component {
         <Header />
           <div className="content-wrapper about-page">
             <div className="section">
-              <h2 className="section__title forte-title">
+              <h1 className="section__title forte-title">
                 for·te
-              </h2>
+              </h1>
               <h4 className="section__subtitle">
                 <span className="forte-defn-label">adj.</span> loudly, with passion and energy <br/>
                 <span className="forte-defn-label">n.</span> one's strength, talent or skill
@@ -131,7 +131,7 @@ class AboutPage extends React.Component {
                 We are deeply rooted in the tradition of using music to serve our community.
               </h4>
               <p className="section__text">
-                Forte's roots trace back to 2008, when our CEO formed a service organization at Homestead
+                Forte's roots trace back to 2008, when Daniel formed a service organization at Homestead
                 High School allowing student musicians to collaborate via small ensembles. Ranging from
                 duos to quintets, these intimate groups inspired levels of student independence and
                 creativity greater than those typically afforded by school-wide bands, orchestras or choirs.

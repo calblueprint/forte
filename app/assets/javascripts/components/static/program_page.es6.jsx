@@ -109,20 +109,18 @@ class ProgramPage extends React.Component {
     } else if (topic == "payments" && this.state.payments) {
       return (
         <p className="answer">
-          After lessons are held, we collect lesson fees from students and
-          distribute teacher payments online via PayPal.  Payment processing is
-          handled directly and securely by PayPal with no sensitive information
-          stored by Forte.  We support all major credit and debit cards, but do
-          not accept cash payment for lessons.
+          After lessons are held, we collect lesson fees from students and distribute
+          teacher payments online via Stripe. Payment processing is handled directly
+          and securely by Stripe with no sensitive information stored by Forte. We
+          support all major credit and debit cards, but do not accept cash payment for lessons.
         </p>
       );
     } else if (topic == "reschedule" && this.state.reschedule) {
       return (
         <p className="answer">
-          No problem!  As soon as possible, please contact your teacher or
-          student and email us at contact@forteacademy.org to ensure billing is
-          handled appropriately.  For late cancellations (within 24 hours of
-          the scheduled lesson time) or no-shows, students will be charged $5.
+          No problem! As soon as possible, please log in to your account and cancel your lesson.
+          Alternatively, you can email us at contact@forteacademy.org to ensure billing is handled appropriately.
+          For late cancellations (within 24 hours of the scheduled lesson time) or no-shows, students will be charged $5.
         </p>
       );
     } else if (topic == "instruments" && this.state.instruments) {
@@ -171,14 +169,10 @@ class ProgramPage extends React.Component {
             Forte connects underserved youth with experienced musicians
             to provide access to affordable music lessons.
           </h3>
-          <p className="description">Forte's online platform matches eligible middle school students with
-            experienced musicians to facilitate affordable lessons, offering rates
-            less than half that of standard private instruction. Prospective students
-            and teachers apply for our program online via an application including
-            their contact information, eligibility details, musical experience and goals.
-            Based on their personal preferences and needs, Forte proposes matches among
-            accepted students and teachers with the aim of establishing weekly lessons
-            typically held at either the student or teacher's home.</p>
+          <p className="description">Forte's online platform matches eligible school students with experienced musicians to facilitate affordable lessons,
+          offering rates less than half that of standard private instruction. Prospective students and teachers apply for our program online via an application
+          including their contact information, eligibility details, musical experience and goals. Based on their personal preferences and needs, Forte proposes
+          matches among accepted students and teachers with the aim of establishing weekly lessons typically held at either the student or teacher's home.</p>
           <div className="question-container">
             <a className={`question ${this.state.teachers ? 'open' : ''}`}
                onClick={() => this.handleQuestion('teachers')}>
