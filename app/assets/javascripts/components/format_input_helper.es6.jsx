@@ -41,8 +41,6 @@ class FormatInput extends React.Component {
     var newInputKey = (e.keyCode ? e.keyCode : e.which);
     newInputValue = newInputKey - 48; // converting key code to keyboard value
     rawNum = rawNum.substring(0, cursor) + newInputValue + rawNum.substring(cursor, rawNum.length);
-    console.log(rawNum.length);
-    console.log(rawNum);
     e.preventDefault();
     return rawNum;
   }
