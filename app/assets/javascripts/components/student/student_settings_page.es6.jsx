@@ -133,13 +133,6 @@ class StudentSettingsPage extends UserSettings {
     // TODO:
   }
 
-  handleIntegerChange(event) {
-    const name = $(event.target).attr("name");
-    var value = $(event.target).val();
-    value = parseInt(value);
-    this.setState({ [name] : value });
-  }
-
   handleDatetimeChange(moment, name) {
     if (name == 'waiver_date') {
       this.setState({ waiver_date: moment });

@@ -75,9 +75,9 @@ class Header extends React.Component {
         <Navbar.Collapse>
           <Nav pullRight>
             <NavItem href={RouteConstants.staticPages.home}>HOME</NavItem>
-            <NavItem href={RouteConstants.staticPages.about}>ABOUT US</NavItem>
             <NavItem href={RouteConstants.staticPages.program}>OUR PROGRAM</NavItem>
             <NavItem href={RouteConstants.staticPages.involvement}>GET INVOLVED</NavItem>
+            <NavItem href={RouteConstants.staticPages.about}>ABOUT US</NavItem>
             {this.renderButton()}
           </Nav>
         </Navbar.Collapse>

@@ -1,4 +1,4 @@
-class Stripe::AccountsController < Stripe::BaseController 
+class Stripe::AccountsController < Stripe::BaseController
   def create_account
 
     token = params[:stripe_token]
@@ -56,5 +56,27 @@ class Stripe::AccountsController < Stripe::BaseController
     account.save
 
     render json: account, status: 201
+  end
+
+  def change_account
+    token = params[:stripe_token]
+    email = params[:email]
+
+    account = Stripe::Account.retrieve(params[:account_id])
+    account.email = email
+
+    old_bank_account = account.external_accounts.retrieve(params[:bank_id])
+
+    bank_account = account.external_accounts.create(
+      :external_account => token,
+    )
+    teacher = Teacher.find(params[:teacher_id])
+    teacher.bank_id = bank_account.id
+    bank_account.default_for_currency = true
+    bank_account.save
+    teacher.save
+    old_bank_account.delete
+    account.save
+    render json: { account: account, bank_account: bank_account }, status: 201
   end
 end

@@ -27,4 +27,20 @@ class AdminController < ApplicationController
   def teacher
     @teacher = Teacher.find params[:id]
   end
+
+  def add_admin
+    email = params[:email]
+    admin = Admin.find_by_email(email)
+    if admin.present?
+      error_response(message: "This account already exists as an admin.", status: :forbidden)
+    elsif email.nil? or !email.include? "@" or !email.include? "."
+      error_response(message: "Please enter a valid email.", status: :forbidden)
+    else 
+      Admin.create(
+        email: email,
+        password: "password"
+      )
+      render_json_message(:created)
+    end
+  end 
 end

@@ -14,6 +14,13 @@ class Api::StudentsController < Api::BaseController
            root: "instruments"
   end
 
+  def matchings
+    student = Student.find params[:id]
+    matchings = student.matchings
+    render json: matchings,
+           root: "matchings"           
+  end
+
   def update
     student = Student.find params[:id]
     if student.update_attributes student_params

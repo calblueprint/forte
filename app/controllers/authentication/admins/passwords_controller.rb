@@ -4,7 +4,7 @@ class Authentication::Admins::PasswordsController < Devise::PasswordsController
     user = Admin.find_by_email(params[:email])
     if user.present?
       @reset_password_token = user.send_reset_password_instructions
-      render_json_message(:ok)
+      render_json_message(:created)
     elsif user.nil?
       error_response(message: "The entered email address cannot be found.", status: :forbidden)
     else

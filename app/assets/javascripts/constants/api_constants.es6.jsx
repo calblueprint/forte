@@ -40,6 +40,7 @@
         upcomingLessons: (id) => `/api/students/upcoming_lessons/${id}`,
         recentLessons: (id) => `/api/students/recent_lessons/${id}`,
         instruments: (id) => `/api/students/${id}/instruments`,
+        matchings: (id) => `/api/students/${id}/matchings`,
       };
     }
 
@@ -53,6 +54,14 @@
         possibleTeachers: (id, instrument) => `/api/teachers/possible_teachers?id=${id}&instrument=${instrument}`,
         upcomingLessons: (id) => `/api/teachers/upcoming_lessons/${id}`,
         recentLessons: (id) => `/api/teachers/recent_lessons/${id}`,
+        instruments: (id) => `/api/teachers/${id}/instruments`,
+        matchings: (id) => `/api/teachers/${id}/matchings`,
+      };
+    }
+
+    get admins() {
+      return {
+        add: '/admins/add',
       };
     }
 
@@ -91,6 +100,7 @@
         updateCustomer: '/stripe/update_customer',
         createAccount: '/stripe/account',
         verifyAccount: '/stripe/verify_account',
+        changeAccount: '/stripe/change_account',
         charge: '/stripe/charge',
       }
     }

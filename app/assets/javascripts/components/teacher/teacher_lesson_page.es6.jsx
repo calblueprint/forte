@@ -12,12 +12,26 @@ class TeacherLessonsPage extends React.Component {
       filter: "upcoming",
       upcomingLessons: null,
       recentLessons: null,
+      matchings: null,
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    this.fetchMatchings();
     this.fetchUpcomingLessons();
     this.fetchRecentLessons();
+  }
+
+  fetchMatchings() {
+    const { teacherId } = this.props;
+    const route = ApiConstants.teachers.matchings(teacherId);
+    const resolve = (response) => this.setState({ matchings: response.matchings });
+    const reject = (response) => console.log(response);
+    Requester.get(
+      route,
+      resolve,
+      reject,
+    );
   }
 
   fetchUpcomingLessons() {
@@ -98,19 +112,31 @@ class TeacherLessonsPage extends React.Component {
   }
 
   render() {
-    const { filter } = this.state;
+    const { filter, matchings } = this.state;
+    const name = getCookie('name');
+
     return (
      <div className="page-wrapper">
       <UserHeader />
       <div className="lessons-page teacher-lessons-page content-wrapper">
-        <h2 className="title">
-          My Lessons
-        </h2>
-        <div className="options-container lesson-tabs">
-          {this.renderOption("upcoming")}
-          {this.renderOption("recent")}
+       {this.state.matchings && this.state.matchings.length > 0 ? (
+        <div>
+          <h2 className="title">
+            My Lessons
+          </h2>
+          <div className="options-container lesson-tabs">
+            {this.renderOption("upcoming")}
+            {this.renderOption("recent")}
+          </div>
+          {this.renderLessonCards(filter)}
         </div>
-        {this.renderLessonCards(filter)}
+      ) : (
+        <div className="empty-state-container">
+          <Glyphicon glyph="music" className="music-icon" />
+          <h3>Hi {name}! Thank you for signing up with us!</h3>
+          <h4>When Forte admins match you with suitable students, your lesson information will appear here.</h4>
+        </div>
+      )}
       </div>
     </div>
     );

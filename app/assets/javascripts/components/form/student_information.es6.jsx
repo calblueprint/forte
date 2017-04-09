@@ -211,13 +211,6 @@ class StudentInformation extends React.Component {
                 </Radio>
               </FormGroup>
               <FormGroup>
-                <ControlLabel>Explanation of Criminal Charges If Any</ControlLabel>
-                <FormControl
-                  readOnly
-                  componentClass="textarea"
-                  value={student.criminal_explanation} />
-              </FormGroup>
-              <FormGroup>
                 <ControlLabel>Signature</ControlLabel>
                 <FormControl
                   readOnly

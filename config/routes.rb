@@ -38,6 +38,8 @@ Rails.application.routes.draw do
   get 'teacher', to: redirect('teacher/lessons')
   namespace :teacher do
     get :lessons
+    get :settings
+    get :profile
   end
 
   ##################################################
@@ -76,7 +78,6 @@ Rails.application.routes.draw do
     sessions: 'authentication/teachers/sessions',
     registrations: 'authentication/teachers/registrations',
     passwords: 'authentication/teachers/passwords'
-
   }
 
   devise_for :admins, controllers: {
@@ -133,6 +134,7 @@ Rails.application.routes.draw do
     post '/charge', to: 'charges#charge_customer'
     post '/account', to: 'accounts#create_account'
     post '/verify_account', to: 'accounts#update_account'
+    post '/change_account', to: 'accounts#change_account'
   end
 
   ##################################################
@@ -171,6 +173,7 @@ Rails.application.routes.draw do
     get '/students/upcoming_lessons/:id', to: 'students#upcoming_lessons'
     get '/students/unmatched', to: 'students#unmatched'
     get '/students/:id/instruments', to: 'students#instruments'
+    get '/students/:id/matchings', to: 'students#matchings'
     post '/students/validate', to: 'students#validate'
     resources :students, only: [:index, :destroy, :show, :update]
 
@@ -182,8 +185,14 @@ Rails.application.routes.draw do
     get '/teachers/recent_lessons/:id', to: 'teachers#recent_lessons'
     get '/teachers/upcoming_lessons/:id', to: 'teachers#upcoming_lessons'
     get '/teachers/possible_teachers', to: 'teachers#possible_teachers'
+    get '/teachers/:id/instruments', to: 'teachers#instruments'
+    get '/teachers/:id/matchings', to: 'students#matchings'
     post '/teachers/validate', to: 'teachers#validate'
     resources :teachers, only: [:index, :destroy, :show, :update]
-
   end
+
+  ##################################################
+    # Admins
+  ##################################################  
+  post '/admins/add', to: 'admin#add_admin'
 end

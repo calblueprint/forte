@@ -6,7 +6,7 @@ const STUDENT_SCHOOL_LEVELS = ['Kindergarten', '1st grade', '2nd grade', '3rd gr
                       '8th grade', '9th grade', '10th grade', '11th grade',
                       '12th grade']
 
-const TEACHER_SCHOOL_LEVELS = ['High School', 'College']
+const TEACHER_SCHOOL_LEVELS = ['High School', 'College', 'Other']
 
 const STATES = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
                 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',

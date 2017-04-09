@@ -24,15 +24,26 @@ class EditableInput extends React.Component {
       case 'school_level':
         optionsArray = STUDENT_SCHOOL_LEVELS;
         break;
+      case 'teacher_school_level':
+        optionsArray = TEACHER_SCHOOL_LEVELS;
+        break;
       case 'travel_distance':
         optionsArray = TRAVEL_DISTANCES;
         break;
       case 'state':
         optionsArray = STATES;
         break;
+      case 'stripe_address_state':
+        optionsArray = STATES;
+        break;
       case 'household_number':
         optionsArray = HOUSEHOLD_NUMBER;
         j = 1;
+      case 'stripe_country':
+        for (var i = 0; i < COUNTRY_CODES.length; i++) {
+          retOptions.push(<option value={COUNTRY_CODES[i].name}>{COUNTRY_CODES[i].name}</option>);
+        }
+        return retOptions
     }
     for (; i < optionsArray.length; i++, j++) {
       retOptions.push(<option value={j}>{optionsArray[i]}</option>);
@@ -43,10 +54,11 @@ class EditableInput extends React.Component {
   render() {
     let inputVal;
     if (this.props.editable) {
-
       switch(this.props.name) {
         case "birthday":
           this.props.data = moment(this.props.data).format("MM/DD/YYYY");
+        case "phone":
+        case "reference1_phone":
         case "student_phone":
           inputVal = (
             <FormatInput
@@ -64,6 +76,9 @@ class EditableInput extends React.Component {
         case "school_level":
         case "travel_distance":
         case "state":
+        case "teacher_school_level":
+        case "stripe_country":
+        case "stripe_address_state":
           inputVal = (
             <FormControl componentClass="select"
               name={this.props.name}

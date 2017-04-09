@@ -40,6 +40,20 @@
       font-weight: 500;
     }
   }
+
+  .empty-state-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-top: 30%;
+
+    .music-icon {
+      color: $grey40;
+      font-size: 50px;
+      margin-bottom: 20px;
+    }
+  }
 }
 
 @media (max-width: 450px) {

@@ -56,7 +56,10 @@ class Profile extends React.Component {
                    id={this.props.id}
                    person={person} />
         } else {
-          view = <div>Teacher profile settings not implemented yet</div>
+          view = <TeacherSettingsPage
+                   fetchProfile={this.fetchProfile.bind(this)}
+                   id={this.props.id}
+                   person={person} />
         }
         break;
 
