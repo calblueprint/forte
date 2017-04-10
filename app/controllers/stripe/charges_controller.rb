@@ -22,6 +22,7 @@ class Stripe::ChargesController < Stripe::BaseController
     Stripe.api_key = "sk_test_oh7F8cfhKpQ4nyhc6zSuSn5M"
     amount = params[:amount]
     token = params[:stripe_token]
+    puts amount
     customer = Stripe::Customer.create(
       :source => token,
     )
