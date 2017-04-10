@@ -62,7 +62,6 @@ Rails.application.routes.draw do
     get :about
     get :terms
     get :donate
-    post :donation_notify_admin
   end
 
   ##################################################
@@ -196,4 +195,5 @@ Rails.application.routes.draw do
     # Admins
   ##################################################
   post '/admins/add', to: 'admin#add_admin'
+  post '/donation_notify_admin', to: 'static_pages#donation_notify_admin'
 end

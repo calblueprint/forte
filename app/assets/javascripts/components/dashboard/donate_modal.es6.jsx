@@ -3,8 +3,12 @@ class DonateModal extends React.Component {
   constructor() {
     super();
     this.state = {
-      showNextScreen: false,
       donation_amount: null,
+      full_name: null,
+      email: null,
+      phone_number: null,
+      message: null,
+      showNextScreen: false,
     };
   }
 
@@ -40,15 +44,15 @@ class DonateModal extends React.Component {
     }
   }
 
-  handleNext() {
-    this.setState({ showNextScreen: true });
-  }
-
   handleChange(event) {
     var name = $(event.target).attr("name");
     var value = $(event.target).val();
     console.log(value);
     this.setState({ [name] : value });
+  }
+
+  handleNext() {
+    this.setState({ showNextScreen: true });
   }
 
   handleSubmit() {
@@ -74,15 +78,26 @@ class DonateModal extends React.Component {
         );
       }
     });
-    // this.handleNext();
     this.emailAdmin();
-
-    //on Done: send email to admin with donor info
   }
 
   emailAdmin() {
-    //call donation_notify admin
-    console.log("email admin");
+    const resolve = (result) => { console.log(result) };
+    const reject = (result) => { console.log(result) };
+    var params = {
+      full_name: this.state.full_name,
+      email: this.state.email,
+      phone_number: this.state.phone_number,
+      message: this.state.message,
+    };
+
+    Requester.post(
+      ApiConstants.donations.donationNotify,
+      params,
+      resolve,
+      reject,
+    );
+    this.handleNext();
   }
 
   renderDonateModal() {
@@ -192,7 +207,7 @@ class DonateModal extends React.Component {
       <div>
         <Modal show={true} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Make Donation</Modal.Title>
+            <Modal.Title>Forte Donation</Modal.Title>
           </Modal.Header>
           {this.renderDonateModal()}
         </Modal>

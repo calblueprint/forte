@@ -110,6 +110,12 @@
         delete: (id) => `/api/instruments/${id}`,
       }
     }
+
+    get donations() {
+      return {
+        donationNotify: '/donation_notify_admin',
+      }
+    }
   }
   this.ApiConstants = new ApiConstants();
 })();
