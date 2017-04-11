@@ -25,6 +25,5 @@ class StaticPagesController < ApplicationController
 
   def donation_notify_admin
     ForteMailer.donation_notify_admin(params[:full_name], params[:email], params[:phone_number], params[:message]).deliver_now
-    # redirect_to contact_url
   end
 end

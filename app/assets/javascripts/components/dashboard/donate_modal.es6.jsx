@@ -4,11 +4,13 @@ class DonateModal extends React.Component {
     super();
     this.state = {
       donation_amount: null,
+      custom_donation_amount: null,
       full_name: null,
       email: null,
       phone_number: null,
       message: null,
       showNextScreen: false,
+      errors: {},
     };
   }
 
@@ -48,6 +50,9 @@ class DonateModal extends React.Component {
     var name = $(event.target).attr("name");
     var value = $(event.target).val();
     console.log(value);
+    if (name === "custom_donation_amount") {
+      this.setState({ donation_amount: value});
+    }
     this.setState({ [name] : value });
   }
 
@@ -59,16 +64,20 @@ class DonateModal extends React.Component {
     var state = this.state;
 
     this.stripe.createToken(this.card).then(function(result) {
+      console.log(this.state.errors);
       if (result.error) {
+        console.log("card error");
         var errorElement = document.getElementById('card-errors');
         errorElement.textContent = result.error.message;
       } else {
-        const resolve = (result) => { console.log(result) };
+        console.log("no card error");
+        const resolve = (result) => { this.emailAdmin() };
         const reject = (result) => { console.log(result) };
         var params = {
           amount: parseInt(state.donation_amount),
           stripe_token: result.token.id,
         };
+        console.log(params);
 
         Requester.post(
           ApiConstants.stripe.donationCharge,
@@ -78,7 +87,6 @@ class DonateModal extends React.Component {
         );
       }
     });
-    this.emailAdmin();
   }
 
   emailAdmin() {
@@ -100,6 +108,41 @@ class DonateModal extends React.Component {
     this.handleNext();
   }
 
+  getValidationState(name) {
+    if (this.state.errors[name]) {
+      console.log("error");
+      return 'error';
+    }
+  }
+
+  displayErrorMessage(name) {
+    if (this.state.errors[name]) {
+      return <HelpBlock className="error-message">{this.state.errors[name]}</HelpBlock>;
+    }
+  }
+
+  validateFields() {
+    console.log("validate");
+    var error_info = {};
+    if (this.state.full_name === null) {
+      error_info["full_name"] = "Full name is missing";
+    }
+    if (this.state.phone_number === null) {
+      error_info["phone_number"] = "Phone number is missing";
+    }
+    if (this.state.email === null) {
+      error_info["email"] = "Email is missing";
+    }
+    if (this.state.donation_amount === null) {
+      error_info["donation_amount"] = "Please choose a donation amount";
+    } else if (this.state.donation_amount === "other" && this.state.custom_donation_amount === null) {
+      error_info["donation_amount"] = "Please specify a donation amount";
+    }
+
+    this.setState({ errors: error_info });
+    console.log(this.state.errors);
+  }
+
   renderDonateModal() {
     const { handleClose } = this.props;
     const { showNextScreen } = this.state;
@@ -118,27 +161,35 @@ class DonateModal extends React.Component {
       return (
         <div>
           <Modal.Body>
-            <ControlLabel>Full Name</ControlLabel>
-            <FormControl
-              componentClass="input"
-              placeholder="Full Name"
-              name="full_name"
-              onChange={(event) => this.handleChange(event)}
-              />
-            <ControlLabel>Email</ControlLabel>
-            <FormControl
-              componentClass="input"
-              placeholder="Email"
-              name="email"
-              onChange={(event) => this.handleChange(event)}
-              />
-            <ControlLabel>Phone Number</ControlLabel>
-            <FormControl
-              componentClass="input"
-              placeholder="Phone Number"
-              name="phone_number"
-              onChange={(event) => this.handleChange(event)}
-              />
+            <FormGroup validationState={this.getValidationState("full_name")}>
+              <ControlLabel>Full Name</ControlLabel>
+              <FormControl
+                componentClass="input"
+                placeholder="Full Name"
+                name="full_name"
+                onChange={(event) => this.handleChange(event)}
+                />
+              {this.displayErrorMessage("full_name")}
+            </FormGroup>
+
+            <FormGroup validationState={this.getValidationState("email")}>
+              <ControlLabel>Email</ControlLabel>
+              <FormControl
+                componentClass="input"
+                placeholder="Email"
+                name="email"
+                onChange={(event) => this.handleChange(event)}
+                />
+              {this.displayErrorMessage("email")}
+            </FormGroup>
+
+            <FormatInput
+                formName        = "Phone Number"
+                inputId         = "phone_number"
+                handleChange    = { (event) => this.handleChange(event) }
+                validationState={(name) => this.getValidationState(name)}
+                displayErrors={(name) => this.displayErrorMessage(name)} />
+
             <ControlLabel>Message (optional)</ControlLabel>
             <FormControl
               componentClass="input"
@@ -146,6 +197,8 @@ class DonateModal extends React.Component {
               name="message"
               onChange={(event) => this.handleChange(event)}
               />
+
+            <FormGroup validationState={this.getValidationState("donation_amount")}>
             <ControlLabel>Donation Amount</ControlLabel>
             <Radio
               name="donation_amount"
@@ -179,10 +232,12 @@ class DonateModal extends React.Component {
                <FormControl
                 componentClass="input"
                 placeholder="Other amount"
-                name="donation_amount"
+                name="custom_donation_amount"
                 onChange={(event) => this.handleChange(event)}
                 />
             </Radio>
+            {this.displayErrorMessage("donation_amount")}
+            </FormGroup>
 
             <ControlLabel>Card Information</ControlLabel>
             <form id="payment-form">
