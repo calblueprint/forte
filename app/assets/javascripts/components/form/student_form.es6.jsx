@@ -365,11 +365,11 @@ class StudentForm extends React.Component {
   }
 
   stripeResponseHandler(status, response) {
-    const reject = (response) => { console.log(response) };
+    const reject = (response) => { this.stopLoading()};
     const resolve = ((response) => { this.createStudent(response) });
 
     if (response.error) {
-      console.log(response.error);
+      this.stopLoading();
     } else {
       var params = {
         stripe_token: response.id,
@@ -500,7 +500,7 @@ class StudentForm extends React.Component {
     };
     var resolve = (response) => {
       this.stopLoading();
-      window.location = "/"
+      window.location = RouteConstants.student.lessons;
     };
     var params = {
       student: {

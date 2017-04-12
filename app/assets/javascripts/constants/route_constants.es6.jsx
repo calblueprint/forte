@@ -24,7 +24,6 @@
 
     get student() {
       return {
-        dashboard: '/student/dashboard',
         lessons: '/student/lessons',
         profile: '/student/profile',
         settings: '/student/settings',

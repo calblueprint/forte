@@ -411,11 +411,11 @@ class TeacherForm extends React.Component {
   }
 
   stripeResponseHandler(status, response) {
-    const reject = (response) => { console.log(response) };
+    const reject = (response) => { this.stopLoading() };
     const resolve = ((response) => { this.createTeacher(response) });
 
     if (response.error) {
-      console.log(response.error);
+      this.stopLoading();
     } else {
       var params = {
         stripe_token: response.id,
@@ -544,10 +544,10 @@ class TeacherForm extends React.Component {
       stripe_address_state,
       stripe_ssn_last_4,
     } = this.state
-    const reject = (response) => { console.log(response) };
+    const reject = (response) => { this.stopLoading() };
     const resolve = ((response) => {
       this.stopLoading();
-      window.location.href = "/"
+      window.location = RouteConstants.teacher.lessons;
     });
 
     var params = {
@@ -587,7 +587,7 @@ class TeacherForm extends React.Component {
     var resolve = (response) => {
       if (teach_for_free) {
         this.stopLoading();
-        window.location.href = "/";
+        window.location = RouteConstants.teacher.lessons;
       } else {
         this.verifyStripeAccount(response);
       }
