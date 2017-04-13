@@ -59,53 +59,6 @@ class DonateModal extends React.Component {
     this.setState({ showNextScreen: true });
   }
 
-  async handleSubmit() {
-    var validated = await this.validateFields();
-    if (validated) {
-    var state = this.state;
-
-    this.stripe.createToken(this.card).then(function(result) {
-      if (result.error) {
-        var errorElement = document.getElementById('card-errors');
-        errorElement.textContent = result.error.message;
-      } else {
-        const resolve = (result) => { this.emailAdmin() };
-        const reject = (result) => { console.log(result) };
-        var params = {
-          amount: parseInt(state.donation_amount),
-          stripe_token: result.token.id,
-        };
-
-        Requester.post(
-          ApiConstants.stripe.donationCharge,
-          params,
-          resolve,
-          reject,
-        );
-      }
-    });
-  }
-  }
-
-  emailAdmin() {
-    const resolve = (result) => { console.log(result) };
-    const reject = (result) => { console.log(result) };
-    var params = {
-      full_name: this.state.full_name,
-      email: this.state.email,
-      phone_number: this.state.phone_number,
-      message: this.state.message,
-    };
-
-    Requester.post(
-      ApiConstants.donations.donationNotify,
-      params,
-      resolve,
-      reject,
-    );
-    this.handleNext();
-  }
-
   getValidationState(name) {
     if (this.state.errors[name]) {
       return 'error';
@@ -116,6 +69,35 @@ class DonateModal extends React.Component {
     if (this.state.errors[name]) {
       return <HelpBlock className="error-message">{this.state.errors[name]}</HelpBlock>;
     }
+  }
+
+  handleSubmit() {
+    // var validated = this.validateFields();
+    var state = this.state;
+    // console.log(validated);
+    // if (validated) {
+      var func = this.emailAdmin();
+      this.stripe.createToken(this.card).then(function(result) {
+        if (result.error) {
+          var errorElement = document.getElementById('card-errors');
+          errorElement.textContent = result.error.message;
+        } else {
+          const resolve = (result) => { func };
+          const reject = (result) => { console.log(result) };
+          var params = {
+            amount: parseInt(state.donation_amount),
+            stripe_token: result.token.id,
+          };
+
+          Requester.post(
+            ApiConstants.stripe.donationCharge,
+            params,
+            resolve,
+            reject,
+          );
+        }
+      });
+    // }
   }
 
   validateFields() {
@@ -137,6 +119,25 @@ class DonateModal extends React.Component {
     }
     this.setState({errors: error_info});
     return validated;
+  }
+
+  emailAdmin() {
+    const resolve = (result) => { console.log(result) };
+    const reject = (result) => { console.log(result) };
+    var params = {
+      full_name: this.state.full_name,
+      email: this.state.email,
+      phone_number: this.state.phone_number,
+      message: this.state.message,
+    };
+
+    Requester.post(
+      ApiConstants.donations.donationNotify,
+      params,
+      resolve,
+      reject,
+    );
+    // this.handleNext();
   }
 
   renderDonateModal() {
