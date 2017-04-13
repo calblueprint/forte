@@ -1,4 +1,4 @@
-class TeacherForm extends React.Component {
+class TeacherForm extends BaseUserComponent {
   constructor() {
     super();
     this.state = {
@@ -43,10 +43,11 @@ class TeacherForm extends React.Component {
       stripe_account_holder_name: null,
       stripe_account_holder_type: null,
       stripe_account_holder_dob: null,
-      stripe_address_line1: null,
-      stripe_address_city: null,
-      stripe_address_state: null,
-      stripe_address_postal_code: null,
+      stripe_address: null,
+      stripe_address2: null,
+      stripe_city: null,
+      stripe_state: null,
+      stripe_zipcode: null,
       stripe_ssn_last_4: null,
       activeInstruments: [],
       instruments: {},
@@ -58,252 +59,10 @@ class TeacherForm extends React.Component {
     }
   }
 
-  componentDidMount() {
-    // set up active instruments object
-    var activeInstruments = {}
-    const hash = window.location.hash.replace("#", "");
-
-    for (var i = 0; i < INSTRUMENTS.length; i++) {
-      let item = INSTRUMENTS[i];
-
-      if (item === hash) {
-        activeInstruments[item] = true;
-      } else {
-        activeInstruments[item] = false;
-      }
-    }
-
-    this.setState({ activeInstruments: activeInstruments });
-
-    // set up instruments fields object
-    var instruments = {}
-    for (var i = 0; i < INSTRUMENTS.length; i++) {
-      instruments[INSTRUMENTS[i]] = {
-        proficiency: null,
-        years_played: null,
-      };
-    }
-    this.setState({ instruments: instruments });
-  }
-
-  getValidationState(name) {
-    if (this.state.errors[name]) {
-      return 'error';
-    }
-  }
-
-  displayErrorMessage(name) {
-    if (this.state.errors[name]) {
-      return <HelpBlock className="error-message">{this.state.errors[name]}</HelpBlock>;
-    }
-  }
-
-  handleChange(event) {
-    var name = $(event.target).attr("name");
-    var value = $(event.target).val();
-    this.setState({ [name] : value });
-  }
-
-  handleBooleanChange(event) {
-    const name = $(event.target).attr("name");
-    var value = $(event.target).val();
-    value = (value == "true");
-    this.setState({ [name] : value });
-  }
-
-  handleCheckboxChange(event) {
-    const name = $(event.target).attr("name");
-    var value = this.state[name];
-    value = (!value);
-    this.setState({ [name] : value });
-  }
-
-  handleIntegerChange(event) {
-    const name = $(event.target).attr("name");
-    var value = $(event.target).val();
-    value = parseInt(value);
-    this.setState({ [name] : value });
-  }
-
-  handleDatetimeChange(dateTime, name) {
-     // Due to form input, birthday is not a moment but an event
-    const { errors } = this.state;
-    if (name == 'birthday') {
-      const name = $(dateTime.target).attr("name");
-      var value = $(dateTime.target).val();
-      if (value.length == 10) {
-        value = moment(value, "MM/DD/YYYY");
-        if (value.isValid()) {
-          delete errors['birthday'];
-          this.setState({ birthday: moment(value, "MM/DD/YYYY"), errors: errors });
-        }
-        else {
-          errors.birthday = "Invalid Birth Date"
-          this.setState({errors : errors });
-        }
-      }
-    // waiver date is a moment since we are using the datepicker
-    } else if (name == 'waiver_date') {
-      this.setState({ waiver_date: dateTime });
-    } else if (name == 'stripe_account_holder_dob') {
-      this.setState({ stripe_account_holder_dob: dateTime });
-    }
-  }
-
-  handleInstrumentFieldChange(event, instrument) {
-    const name = $(event.target).attr("name");
-    var value = $(event.target).val();
-    value = parseInt(value);
-    this.setState({
-      instruments: update(this.state.instruments, {[instrument]: {[name]: {$set: value}}}),
-    });
-  }
-
-  handleCountryChange(event) {
-    const name = $(event.target).attr("name");
-    var value = $(event.target).val();
-    for (var i = 0; i < COUNTRY_CODES.length; i++) {
-      if (COUNTRY_CODES[i].name == value) {
-        value = COUNTRY_CODES[i].code
-        this.setState({ [name] : value})
-        return;
-      }
-    }
-  }
-
-  handleInstrumentClick(event) {
-    const { instruments, activeInstruments } = this.state;
-    const instrument = event.target.textContent;
-    const currentState = activeInstruments[instrument];
-    this.setState({
-      activeInstruments: update(this.state.activeInstruments, {[instrument]: {$set: !currentState}}),
-    });
-  }
-
-  handleAddressChange(event) {
-
-    function fillInAddress() {
-      var componentForm = {
-        street_number: 'short_name',
-        route: 'long_name',
-        locality: 'long_name',
-        administrative_area_level_1: 'short_name',
-        postal_code: 'short_name'
-      };
-
-      var place = autocomplete.getPlace();
-      var lat = place["geometry"]["location"]["lat"]();
-      var lng = place["geometry"]["location"]["lng"]();
-      this.setState({ lat: lat, lng: lng });
-
-      // Get each component of the address from the place details
-      // and fill the corresponding field on the form.
-      var street_number, street_name;
-      for (var i = 0; i < place.address_components.length; i++) {
-        var addressType = place.address_components[i].types[0];
-        if (componentForm[addressType]) {
-          var val = place.address_components[i][componentForm[addressType]];
-          switch(addressType) {
-            case "administrative_area_level_1":
-              val = STATES.indexOf(val);
-              document.getElementById(addressType).value = val;
-              this.setState({ state: val });
-              break;
-            case "street_number":
-              street_number = val;
-              break;
-            case "route":
-              street_name = val;
-              break;
-            case "locality":
-              document.getElementById(addressType).value = val;
-              this.setState({ city: val });
-              break;
-            case "postal_code":
-              document.getElementById(addressType).value = val;
-              this.setState({ zipcode: val });
-              break;
-          }
-        }
-      }
-      if (street_number && street_name) {
-        val = street_number + " " + street_name;
-        document.getElementById("address").value = val;
-        this.setState({ address: val });
-      }
-    }
-
-    var autocomplete = new google.maps.places.Autocomplete(document.getElementById("address"));
-    this.geolocate(autocomplete);
-    autocomplete.addListener("place_changed", fillInAddress.bind(this));
-    this.handleChange(event);
-  }
-
-  // Bias the autocomplete object to the user's geographical location,
-  // as supplied by the browser's 'navigator.geolocation' object.
-  geolocate(autocomplete) {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        var geolocation = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        var circle = new google.maps.Circle({
-          center: geolocation,
-          radius: position.coords.accuracy
-        });
-        autocomplete.setBounds(circle.getBounds());
-      });
-    }
-  }
-
-  openWaiver() {
-    this.setState({ showWaiverModal: true });
-  }
-
-  closeWaiver() {
-    this.setState({ showWaiverModal: false });
-  }
-
-  stopLoading() {
-    this.setState({ loading : false });
-  }
-
-  setAvailability() {
-    const { calendar } = this.refs.availability.refs
-    //TODO: not ideal way to do this.. figure out some other way
-    var eventArray = $(calendar).fullCalendar('clientEvents');
-    var availabilityArray = []
-    for (var i = 0; i < eventArray.length; i++) {
-      availabilityArray = availabilityArray.concat(range_to_array(eventArray[i]['start'], eventArray[i]['end']));
-    }
-    this.setState({
-      availability: availabilityArray,
-      loading: true
-    })
-  }
-
-  setInstruments() {
-    const { instruments, activeInstruments } = this.state;
-    var instrumentsObj = [];
-    for (let [instrumentName, active] of Object.entries(activeInstruments)) {
-      if (active == true) {
-        var instrument = Object.assign({}, {name: instrumentName}, instruments[instrumentName]);
-        instrumentsObj.push(instrument);
-      }
-    }
-    this.setState({ instruments_attributes: instrumentsObj });
-  }
-
   /* Back-end Validtions for Teacher Fields */
   validateTeacherFields() {
-
-    var reject = (response) => {
-      this.createStripeAccount(response);
-    }
-    var resolve = (response) => {
-      this.createStripeAccount({});
-    };
+    var reject = (response) => { this.validateAddress(response) };
+    var resolve = (response) => { this.validateAddress({}) };
 
     var params = {
       teacher: {
@@ -346,22 +105,6 @@ class TeacherForm extends React.Component {
       }
     };
 
-    if (!this.state.lat && !this.state.lng) {
-      const { address, address_apt, city, state, zipcode } = this.state;
-      var geocoder = new google.maps.Geocoder();
-      var full_address = [address, address_apt, city, state, zipcode].join(" ");
-      geocoder.geocode({"address": full_address}, function(results, status) {
-        if (status === 'OK') {
-          var location = results[0]["geometry"]["location"];
-          var lat = location["lat"]();
-          var lng = location["lng"]();
-          this.setState({ lat: lat, lng: lng });
-        } else {
-          console.log('Geocode was not successful for the following reason: ' + status);
-        }
-      }.bind(this));
-    }
-
     Requester.post(
       ApiConstants.teachers.validate,
       params,
@@ -370,7 +113,7 @@ class TeacherForm extends React.Component {
     );
   }
 
-  async createStripeAccount(teacher_errs) {
+  async createStripeUser(teacher_errs, address_errors) {
     const {
       stripe_country,
       stripe_routing_number,
@@ -381,7 +124,7 @@ class TeacherForm extends React.Component {
     } = this.state;
 
     if (!teach_for_free) {
-      var validate_stripe_response = await this.validateTeacherAndStripeCustomer(stripe_routing_number, stripe_account_number, stripe_country, teacher_errs);
+      var validate_stripe_response = await this.validateUserAndStripeCustomer(teacher_errs, address_errors);
 
       // Only create customer if stripe validations pass - do not create token if there are stripe errors
       if (validate_stripe_response) {
@@ -398,11 +141,13 @@ class TeacherForm extends React.Component {
         this.stopLoading();
       }
     } else {
-      var teacher_instrument_errs = await this.validateTeacherAndInstruments(teacher_errs);
-
-      if (!(Object.keys(teacher_instrument_errs).length === 0)) {
+      var instrument_errs = await this.validateInstruments();
+      if (!(Object.keys(instrument_errs).length === 0) ||
+          !(Object.keys(address_errors).length === 0) ||
+          !(Object.keys(teacher_errs).length === 0)) {
         toastr.error("There are errors with your form! <br> Please correct them before continuing!");
-        this.setState({ errors: teacher_instrument_errs });
+        var error_info = Object.assign({}, teacher_errs, address_errors, instrument_errs);
+        this.setState({ errors: error_info });
         this.stopLoading();
       } else {
         this.createTeacher();
@@ -431,79 +176,14 @@ class TeacherForm extends React.Component {
     }
   }
 
-  async validateTeacherAndInstruments(teacher_errs) {
-    var error_info = {};
-    // var validated = true;
-
-    var instrument_errors = await this.validateInstruments();
-    // if (!(Object.keys(teacher_errs).length === 0) || !(Object.keys(instrument_errors).length === 0)) {
-    //   validated = false;
-    // }
-
-    error_info = Object.assign(error_info, teacher_errs, instrument_errors);
-    // this.setState({ errors: error_info });
-    return error_info;
-  }
-
-  /**
-   * Sets the state of errors to be the errored fields returned from stripeValidateFields
-   * @param stripe_routing_number
-   * @param stripe_account_number
-   * @param stripe_country
-   * @param teacher_errs
-   */
-  async validateTeacherAndStripeCustomer(stripe_routing_number, stripe_account_number, stripe_country, teacher_errs) {
-
-    var payment_errs = await this.stripeValidateFields(stripe_routing_number, stripe_account_number, stripe_country);
-    var teacher_instrument_errs = await this.validateTeacherAndInstruments(teacher_errs);
-
-    var error_info = {};
-    var validated = true;
-    for (var err_type in payment_errs) {
-      //TODO: Find JS function to identify false values instead
-      if (!payment_errs[err_type][0]) {
-        validated = false;
-        error_info[err_type] = payment_errs[err_type][1];
-      }
-    }
-    if (!(Object.keys(teacher_instrument_errs).length === 0)) {
-      validated = false;
-    }
-    error_info = Object.assign(error_info, teacher_instrument_errs);
-    this.setState({ errors: error_info });
-    return validated;
-  }
-
-  /**
-   * Front-end validation for instrument_attributes field
-   */
-  validateInstruments() {
-    const {
-      instruments_attributes,
-    } = this.state;
-
-    var errors = {};
-
-    if (!(instruments_attributes.length)) {
-      errors.instruments = "Can't Be Blank";
-    } else {
-      for (var i = 0; i < instruments_attributes.length; i++) {
-        if ((instruments_attributes[i]['name'] == null) || (instruments_attributes[i]['proficiency'] == null) ||
-          (instruments_attributes[i]['years_played'] == null)) {
-            errors.instruments = "Can't Be Blank";
-        }
-      }
-    }
-    return errors;
-  }
-
   /**
    * Calls Stripe validations on the inputted payment information
    * @param stripe_routing_number
    * @param stripe_account_number
    * @param stripe_country
    */
-  stripeValidateFields(stripe_routing_number, stripe_account_number, stripe_country) {
+  stripeValidateFields() {
+    const { stripe_routing_number, stripe_account_number, stripe_country } = this.state;
 
     var routing_num_err = Stripe.bankAccount.validateRoutingNumber(stripe_routing_number, stripe_country);
     var account_num_err = Stripe.bankAccount.validateAccountNumber(stripe_account_number, stripe_country);
@@ -521,10 +201,10 @@ class TeacherForm extends React.Component {
     payment_errs.stripe_account_holder_name = [this.state.stripe_account_holder_name, "Can't be blank"];
     payment_errs.stripe_account_holder_type = [this.state.stripe_account_holder_type, "Can't be blank"];
     payment_errs.stripe_account_holder_dob = [this.state.stripe_account_holder_dob, "Can't be blank"];
-    payment_errs.stripe_address_line1 = [this.state.stripe_address_line1, "Can't be blank"];
-    payment_errs.stripe_address_city = [this.state.stripe_address_city, "Can't be blank"];
-    payment_errs.stripe_address_state = [this.state.stripe_address_state, "Can't be blank"];
-    payment_errs.stripe_address_postal_code = [this.state.stripe_address_postal_code, "Can't be blank"];
+    payment_errs.stripe_address = [this.state.stripe_address, "Can't be blank"];
+    payment_errs.stripe_city = [this.state.stripe_city, "Can't be blank"];
+    payment_errs.stripe_state = [this.state.stripe_state, "Can't be blank"];
+    payment_errs.stripe_zipcode = [this.state.stripe_zipcode, "Can't be blank"];
     payment_errs.stripe_ssn_last_4 = [this.state.stripe_ssn_last_4, "Can't be blank"];
     payment_errs.stripe_country = [this.state.stripe_country, "Can't be blank"];
     payment_errs.stripe_routing_number = [routing_num_err, routing_num_err_msg];
@@ -538,10 +218,10 @@ class TeacherForm extends React.Component {
       stripe_account_holder_type,
       waiver_date,
       stripe_account_holder_dob,
-      stripe_address_line1,
-      stripe_address_city,
-      stripe_address_postal_code,
-      stripe_address_state,
+      stripe_address,
+      stripe_city,
+      stripe_zipcode,
+      stripe_state,
       stripe_ssn_last_4,
     } = this.state
     const reject = (response) => { this.stopLoading() };
@@ -561,10 +241,10 @@ class TeacherForm extends React.Component {
       tos_acceptance_date: waiver_date.unix(),
       tos_acceptance_ip: teacher.sign_up_ip,
       account_id: teacher.account_id,
-      address_city: stripe_address_city,
-      address_line_1: stripe_address_line1,
-      address_postal_code: stripe_address_postal_code,
-      address_state: stripe_address_state,
+      address_city: stripe_city,
+      address_line_1: stripe_address,
+      address_postal_code: stripe_zipcode,
+      address_state: stripe_state,
       ssn_last_4: stripe_ssn_last_4,
     };
 
@@ -656,99 +336,6 @@ class TeacherForm extends React.Component {
     await this.validateTeacherFields();
   }
 
-  renderOptions(type) {
-    var optionsArray = []
-    var retOptions = []
-    switch(type) {
-      case 'gender':
-        optionsArray = GENDERS;
-        break;
-      case 'school_level':
-        optionsArray = TEACHER_SCHOOL_LEVELS;
-        break;
-      case 'state':
-        optionsArray = STATES;
-        break;
-      case 'travel_distance':
-        optionsArray = TRAVEL_DISTANCES;
-        break;
-      case 'proficiency':
-        optionsArray = PROFICIENCY;
-        break;
-      case 'years_played':
-        optionsArray = YEARS_PLAYED;
-        break;
-      case 'account_holder_type':
-        for (var i = 0; i < ACCOUNT_HOLDER_TYPE.length; i++) {
-          retOptions.push(<option value={ACCOUNT_HOLDER_TYPE[i]}>{ACCOUNT_HOLDER_TYPE[i]}</option>);
-        }
-        return retOptions
-      case 'country':
-        for (var i = 0; i < COUNTRY_CODES.length; i++) {
-          retOptions.push(<option value={COUNTRY_CODES[i].name}>{COUNTRY_CODES[i].name}</option>);
-        }
-        return retOptions
-    }
-    for (var i = 0; i < optionsArray.length; i++) {
-      retOptions.push(<option value={i}>{optionsArray[i]}</option>);
-    }
-    return retOptions;
-  }
-
-  renderInstrumentButtons() {
-    const { activeInstruments } = this.state
-    var buttons = []
-    for (var i = 0; i < INSTRUMENTS.length; i++) {
-      var instrument = INSTRUMENTS[i]
-      var className = activeInstruments[instrument] ? 'button button--static-clicked button--sm':'button button--static button--sm';
-      buttons.push(<div className={className} onClick={(event) =>
-        this.handleInstrumentClick(event)}>{INSTRUMENTS[i]}</div>);
-    }
-    return buttons;
-  }
-
-  renderInstrumentFields(instrument) {
-    return (
-      <div key={instrument}>
-        <h4 className="instrument-title">{instrument}</h4>
-        <div className="form-row">
-          <FormGroup>
-            <ControlLabel>Proficiency</ControlLabel>
-            <FormControl
-              componentClass="select"
-              name="proficiency"
-              onChange={(event) => this.handleInstrumentFieldChange(event, instrument)}>
-              <option value="" disabled selected>Select a value</option>
-              {this.renderOptions('proficiency')}
-            </FormControl>
-          </FormGroup>
-
-          <FormGroup>
-            <ControlLabel>Years Played</ControlLabel>
-            <FormControl
-              componentClass="select"
-              name="years_played"
-              onChange={(event) => this.handleInstrumentFieldChange(event, instrument)}>
-              <option value="" disabled selected>Select a value</option>
-                {this.renderOptions('years_played')}
-            </FormControl>
-          </FormGroup>
-        </div>
-      </div>
-    );
-  }
-
-  renderInstrumentsFields() {
-    var instrumentsFields = []
-    const { activeInstruments } = this.state
-    for (var i = 0; i < INSTRUMENTS.length; i++) {
-      if (activeInstruments[INSTRUMENTS[i]] == true) {
-        instrumentsFields.push(this.renderInstrumentFields(INSTRUMENTS[i]));
-      }
-    }
-    return instrumentsFields;
-  }
-
   renderWaiverModal() {
     const { showWaiverModal, teach_for_free } = this.state;
     if (showWaiverModal == true) {
@@ -812,47 +399,17 @@ class TeacherForm extends React.Component {
                   {this.displayErrorMessage("stripe_account_number")}
               </FormGroup>
             </div>
-            <FormGroup validationState={this.getValidationState("stripe_address_line1")}>
-              <ControlLabel>Address</ControlLabel>
-              <FormControl
-                componentClass="input"
-                placeholder="Enter Address Associated with Banking Account"
-                name="stripe_address_line1"
-                onChange={(event) => this.handleChange(event)}/>
-                {this.displayErrorMessage("stripe_address_line1")}
-            </FormGroup>
+            
+            <AddressForm
+              getValidationState={this.getValidationState.bind(this)}
+              displayErrorMessage={this.displayErrorMessage.bind(this)}
+              renderOptions={this.renderOptions.bind(this)}
+              handleIntegerChange={this.handleIntegerChange.bind(this)}
+              setState={this.setState.bind(this)}
+              handleChange={this.handleChange.bind(this)}
+              is_stripe_address={true} /> 
+
             <div className="form-row">
-              <FormGroup validationState={this.getValidationState("stripe_address_city")}>
-                <ControlLabel>City</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  placeholder="Enter City"
-                  name="stripe_address_city"
-                  onChange={(event) => this.handleChange(event)}/>
-                  {this.displayErrorMessage("stripe_address_city")}
-              </FormGroup>
-              <FormGroup validationState={this.getValidationState("stripe_address_postal_code")}>
-                <ControlLabel>Postal Code</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  placeholder="Enter Postal Code"
-                  name="stripe_address_postal_code"
-                  onChange={(event) => this.handleChange(event)}/>
-                  {this.displayErrorMessage("stripe_address_postal_code")}
-              </FormGroup>
-            </div>
-            <div className="form-row">
-              <FormGroup validationState={this.getValidationState("stripe_address_state")}>
-                <ControlLabel>Address State</ControlLabel>
-                <FormControl
-                  componentClass="select"
-                  name="stripe_address_state"
-                  onChange={(event) => this.handleChange(event)}>
-                  <option value="" disabled selected>Select your state</option>
-                  {this.renderOptions('state')}
-                </FormControl>
-                {this.displayErrorMessage("stripe_address_state")}
-              </FormGroup>
               <FormGroup validationState={this.getValidationState("stripe_ssn_last_4")}>
                 <ControlLabel>Last 4 Digits of SSN</ControlLabel>
                 <FormControl
@@ -959,7 +516,7 @@ class TeacherForm extends React.Component {
                   name="school_level"
                   onChange={(event) => this.handleIntegerChange(event)}>
                   <option value="" disabled selected>Select your class level</option>
-                  {this.renderOptions('school_level')}
+                  {this.renderOptions('teacher_school_level')}
                 </FormControl>
                 {this.displayErrorMessage("school_level")}
               </FormGroup>
@@ -1005,63 +562,15 @@ class TeacherForm extends React.Component {
                 validationState = { (name) => this.getValidationState(name) }
                 displayErrors   = { (name) => this.displayErrorMessage(name) } />
 
-              <FormGroup validationState={this.getValidationState("address")}>
-                <ControlLabel>Address</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  placeholder="Address"
-                  name="address"
-                  id="address"
-                  onChange={(event) => this.handleAddressChange(event)} />
-                {this.displayErrorMessage("address")}
-              </FormGroup>
+              <AddressForm
+                getValidationState={this.getValidationState.bind(this)}
+                displayErrorMessage={this.displayErrorMessage.bind(this)}
+                renderOptions={this.renderOptions.bind(this)}
+                handleIntegerChange={this.handleIntegerChange.bind(this)}
+                setState={this.setState.bind(this)}
+                handleChange={this.handleChange.bind(this)}
+                is_stripe_address={false} /> 
 
-              <FormGroup validationState={this.getValidationState("address2")}>
-                <ControlLabel>Address Line 2 (optional)</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  placeholder="Address Line 2"
-                  name="address2"
-                  onChange={(event) => this.handleChange(event)}/>
-                {this.displayErrorMessage("address2")}
-              </FormGroup>
-
-              <div className="form-row">
-                <FormGroup validationState={this.getValidationState("city")}>
-                  <ControlLabel>City</ControlLabel>
-                  <FormControl
-                    componentClass="input"
-                    placeholder="City"
-                    name="city"
-                    id="locality"
-                    onChange={(event) => this.handleChange(event)}/>
-                  {this.displayErrorMessage("city")}
-                </FormGroup>
-
-                <FormGroup validationState={this.getValidationState("state")}>
-                  <ControlLabel>State</ControlLabel>
-                  <FormControl
-                    componentClass="select"
-                    name="state"
-                    id="administrative_area_level_1"
-                    onChange={(event) => this.handleIntegerChange(event)}>
-                    <option value="" disabled selected>Select your state</option>
-                    {this.renderOptions('state')}
-                  </FormControl>
-                {this.displayErrorMessage("state")}
-                </FormGroup>
-
-                <FormGroup validationState={this.getValidationState("zipcode")}>
-                  <ControlLabel>Zip Code</ControlLabel>
-                  <FormControl
-                    componentClass="input"
-                    placeholder="Zip Code"
-                    name="zipcode"
-                    id="postal_code"
-                    onChange={(event) => this.handleChange(event)}/>
-                  {this.displayErrorMessage("zipcode")}
-                </FormGroup>
-              </div>
               <FormGroup validationState={this.getValidationState("teach_for_free")}>
                 <ControlLabel>Teach for Free</ControlLabel>
                   <Checkbox
@@ -1249,7 +758,7 @@ class TeacherForm extends React.Component {
 
                 <FormatInput
                   formName        = "Phone"
-                  inputId         = "reference_phone"
+                  inputId         = "reference1_phone"
                   handleChange    = { (event) => this.handleChange(event) }
                   validationState = { (name) => this.getValidationState(name) }
                   displayErrors   = { (name) => this.displayErrorMessage(name) } />
