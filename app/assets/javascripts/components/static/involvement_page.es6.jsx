@@ -35,6 +35,11 @@ class InvolvementPage extends React.Component {
         optionDescription = 'Support Forte in our mission to change the lives of underserved youth musicians.';
         buttonText = 'Donate Now';
         url = url = RouteConstants.staticPages.donate;
+        imgSize = (
+          <div className="option-icon">
+            <img src={optionIcon} href="#" />
+          </div>
+        );
         break;
     }
 

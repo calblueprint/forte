@@ -49,7 +49,6 @@ class DonateModal extends React.Component {
   handleChange(event) {
     var name = $(event.target).attr("name");
     var value = $(event.target).val();
-    console.log(value);
     if (name === "custom_donation_amount") {
       this.setState({ donation_amount: value});
     }
@@ -60,24 +59,22 @@ class DonateModal extends React.Component {
     this.setState({ showNextScreen: true });
   }
 
-  handleSubmit() {
+  async handleSubmit() {
+    var validated = await this.validateFields();
+    if (validated) {
     var state = this.state;
 
     this.stripe.createToken(this.card).then(function(result) {
-      console.log(this.state.errors);
       if (result.error) {
-        console.log("card error");
         var errorElement = document.getElementById('card-errors');
         errorElement.textContent = result.error.message;
       } else {
-        console.log("no card error");
         const resolve = (result) => { this.emailAdmin() };
         const reject = (result) => { console.log(result) };
         var params = {
           amount: parseInt(state.donation_amount),
           stripe_token: result.token.id,
         };
-        console.log(params);
 
         Requester.post(
           ApiConstants.stripe.donationCharge,
@@ -87,6 +84,7 @@ class DonateModal extends React.Component {
         );
       }
     });
+  }
   }
 
   emailAdmin() {
@@ -110,7 +108,6 @@ class DonateModal extends React.Component {
 
   getValidationState(name) {
     if (this.state.errors[name]) {
-      console.log("error");
       return 'error';
     }
   }
@@ -122,25 +119,24 @@ class DonateModal extends React.Component {
   }
 
   validateFields() {
-    console.log("validate");
-    var error_info = {};
-    if (this.state.full_name === null) {
-      error_info["full_name"] = "Full name is missing";
-    }
-    if (this.state.phone_number === null) {
-      error_info["phone_number"] = "Phone number is missing";
-    }
-    if (this.state.email === null) {
-      error_info["email"] = "Email is missing";
-    }
-    if (this.state.donation_amount === null) {
-      error_info["donation_amount"] = "Please choose a donation amount";
-    } else if (this.state.donation_amount === "other" && this.state.custom_donation_amount === null) {
-      error_info["donation_amount"] = "Please specify a donation amount";
-    }
+    var errs = {};
 
-    this.setState({ errors: error_info });
-    console.log(this.state.errors);
+    errs.full_name = [this.state.full_name, "Full name is missing"];
+    errs.phone_number = [this.state.phone_number, "Phone number is missing"];
+    errs.email = [this.state.email, "Email is missing"];
+    errs.donation_amount = [this.state.donation_amount, "Donation amount is missing"];
+
+    this.setState({ errors: errs });
+    var validated = true;
+    var error_info = {};
+    for (var err_type in errs) {
+      if (!errs[err_type][0]) {
+        validated = false;
+        error_info[err_type] = errs[err_type][1];
+      }
+    }
+    this.setState({errors: error_info});
+    return validated;
   }
 
   renderDonateModal() {
