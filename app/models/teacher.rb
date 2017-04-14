@@ -89,7 +89,7 @@ class Teacher < ActiveRecord::Base
   validates :reference1_first_name, presence: true
   validates :reference1_last_name, presence: true
   validates :reference1_relation, presence: true
-  validates :reference1_email, presence: true
+  validates_format_of :reference1_email, :with => Devise::email_regexp
   validates :reference1_phone, presence: true
   validates :criminal_charges, :inclusion => { :in => [true, false] }
   validates :youth_participation, :inclusion => { :in => [true, false] }

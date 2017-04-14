@@ -501,7 +501,7 @@ class StudentForm extends BaseUserComponent {
                 <ControlLabel>Location Preference</ControlLabel>
                   <Checkbox
                     name="location_preference"
-                    onChange={(event) => this.handleBooleanChange(event)}>
+                    onChange={(event) => this.handleCheckboxChange(event)}>
                     I am willing to host lessons at my home.
                   </Checkbox>
                 {this.displayErrorMessage("location_preference")}
@@ -575,13 +575,13 @@ class StudentForm extends BaseUserComponent {
                 guilty to a crime (other than minor traffic offences)?</ControlLabel>
                 <Radio
                   name="criminal_charges"
-                  value={Boolean("true")}
+                  value={true}
                   onChange={(event) => this.handleBooleanChange(event)}>
                   Yes
                 </Radio>
                 <Radio
                   name="criminal_charges"
-                  value={Boolean("false")}
+                  value={false}
                   onChange={(event) => this.handleBooleanChange(event)}>
                   No
                 </Radio>
@@ -643,7 +643,7 @@ class StudentForm extends BaseUserComponent {
                     {this.displayErrorMessage("cvc")}
                 </FormGroup>
               </div>
-              
+
               <AddressForm
                 getValidationState={this.getValidationState.bind(this)}
                 displayErrorMessage={this.displayErrorMessage.bind(this)}
