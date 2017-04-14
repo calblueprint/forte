@@ -160,6 +160,7 @@ class DonateModal extends React.Component {
       return (
         <div>
           <Modal.Body>
+          <div className="form-row">
             <FormGroup>
               <ControlLabel>Full Name</ControlLabel>
               <FormControl
@@ -179,7 +180,9 @@ class DonateModal extends React.Component {
                 onChange={(event) => this.handleChange(event)}
                 />
             </FormGroup>
+          </div>
 
+          <div className="form-row">
             <FormatInput
                 formName        = "Phone Number"
                 inputId         = "phone_number"
@@ -196,6 +199,7 @@ class DonateModal extends React.Component {
                 onChange={(event) => this.handleChange(event)}
                 />
             </FormGroup>
+          </div>
 
             <FormGroup>
               <ControlLabel>Donation Amount</ControlLabel>
@@ -246,7 +250,6 @@ class DonateModal extends React.Component {
               <Button onClick={() => this.handleSubmit()} className="button button--solid-orange">Confirm Payment</Button>
             </Modal.Footer>
             </form>
-
           </Modal.Body>
         </div>
       );
