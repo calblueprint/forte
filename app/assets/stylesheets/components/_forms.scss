@@ -30,6 +30,7 @@ $form-control-bottom-margin : 30px;
 
 .blank::after {
   content: "Can't be blank";
+  font-weight: bold;
 }
 
 .blank {

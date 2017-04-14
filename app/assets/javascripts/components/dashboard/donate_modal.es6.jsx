@@ -9,7 +9,6 @@ class DonateModal extends React.Component {
       email: null,
       phone_number: null,
       message: null,
-      errors: {},
     };
   }
 
@@ -54,18 +53,6 @@ class DonateModal extends React.Component {
     this.setState({ [name] : value });
   }
 
-  getValidationState(name) {
-    if (this.state.errors[name]) {
-      return 'error';
-    }
-  }
-
-  displayErrorMessage(name) {
-    if (this.state.errors[name]) {
-      return <HelpBlock className="error-message">{this.state.errors[name]}</HelpBlock>;
-    }
-  }
-
   addRedBorder(input) {
     input.parentNode.classList.add("blank");
     input.classList.add("red-border");
@@ -83,18 +70,18 @@ class DonateModal extends React.Component {
   handleSubmit() {
     var validated = this.validateFields();
     if (validated) {
-      this.stripeCharge(); //create strip token
+      this.stripe.createToken(this.card).then(this.createCharge.bind(this));
     }
   }
 
-  helper(result) {
+  createCharge(result) {
     var state = this.state;
      if (result.error) {
       var errorElement = document.getElementById('card-errors');
       errorElement.textContent = result.error.message;
     } else {
       const resolve = (result) => { this.emailAdmin() };
-      const reject = (result) => { console.log("reject") };
+      const reject = (result) => { console.log(result) };
       var params = {
         amount: parseInt(state.donation_amount),
         stripe_token: result.token.id,
@@ -109,21 +96,27 @@ class DonateModal extends React.Component {
     }
   }
 
-  stripeCharge() {
-    this.stripe.createToken(this.card).then(this.helper.bind(this));
-  }
-
   validateFields() {
     var validated = true;
     var keys = Object.keys(this.state);
     for (key of keys) {
-      if (!this.state[key] && key != "message" && key != "showNextScreen") { //fix the radio button error placement
-        validated = false;
-        this.addRedBorder(document.getElementsByName(key)[0]);
+      if (!this.state[key] || (this.state[key] === "other" && key === "donation_amount")) {
+        if (key != "message" && key != "showNextScreen") {
+          validated = false;
+          if (key === "donation_amount") {
+            this.addRedBorder(document.getElementsByName(key)[4]);
+          } else {
+            this.addRedBorder(document.getElementsByName(key)[0]);
+          }
+        }
       } else {
         if (document.getElementsByName(key).length) {
           validated = true;
-          this.removeRedBorder(document.getElementsByName(key)[0]);
+          if (key === "donation_amount") {
+            this.removeRedBorder(document.getElementsByName(key)[4]);
+          } else {
+            this.removeRedBorder(document.getElementsByName(key)[0]);
+          }
         }
       }
     }
@@ -167,7 +160,7 @@ class DonateModal extends React.Component {
       return (
         <div>
           <Modal.Body>
-            <FormGroup validationState={this.getValidationState("full_name")}>
+            <FormGroup>
               <ControlLabel>Full Name</ControlLabel>
               <FormControl
                 componentClass="input"
@@ -175,10 +168,9 @@ class DonateModal extends React.Component {
                 name="full_name"
                 onChange={(event) => this.handleChange(event)}
                 />
-              {this.displayErrorMessage("full_name")}
             </FormGroup>
 
-            <FormGroup validationState={this.getValidationState("email")}>
+            <FormGroup>
               <ControlLabel>Email</ControlLabel>
               <FormControl
                 componentClass="input"
@@ -186,63 +178,63 @@ class DonateModal extends React.Component {
                 name="email"
                 onChange={(event) => this.handleChange(event)}
                 />
-              {this.displayErrorMessage("email")}
             </FormGroup>
 
             <FormatInput
                 formName        = "Phone Number"
                 inputId         = "phone_number"
                 handleChange    = { (event) => this.handleChange(event) }
-                validationState={(name) => this.getValidationState(name)}
-                displayErrors={(name) => this.displayErrorMessage(name)} />
+                validationState = { () => {} }
+                displayErrors   = { () => {} } />
 
-            <ControlLabel>Message (optional)</ControlLabel>
-            <FormControl
-              componentClass="input"
-              placeholder="Message (optional)"
-              name="message"
-              onChange={(event) => this.handleChange(event)}
-              />
-
-            <FormGroup validationState={this.getValidationState("donation_amount")}>
-            <ControlLabel>Donation Amount</ControlLabel>
-            <Radio
-              name="donation_amount"
-              value={10}
-              onChange={(event) => this.handleChange(event)}>
-              $10.00 (Mezzoforte)
-            </Radio>
-            <Radio
-              name="donation_amount"
-              value={25}
-              onChange={(event) => this.handleChange(event)}>
-              $25.00 (Forte)
-            </Radio>
-            <Radio
-              name="donation_amount"
-              value={50}
-              onChange={(event) => this.handleChange(event)}>
-               $50.00 (Fortissimo)
-            </Radio>
-            <Radio
-              name="donation_amount"
-              value={100}
-              onChange={(event) => this.handleChange(event)}>
-               $100.00 (Fortississimo)
-            </Radio>
-            <Radio
-              name="donation_amount"
-              value={"other"}
-              onChange={(event) => this.handleChange(event)}>
-               Other
-               <FormControl
+            <FormGroup>
+              <ControlLabel>Message (optional)</ControlLabel>
+              <FormControl
                 componentClass="input"
-                placeholder="Other amount"
-                name="donation_amount"
+                placeholder="Message (optional)"
+                name="message"
                 onChange={(event) => this.handleChange(event)}
                 />
-            </Radio>
-            {this.displayErrorMessage("donation_amount")}
+            </FormGroup>
+
+            <FormGroup>
+              <ControlLabel>Donation Amount</ControlLabel>
+              <Radio
+                name="donation_amount"
+                value={10}
+                onChange={(event) => this.handleChange(event)}>
+                $10.00 (Mezzoforte)
+              </Radio>
+              <Radio
+                name="donation_amount"
+                value={25}
+                onChange={(event) => this.handleChange(event)}>
+                $25.00 (Forte)
+              </Radio>
+              <Radio
+                name="donation_amount"
+                value={50}
+                onChange={(event) => this.handleChange(event)}>
+                 $50.00 (Fortissimo)
+              </Radio>
+              <Radio
+                name="donation_amount"
+                value={100}
+                onChange={(event) => this.handleChange(event)}>
+                 $100.00 (Fortississimo)
+              </Radio>
+              <Radio
+                name="donation_amount"
+                value={"other"}
+                onChange={(event) => this.handleChange(event)}>
+                 Other
+                 <FormControl
+                  componentClass="input"
+                  placeholder="Other amount"
+                  name="donation_amount"
+                  onChange={(event) => this.handleChange(event)}
+                  />
+              </Radio>
             </FormGroup>
 
             <ControlLabel>Card Information</ControlLabel>
