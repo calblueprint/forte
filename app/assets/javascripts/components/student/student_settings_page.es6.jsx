@@ -28,6 +28,7 @@ class StudentSettingsPage extends UserSettings {
       removeModalIsVisible: false,
       person: person,
       id: this.props.id,
+      errors: this.props.errors,
     }
   }
 
@@ -208,14 +209,15 @@ class StudentSettingsPage extends UserSettings {
                             handleChange={this.handleChange.bind(this)}
                             attemptSave={this.attemptCardSave.bind(this)}
                             fetchProfile={this.fetchProfile.bind(this)}>
-          <EditableInput label="Card Number" name="card_number" data={s.card_number} />
-          <EditableInput label="CVC" name="cvc" data={s.cvc} />
-          <EditableInput label="Expiration Month" name="exp_month" data={s.exp_month} />
-          <EditableInput label="Expiration Year" name="exp_year" data={s.exp_year} />
-          <EditableInput label="Address 1" name="stripe_address_line1" data={s.stripe_address_line1} />
-          <EditableInput label="Address 2" name="stripe_address_line2" data={s.stripe_address_line2} />
-          <EditableInput label="City" name="stripe_address_city" data={s.stripe_address_city} />
-          <EditableInput label="ZIP" name="stripe_address_zip" data={s.stripe_address_zip} />
+          <h5 className="profile-edit-note">Note: You will need to fill out all the fields</h5>
+          <EditableInput label="Card Number" name="card_number" data={s.card_number} error={this.state.errors} />
+          <EditableInput label="CVC" name="cvc" data={s.cvc} error={this.state.errors}/>
+          <EditableInput label="Expiration Month" name="exp_month" data={s.exp_month} error={this.state.errors}/>
+          <EditableInput label="Expiration Year" name="exp_year" data={s.exp_year} error={this.state.errors}/>
+          <EditableInput label="Billing Address Line 1" name="stripe_address_line1" data={s.stripe_address_line1} error={this.state.errors}/>
+          <EditableInput label="Billing Address Line 2 (optional)" name="stripe_address_line2" data={s.stripe_address_line2} error={this.state.errors}/>
+          <EditableInput label="City" name="stripe_address_city" data={s.stripe_address_city} error={this.state.errors}/>
+          <EditableInput label="ZIP" name="stripe_address_zip" data={s.stripe_address_zip} error={this.state.errors}/>
         </EditableInputGroup>
 
         <EditableInputGroup title="Eligibility"

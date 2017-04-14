@@ -8,6 +8,11 @@
  */
 
 class EditableInput extends React.Component {
+  displayErrorMessage(name) {
+    if (this.props.error && this.props.error[name] !== null) {
+      return <HelpBlock className="error-message">{this.props.error[name]}</HelpBlock>;
+    }
+  }
 
   renderOptions(type) {
     var optionsArray = []
@@ -39,6 +44,11 @@ class EditableInput extends React.Component {
       case 'household_number':
         optionsArray = HOUSEHOLD_NUMBER;
         j = 1;
+      case 'stripe_account_holder_type':
+        for (var i = 0; i < ACCOUNT_HOLDER_TYPE.length; i++) {
+          retOptions.push(<option value={ACCOUNT_HOLDER_TYPE[i]}>{ACCOUNT_HOLDER_TYPE[i]}</option>);
+        }
+        return retOptions
       case 'stripe_country':
         for (var i = 0; i < COUNTRY_CODES.length; i++) {
           retOptions.push(<option value={COUNTRY_CODES[i].name}>{COUNTRY_CODES[i].name}</option>);
@@ -53,9 +63,11 @@ class EditableInput extends React.Component {
 
   render() {
     let inputVal;
+    let errorVal;
     if (this.props.editable) {
       switch(this.props.name) {
         case "birthday":
+        case "stripe_account_holder_dob":
           this.props.data = moment(this.props.data).format("MM/DD/YYYY");
         case "phone":
         case "reference1_phone":
@@ -77,8 +89,9 @@ class EditableInput extends React.Component {
         case "travel_distance":
         case "state":
         case "teacher_school_level":
-        case "stripe_country":
+        case "stripe_account_holder_type":
         case "stripe_address_state":
+        case "stripe_country":
           inputVal = (
             <FormControl componentClass="select"
               name={this.props.name}
@@ -86,7 +99,8 @@ class EditableInput extends React.Component {
               <option value="" disabled selected>{this.props.data}</option>
               {this.renderOptions(this.props.name)}
             </FormControl>
-          )
+          );
+          errorVal = this.displayErrorMessage(this.props.name);
           break;
 
         default:
@@ -96,12 +110,13 @@ class EditableInput extends React.Component {
                 defaultValue={this.props.data}
                 onChange={this.props.handleChange} />
           );
+          errorVal = this.displayErrorMessage(this.props.name);
           break;
       }
 
     } else {
       inputVal = this.props.data;
-
+      errorVal = null;
       if (this.props.name == 'birthday') {
         inputVal = moment(this.props.data).format("MM/DD/YYYY");
       }
@@ -127,6 +142,7 @@ class EditableInput extends React.Component {
         </div>
         <div className="input-box-container">
           { inputVal }
+          { errorVal }
         </div>
       </fieldset>
     );
@@ -138,4 +154,5 @@ EditableInput.propTypes = {
   name         : React.PropTypes.string.isRequired,
   editable     : React.PropTypes.bool,
   handleChange : React.PropTypes.func,
+  error        : React.PropTypes.object,
 };

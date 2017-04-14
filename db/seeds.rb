@@ -126,8 +126,8 @@ def create_single_teacher(is_searching, n)
     criminal_explanation: Faker::Lorem.paragraph(4),
     waiver_signature: Faker::Name.first_name,
     waiver_date: Faker::Date.between(2.days.ago, Date.today),
-    account_id: 'acct_19MVqrLZTzaZNknc',
-    bank_id: 'ba_19MVqrLZTzaZNknc3j6nq743',
+    account_id: 'acct_1A1T9tEZTf7PVEro',
+    bank_id: 'ba_1A1VN2EZTf7PVEroppgPFvJM',
     timezone: "America/New_York"
   )
   teacher

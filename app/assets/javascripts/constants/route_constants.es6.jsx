@@ -17,7 +17,6 @@
       return {
         matched: '/admin/matched',
         unmatched: '/admin/unmatched',
-        lessons: '/admin/lessons',
         roster: '/admin/roster',
         studentProfile: (id) => `/admin/roster/students/${id}`,
         teacherProfile: (id) => `/admin/roster/teachers/${id}`,
@@ -26,7 +25,6 @@
 
     get student() {
       return {
-        dashboard: '/student/dashboard',
         lessons: '/student/lessons',
         profile: '/student/profile',
         settings: '/student/settings',
