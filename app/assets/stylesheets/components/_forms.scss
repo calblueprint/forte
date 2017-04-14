@@ -28,6 +28,18 @@ $form-control-bottom-margin : 30px;
   }
 }
 
+.blank::after {
+  content: "Can't be blank";
+}
+
+.blank {
+  color: red;
+}
+
+.red-border {
+  border: 1px solid red;
+}
+
 .form-group {
   width: 100%;
   margin-bottom: $form-control-bottom-margin;

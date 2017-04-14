@@ -4,12 +4,11 @@ class DonateModal extends React.Component {
     super();
     this.state = {
       donation_amount: null,
-      custom_donation_amount: null,
+      showNextScreen: false,
       full_name: null,
       email: null,
       phone_number: null,
       message: null,
-      showNextScreen: false,
       errors: {},
     };
   }
@@ -49,14 +48,10 @@ class DonateModal extends React.Component {
   handleChange(event) {
     var name = $(event.target).attr("name");
     var value = $(event.target).val();
-    if (name === "custom_donation_amount") {
-      this.setState({ donation_amount: value});
-    }
+    // if (name === "custom_donation_amount") {
+    //   this.setState({ donation_amount: value});
+    // }
     this.setState({ [name] : value });
-  }
-
-  handleNext() {
-    this.setState({ showNextScreen: true });
   }
 
   getValidationState(name) {
@@ -71,67 +66,71 @@ class DonateModal extends React.Component {
     }
   }
 
+  addRedBorder(input) {
+    input.parentNode.classList.add("blank");
+    input.classList.add("red-border");
+  }
+
+  removeRedBorder(input) {
+    input.parentNode.classList.remove("blank");
+    input.classList.remove("red-border");
+  }
+
+  handleNext() {
+    this.setState({ showNextScreen: true });
+  }
+
   handleSubmit() {
-    // var state = this.state;
     var validated = this.validateFields();
-    console.log(validated);
-    if (!validated) {
-      console.log("not valid"); //shows errors on modal
-    } else {
+    if (validated) {
       this.stripeCharge(); //create strip token
     }
   }
 
-  stripeCharge() {
+  helper(result) {
     var state = this.state;
+     if (result.error) {
+      var errorElement = document.getElementById('card-errors');
+      errorElement.textContent = result.error.message;
+    } else {
+      const resolve = (result) => { this.emailAdmin() };
+      const reject = (result) => { console.log("reject") };
+      var params = {
+        amount: parseInt(state.donation_amount),
+        stripe_token: result.token.id,
+      };
 
-      this.stripe.createToken(this.card).then(function(result) {
-        if (result.error) {
-          var errorElement = document.getElementById('card-errors');
-          errorElement.textContent = result.error.message;
-        } else {
-          console.log("hi");
-          const resolve = (result) => { () => this.emailAdmin() }; //fix this-its not going to the right place
-          const reject = (result) => { console.log(result) };
-          var params = {
-            amount: parseInt(state.donation_amount),
-            stripe_token: result.token.id,
-          };
-          console.log(params);
+      Requester.post(
+        ApiConstants.stripe.donationCharge,
+        params,
+        resolve,
+        reject,
+      );
+    }
+  }
 
-          Requester.post(
-            ApiConstants.stripe.donationCharge,
-            params,
-            resolve,
-            reject,
-          );
-        }
-      });
+  stripeCharge() {
+    this.stripe.createToken(this.card).then(this.helper.bind(this));
   }
 
   validateFields() {
-    console.log("validate");
-    var errs = {};
-
-    errs.full_name = [this.state.full_name, "Full name is missing"];
-    errs.phone_number = [this.state.phone_number, "Phone number is missing"];
-    errs.email = [this.state.email, "Email is missing"];
-    errs.donation_amount = [this.state.donation_amount, "Donation amount is missing"];
-
     var validated = true;
-    var error_info = {};
-    for (var err_type in errs) {
-      if (!errs[err_type][0]) {
+    var keys = Object.keys(this.state);
+    for (key of keys) {
+      if (!this.state[key] && key != "message" && key != "showNextScreen") { //fix the radio button error placement
         validated = false;
-        error_info[err_type] = errs[err_type][1];
+        this.addRedBorder(document.getElementsByName(key)[0]);
+      } else {
+        if (document.getElementsByName(key).length) {
+          validated = true;
+          this.removeRedBorder(document.getElementsByName(key)[0]);
+        }
       }
     }
-    this.setState({errors: error_info}); //do something else instead of set state to update errors to avoid iframe error
     return validated;
   }
 
   emailAdmin() {
-    console.log("emmeemeemmemail");
     const resolve = (result) => { console.log(result) };
     const reject = (result) => { console.log(result) };
     var params = {
@@ -147,7 +146,7 @@ class DonateModal extends React.Component {
       resolve,
       reject,
     );
-    // this.handleNext();
+    this.handleNext();
   }
 
   renderDonateModal() {
@@ -239,7 +238,7 @@ class DonateModal extends React.Component {
                <FormControl
                 componentClass="input"
                 placeholder="Other amount"
-                name="custom_donation_amount"
+                name="donation_amount"
                 onChange={(event) => this.handleChange(event)}
                 />
             </Radio>
