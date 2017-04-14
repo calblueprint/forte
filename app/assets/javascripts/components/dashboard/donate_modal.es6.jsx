@@ -72,22 +72,32 @@ class DonateModal extends React.Component {
   }
 
   handleSubmit() {
-    // var validated = this.validateFields();
+    // var state = this.state;
+    var validated = this.validateFields();
+    console.log(validated);
+    if (!validated) {
+      console.log("not valid"); //shows errors on modal
+    } else {
+      this.stripeCharge(); //create strip token
+    }
+  }
+
+  stripeCharge() {
     var state = this.state;
-    // console.log(validated);
-    // if (validated) {
-      var func = this.emailAdmin();
+
       this.stripe.createToken(this.card).then(function(result) {
         if (result.error) {
           var errorElement = document.getElementById('card-errors');
           errorElement.textContent = result.error.message;
         } else {
-          const resolve = (result) => { func };
+          console.log("hi");
+          const resolve = (result) => { () => this.emailAdmin() }; //fix this-its not going to the right place
           const reject = (result) => { console.log(result) };
           var params = {
             amount: parseInt(state.donation_amount),
             stripe_token: result.token.id,
           };
+          console.log(params);
 
           Requester.post(
             ApiConstants.stripe.donationCharge,
@@ -97,10 +107,10 @@ class DonateModal extends React.Component {
           );
         }
       });
-    // }
   }
 
   validateFields() {
+    console.log("validate");
     var errs = {};
 
     errs.full_name = [this.state.full_name, "Full name is missing"];
@@ -108,7 +118,6 @@ class DonateModal extends React.Component {
     errs.email = [this.state.email, "Email is missing"];
     errs.donation_amount = [this.state.donation_amount, "Donation amount is missing"];
 
-    this.setState({ errors: errs });
     var validated = true;
     var error_info = {};
     for (var err_type in errs) {
@@ -117,11 +126,12 @@ class DonateModal extends React.Component {
         error_info[err_type] = errs[err_type][1];
       }
     }
-    this.setState({errors: error_info});
+    this.setState({errors: error_info}); //do something else instead of set state to update errors to avoid iframe error
     return validated;
   }
 
   emailAdmin() {
+    console.log("emmeemeemmemail");
     const resolve = (result) => { console.log(result) };
     const reject = (result) => { console.log(result) };
     var params = {
