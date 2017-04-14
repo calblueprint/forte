@@ -84,6 +84,7 @@ class Student < ActiveRecord::Base
   validates :waiver_signature, presence: true
   validates :waiver_date, presence: true
   validates :customer_id, presence: true, on: :new
+  validates_format_of :student_email, :with => Devise::email_regexp, :allow_blank => true
 
   has_many :matchings
   has_many :lessons, through: :matchings
@@ -123,7 +124,7 @@ class Student < ActiveRecord::Base
   def submit_signup
     self.timezone = Timezone.lookup(self.lat, self.lng)
     self.save()
-    if self.student_email
+    if !(self.student_email.to_s.lstrip.empty?)
       ForteMailer.student_signup_notify_student(self).deliver_now
     end
     ForteMailer.student_signup_notify_admin(self).deliver_now

@@ -331,9 +331,32 @@ class TeacherForm extends BaseUserComponent {
 
   // createTeacher is called after stripeResponseHandler resolves.
   async submitForm() {
-    await this.setAvailability();
-    await this.setInstruments();
-    await this.validateTeacherFields();
+    const { criminal_charges } = this.state;
+
+    if (criminal_charges) {
+      this.openRejectionModal();
+    } else {
+      await this.setAvailability();
+      await this.setInstruments();
+      await this.validateTeacherFields();
+    }
+  }
+
+  openRejectionModal() {
+    this.setState({ showRejectionModal: true });
+  }
+
+  closeRejectionModal() {
+    window.location = '/';
+  }
+
+  renderRejectionModal() {
+    const { showRejectionModal } = this.state;
+    if (showRejectionModal) {
+      return(
+        <RejectionModal handleClose={() => this.closeRejectionModal()} />
+      );
+    }
   }
 
   renderWaiverModal() {
@@ -399,7 +422,7 @@ class TeacherForm extends BaseUserComponent {
                   {this.displayErrorMessage("stripe_account_number")}
               </FormGroup>
             </div>
-            
+
             <AddressForm
               getValidationState={this.getValidationState.bind(this)}
               displayErrorMessage={this.displayErrorMessage.bind(this)}
@@ -407,7 +430,7 @@ class TeacherForm extends BaseUserComponent {
               handleIntegerChange={this.handleIntegerChange.bind(this)}
               setState={this.setState.bind(this)}
               handleChange={this.handleChange.bind(this)}
-              is_stripe_address={true} /> 
+              is_stripe_address={true} />
 
             <div className="form-row">
               <FormGroup validationState={this.getValidationState("stripe_ssn_last_4")}>
@@ -569,7 +592,7 @@ class TeacherForm extends BaseUserComponent {
                 handleIntegerChange={this.handleIntegerChange.bind(this)}
                 setState={this.setState.bind(this)}
                 handleChange={this.handleChange.bind(this)}
-                is_stripe_address={false} /> 
+                is_stripe_address={false} />
 
               <FormGroup validationState={this.getValidationState("teach_for_free")}>
                 <ControlLabel>Teach for Free</ControlLabel>
@@ -605,10 +628,10 @@ class TeacherForm extends BaseUserComponent {
                 <FormControl
                   componentClass="input"
                   componentClass="textarea"
-                  placeholder="I am a third-year Economics student at UC Berkeley, 
-                  sushi enthusiast and devoted Golden State Warriors fan. I learned 
-                  the clarinet in middle school and have loved performing, practicing 
-                  and teaching ever since. I hope to teach aspiring cellists fundamentals 
+                  placeholder="I am a third-year Economics student at UC Berkeley,
+                  sushi enthusiast and devoted Golden State Warriors fan. I learned
+                  the clarinet in middle school and have loved performing, practicing
+                  and teaching ever since. I hope to teach aspiring cellists fundamentals
                   in scales, intotation and vibrato."
                   name="introduction"
                   onChange={(event) => this.handleChange(event)}/>
@@ -620,7 +643,7 @@ class TeacherForm extends BaseUserComponent {
                 <FormControl
                   componentClass="input"
                   componentClass="textarea"
-                  placeholder="I have taught clarinet to middle school students for two 
+                  placeholder="I have taught clarinet to middle school students for two
                   years and have not taught piano prior to joining Forte."
                   name="teaching_experience"
                   onChange={(event) => this.handleChange(event)}/>
@@ -633,7 +656,7 @@ class TeacherForm extends BaseUserComponent {
                 <FormControl
                   componentClass="input"
                   componentClass="textarea"
-                  placeholder="I hope to teach aspiring clarinet players fundamentals 
+                  placeholder="I hope to teach aspiring clarinet players fundamentals
                   including scales and intonation."
                   name="training_experience"
                   onChange={(event) => this.handleChange(event)}/>
@@ -646,7 +669,7 @@ class TeacherForm extends BaseUserComponent {
                 <FormControl
                   componentClass="input"
                   componentClass="textarea"
-                  placeholder="I have played clarinet in my high school band and local 
+                  placeholder="I have played clarinet in my high school band and local
                   community wind ensemble."
                   name="performance_experience"
                   onChange={(event) => this.handleChange(event)}/>
@@ -709,10 +732,9 @@ class TeacherForm extends BaseUserComponent {
                 {this.displayErrorMessage("background_check")}
               </FormGroup>
 
-              <h3 className="section-subtitle">References</h3>
+              <h3 className="section-subtitle">Reference</h3>
               <p className="form-input-description">Choose a reference who can tell us more about you.</p>
 
-              <h4 className="reference-group-label marginTop-md">Reference #1</h4>
               <div className="form-row">
                 <FormGroup validationState={this.getValidationState("reference1_first_name")}>
                   <ControlLabel>First Name</ControlLabel>
@@ -771,13 +793,13 @@ class TeacherForm extends BaseUserComponent {
                 are any criminal charges now pending against you?</ControlLabel>
                 <Radio
                   name="criminal_charges"
-                  value={Boolean("true")}
+                  value={true}
                   onChange={(event) => this.handleBooleanChange(event)}>
                   Yes
                 </Radio>
                 <Radio
                   name="criminal_charges"
-                  value={Boolean("false")}
+                  value={false}
                   onChange={(event) => this.handleBooleanChange(event)}>
                   No
                 </Radio>
@@ -789,13 +811,13 @@ class TeacherForm extends BaseUserComponent {
                 any other youth program?</ControlLabel>
                 <Radio
                   name="youth_participation"
-                  value={Boolean("true")}
+                  value={true}
                   onChange={(event) => this.handleBooleanChange(event)}>
                   Yes
                 </Radio>
                 <Radio
                   name="youth_participation"
-                  value={Boolean("false")}
+                  value={false}
                   onChange={(event) => this.handleBooleanChange(event)}>
                   No
                 </Radio>
@@ -821,6 +843,7 @@ class TeacherForm extends BaseUserComponent {
                 type="button"
                 >Open Waiver</button>
               {this.renderWaiverModal()}
+              {this.renderRejectionModal()}
 
               <div className="form-row">
                 <FormGroup validationState={this.getValidationState("waiver_signature")}>
