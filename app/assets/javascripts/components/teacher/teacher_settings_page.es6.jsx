@@ -28,6 +28,7 @@ class TeacherSettingsPage extends UserSettings {
       removeModalIsVisible: false,
       person: this.props.person,
       id: this.props.id,
+      errors: this.props.errors,
     }
   }
 
@@ -164,6 +165,18 @@ class TeacherSettingsPage extends UserSettings {
     );
   }
 
+  handleCountryChange(event) {
+    const name = $(event.target).attr("name");
+    var value = $(event.target).val();
+    for (var i = 0; i < COUNTRY_CODES.length; i++) {
+      if (COUNTRY_CODES[i].name == value) {
+        value = COUNTRY_CODES[i].code
+        this.setState({ [name] : value})
+        return;
+      }
+    }
+  }
+
   render() {
     const { person } = this.props;
 
@@ -231,19 +244,20 @@ class TeacherSettingsPage extends UserSettings {
                             handleChange={this.handleChange.bind(this)}
                             attemptSave={this.attemptStripeAccountSave.bind(this)}
                             fetchProfile={this.fetchProfile.bind(this)}>
-          <EditableInput label="Bank Account Holder Name" name="stripe_account_holder_name" data={s.stripe_account_holder_name} />
-          <EditableInput label="Bank Account Holder DOB" name="stripe_account_holder_dob" data={s.stripe_account_holder_dob} />
-          <EditableInput label="Bank Account Holder Type" name="stripe_account_holder_type" data={s.stripe_account_holder_type} />
-          <EditableInput label="Routing Number" name="stripe_routing_number" data={s.stripe_routing_number} />
-          <EditableInput label="Bank Account Number" name="stripe_account_number" data={s.stripe_account_number} />
-          <EditableInput label="Address" name="stripe_address_line1" data={s.stripe_address_line1} />
-          <EditableInput label="City" name="stripe_address_city" data={s.stripe_address_city} />
+          <h5 className="profile-edit-note">Note: You will need to fill out all the fields</h5>
+          <EditableInput label="Bank Account Holder Name" name="stripe_account_holder_name" data={s.stripe_account_holder_name} error={this.state.errors} />
+          <EditableInput label="Bank Account Holder DOB" name="stripe_account_holder_dob" data={s.stripe_account_holder_dob} error={this.state.errors} />
+          <EditableInput label="Bank Account Holder Type" name="stripe_account_holder_type" data={s.stripe_account_holder_type} specialHandler={this.handleChange.bind(this)} error={this.state.errors} />
+          <EditableInput label="Routing Number" name="stripe_routing_number" data={s.stripe_routing_number} error={this.state.errors} />
+          <EditableInput label="Bank Account Number" name="stripe_account_number" data={s.stripe_account_number} error={this.state.errors} />
+          <EditableInput label="Address" name="stripe_address_line1" data={s.stripe_address_line1} error={this.state.errors} />
+          <EditableInput label="City" name="stripe_address_city" data={s.stripe_address_city} error={this.state.errors} />
           <EditableInput label="State" name="stripe_address_state"
             data={s.stripe_address_state}
-            specialHandler={this.handleIntegerChange.bind(this)} />
-          <EditableInput label="Country" name="stripe_country" data={s.stripe_country} />
-          <EditableInput label="Postal Code" name="stripe_address_postal_code" data={s.stripe_address_postal_code} />
-          <EditableInput label="Last 4 Digits SSN" name="stripe_ssn_last_4" data={s.stripe_ssn_last_4} />
+            specialHandler={this.handleIntegerChange.bind(this)} error={this.state.errors} />
+          <EditableInput label="Country" name="stripe_country" specialHandler={this.handleCountryChange.bind(this)} data={s.stripe_country} />
+          <EditableInput label="Postal Code" name="stripe_address_postal_code" data={s.stripe_address_postal_code} error={this.state.errors} />
+          <EditableInput label="Last 4 Digits SSN" name="stripe_ssn_last_4" data={s.stripe_ssn_last_4} error={this.state.errors} />
         </EditableInputGroup>
 
         <EditableInputGroup title="Eligibility"

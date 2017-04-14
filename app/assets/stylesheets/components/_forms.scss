@@ -28,6 +28,19 @@ $form-control-bottom-margin : 30px;
   }
 }
 
+.help-block {
+  &.error-message {
+    font-weight: bold;
+    text-transform: capitalize;
+    margin-top: 5px;
+    color: $red;
+  }
+}
+
+.profile-edit-note {
+  padding-right: 50px;
+}
+
 .form-group {
   width: 100%;
   margin-bottom: $form-control-bottom-margin;
