@@ -233,6 +233,8 @@ class DonateModal extends React.Component {
                 onChange={(event) => this.handleChange(event)}>
                  <FormControl
                   componentClass="input"
+                  type="number"
+                  min="0"
                   placeholder="Other amount"
                   name="donation_amount"
                   onChange={(event) => this.handleChange(event)}
