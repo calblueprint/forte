@@ -5,6 +5,7 @@ class RosterTableRow extends React.Component {
       filter: React.PropTypes.string,
       person: React.PropTypes.object,
       onPersonClick: React.PropTypes.func,
+      fetchPeople: React.PropTypes.func,
     };
   }
 
@@ -15,6 +16,7 @@ class RosterTableRow extends React.Component {
        a student or a teacher. */
     this.state = {
       isStudent: this.props.person.customer_id ? true : false,
+      showDeleteUserModal: false,
     }
   }
 
@@ -28,13 +30,39 @@ class RosterTableRow extends React.Component {
     }
   }
 
+  openDeleteUserModal() {
+    this.setState({showDeleteUserModal: true});
+  }
+
+  closeDeleteUserModal() {
+    this.setState({showDeleteUserModal: false});
+  }
+
+  renderDeleteUserModal(id, type) {
+    const {showDeleteUserModal} = this.state;
+    if (showDeleteUserModal) {
+      return (
+        <DeleteUserModal 
+          id = {id}
+          type = {type}
+          handleClose = {() => this.closeDeleteUserModal()}
+          refresh = {() => this.props.fetchPeople()} />
+      );
+    }
+  }
+
   render () {
     const { person } = this.props;
     let personType = this.state.isStudent ? "Student" : "Teacher";
 
     return (
       <tr onClick={() => this.linkToProfile()}>
-        <td className="name-col">{person.first_name} {person.last_name}</td>
+        <td className="name-col">
+          <Glyphicon className="delete-user" glyph="remove"
+            onClick={(e) => {e.stopPropagation(); this.openDeleteUserModal()}} />
+            {this.renderDeleteUserModal(person.id, personType)}
+          {person.first_name} {person.last_name}
+        </td>
         <td hidden={this.props.filter !== "All"}>{personType}</td>
         <td>{person.gender}</td>
         <td>

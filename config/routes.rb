@@ -21,6 +21,8 @@ Rails.application.routes.draw do
     end
   end
 
+  post '/admins/add', to: 'admin#add_admin'
+
   ##################################################
   # Student
   ##################################################
@@ -185,9 +187,4 @@ Rails.application.routes.draw do
     post '/teachers/validate', to: 'teachers#validate'
     resources :teachers, only: [:index, :destroy, :show, :update]
   end
-
-  ##################################################
-    # Admins
-  ##################################################
-  post '/admins/add', to: 'admin#add_admin'
 end

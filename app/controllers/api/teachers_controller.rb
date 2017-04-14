@@ -34,8 +34,10 @@ class Api::TeachersController < Api::BaseController
     teacher = Teacher.find params[:id]
     if teacher.destroy
       render json: teacher
+    elsif !teacher.present?
+      error_message("This account has already been deleted.", status: :forbidden)
     else
-      unprocessable_response teacher
+      error_message("There was an error removing this account.", status: :forbidden)
     end
   end
 

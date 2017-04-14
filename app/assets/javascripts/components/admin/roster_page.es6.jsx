@@ -147,7 +147,8 @@ class RosterPage extends React.Component {
       people = this.state.people.map((person, index) => {
         return <RosterTableRow filter={this.state.filter}
                                person={person}
-                               key={index} />
+                               key={index}
+                               fetchPeople={() => this.fetchPeople()} />
 
       });
     } else if (this.state.hasResult) {

@@ -63,6 +63,7 @@
     .name-col {
       color: black;
       font-weight: 500;
+      position: relative;
     }
   }
 
@@ -76,5 +77,21 @@
     &:hover {
       background: initial;
     }
+  }
+
+  .delete-user {
+    color: $grey40;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -20px;
+
+    &:hover {
+      color: $orange;
+    }
+  }
+
+  .cancel-delete {
+    font-weight: 600;
   }
 }
