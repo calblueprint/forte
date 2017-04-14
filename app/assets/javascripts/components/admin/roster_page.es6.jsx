@@ -134,7 +134,7 @@ class RosterPage extends React.Component {
   renderAddAdminModal() {
     const { addAdminModal } = this.state;
     if (addAdminModal) {
-      return ( 
+      return (
         <AddAdminModal handleClose = {() => this.closeAddAdmin() } />
       );
     }

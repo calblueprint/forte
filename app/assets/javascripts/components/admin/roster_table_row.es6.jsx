@@ -4,7 +4,6 @@ class RosterTableRow extends React.Component {
     return {
       filter: React.PropTypes.string,
       person: React.PropTypes.object,
-      onPersonClick: React.PropTypes.func,
       fetchPeople: React.PropTypes.func,
     };
   }
@@ -12,18 +11,19 @@ class RosterTableRow extends React.Component {
   constructor(props) {
     super(props);
 
-    /* Use the customer_id field to check whether the person is
-       a student or a teacher. */
     this.state = {
-      isStudent: this.props.person.customer_id ? true : false,
       showDeleteUserModal: false,
     }
   }
 
   linkToProfile() {
     const id = this.props.person.id;
+    const isStudent = this.props.person.customer_id ? true : false
 
-    if (this.state.isStudent) {
+    /* Use the customer_id field to check whether the person is
+       a student or a teacher. */
+
+    if (isStudent) {
       window.location = RouteConstants.admin.studentProfile(id);
     } else {
       window.location = RouteConstants.admin.teacherProfile(id);
@@ -42,7 +42,7 @@ class RosterTableRow extends React.Component {
     const {showDeleteUserModal} = this.state;
     if (showDeleteUserModal) {
       return (
-        <DeleteUserModal 
+        <DeleteUserModal
           id = {id}
           type = {type}
           handleClose = {() => this.closeDeleteUserModal()}
@@ -53,7 +53,7 @@ class RosterTableRow extends React.Component {
 
   render () {
     const { person } = this.props;
-    let personType = this.state.isStudent ? "Student" : "Teacher";
+    let personType = this.props.person.customer_id ? "Student" : "Teacher";
 
     return (
       <tr onClick={() => this.linkToProfile()}>

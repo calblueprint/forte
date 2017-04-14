@@ -19,14 +19,13 @@ class DeleteUserModal extends React.Component {
       toastr.error(response.message);
     };
     if (this.props.type == 'Student') {
-      teacher = Teacher.find
       var route = ApiConstants.students.delete(this.props.id);
     } else if (this.props.type == 'Teacher') {
       var route = ApiConstants.teachers.delete(this.props.id);
     }
     var resolve = (response) => {
-      toastr.success("User was successfully removed");
       this.props.refresh();
+      toastr.success("User was successfully removed");
       handleClose();
     };
     Requester.delete(
