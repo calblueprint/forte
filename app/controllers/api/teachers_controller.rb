@@ -18,7 +18,7 @@ class Api::TeachersController < Api::BaseController
     teacher = Teacher.find params[:id]
     matchings = teacher.matchings
     render json: matchings,
-           root: "matchings"           
+           root: "matchings"
   end
 
   def update

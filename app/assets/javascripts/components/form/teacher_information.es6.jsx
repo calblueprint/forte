@@ -45,6 +45,14 @@ class TeacherInformation extends React.Component {
                   componentClass="input"
                   value={teacher.school} />
               </FormGroup>
+              <FormGroup>
+                <ControlLabel>Teach For Free</ControlLabel>
+                 <Checkbox
+                    readOnly
+                    checked={teacher.teach_for_free==true} >
+                    I am willing to teach lessons to students for free.
+                  </Checkbox>
+              </FormGroup>
 
               <h2 className="section-title" hidden={!this.props.showCategory}>
                 Musical Experience</h2>
@@ -171,14 +179,14 @@ class TeacherInformation extends React.Component {
 
               <div className="form-row">
                 <FormGroup>
-                  <ControlLabel>Reference #1 First Name</ControlLabel>
+                  <ControlLabel>Reference First Name</ControlLabel>
                   <FormControl
                     readOnly
                     componentClass="input"
                     value={teacher.reference1_first_name} />
                 </FormGroup>
                 <FormGroup>
-                  <ControlLabel>Reference #1 Last Name</ControlLabel>
+                  <ControlLabel>Reference Last Name</ControlLabel>
                   <FormControl
                     readOnly
                     componentClass="input"
@@ -186,7 +194,7 @@ class TeacherInformation extends React.Component {
                 </FormGroup>
               </div>
               <FormGroup>
-                <ControlLabel>Reference #1 Relationship</ControlLabel>
+                <ControlLabel>Reference Relationship</ControlLabel>
                 <FormControl
                   readOnly
                   componentClass="input"
@@ -195,14 +203,14 @@ class TeacherInformation extends React.Component {
 
               <div className="form-row">
                 <FormGroup>
-                  <ControlLabel>Reference #1 Email</ControlLabel>
+                  <ControlLabel>Reference Email</ControlLabel>
                   <FormControl
                     readOnly
                     componentClass="input"
                     value={teacher.reference1_email} />
                 </FormGroup>
                 <FormGroup>
-                  <ControlLabel>Reference #1 Phone</ControlLabel>
+                  <ControlLabel>Reference Phone</ControlLabel>
                   <FormControl
                     readOnly
                     componentClass="input"

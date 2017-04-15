@@ -34,5 +34,6 @@ class TeacherShowSerializer < TeacherBaseSerializer
               :full_name,
               :timezone,
               :account_id,
-              :bank_id
+              :bank_id,
+              :teach_for_free
 end
