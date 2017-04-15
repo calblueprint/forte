@@ -58,6 +58,8 @@ Rails.application.routes.draw do
     post :send_contact_email
     get :about
     get :terms
+    get :donate
+    post :donation_notify_admin
   end
 
   ##################################################
@@ -132,6 +134,7 @@ Rails.application.routes.draw do
     post '/account', to: 'accounts#create_account'
     post '/verify_account', to: 'accounts#update_account'
     post '/change_account', to: 'accounts#change_account'
+    post '/donation_charge', to: 'charges#donation_charge'
   end
 
   ##################################################

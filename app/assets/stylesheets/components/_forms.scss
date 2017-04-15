@@ -28,6 +28,21 @@ $form-control-bottom-margin : 30px;
   }
 }
 
+.blank::after {
+  content: "Can't be blank";
+  font-weight: bold;
+  text-transform: capitalize;
+  margin-top: 5px;
+}
+
+.blank {
+  color: $red;
+}
+
+.red-border {
+  border: 2px solid $red;
+}
+
 .help-block {
   &.error-message {
     font-weight: bold;

@@ -9,6 +9,7 @@
         contact: '/contact',
         about: '/about',
         terms: '/terms',
+        donate: '/donate',
       }
     }
 

@@ -45,4 +45,12 @@ class ForteMailer < ApplicationMailer
          to: "fortemailer@gmail.com"
   end
 
+  def donation_notify_admin(full_name, email, phone_number, message)
+    @full_name = full_name
+    @email = email
+    @phone_number = phone_number
+    @message = message
+    mail(to: "fortemailer@gmail.com", subject: "Forte Donation Received")
+  end
+
 end
