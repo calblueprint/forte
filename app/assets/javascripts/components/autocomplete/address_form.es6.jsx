@@ -136,7 +136,7 @@ class AddressForm extends React.Component {
             componentClass="input"
             placeholder="Address Line 2"
             name={this.getId("address2")}
-            onChange={(event) => this.handleChange(event)}/>
+            onChange={(event) => handleChange(event)}/>
           {displayErrorMessage(this.getId("address2"))}
         </FormGroup>
 
@@ -148,7 +148,7 @@ class AddressForm extends React.Component {
               placeholder="City"
               name={this.getId("city")}
               id={this.getId("locality")}
-              onChange={(event) => this.handleChange(event)}/>
+              onChange={(event) => handleChange(event)}/>
             {displayErrorMessage(this.getId("city"))}
           </FormGroup>
 
@@ -172,7 +172,7 @@ class AddressForm extends React.Component {
               placeholder="Zip Code"
               name={this.getId("zipcode")}
               id={this.getId("postal_code")}
-              onChange={(event) => this.handleChange(event)}/>
+              onChange={(event) => handleChange(event)}/>
             {displayErrorMessage(this.getId("zipcode"))}
           </FormGroup>
         </div>
