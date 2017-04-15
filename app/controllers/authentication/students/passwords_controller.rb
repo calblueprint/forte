@@ -26,12 +26,15 @@ class Authentication::Students::PasswordsController < Devise::PasswordsControlle
 
   def update_password
     @student = Student.find(params[:id])
-    if @student.update(student_params)
+
+    if params[:student][:password] != params[:student][:password_confirmation]
+      error_response(message: "Please make sure the passwords match!", status: :forbidden)
+    elsif (params[:student][:password]).nil? || (params[:student][:password_confirmation]).nil?
+      error_response(message: "Please make sure you fill in the required fields!", status: :forbidden)
+    elsif @student.update(student_params)
       # Sign in the user by passing validation in case their password changed
       sign_in @student, :bypass => true
       render_json_message(:created)
-    elsif params[:student][:password] != params[:student][:password_confirmation]
-      error_response(message: "Please make sure the passwords match!", status: :forbidden)
     else
       error_response(message: "Please make sure the passwords are at least 8 characters long!", status: :forbidden)
     end
