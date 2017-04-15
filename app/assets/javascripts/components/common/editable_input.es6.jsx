@@ -89,6 +89,19 @@ class EditableInput extends React.Component {
         case "travel_distance":
         case "state":
         case "teacher_school_level":
+        case "stripe_account_holder_type":
+        case "stripe_address_state":
+        case "stripe_country":
+          inputVal = (
+            <FormControl componentClass="select"
+              name={this.props.name}
+              onChange={this.props.specialHandler}>
+              <option value="" disabled selected>{this.props.data}</option>
+              {this.renderOptions(this.props.name)}
+            </FormControl>
+          );
+          errorVal = this.displayErrorMessage(this.props.name);
+          break;
         case "password":
           inputVal = (
             <input name={this.props.name} type="text"
@@ -106,19 +119,6 @@ class EditableInput extends React.Component {
                 type="password"
                 defaultValue={this.props.data}
                 onChange={this.props.handleChange} />
-          );
-          errorVal = this.displayErrorMessage(this.props.name);
-          break;
-        case "stripe_account_holder_type":
-        case "stripe_address_state":
-        case "stripe_country":
-          inputVal = (
-            <FormControl componentClass="select"
-              name={this.props.name}
-              onChange={this.props.specialHandler}>
-              <option value="" disabled selected>{this.props.data}</option>
-              {this.renderOptions(this.props.name)}
-            </FormControl>
           );
           errorVal = this.displayErrorMessage(this.props.name);
           break;
