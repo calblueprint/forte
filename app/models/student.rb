@@ -86,9 +86,9 @@ class Student < ActiveRecord::Base
   validates :customer_id, presence: true, on: :new
   validates_format_of :student_email, :with => Devise::email_regexp, :allow_blank => true
 
-  has_many :matchings
-  has_many :lessons, through: :matchings
-  has_many :teachers, through: :matchings
+  has_many :matchings, dependent: :destroy
+  has_many :lessons, through: :matchings, dependent: :destroy
+  has_many :teachers, through: :matchings, dependent: :destroy
   has_many :instruments, as: :instrumentable, dependent: :destroy
 
   accepts_nested_attributes_for :instruments

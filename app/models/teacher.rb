@@ -96,9 +96,9 @@ class Teacher < ActiveRecord::Base
   validates :waiver_signature, presence: true
   validates :waiver_date, presence: true
 
-  has_many :matchings
-  has_many :lessons, through: :matchings
-  has_many :students, through: :matchings
+  has_many :matchings, dependent: :destroy
+  has_many :lessons, through: :matchings, dependent: :destroy
+  has_many :students, through: :matchings, dependent: :destroy
   has_many :instruments, as: :instrumentable, dependent: :destroy
 
   accepts_nested_attributes_for :instruments
