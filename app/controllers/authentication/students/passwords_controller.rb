@@ -1,4 +1,5 @@
 class Authentication::Students::PasswordsController < Devise::PasswordsController
+  before_action :authenticate_student!, except: [:send_token, :reset_password]
 
   def send_token
     user = Student.find_by_email(params[:email])
@@ -23,6 +24,18 @@ class Authentication::Students::PasswordsController < Devise::PasswordsControlle
     end
   end
 
+  def update_password
+    @student = Student.find(params[:id])
+    if @student.update(student_params)
+      # Sign in the user by passing validation in case their password changed
+      sign_in @student, :bypass => true
+      render_json_message(:created)
+    elsif params[:student][:password] != params[:student][:password_confirmation]
+      error_response(message: "Please make sure the passwords match!", status: :forbidden)
+    else
+      error_response(message: "Please make sure the passwords are at least 8 characters long!", status: :forbidden)
+    end
+  end
 
   private
 
@@ -32,6 +45,10 @@ class Authentication::Students::PasswordsController < Devise::PasswordsControlle
 
   def reset_password_params
     params.require(:student).permit(:password, :password_confirmation, :reset_password_token)
+  end
+
+  def student_params
+    params.require(:student).permit(:password, :password_confirmation)
   end
 
 end

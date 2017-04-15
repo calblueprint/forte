@@ -166,7 +166,19 @@ class BaseUserComponent extends React.Component {
     } else if (name == 'waiver_date') {
       this.setState({ waiver_date: dateTime });
     } else if (name == 'stripe_account_holder_dob') {
-      this.setState({ stripe_account_holder_dob: dateTime });
+      const name = $(dateTime.target).attr("name");
+      var value = $(dateTime.target).val();
+      if (value.length == 10) {
+        value = moment(value, "MM/DD/YYYY");
+        if (value.isValid()) {
+          delete errors['stripe_account_holder_dob'];
+          this.setState({ stripe_account_holder_dob: moment(value, "MM/DD/YYYY"), errors: errors });
+        }
+        else {
+          errors.stripe_account_holder_dob = "Invalid DOB"
+          this.setState({errors : errors });
+        }
+      }
     }
   }
 

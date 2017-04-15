@@ -58,6 +58,36 @@ class UserSettings extends React.Component {
     );
   }
 
+  updateStudentPassword(resolve, reject, student_id) {
+
+    const route = ApiConstants.authentication.update_password.student(student_id);
+    const params = {
+      student: this.state,
+    };
+
+    Requester.update(
+        route,
+        params,
+        resolve,
+        reject
+    );
+  }
+
+  updateTeacherPassword(resolve, reject, teacher_id) {
+
+    const route = ApiConstants.authentication.update_password.teacher(teacher_id);
+    const params = {
+      teacher: this.state,
+    };
+
+    Requester.update(
+        route,
+        params,
+        resolve,
+        reject
+    );
+  }
+
   attemptCardSave(resolve, reject) {
     this.setState({ editable: false });
     this.updateStripeCustomer(resolve, reject);

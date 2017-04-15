@@ -188,6 +188,15 @@ class StudentSettingsPage extends UserSettings {
           <EditableInput label="Parent/Guardian Email" name="email" data={s.email} />
         </EditableInputGroup>
 
+        <EditableInputGroup title="Change Your Password"
+                            handleChange={this.handleChange.bind(this)}
+                            attemptSave={this.updateStudentPassword.bind(this)}
+                            fetchProfile={this.fetchProfile.bind(this)}
+                            personId={this.props.id}>
+          <EditableInput label="New Password" name="password" data={s.password} />
+          <EditableInput label="New Password Confirmation" name="password_confirmation" data={s.password_confirmation} />
+        </EditableInputGroup>
+
         <h2 className="section-title">Musical Experience</h2>
         {this.renderInstruments()}
         <Button className="button button--outline-orange button--sm marginTop-md"
@@ -205,11 +214,11 @@ class StudentSettingsPage extends UserSettings {
 
         <Button className="button button--outline-orange button--sm availability-save-btn">Save</Button>
 
+        <h5 className="profile-edit-note">Note: You will need to fill out all the fields</h5>
         <EditableInputGroup title="Payment"
                             handleChange={this.handleChange.bind(this)}
                             attemptSave={this.attemptCardSave.bind(this)}
                             fetchProfile={this.fetchProfile.bind(this)}>
-          <h5 className="profile-edit-note">Note: You will need to fill out all the fields</h5>
           <EditableInput label="Card Number" name="card_number" data={s.card_number} error={this.state.errors} />
           <EditableInput label="CVC" name="cvc" data={s.cvc} error={this.state.errors}/>
           <EditableInput label="Expiration Month" name="exp_month" data={s.exp_month} error={this.state.errors}/>

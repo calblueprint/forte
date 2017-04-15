@@ -452,7 +452,7 @@ class TeacherForm extends BaseUserComponent {
                 componentClass="select"
                 name="stripe_country"
                 onChange={(event) => this.handleCountryChange(event)}>
-                <option value="" disabled selected>Select Bank Acount Country</option>
+                <option value="" disabled selected>Select Bank Account Country</option>
                 {this.renderOptions('country')}
               </FormControl>
               {this.displayErrorMessage("stripe_country")}

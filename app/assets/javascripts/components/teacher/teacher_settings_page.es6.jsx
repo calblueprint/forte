@@ -220,6 +220,15 @@ class TeacherSettingsPage extends UserSettings {
           data={s.travel_distance} specialHandler={this.handleIntegerChange.bind(this)} />
       </EditableInputGroup>
 
+      <EditableInputGroup title="Change Your Password"
+                            handleChange={this.handleChange.bind(this)}
+                            attemptSave={this.updateTeacherPassword.bind(this)}
+                            fetchProfile={this.fetchProfile.bind(this)}
+                            personId={this.props.id}>
+          <EditableInput label="New Password" name="password" data={s.password} />
+          <EditableInput label="New Password Confirmation" name="password_confirmation" data={s.password_confirmation} />
+        </EditableInputGroup>
+
       <h2 className="section-title">Musical Experience</h2>
       {this.renderInstruments()}
       <Button className="button button--outline-orange button--sm marginTop-md"
@@ -240,11 +249,11 @@ class TeacherSettingsPage extends UserSettings {
         Save
       </Button>
 
+      <h5 className="profile-edit-note">Note: You will need to fill out all the fields</h5>
       <EditableInputGroup title="Payment"
                             handleChange={this.handleChange.bind(this)}
                             attemptSave={this.attemptStripeAccountSave.bind(this)}
                             fetchProfile={this.fetchProfile.bind(this)}>
-          <h5 className="profile-edit-note">Note: You will need to fill out all the fields</h5>
           <EditableInput label="Bank Account Holder Name" name="stripe_account_holder_name" data={s.stripe_account_holder_name} error={this.state.errors} />
           <EditableInput label="Bank Account Holder DOB" name="stripe_account_holder_dob" data={s.stripe_account_holder_dob} error={this.state.errors} />
           <EditableInput label="Bank Account Holder Type" name="stripe_account_holder_type" data={s.stripe_account_holder_type} specialHandler={this.handleChange.bind(this)} error={this.state.errors} />

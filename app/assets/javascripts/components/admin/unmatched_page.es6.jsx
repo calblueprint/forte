@@ -32,12 +32,13 @@ class UnmatchedPage extends React.Component {
 
   processGoogleMapsResponse(distances, teachers) {
     var moreThanTwenty = '20 miles or more';
-    var travelDistances = {'I am not willing to travel': 0, 'Up to 5 miles': 5, 'Up to 10 miles': 10, '20 miles or more': 20}
+    var travelDistances = {'I am not willing to travel': 0, 'Up to 5 miles': 5, 'Up to 10 miles': 10, 'Up to 20 miles': 20}
     var validTeachers = []
     for (i = 0; i < teachers.length; i+=1) {
       var teacher = teachers[i];
       if (distances[i]["status"] == "OK") {
-        var distance = distances[i]["distance"]["value"];
+        var distance = distances[i]["distance"]["text"];
+        distance = parseFloat(distance.substring(0, distance.length-3));
         var unlimited_travel = (teacher.travel_distance == moreThanTwenty) || (this.state.student.travel_distance == moreThanTwenty);
         var travel_within_constraint = (distance < travelDistances[teacher.travel_distance]) || (distance < travelDistances[this.state.student.travel_distance]);
         if (unlimited_travel || travel_within_constraint) {

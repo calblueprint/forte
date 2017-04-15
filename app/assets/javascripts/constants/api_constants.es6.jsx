@@ -26,6 +26,11 @@
           teacher: '/passwords/teachers/reset_request',
           admin: '/passwords/admins/reset_request',
         },
+        update_password:
+        {
+         student: (id) =>  `/passwords/students/update_password/${id}`,
+         teacher: (id) => `/passwords/teachers/update_password/${id}`,
+        },
       }
     }
 

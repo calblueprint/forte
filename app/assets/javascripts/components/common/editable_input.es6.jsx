@@ -89,6 +89,26 @@ class EditableInput extends React.Component {
         case "travel_distance":
         case "state":
         case "teacher_school_level":
+        case "password":
+          inputVal = (
+            <input name={this.props.name} type="text"
+                className="form-control"
+                type="password"
+                defaultValue={this.props.data}
+                onChange={this.props.handleChange} />
+          );
+          errorVal = this.displayErrorMessage(this.props.name);
+          break;
+        case "password_confirmation":
+          inputVal = (
+            <input name={this.props.name} type="text"
+                className="form-control"
+                type="password"
+                defaultValue={this.props.data}
+                onChange={this.props.handleChange} />
+          );
+          errorVal = this.displayErrorMessage(this.props.name);
+          break;
         case "stripe_account_holder_type":
         case "stripe_address_state":
         case "stripe_country":

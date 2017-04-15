@@ -89,7 +89,7 @@ Rails.application.routes.draw do
 
   ##################################################
   #
-  # Change Passwords
+  # Forgot Password
   #
   ##################################################
 
@@ -124,6 +124,20 @@ Rails.application.routes.draw do
     collection do
       patch 'reset_password'
     end
+  end
+
+  ##################################################
+  #
+  # Update Password
+  #
+  ##################################################
+
+  devise_scope :student do
+    patch 'passwords/students/update_password/:id', to: 'authentication/students/passwords#update_password'
+  end
+
+  devise_scope :teacher do
+    patch 'passwords/teachers/update_password/:id', to: 'authentication/teachers/passwords#update_password'
   end
 
   ##################################################
@@ -176,7 +190,6 @@ Rails.application.routes.draw do
     get '/students/:id/matchings', to: 'students#matchings'
     post '/students/validate', to: 'students#validate'
     resources :students, only: [:index, :destroy, :show, :update]
-
 
     ##################################################
     # Teachers

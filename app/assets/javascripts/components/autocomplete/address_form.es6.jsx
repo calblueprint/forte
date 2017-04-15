@@ -8,7 +8,7 @@ class AddressForm extends React.Component {
       handleIntegerChange: React.PropTypes.func,
       setState: React.PropTypes.func,
       handleChange: React.PropTypes.func,
-      is_stripe_address: React.PropTypes.boolean, 
+      is_stripe_address: React.PropTypes.bool, 
     }
   }
 
@@ -115,6 +115,8 @@ class AddressForm extends React.Component {
       displayErrorMessage,
       renderOptions, 
       id,
+      handleChange,
+      handleIntegerChange,
     } = this.props;
 
     return (
@@ -156,7 +158,7 @@ class AddressForm extends React.Component {
             <ControlLabel>State</ControlLabel>
             <FormControl
               componentClass="select"
-              name="state"
+              name={this.getId("state")}
               id={this.getId("administrative_area_level_1")}
               onChange={(event) => handleIntegerChange(event)}>
               <option value="" disabled selected>Select your state</option>
