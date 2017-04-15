@@ -47,9 +47,6 @@ class DonateModal extends React.Component {
   handleChange(event) {
     var name = $(event.target).attr("name");
     var value = $(event.target).val();
-    // if (name === "custom_donation_amount") {
-    //   this.setState({ donation_amount: value});
-    // }
     this.setState({ [name] : value });
   }
 

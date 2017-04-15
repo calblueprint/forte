@@ -1,5 +1,14 @@
-<div>
-  <p>
-    Hi Forte! You've received a donation from <%= @full_name %>. Here is their message: <%= @message %>. You can contact them at Phone Number: <%= @phone_number %> or Email: <%= @email %>.
-  </p>
+<div style="width: 100%; background-color: #f4f4f4; padding: 20px 0; font-family: sans-serif">
+  <div style="max-width: 600px; margin: auto; background-color: #ffffff;">
+    <%= render "partials/email_header" %>
+
+    <div style="padding: 24px;">
+      <h4>Hi Forte,</h4>
+
+      <p>
+        You've received a donation from <%= @full_name %>. Here is their message: <%= @message %>. You can contact them at Phone Number: <%= @phone_number %> or Email: <%= @email %>.
+      </p>
+
+    </div>
+  </div>
 </div>
