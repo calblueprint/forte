@@ -165,7 +165,7 @@ class StudentSettingsPage extends UserSettings {
           <EditableInput label="Birthday" name="birthday" data={moment(s.birthday).format("MM/DD/YYYY")} />
           <EditableInput label="Email" name="student_email" data={s.student_email} />
           <EditableInput label="School" name="school" data={s.school} />
-          <EditableInput label="Grade" name="school_level" data={s.school_level}
+          <EditableInput label="Grade" name="student_school_level" data={s.school_level}
             specialHandler={this.handleIntegerChange.bind(this)} />
           <EditableInput label="Student Phone Number" name="student_phone" data={s.student_phone} />
           <EditableInput label="Address" name="address" data={s.address} />

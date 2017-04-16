@@ -59,6 +59,9 @@ class BaseUserComponent extends React.Component {
       case 'state':
         optionsArray = STATES;
         break;
+      case 'stripe_address_state':
+        optionsArray = STATES;
+        break;
       case 'travel_distance':
         optionsArray = TRAVEL_DISTANCES;
         break;
@@ -81,6 +84,11 @@ class BaseUserComponent extends React.Component {
         }
         return retOptions
       case 'country':
+        for (var i = 0; i < COUNTRY_CODES.length; i++) {
+          retOptions.push(<option value={COUNTRY_CODES[i].name}>{COUNTRY_CODES[i].name}</option>);
+        }
+        return retOptions
+      case 'stripe_country':
         for (var i = 0; i < COUNTRY_CODES.length; i++) {
           retOptions.push(<option value={COUNTRY_CODES[i].name}>{COUNTRY_CODES[i].name}</option>);
         }
