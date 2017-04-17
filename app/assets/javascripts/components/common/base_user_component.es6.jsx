@@ -78,6 +78,7 @@ class BaseUserComponent extends React.Component {
         optionsArray = HOUSEHOLD_NUMBER;
         j = 1;
         break;
+      case 'stripe_account_holder_type':
       case 'account_holder_type':
         for (var i = 0; i < ACCOUNT_HOLDER_TYPE.length; i++) {
           retOptions.push(<option value={ACCOUNT_HOLDER_TYPE[i]}>{ACCOUNT_HOLDER_TYPE[i]}</option>);
@@ -323,13 +324,13 @@ class BaseUserComponent extends React.Component {
    * Front-end validation for the address field
    */
   validateAddress(user_errs) {
-    const { lat, lng, address, address_apt, city, state, zipcode } = this.state;
+    const { lat, lng, address, address2, city, state, zipcode } = this.state;
 
     var address_errors = {};
 
     if (!lat && !lng) {
       var geocoder = new google.maps.Geocoder();
-      var full_address = [address, address_apt, city, state, zipcode].join(" ");
+      var full_address = [address, address2, city, state, zipcode].join(" ");
       geocoder.geocode({"address": full_address}, function(results, status) {
         if (status === 'OK') {
           var location = results[0]["geometry"]["location"];

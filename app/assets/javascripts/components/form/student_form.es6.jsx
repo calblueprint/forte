@@ -82,7 +82,7 @@ class StudentForm extends BaseUserComponent {
         student_email: this.state.student_email,
         student_phone: this.state.student_phone,
         address: this.state.address,
-        address_apt: this.state.address_apt,
+        address2: this.state.address2,
         state: this.state.state,
         zipcode: this.state.zipcode,
         location_preference: this.state.location_preference,

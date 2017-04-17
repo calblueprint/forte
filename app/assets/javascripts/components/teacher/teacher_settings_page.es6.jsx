@@ -13,10 +13,10 @@ class TeacherSettingsPage extends UserSettings {
     person.availability = [];
     person.stripe_routing_number = "*****";
     person.stripe_account_number = "*****";
-    person.stripe_address_line1 = "*****";
-    person.stripe_address_city = "*****";
-    person.stripe_address_state = "*****";
-    person.stripe_address_postal_code = "*****";
+    person.stripe_address = "*****";
+    person.stripe_city = "*****";
+    person.stripe_state = "*****";
+    person.stripe_zipcode = "*****";
     person.stripe_account_holder_dob = "*****";
     person.stripe_account_holder_type = "*****";
     person.stripe_account_holder_name = "*****";
@@ -28,7 +28,7 @@ class TeacherSettingsPage extends UserSettings {
       removeModalIsVisible: false,
       person: this.props.person,
       id: this.props.id,
-      errors: this.props.errors,
+      errors: {},
     }
   }
 
@@ -52,55 +52,6 @@ class TeacherSettingsPage extends UserSettings {
     Requester.get(route, resolve, reject);
   }
 
-  openRemoveModal() {
-    this.setState({ removeModalIsVisible: true });
-  }
-
-  closeRemoveModal() {
-    this.setState({ removeModalIsVisible: false });
-  }
-
-  openAddModal() {
-    this.setState({ addModalIsVisible: true });
-  }
-
-  closeAddModal() {
-    this.setState({ addModalIsVisible: false });
-  }
-
-  renderRemoveModal(instrument) {
-    const { removeModalIsVisible } = this.state;
-
-    if (removeModalIsVisible) {
-      return (
-        <RemoveInstrumentModal
-          isVisible={removeModalIsVisible}
-          handleClose={() => this.closeRemoveModal()}
-          fetchInstruments={() => this.fetchInstruments()}
-          instrument={instrument}
-        />
-      );
-    }
-  }
-
-  renderAddModal() {
-    const { addModalIsVisible } = this.state;
-    const { instruments } = this.state.person;
-    const { person } = this.props;
-
-    if (addModalIsVisible) {
-      return (
-        <AddInstrumentModal
-          isVisible={addModalIsVisible}
-          handleClose={() => this.closeAddModal()}
-          fetchInstruments={() => this.fetchInstruments()}
-          instruments={instruments}
-          instrumentable={person}
-        />
-      )
-    }
-  }
-
   fetchInstruments() {
     const route = ApiConstants.teachers.instruments(this.props.id);
     const resolve = (response) => {
@@ -114,28 +65,6 @@ class TeacherSettingsPage extends UserSettings {
       resolve,
       reject,
     );
-  }
-
-  renderInstrument(instrument) {
-    return (
-      <div className="instrument">
-        <div className="instrumentName">
-          {instrument.name}
-        </div>
-        <a className="link"
-          onClick={() => this.openRemoveModal()}>
-          [Remove]
-        </a>
-        {this.renderRemoveModal(instrument)}
-      </div>
-    );
-  }
-
-  renderInstruments() {
-    const { instruments } = this.state.person;
-    if (instruments) {
-      return instruments.map((instrument) => this.renderInstrument(instrument));
-    }
   }
 
   saveAvailability(inputDate) {
@@ -165,18 +94,6 @@ class TeacherSettingsPage extends UserSettings {
     );
   }
 
-  handleCountryChange(event) {
-    const name = $(event.target).attr("name");
-    var value = $(event.target).val();
-    for (var i = 0; i < COUNTRY_CODES.length; i++) {
-      if (COUNTRY_CODES[i].name == value) {
-        value = COUNTRY_CODES[i].code
-        this.setState({ [name] : value})
-        return;
-      }
-    }
-  }
-
   render() {
     const { person } = this.props;
 
@@ -204,18 +121,31 @@ class TeacherSettingsPage extends UserSettings {
         <EditableInput label="Last Name" name="last_name" data={s.last_name} />
         <EditableInput label="Gender" name="gender" data={s.gender}
           specialHandler={this.handleIntegerChange.bind(this)} />
-        <EditableInput label="Birthday" name="birthday" data={moment(s.birthday).format("MM/DD/YYYY")} />
+        <EditableInput label="Birthday" name="birthday" data={moment(s.birthday).format("MM/DD/YYYY")}
+          specialHandler={this.handleBirthdayChange.bind(this)} />
         <EditableInput label="Email" name="email" data={s.email} />
         <EditableInput label="School" name="school" data={s.school} />
         <EditableInput label="Class Level" name="teacher_school_level" data={school_level}
           specialHandler={this.handleIntegerChange.bind(this)} />
         <EditableInput label="Teacher Phone Number" name="phone" data={s.phone} />
-        <EditableInput label="Address" name="address" data={s.address} />
-        <EditableInput label="Apt #" name="address2" data={s.address2} />
-        <EditableInput label="City" name="city" data={s.city} />
-        <EditableInput label="State" name="state" data={s.state}
-          specialHandler={this.handleIntegerChange.bind(this)} />
-        <EditableInput label="Zip Code" name="zipcode" data={s.zipcode} />
+      </EditableInputGroup>
+
+      <EditableInputGroup title="Teacher Address"
+                          handleChange={this.handleChange.bind(this)}
+                          attemptSave={this.attemptAddressSave.bind(this)}
+                          fetchProfile={this.fetchProfile.bind(this)} >
+        <EditableInput
+          label="Address"
+          name="address"
+          getValidationState={this.getValidationState.bind(this)}
+          displayErrorMessage={this.displayErrorMessage.bind(this)}
+          renderOptions={this.renderOptions.bind(this)}
+          handleIntegerChange={this.handleIntegerChange.bind(this)}
+          setState={this.setState.bind(this)}
+          handleChange={this.handleChange.bind(this)}
+          is_stripe_address={false}
+          data={s.full_address}
+          error={this.state.errors} />
         <EditableInput label="Distance Willing to Travel" name="travel_distance"
           data={s.travel_distance} specialHandler={this.handleIntegerChange.bind(this)} />
       </EditableInputGroup>
@@ -254,18 +184,25 @@ class TeacherSettingsPage extends UserSettings {
                             handleChange={this.handleChange.bind(this)}
                             attemptSave={this.attemptStripeAccountSave.bind(this)}
                             fetchProfile={this.fetchProfile.bind(this)}>
-          <EditableInput label="Bank Account Holder Name" name="stripe_account_holder_name" data={s.stripe_account_holder_name} error={this.state.errors} />
+          <EditableInput label="Bank Account Holder Name" name="stripe_account_holder_name" data={s.stripe_account_holder_name} error={this.state.errors}
+            specialHandler={this.handleBirthdayChange.bind(this)} />
           <EditableInput label="Bank Account Holder DOB" name="stripe_account_holder_dob" data={s.stripe_account_holder_dob} error={this.state.errors} />
           <EditableInput label="Bank Account Holder Type" name="stripe_account_holder_type" data={s.stripe_account_holder_type} specialHandler={this.handleChange.bind(this)} error={this.state.errors} />
           <EditableInput label="Routing Number" name="stripe_routing_number" data={s.stripe_routing_number} error={this.state.errors} />
           <EditableInput label="Bank Account Number" name="stripe_account_number" data={s.stripe_account_number} error={this.state.errors} />
-          <EditableInput label="Address" name="stripe_address_line1" data={s.stripe_address_line1} error={this.state.errors} />
-          <EditableInput label="City" name="stripe_address_city" data={s.stripe_address_city} error={this.state.errors} />
-          <EditableInput label="State" name="stripe_address_state"
-            data={s.stripe_address_state}
-            specialHandler={this.handleIntegerChange.bind(this)} error={this.state.errors} />
-          <EditableInput label="Country" name="stripe_country" specialHandler={this.handleCountryChange.bind(this)} data={s.stripe_country} />
-          <EditableInput label="Postal Code" name="stripe_address_postal_code" data={s.stripe_address_postal_code} error={this.state.errors} />
+          <EditableInput
+            label="Billing Address"
+            name="address"
+            getValidationState={this.getValidationState.bind(this)}
+            displayErrorMessage={this.displayErrorMessage.bind(this)}
+            renderOptions={this.renderOptions.bind(this)}
+            handleIntegerChange={this.handleIntegerChange.bind(this)}
+            setState={this.setState.bind(this)}
+            handleChange={this.handleChange.bind(this)}
+            is_stripe_address={true}
+            data={s.stripe_address}
+            error={this.state.errors} />
+          <EditableInput label="Country" name="stripe_country" specialHandler={this.handleCountryChange.bind(this)} data={s.stripe_country} error={this.state.errors} />
           <EditableInput label="Last 4 Digits SSN" name="stripe_ssn_last_4" data={s.stripe_ssn_last_4} error={this.state.errors} />
         </EditableInputGroup>
 

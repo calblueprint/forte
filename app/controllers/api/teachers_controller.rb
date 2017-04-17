@@ -137,6 +137,8 @@ class Api::TeachersController < Api::BaseController
       :state,
       :zipcode,
       :city,
+      :lat,
+      :lng,
       :location_preference,
       :travel_distance,
       :background_check,

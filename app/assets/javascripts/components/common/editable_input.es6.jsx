@@ -13,12 +13,25 @@ class EditableInput extends BaseUserComponent {
       return <HelpBlock className="error-message">{this.props.error[name]}</HelpBlock>;
     }
   }
-
+  
   render() {
     let inputVal;
     let errorVal;
     if (this.props.editable) {
       switch(this.props.name) {
+        case "address":
+          inputVal = (
+              <AddressForm
+                className="form-group"
+                getValidationState={this.props.getValidationState}
+                displayErrorMessage={this.props.displayErrorMessage}
+                renderOptions={this.props.renderOptions}
+                handleIntegerChange={this.props.handleIntegerChange}
+                setState={this.props.setState}
+                handleChange={this.props.handleChange}
+                is_stripe_address={this.props.is_stripe_address} />
+          )
+          break;
         case "birthday":
         case "stripe_account_holder_dob":
           this.props.data = moment(this.props.data).format("MM/DD/YYYY");
@@ -34,7 +47,6 @@ class EditableInput extends BaseUserComponent {
               displayErrors={() => {}} />
           )
           break;
-
         case "gender":
         case "income_range":
         case "household_number":
@@ -75,7 +87,6 @@ class EditableInput extends BaseUserComponent {
           );
           errorVal = this.displayErrorMessage(this.props.name);
           break;
-
         default:
           inputVal = (
             <input name={this.props.name} type="text"
@@ -128,4 +139,10 @@ EditableInput.propTypes = {
   editable     : React.PropTypes.bool,
   handleChange : React.PropTypes.func,
   error        : React.PropTypes.object,
+  getValidationState: React.PropTypes.func,
+  displayErrorMessage: React.PropTypes.func,
+  renderOptions: React.PropTypes.func,
+  handleIntegerChange: React.PropTypes.func,
+  setState: React.PropTypes.func,
+  is_stripe_address: React.PropTypes.bool, 
 };

@@ -9,6 +9,7 @@ class AddressForm extends React.Component {
       setState: React.PropTypes.func,
       handleChange: React.PropTypes.func,
       is_stripe_address: React.PropTypes.bool, 
+      className: React.PropTypes.string,
     }
   }
 
@@ -142,7 +143,7 @@ class AddressForm extends React.Component {
           {displayErrorMessage(this.getId("address2"))}
         </FormGroup>
 
-        <div className="form-row">
+        <div className={this.props.className + `form-row`}>
           <FormGroup validationState={getValidationState(this.getId("city"))}>
             <ControlLabel>City</ControlLabel>
             <FormControl
