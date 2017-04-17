@@ -16,17 +16,23 @@ class Authentication::Students::PasswordsController < Devise::PasswordsControlle
   # Resetting password with token
   def reset_password
     resource = Student.reset_password_by_token(reset_password_params)
-
     if resource.errors.messages.blank?
       redirect_to root_path
-    else
-      error_response(message: "An error occurred while changing your password.")
+      flash[:success] = "You have successfully reset your password."
+    elsif params[:student][:password] != params[:student][:password_confirmation]
+      flash[:error] = "Please make sure your passwords match."
+      redirect_to :back
+    elsif params[:student][:password].length < 8
+      flash[:error] = "Please make sure your new password is at least 8 characters long."
+      redirect_to :back
+    else 
+      flash[:error] = "An unknown error occurred when resetting your password."
+      redirect_to :back
     end
   end
 
   def update_password
     @student = Student.find(params[:id])
-
     if params[:student][:password] != params[:student][:password_confirmation]
       error_response(message: "Please make sure the passwords match!", status: :forbidden)
     elsif (params[:student][:password]).nil? || (params[:student][:password_confirmation]).nil?

@@ -16,11 +16,18 @@ class Authentication::Teachers::PasswordsController < Devise::PasswordsControlle
   # Resetting password with token
   def reset_password
     resource = Teacher.reset_password_by_token(reset_password_params)
-
     if resource.errors.messages.blank?
       redirect_to root_path
-    else
-      error_response(message: "An error occurred while changing your password.")
+      flash[:success] = "You have successfully reset your password."
+    elsif params[:teacher][:password] != params[:teacher][:password_confirmation]
+      flash[:error] = "Please make sure your passwords match."
+      redirect_to :back
+    elsif params[:teacher][:password].length < 8
+      flash[:error] = "Please make sure your new password is at least 8 characters long."
+      redirect_to :back
+    else 
+      flash[:error] = "An unknown error occurred when resetting your password."
+      redirect_to :back
     end
   end
 

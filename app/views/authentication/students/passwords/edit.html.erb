@@ -1,6 +1,9 @@
 <%= form_for(resource, as: resource_name , :url => { :action => 'reset_password'}) do |f| %>
   <%= devise_error_messages! %>
   <%= f.hidden_field :reset_password_token %>
+  <!-- Toastr Notifications -->
+  <%= javascript_include_tag "application" %>
+  <%= custom_bootstrap_flash %>
   
   <div class="page-wrapper">
     <%= react_component('Header') %>
