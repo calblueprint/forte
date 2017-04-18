@@ -88,6 +88,46 @@ class StudentSettingsPage extends UserSettings {
     }
   }
 
+  saveAvailability(inputDate) {
+    const { calendar } = this.refs.settingsAvailability.refs
+    var eventArray = $(calendar).fullCalendar('clientEvents');
+
+    var availabilityArray = []
+    for (var i = 0; i < eventArray.length; i++) {
+      availabilityArray = availabilityArray.concat(range_to_array(eventArray[i]['start'], eventArray[i]['end']));
+    }
+    this.setState({ availability: availabilityArray});
+
+    const route = ApiConstants.students.update(this.props.id);
+    const params = {availability: availabilityArray};
+    const success = (response) => {
+      toastr.success("Availability was successfully updated");
+    };
+    const fail = (response) => {
+      toastr.error(response.message);
+    };
+
+    Requester.update(
+        route,
+        params,
+        success,
+        fail
+    );
+  }
+
+  renderCalendar(s) {
+    var calendar;
+    if (s.availability.length !== 0) {
+      calendar = (
+        <Calendar
+            ref="settingsAvailability"
+            isEditable={true}
+            events={availability_to_events(s.availability)} />
+            );
+    }
+    return calendar;
+  }
+
   render() {
     const { person } = this.props;
     let avail = availability_to_events(this.state.person.availability);
@@ -110,7 +150,7 @@ class StudentSettingsPage extends UserSettings {
           <EditableInput label="Last Name" name="last_name" data={s.last_name} />
           <EditableInput label="Gender" name="gender" data={s.gender}
             specialHandler={this.handleIntegerChange.bind(this)} />
-          <EditableInput label="Birthday" name="birthday" data={moment(s.birthday).format("MM/DD/YYYY")} 
+          <EditableInput label="Birthday" name="birthday" data={moment(s.birthday).format("MM/DD/YYYY")}
             specialHandler={this.handleBirthdayChange.bind(this)} />
           <EditableInput label="Email" name="student_email" data={s.student_email} />
           <EditableInput label="School" name="school" data={s.school} />
@@ -168,12 +208,12 @@ class StudentSettingsPage extends UserSettings {
 
         <h2 className="section-title">Scheduling</h2>
         <p className="form-input-description">Click and drag on the calendar to edit times that you're available.</p>
-        <Calendar
-          ref="settingsAvailability"
-          isEditable={true}
-          events={availability_to_events(this.state.person.availability)} />
-
-        <Button className="button button--outline-orange button--sm availability-save-btn">Save</Button>
+        {this.renderCalendar(s)}
+        <Button
+        className="button button--outline-orange button--sm availability-save-btn"
+        onClick={() => this.saveAvailability(s.availability)}>
+        Save
+      </Button>
 
         <h5 className="profile-edit-note">Note: You will need to fill out all the fields</h5>
         <EditableInputGroup title="Payment"

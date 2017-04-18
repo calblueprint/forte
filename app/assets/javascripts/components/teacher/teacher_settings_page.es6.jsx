@@ -10,7 +10,6 @@ class TeacherSettingsPage extends UserSettings {
     super(props);
 
     let person = this.props.person || {};
-    person.availability = [];
     person.stripe_routing_number = "*****";
     person.stripe_account_number = "*****";
     person.stripe_address = "*****";
@@ -22,6 +21,8 @@ class TeacherSettingsPage extends UserSettings {
     person.stripe_account_holder_name = "*****";
     person.stripe_country = "*****";
     person.stripe_ssn_last_4 = "*****";
+    person.availability = [];
+
 
     this.state = {
       addModalIsVisible: false,
@@ -80,10 +81,10 @@ class TeacherSettingsPage extends UserSettings {
     const route = ApiConstants.teachers.update(this.props.id);
     const params = {availability: availabilityArray};
     const success = (response) => {
-      console.log("success");
+      toastr.success("Availability was successfully updated");
     };
     const fail = (response) => {
-      console.log("fail");
+      toastr.error(response.message);
     };
 
     Requester.update(
@@ -94,10 +95,24 @@ class TeacherSettingsPage extends UserSettings {
     );
   }
 
+  renderCalendar(s) {
+    var calendar;
+    if (s.availability.length !== 0) {
+      calendar = (
+        <Calendar
+            ref="settingsAvailability"
+            isEditable={true}
+            events={availability_to_events(s.availability)} />
+            );
+    }
+    return calendar;
+  }
+
   render() {
     const { person } = this.props;
 
     let s = this.state.person;
+
     let school_level = s.school_level;
     if (school_level === 'high_school') {
       school_level = 'High School';
@@ -169,10 +184,7 @@ class TeacherSettingsPage extends UserSettings {
 
       <h2 className="section-title">Scheduling</h2>
       <p className="form-input-description">Click and drag on the calendar to edit times that you're available.</p>
-      <Calendar
-        ref="settingsAvailability"
-        isEditable={true}
-        events={availability_to_events(s.availability, s.timezone)} />
+      {this.renderCalendar(s)}
       <Button
         className="button button--outline-orange button--sm availability-save-btn"
         onClick={() => this.saveAvailability(s.availability)}>

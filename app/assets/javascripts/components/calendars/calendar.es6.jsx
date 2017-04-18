@@ -17,6 +17,7 @@ class Calendar extends React.Component {
   componentDidMount() {
     const { calendar } = this.refs;
     const { events, isEditable } = this.props;
+
     $(calendar).fullCalendar({
       header: false,
       defaultView: 'agendaWeek',
