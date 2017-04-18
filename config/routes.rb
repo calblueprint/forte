@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       get :matched
       get :unmatched
       get :roster
+      get 'matched/:id/lessons', to: 'admin#matched_lessons'
       get 'roster/students/:id', to: 'admin#student'
       get 'roster/teachers/:id', to: 'admin#teacher'
     end
@@ -154,7 +155,8 @@ Rails.application.routes.draw do
     # Matchings
     ##################################################
     get '/matchings/pairs', to: 'matchings#matched_pairs'
-    get '/matchings/:id/lessons', to: 'matchings#past_lessons'
+    get '/matchings/:id/past_lessons', to: 'matchings#past_lessons'
+    get '/matchings/:id/upcoming_lessons', to: 'matchings#upcoming_lessons'
     resources :matchings, only: [:index, :create, :destroy, :show, :update]
 
     ##################################################

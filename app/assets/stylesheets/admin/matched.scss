@@ -100,33 +100,72 @@
   }
 }
 
-.delete-matching-summary {
+.matching-summary {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
 
-  .delete-matching-item {
+  .matching-summary-item {
     padding: 0 10px;
     width: 33.33%;
 
     &:first-of-type { padding-left: 0; }
   }
 
-  .delete-label {
+  .label {
     color: $orange;
     font-size: 13px;
     font-weight: 600;
     margin-bottom: 5px;
+    padding: 0;
     text-transform: uppercase;
   }
 
-  .delete-info {
+  .info {
     margin: 0;
+  }
+}
+
+.matched-lessons-page {
+  padding-top: 30px;
+  max-width: 600px;
+  width: 100%;
+
+  .matching-summary {
+    margin-top: 15px;
   }
 }
 
 .matched-lesson-table {
   width: 100%;
+}
+
+.matched-lessons-tab {
+  color: $grey;
+  display: flex;
+  margin-bottom: 30px;
+  margin-top: 30px;
+
+  button {
+    background: white;
+    border-radius: 4px;
+    letter-spacing: 0;
+    padding: 6px 12px;
+    text-transform: initial;
+
+    &:hover {
+      background: $grey10;
+    }
+
+    &.active {
+      background: $orange;
+      color: white;
+    }
+  }
+}
+
+.matched-lessons-cancel {
+  padding: 0;
 }
 
 @media (max-width: 550px) {

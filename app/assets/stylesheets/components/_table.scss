@@ -22,11 +22,6 @@ table {
     color: $grey80;
   }
 
-  tbody tr:hover td {
-    background-color: rgba($orange, 0.1);
-    cursor: pointer;
-  }
-
   th:not(:first-child) {
     box-shadow: inset $table-border-width 0 0 0 $table-border-color;
   }

@@ -1,5 +1,5 @@
 class MatchingCalendar extends React.Component {
-  
+
   static get propTypes() {
     return {
       availability: React.PropTypes.array,
@@ -51,9 +51,9 @@ class MatchingCalendar extends React.Component {
           }
       },
       selectHelper: true,
-      selectConstraint:{ //won't let you drag to the next day 
-        start: '00:01', 
-        end: '23:59', 
+      selectConstraint: { //won't let you drag to the next day
+        start: '00:01',
+        end: '23:59',
       },
       eventConstraint: { //can't drag events out of bound
         start: "08:00",
@@ -64,7 +64,7 @@ class MatchingCalendar extends React.Component {
       },
       eventClick: function(calEvent, jsEvent, view) {
         if (jsEvent.target.id === 'Delete') {
-          $(calendar).fullCalendar('removeEvents',calEvent._id);
+          $(calendar).fullCalendar('removeEvents', calEvent._id);
         }
       },
       events: unavailableEvents,
@@ -72,7 +72,6 @@ class MatchingCalendar extends React.Component {
       snapDuration: '00:15:00',
     });
    var eventArray = $(calendar).fullCalendar('clientEvents');
-   // console.log(eventArray);
   }
   render () {
     return (

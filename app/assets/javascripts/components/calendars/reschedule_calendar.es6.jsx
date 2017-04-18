@@ -1,5 +1,5 @@
 class RescheduleCalendar extends React.Component {
-  
+
   static get propTypes() {
     return {
       onSelect: React.PropTypes.func,
@@ -48,17 +48,17 @@ class RescheduleCalendar extends React.Component {
           }
       },
       selectHelper: true,
-      selectConstraint:{ //won't let you drag to the next day 
-        start: '00:01', 
-        end: '23:59', 
+      selectConstraint: { // won't let you drag to the next day
+        start: '00:01',
+        end: '23:59',
       },
-      eventConstraint: { //can't drag events out of bound
+      eventConstraint: { // can't drag events out of bound
         start: "08:00",
         end: "22:00",
       },
       snapMinutes: 15,
       events: [
-        { 
+        {
           title: 'Lesson',
           start: startTime,
           end: endTime,

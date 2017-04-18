@@ -6,7 +6,7 @@ class Api::MatchingsController < Api::BaseController
   end
 
   def matched_pairs
-    matchings = Matching.all
+    matchings = Matching.all.order(:id)
     matching_info = []
     matchings.each do |matching|
       matching_info.push({
@@ -22,12 +22,22 @@ class Api::MatchingsController < Api::BaseController
   end
 
   def past_lessons
-    lessons = (Matching.find params[:id])
-                .lessons
+    lessons = (Matching.find params[:id]).lessons
                 .where('end_time <= ?', DateTime.now)
                 .order(end_time: :desc)
 
     render json: lessons,
+           each_serializer: MatchingLessonsSerializer,
+           root: false
+  end
+
+  def upcoming_lessons
+    lessons = (Matching.find params[:id]).lessons
+                .where('end_time > ?', DateTime.now)
+                .order(end_time: :asc)
+
+    render json: lessons,
+           each_serializer: MatchingLessonsSerializer,
            root: false
   end
 

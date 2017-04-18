@@ -46,6 +46,7 @@ function number_to_moment(number, timezone) {
   var minute = ((number%96)%4)*15;
   var m = moment().utc().startOf('week').add(day, 'days').add(hour, 'hours').add(minute, 'minutes');
   return moment.tz(m, timezone);
+  // return m
 }
 
 function get_unavailable_availability(availability) {
@@ -59,5 +60,6 @@ function get_unavailable_availability(availability) {
       unavailability.splice(index, 1);
     }
   }
+  console.log(unavailability);
   return unavailability;
 }

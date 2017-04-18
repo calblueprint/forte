@@ -14,6 +14,12 @@ class AdminController < ApplicationController
     end
   end
 
+  def matched_lessons
+    @matching = Matching.find params[:id]
+    @student = @matching.student
+    @teacher = @matching.teacher
+  end
+
   def roster
   end
 
@@ -35,12 +41,12 @@ class AdminController < ApplicationController
       error_response(message: "This account already exists as an admin.", status: :forbidden)
     elsif email.nil? or !email.include? "@" or !email.include? "."
       error_response(message: "Please enter a valid email.", status: :forbidden)
-    else 
+    else
       Admin.create(
         email: email,
         password: "password"
       )
       render_json_message(:created)
     end
-  end 
+  end
 end

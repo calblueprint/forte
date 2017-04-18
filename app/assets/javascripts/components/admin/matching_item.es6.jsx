@@ -22,8 +22,6 @@ class MatchingItem extends React.Component {
   hideEditModal() { this.setState({ showEditModal: false, }); }
   showDeleteModal() { this.setState({ showDeleteModal: true, }); }
   hideDeleteModal() { this.setState({ showDeleteModal: false, }); }
-  showLessonsModal() { this.setState({ showLessonsModal: true, }); }
-  hideLessonsModal() { this.setState({ showLessonsModal: false, }); }
 
   renderDeleteModal() {
     const { matching } = this.props;
@@ -54,18 +52,6 @@ class MatchingItem extends React.Component {
           matching={matching.match_info}
           student={student}
           teacher={teacher} />
-      )
-    }
-  }
-
-  renderLessonsModal() {
-    const { matching } = this.props;
-
-    if (this.state.showLessonsModal) {
-      return (
-        <MatchingLessonsModal show={this.state.showLessonsModal}
-          handleClose={this.hideLessonsModal.bind(this)}
-          matching={matching.match_info} />
       )
     }
   }
@@ -122,17 +108,21 @@ class MatchingItem extends React.Component {
   }
 
   renderDropdownButton() {
+    const { id } = this.props.matching.match_info;
+    const lessonRoute = RouteConstants.admin.matchedLesson(id);
+
     return (
       <div className="matching-options">
         <DropdownButton bsStyle="link" title="Options" pullRight={true}>
-          <MenuItem eventKey="1"
-            onClick={this.showLessonsModal.bind(this)}>Show Past Lessons</MenuItem>
+          <MenuItem eventKey="1" onClick={() =>
+            window.location = lessonRoute}>
+            Show Lessons
+          </MenuItem>
           <MenuItem eventKey="2"
             onClick={this.showEditModal.bind(this)}>Edit Matching</MenuItem>
           <MenuItem divider />
           <MenuItem eventKey="3"
             onClick={this.showDeleteModal.bind(this)}>Delete</MenuItem>
-          {this.renderLessonsModal()}
           {this.renderEditModal()}
           {this.renderDeleteModal()}
         </DropdownButton>

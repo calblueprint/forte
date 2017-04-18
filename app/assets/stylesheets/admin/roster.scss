@@ -20,6 +20,11 @@
     margin-right: 30px;
   }
 
+  tbody tr:hover td {
+    background-color: rgba($orange, 0.1);
+    cursor: pointer;
+  }
+
   .roster-header-controls {
     align-items: center;
     display: flex;
