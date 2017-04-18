@@ -52,14 +52,51 @@
     }
   }
 
-  .instruments-wrapper {
+  .carousel-wrapper {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 60px;
+
+    .arrow-button {
+      display: flex;
+      align-items: center;
+      padding: 0px 15px;
+      cursor: pointer;
+      color: $grey80;
+
+      &:hover {
+        background: $grey10;
+      }
+
+      &:active {
+        background: $grey20;
+      }
+
+      .button-inactive {
+        color: $grey40;
+      }
+    }
+
+    .button-disabled {
+      color: $grey20;
+      cursor: default;
+      &:hover {
+        background: transparent;
+      }
+    }
+  }
+
+  .instruments-wrapper {
+    height: 220px;
+    width: 1020px;
+    overflow: hidden;
+    white-space:nowrap
+  }
+
+  .instruments-inner-wrapper {
+    transition: 200ms;
   }
 
   .instrument {
+    display:inline-block;
     background: #f6f6f6;
     height: 200px;
     width: 300px;
