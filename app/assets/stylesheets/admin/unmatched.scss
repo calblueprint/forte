@@ -53,7 +53,15 @@ $pane-footer-height: 50px;
     z-index: 10;
 
     .back-button {
-      align-self: center;
+      position: absolute;
+      bottom: 0px;
+      top: 0px;
+      width: 40px;
+
+      .glyphicon {
+        display: inline-flex;
+        align-items: center;
+      }
     }
 
     h2 {

@@ -23,12 +23,20 @@ class EditableInputGroup extends React.Component {
       this.props.fetchProfile();
     }
 
-    const reject = () => {
+    const reject = (response) => {
       this.setState({ editable: true, });
-      toastr.error("There's been an error. Please try again!");
+      if (response.message) {
+        toastr.error(response.message);
+      } else {
+        toastr.error("There's been an error. Please try again!");
+      }
     }
 
-    this.props.attemptSave(resolve, reject);
+    if (this.props.personId) {
+      this.props.attemptSave(resolve, reject, this.props.personId);
+    } else {
+      this.props.attemptSave(resolve, reject);
+    }
   }
 
   render() {
@@ -57,3 +65,11 @@ class EditableInputGroup extends React.Component {
     );
   }
 }
+
+EditableInputGroup.propTypes = {
+  title        : React.PropTypes.string.isRequired,
+  fetchProfile : React.PropTypes.func,
+  attemptSave  : React.PropTypes.func,
+  handleChange : React.PropTypes.func,
+  personId     : React.PropTypes.number,
+};

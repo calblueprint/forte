@@ -10,24 +10,26 @@ class TeacherSettingsPage extends UserSettings {
     super(props);
 
     let person = this.props.person || {};
-    person.availability = [];
     person.stripe_routing_number = "*****";
     person.stripe_account_number = "*****";
-    person.stripe_address_line1 = "*****";
-    person.stripe_address_city = "*****";
-    person.stripe_address_state = "*****";
-    person.stripe_address_postal_code = "*****";
+    person.stripe_address = "*****";
+    person.stripe_city = "*****";
+    person.stripe_state = "*****";
+    person.stripe_zipcode = "*****";
     person.stripe_account_holder_dob = "*****";
     person.stripe_account_holder_type = "*****";
     person.stripe_account_holder_name = "*****";
     person.stripe_country = "*****";
     person.stripe_ssn_last_4 = "*****";
+    person.availability = [];
+
 
     this.state = {
       addModalIsVisible: false,
       removeModalIsVisible: false,
       person: this.props.person,
       id: this.props.id,
+      errors: {},
     }
   }
 
@@ -51,55 +53,6 @@ class TeacherSettingsPage extends UserSettings {
     Requester.get(route, resolve, reject);
   }
 
-  openRemoveModal() {
-    this.setState({ removeModalIsVisible: true });
-  }
-
-  closeRemoveModal() {
-    this.setState({ removeModalIsVisible: false });
-  }
-
-  openAddModal() {
-    this.setState({ addModalIsVisible: true });
-  }
-
-  closeAddModal() {
-    this.setState({ addModalIsVisible: false });
-  }
-
-  renderRemoveModal(instrument) {
-    const { removeModalIsVisible } = this.state;
-
-    if (removeModalIsVisible) {
-      return (
-        <RemoveInstrumentModal
-          isVisible={removeModalIsVisible}
-          handleClose={() => this.closeRemoveModal()}
-          fetchInstruments={() => this.fetchInstruments()}
-          instrument={instrument}
-        />
-      );
-    }
-  }
-
-  renderAddModal() {
-    const { addModalIsVisible } = this.state;
-    const { instruments } = this.state.person;
-    const { person } = this.props;
-
-    if (addModalIsVisible) {
-      return (
-        <AddInstrumentModal
-          isVisible={addModalIsVisible}
-          handleClose={() => this.closeAddModal()}
-          fetchInstruments={() => this.fetchInstruments()}
-          instruments={instruments}
-          instrumentable={person}
-        />
-      )
-    }
-  }
-
   fetchInstruments() {
     const route = ApiConstants.teachers.instruments(this.props.id);
     const resolve = (response) => {
@@ -115,28 +68,6 @@ class TeacherSettingsPage extends UserSettings {
     );
   }
 
-  renderInstrument(instrument) {
-    return (
-      <div className="instrument">
-        <div className="instrumentName">
-          {instrument.name}
-        </div>
-        <a className="link"
-          onClick={() => this.openRemoveModal()}>
-          [Remove]
-        </a>
-        {this.renderRemoveModal(instrument)}
-      </div>
-    );
-  }
-
-  renderInstruments() {
-    const { instruments } = this.state.person;
-    if (instruments) {
-      return instruments.map((instrument) => this.renderInstrument(instrument));
-    }
-  }
-
   saveAvailability(inputDate) {
     const { calendar } = this.refs.settingsAvailability.refs
     var eventArray = $(calendar).fullCalendar('clientEvents');
@@ -150,10 +81,10 @@ class TeacherSettingsPage extends UserSettings {
     const route = ApiConstants.teachers.update(this.props.id);
     const params = {availability: availabilityArray};
     const success = (response) => {
-      console.log("success");
+      toastr.success("Availability was successfully updated");
     };
     const fail = (response) => {
-      console.log("fail");
+      toastr.error(response.message);
     };
 
     Requester.update(
@@ -164,10 +95,24 @@ class TeacherSettingsPage extends UserSettings {
     );
   }
 
+  renderCalendar(s) {
+    var calendar;
+    if (s.availability.length !== 0) {
+      calendar = (
+        <Calendar
+            ref="settingsAvailability"
+            isEditable={true}
+            events={availability_to_events(s.availability)} />
+            );
+    }
+    return calendar;
+  }
+
   render() {
     const { person } = this.props;
 
     let s = this.state.person;
+
     let school_level = s.school_level;
     if (school_level === 'high_school') {
       school_level = 'High School';
@@ -191,21 +136,43 @@ class TeacherSettingsPage extends UserSettings {
         <EditableInput label="Last Name" name="last_name" data={s.last_name} />
         <EditableInput label="Gender" name="gender" data={s.gender}
           specialHandler={this.handleIntegerChange.bind(this)} />
-        <EditableInput label="Birthday" name="birthday" data={moment(s.birthday).format("MM/DD/YYYY")} />
+        <EditableInput label="Birthday" name="birthday" data={moment(s.birthday).format("MM/DD/YYYY")}
+          specialHandler={this.handleBirthdayChange.bind(this)} />
         <EditableInput label="Email" name="email" data={s.email} />
         <EditableInput label="School" name="school" data={s.school} />
         <EditableInput label="Class Level" name="teacher_school_level" data={school_level}
           specialHandler={this.handleIntegerChange.bind(this)} />
         <EditableInput label="Teacher Phone Number" name="phone" data={s.phone} />
-        <EditableInput label="Address" name="address" data={s.address} />
-        <EditableInput label="Apt #" name="address2" data={s.address2} />
-        <EditableInput label="City" name="city" data={s.city} />
-        <EditableInput label="State" name="state" data={s.state}
-          specialHandler={this.handleIntegerChange.bind(this)} />
-        <EditableInput label="Zip Code" name="zipcode" data={s.zipcode} />
+      </EditableInputGroup>
+
+      <EditableInputGroup title="Teacher Address"
+                          handleChange={this.handleChange.bind(this)}
+                          attemptSave={this.attemptAddressSave.bind(this)}
+                          fetchProfile={this.fetchProfile.bind(this)} >
+        <EditableInput
+          label="Address"
+          name="address"
+          getValidationState={this.getValidationState.bind(this)}
+          displayErrorMessage={this.displayErrorMessage.bind(this)}
+          renderOptions={this.renderOptions.bind(this)}
+          handleIntegerChange={this.handleIntegerChange.bind(this)}
+          setState={this.setState.bind(this)}
+          handleChange={this.handleChange.bind(this)}
+          is_stripe_address={false}
+          data={s.full_address}
+          error={this.state.errors} />
         <EditableInput label="Distance Willing to Travel" name="travel_distance"
           data={s.travel_distance} specialHandler={this.handleIntegerChange.bind(this)} />
       </EditableInputGroup>
+
+      <EditableInputGroup title="Change Your Password"
+                            handleChange={this.handleChange.bind(this)}
+                            attemptSave={this.updateTeacherPassword.bind(this)}
+                            fetchProfile={this.fetchProfile.bind(this)}
+                            personId={this.props.id}>
+          <EditableInput label="New Password" name="password" data={s.password} />
+          <EditableInput label="New Password Confirmation" name="password_confirmation" data={s.password_confirmation} />
+        </EditableInputGroup>
 
       <h2 className="section-title">Musical Experience</h2>
       {this.renderInstruments()}
@@ -217,33 +184,38 @@ class TeacherSettingsPage extends UserSettings {
 
       <h2 className="section-title">Scheduling</h2>
       <p className="form-input-description">Click and drag on the calendar to edit times that you're available.</p>
-      <Calendar
-        ref="settingsAvailability"
-        isEditable={true}
-        events={availability_to_events(s.availability, s.timezone)} />
+      {this.renderCalendar(s)}
       <Button
         className="button button--outline-orange button--sm availability-save-btn"
         onClick={() => this.saveAvailability(s.availability)}>
         Save
       </Button>
 
+      <h5 className="profile-edit-note">Note: You will need to fill out all the fields</h5>
       <EditableInputGroup title="Payment"
                             handleChange={this.handleChange.bind(this)}
                             attemptSave={this.attemptStripeAccountSave.bind(this)}
                             fetchProfile={this.fetchProfile.bind(this)}>
-          <EditableInput label="Bank Account Holder Name" name="stripe_account_holder_name" data={s.stripe_account_holder_name} />
-          <EditableInput label="Bank Account Holder DOB" name="stripe_account_holder_dob" data={s.stripe_account_holder_dob} />
-          <EditableInput label="Bank Account Holder Type" name="stripe_account_holder_type" data={s.stripe_account_holder_type} />
-          <EditableInput label="Routing Number" name="stripe_routing_number" data={s.stripe_routing_number} />
-          <EditableInput label="Bank Account Number" name="stripe_account_number" data={s.stripe_account_number} />
-          <EditableInput label="Address" name="stripe_address_line1" data={s.stripe_address_line1} />
-          <EditableInput label="City" name="stripe_address_city" data={s.stripe_address_city} />
-          <EditableInput label="State" name="stripe_address_state"
-            data={s.stripe_address_state}
-            specialHandler={this.handleIntegerChange.bind(this)} />
-          <EditableInput label="Country" name="stripe_country" data={s.stripe_country} />
-          <EditableInput label="Postal Code" name="stripe_address_postal_code" data={s.stripe_address_postal_code} />
-          <EditableInput label="Last 4 Digits SSN" name="stripe_ssn_last_4" data={s.stripe_ssn_last_4} />
+          <EditableInput label="Bank Account Holder Name" name="stripe_account_holder_name" data={s.stripe_account_holder_name} error={this.state.errors}
+            specialHandler={this.handleBirthdayChange.bind(this)} />
+          <EditableInput label="Bank Account Holder DOB" name="stripe_account_holder_dob" data={s.stripe_account_holder_dob} error={this.state.errors} />
+          <EditableInput label="Bank Account Holder Type" name="stripe_account_holder_type" data={s.stripe_account_holder_type} specialHandler={this.handleChange.bind(this)} error={this.state.errors} />
+          <EditableInput label="Routing Number" name="stripe_routing_number" data={s.stripe_routing_number} error={this.state.errors} />
+          <EditableInput label="Bank Account Number" name="stripe_account_number" data={s.stripe_account_number} error={this.state.errors} />
+          <EditableInput
+            label="Billing Address"
+            name="address"
+            getValidationState={this.getValidationState.bind(this)}
+            displayErrorMessage={this.displayErrorMessage.bind(this)}
+            renderOptions={this.renderOptions.bind(this)}
+            handleIntegerChange={this.handleIntegerChange.bind(this)}
+            setState={this.setState.bind(this)}
+            handleChange={this.handleChange.bind(this)}
+            is_stripe_address={true}
+            data={s.stripe_address}
+            error={this.state.errors} />
+          <EditableInput label="Country" name="stripe_country" specialHandler={this.handleCountryChange.bind(this)} data={s.stripe_country} error={this.state.errors} />
+          <EditableInput label="Last 4 Digits SSN" name="stripe_ssn_last_4" data={s.stripe_ssn_last_4} error={this.state.errors} />
         </EditableInputGroup>
 
         <EditableInputGroup title="Eligibility"

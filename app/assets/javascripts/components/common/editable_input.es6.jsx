@@ -7,55 +7,33 @@
  * @prop specialHandler - callback for special input types
  */
 
-class EditableInput extends React.Component {
-
-  renderOptions(type) {
-    var optionsArray = []
-    var retOptions = []
-    var i = 0;
-    var j = 0;
-    switch(type) {
-      case 'gender':
-        optionsArray = GENDERS;
-        break;
-      case 'income_range':
-        optionsArray = INCOME_RANGES;
-        break;
-      case 'school_level':
-        optionsArray = STUDENT_SCHOOL_LEVELS;
-        break;
-      case 'teacher_school_level':
-        optionsArray = TEACHER_SCHOOL_LEVELS;
-        break;
-      case 'travel_distance':
-        optionsArray = TRAVEL_DISTANCES;
-        break;
-      case 'state':
-        optionsArray = STATES;
-        break;
-      case 'stripe_address_state':
-        optionsArray = STATES;
-        break;
-      case 'household_number':
-        optionsArray = HOUSEHOLD_NUMBER;
-        j = 1;
-      case 'stripe_country':
-        for (var i = 0; i < COUNTRY_CODES.length; i++) {
-          retOptions.push(<option value={COUNTRY_CODES[i].name}>{COUNTRY_CODES[i].name}</option>);
-        }
-        return retOptions
+class EditableInput extends BaseUserComponent {
+  displayErrorMessage(name) {
+    if (this.props.error && this.props.error[name] !== null) {
+      return <HelpBlock className="error-message">{this.props.error[name]}</HelpBlock>;
     }
-    for (; i < optionsArray.length; i++, j++) {
-      retOptions.push(<option value={j}>{optionsArray[i]}</option>);
-    }
-    return retOptions;
   }
-
+  
   render() {
     let inputVal;
+    let errorVal;
     if (this.props.editable) {
       switch(this.props.name) {
+        case "address":
+          inputVal = (
+              <AddressForm
+                className="form-group"
+                getValidationState={this.props.getValidationState}
+                displayErrorMessage={this.props.displayErrorMessage}
+                renderOptions={this.props.renderOptions}
+                handleIntegerChange={this.props.handleIntegerChange}
+                setState={this.props.setState}
+                handleChange={this.props.handleChange}
+                is_stripe_address={this.props.is_stripe_address} />
+          )
+          break;
         case "birthday":
+        case "stripe_account_holder_dob":
           this.props.data = moment(this.props.data).format("MM/DD/YYYY");
         case "phone":
         case "reference1_phone":
@@ -69,16 +47,16 @@ class EditableInput extends React.Component {
               displayErrors={() => {}} />
           )
           break;
-
         case "gender":
         case "income_range":
         case "household_number":
-        case "school_level":
+        case "student_school_level":
         case "travel_distance":
         case "state":
         case "teacher_school_level":
-        case "stripe_country":
+        case "stripe_account_holder_type":
         case "stripe_address_state":
+        case "stripe_country":
           inputVal = (
             <FormControl componentClass="select"
               name={this.props.name}
@@ -86,9 +64,29 @@ class EditableInput extends React.Component {
               <option value="" disabled selected>{this.props.data}</option>
               {this.renderOptions(this.props.name)}
             </FormControl>
-          )
+          );
+          errorVal = this.displayErrorMessage(this.props.name);
           break;
-
+        case "password":
+          inputVal = (
+            <input name={this.props.name} type="text"
+                className="form-control"
+                type="password"
+                defaultValue={this.props.data}
+                onChange={this.props.handleChange} />
+          );
+          errorVal = this.displayErrorMessage(this.props.name);
+          break;
+        case "password_confirmation":
+          inputVal = (
+            <input name={this.props.name} type="text"
+                className="form-control"
+                type="password"
+                defaultValue={this.props.data}
+                onChange={this.props.handleChange} />
+          );
+          errorVal = this.displayErrorMessage(this.props.name);
+          break;
         default:
           inputVal = (
             <input name={this.props.name} type="text"
@@ -96,12 +94,13 @@ class EditableInput extends React.Component {
                 defaultValue={this.props.data}
                 onChange={this.props.handleChange} />
           );
+          errorVal = this.displayErrorMessage(this.props.name);
           break;
       }
 
     } else {
       inputVal = this.props.data;
-
+      errorVal = null;
       if (this.props.name == 'birthday') {
         inputVal = moment(this.props.data).format("MM/DD/YYYY");
       }
@@ -127,6 +126,7 @@ class EditableInput extends React.Component {
         </div>
         <div className="input-box-container">
           { inputVal }
+          { errorVal }
         </div>
       </fieldset>
     );
@@ -138,4 +138,11 @@ EditableInput.propTypes = {
   name         : React.PropTypes.string.isRequired,
   editable     : React.PropTypes.bool,
   handleChange : React.PropTypes.func,
+  error        : React.PropTypes.object,
+  getValidationState: React.PropTypes.func,
+  displayErrorMessage: React.PropTypes.func,
+  renderOptions: React.PropTypes.func,
+  handleIntegerChange: React.PropTypes.func,
+  setState: React.PropTypes.func,
+  is_stripe_address: React.PropTypes.bool, 
 };

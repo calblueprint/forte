@@ -6,7 +6,7 @@ class MatchingModal extends React.Component {
       showNextScreen: false,
       lessonTime: [],
       location: '',
-      default_price: '',
+      default_price: '0',
       errors: '',
     };
   }
@@ -118,6 +118,27 @@ class MatchingModal extends React.Component {
     const { handleClose, student, teacher } = this.props;
     const { showNextScreen } = this.state;
     var overlappingAvailability = intersection(student.availability, teacher.availability);
+
+    let defaultPrice, teachForFreeInfo;
+    if (!teacher.teach_for_free) {
+      defaultPrice =
+      <FormGroup>
+        <ControlLabel>Default Price</ControlLabel>
+        <InputGroup>
+          <InputGroup.Addon>$</InputGroup.Addon>
+          <FormControl
+            componentClass="input"
+            name="default_price"
+            type="number"
+            onChange={(event) => this.handleChange(event)}>
+          </FormControl>
+          <InputGroup.Addon>.00</InputGroup.Addon>
+        </InputGroup>
+      </FormGroup>
+    } else {
+      teachForFreeInfo = <h4>This teacher has decided to teach for free!</h4>
+    }
+
     if (showNextScreen) {
       return (
         <div>
@@ -159,19 +180,8 @@ class MatchingModal extends React.Component {
                 </option>
               </FormControl>
             </FormGroup>
-            <FormGroup>
-              <ControlLabel>Default Price</ControlLabel>
-              <InputGroup>
-                <InputGroup.Addon>$</InputGroup.Addon>
-                <FormControl
-                  componentClass="input"
-                  name="default_price"
-                  type="number"
-                  onChange={(event) => this.handleChange(event)}>
-                </FormControl>
-                <InputGroup.Addon>.00</InputGroup.Addon>
-              </InputGroup>
-            </FormGroup>
+            {teachForFreeInfo}
+            {defaultPrice}
           </Modal.Body>
           <Modal.Footer>
             <Button className="button button--outline-orange" onClick={handleClose}>Cancel</Button>

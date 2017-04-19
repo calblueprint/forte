@@ -17,17 +17,14 @@ class StudentSettingsPage extends UserSettings {
     person.exp_year = "*****";
     person.cardholder_name = "*****";
     person.instruments = null;
-    person.stripe_address_line1 = "*****";
-    person.stripe_address_line2 = "*****";
-    person.stripe_address_city = "*****";
-    person.stripe_address_state = "*****";
-    person.stripe_address_zip = "*****";
+    person.stripe_address = "*****";
 
     this.state = {
       addModalIsVisible: false,
       removeModalIsVisible: false,
       person: person,
       id: this.props.id,
+      errors: {},
     }
   }
 
@@ -51,14 +48,6 @@ class StudentSettingsPage extends UserSettings {
     Requester.get(route, resolve, reject);
   }
 
-  openRemoveModal() { this.setState({ removeModalIsVisible: true }); }
-
-  closeRemoveModal() { this.setState({ removeModalIsVisible: false }); }
-
-  openAddModal() { this.setState({ addModalIsVisible: true }); }
-
-  closeAddModal() { this.setState({ addModalIsVisible: false }); }
-
   renderRemoveModal(instrument) {
     const { removeModalIsVisible } = this.state;
 
@@ -71,24 +60,6 @@ class StudentSettingsPage extends UserSettings {
           instrument={instrument}
         />
       );
-    }
-  }
-
-  renderAddModal() {
-    const { addModalIsVisible } = this.state;
-    const { instruments } = this.state.person;
-    const { person } = this.props;
-
-    if (addModalIsVisible) {
-      return (
-        <AddInstrumentModal
-          isVisible={addModalIsVisible}
-          handleClose={() => this.closeAddModal()}
-          fetchInstruments={() => this.fetchInstruments()}
-          instruments={instruments}
-          instrumentable={person}
-        />
-      )
     }
   }
 
@@ -107,28 +78,6 @@ class StudentSettingsPage extends UserSettings {
     );
   }
 
-  renderInstrument(instrument) {
-    return (
-      <div className="instrument">
-        <div className="instrumentName">
-          {instrument.name}
-        </div>
-        <a className="link"
-          onClick={() => this.openRemoveModal()}>
-          [Remove]
-        </a>
-        {this.renderRemoveModal(instrument)}
-      </div>
-    );
-  }
-
-  renderInstruments() {
-    const { instruments } = this.state.person;
-    if (instruments) {
-      return instruments.map((instrument) => this.renderInstrument(instrument));
-    }
-  }
-
   renderAvailability() {
     // TODO:
   }
@@ -137,6 +86,46 @@ class StudentSettingsPage extends UserSettings {
     if (name == 'waiver_date') {
       this.setState({ waiver_date: moment });
     }
+  }
+
+  saveAvailability(inputDate) {
+    const { calendar } = this.refs.settingsAvailability.refs
+    var eventArray = $(calendar).fullCalendar('clientEvents');
+
+    var availabilityArray = []
+    for (var i = 0; i < eventArray.length; i++) {
+      availabilityArray = availabilityArray.concat(range_to_array(eventArray[i]['start'], eventArray[i]['end']));
+    }
+    this.setState({ availability: availabilityArray});
+
+    const route = ApiConstants.students.update(this.props.id);
+    const params = {availability: availabilityArray};
+    const success = (response) => {
+      toastr.success("Availability was successfully updated");
+    };
+    const fail = (response) => {
+      toastr.error(response.message);
+    };
+
+    Requester.update(
+        route,
+        params,
+        success,
+        fail
+    );
+  }
+
+  renderCalendar(s) {
+    var calendar;
+    if (s.availability.length !== 0) {
+      calendar = (
+        <Calendar
+            ref="settingsAvailability"
+            isEditable={true}
+            events={availability_to_events(s.availability)} />
+            );
+    }
+    return calendar;
   }
 
   render() {
@@ -161,18 +150,31 @@ class StudentSettingsPage extends UserSettings {
           <EditableInput label="Last Name" name="last_name" data={s.last_name} />
           <EditableInput label="Gender" name="gender" data={s.gender}
             specialHandler={this.handleIntegerChange.bind(this)} />
-          <EditableInput label="Birthday" name="birthday" data={moment(s.birthday).format("MM/DD/YYYY")} />
+          <EditableInput label="Birthday" name="birthday" data={moment(s.birthday).format("MM/DD/YYYY")}
+            specialHandler={this.handleBirthdayChange.bind(this)} />
           <EditableInput label="Email" name="student_email" data={s.student_email} />
           <EditableInput label="School" name="school" data={s.school} />
-          <EditableInput label="Grade" name="school_level" data={s.school_level}
+          <EditableInput label="Grade" name="student_school_level" data={s.school_level}
             specialHandler={this.handleIntegerChange.bind(this)} />
           <EditableInput label="Student Phone Number" name="student_phone" data={s.student_phone} />
-          <EditableInput label="Address" name="address" data={s.address} />
-          <EditableInput label="Apt #" name="address_apt" data={s.address_apt} />
-          <EditableInput label="City" name="city" data={s.city} />
-          <EditableInput label="State" name="state" data={s.state}
-            specialHandler={this.handleIntegerChange.bind(this)} />
-          <EditableInput label="Zip Code" name="zipcode" data={s.zipcode} />
+        </EditableInputGroup>
+
+        <EditableInputGroup title="Student Address"
+                            handleChange={this.handleChange.bind(this)}
+                            attemptSave={this.attemptAddressSave.bind(this)}
+                            fetchProfile={this.fetchProfile.bind(this)}>
+          <EditableInput
+            label="Address"
+            name="address"
+            getValidationState={this.getValidationState.bind(this)}
+            displayErrorMessage={this.displayErrorMessage.bind(this)}
+            renderOptions={this.renderOptions.bind(this)}
+            handleIntegerChange={this.handleIntegerChange.bind(this)}
+            setState={this.setState.bind(this)}
+            handleChange={this.handleChange.bind(this)}
+            is_stripe_address={false}
+            data={s.full_address}
+            error={this.state.errors} />
           <EditableInput label="Distance Willing to Travel" name="travel_distance"
             data={s.travel_distance} specialHandler={this.handleIntegerChange.bind(this)} />
         </EditableInputGroup>
@@ -187,6 +189,15 @@ class StudentSettingsPage extends UserSettings {
           <EditableInput label="Parent/Guardian Email" name="email" data={s.email} />
         </EditableInputGroup>
 
+        <EditableInputGroup title="Change Your Password"
+                            handleChange={this.handleChange.bind(this)}
+                            attemptSave={this.updateStudentPassword.bind(this)}
+                            fetchProfile={this.fetchProfile.bind(this)}
+                            personId={this.props.id}>
+          <EditableInput label="New Password" name="password" data={s.password} />
+          <EditableInput label="New Password Confirmation" name="password_confirmation" data={s.password_confirmation} />
+        </EditableInputGroup>
+
         <h2 className="section-title">Musical Experience</h2>
         {this.renderInstruments()}
         <Button className="button button--outline-orange button--sm marginTop-md"
@@ -197,25 +208,34 @@ class StudentSettingsPage extends UserSettings {
 
         <h2 className="section-title">Scheduling</h2>
         <p className="form-input-description">Click and drag on the calendar to edit times that you're available.</p>
-        <Calendar
-          ref="settingsAvailability"
-          isEditable={true}
-          events={availability_to_events(this.state.person.availability)} />
+        {this.renderCalendar(s)}
+        <Button
+        className="button button--outline-orange button--sm availability-save-btn"
+        onClick={() => this.saveAvailability(s.availability)}>
+        Save
+      </Button>
 
-        <Button className="button button--outline-orange button--sm availability-save-btn">Save</Button>
-
+        <h5 className="profile-edit-note">Note: You will need to fill out all the fields</h5>
         <EditableInputGroup title="Payment"
                             handleChange={this.handleChange.bind(this)}
                             attemptSave={this.attemptCardSave.bind(this)}
                             fetchProfile={this.fetchProfile.bind(this)}>
-          <EditableInput label="Card Number" name="card_number" data={s.card_number} />
-          <EditableInput label="CVC" name="cvc" data={s.cvc} />
-          <EditableInput label="Expiration Month" name="exp_month" data={s.exp_month} />
-          <EditableInput label="Expiration Year" name="exp_year" data={s.exp_year} />
-          <EditableInput label="Address 1" name="stripe_address_line1" data={s.stripe_address_line1} />
-          <EditableInput label="Address 2" name="stripe_address_line2" data={s.stripe_address_line2} />
-          <EditableInput label="City" name="stripe_address_city" data={s.stripe_address_city} />
-          <EditableInput label="ZIP" name="stripe_address_zip" data={s.stripe_address_zip} />
+          <EditableInput label="Card Number" name="card_number" data={s.card_number} error={this.state.errors} />
+          <EditableInput label="CVC" name="cvc" data={s.cvc} error={this.state.errors}/>
+          <EditableInput label="Expiration Month" name="exp_month" data={s.exp_month} error={this.state.errors}/>
+          <EditableInput label="Expiration Year" name="exp_year" data={s.exp_year} error={this.state.errors}/>
+          <EditableInput
+            label="Billing Address"
+            name="address"
+            getValidationState={this.getValidationState.bind(this)}
+            displayErrorMessage={this.displayErrorMessage.bind(this)}
+            renderOptions={this.renderOptions.bind(this)}
+            handleIntegerChange={this.handleIntegerChange.bind(this)}
+            setState={this.setState.bind(this)}
+            handleChange={this.handleChange.bind(this)}
+            is_stripe_address={true}
+            data={s.stripe_address}
+            error={this.state.errors} />
         </EditableInputGroup>
 
         <EditableInputGroup title="Eligibility"

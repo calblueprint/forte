@@ -1,4 +1,4 @@
-class StudentForm extends React.Component {
+class StudentForm extends BaseUserComponent {
   constructor() {
     super();
     this.state = {
@@ -38,11 +38,11 @@ class StudentForm extends React.Component {
       exp_month: null,
       exp_year: null,
       cardholder_name: null,
-      stripe_address_line1: null,
-      stripe_address_line2: null,
-      stripe_address_city: null,
-      stripe_address_state: null,
-      stripe_address_zip: null,
+      stripe_address: null,
+      stripe_address2: null,
+      stripe_city: null,
+      stripe_state: null,
+      stripe_zipcode: null,
       activeInstruments: {},
       instruments: {},
       instruments_attributes: [],
@@ -52,223 +52,6 @@ class StudentForm extends React.Component {
       errors: {},
       loading: false,
     }
-  }
-
-  componentDidMount() {
-    // set up active instruments object
-    var activeInstruments = {}
-    const hash = window.location.hash.replace("#", "");
-
-    for (var i = 0; i < INSTRUMENTS.length; i++) {
-      let item = INSTRUMENTS[i];
-
-      if (item === hash) {
-        activeInstruments[item] = true;
-      } else {
-        activeInstruments[item] = false;
-      }
-    }
-
-    this.setState({ activeInstruments: activeInstruments });
-
-    // set up instruments fields object
-    var instruments = {}
-    for (var i = 0; i < INSTRUMENTS.length; i++) {
-      instruments[INSTRUMENTS[i]] = {
-        proficiency: null,
-        years_played: null,
-        is_primary: false,
-      };
-    }
-    this.setState({ instruments: instruments });
-  }
-
-  getValidationState(name) {
-    if (this.state.errors[name]) {
-      return 'error';
-    }
-  }
-
-  displayErrorMessage(name) {
-    if (this.state.errors[name]) {
-      return <HelpBlock className="error-message">{this.state.errors[name]}</HelpBlock>;
-    }
-  }
-
-  handleChange(event) {
-    var name = $(event.target).attr("name");
-    var value = $(event.target).val();
-    this.setState({ [name] : value });
-  }
-
-  handleBooleanChange(event) {
-    const name = $(event.target).attr("name");
-    var value = $(event.target).val();
-    value = (value == "true");
-    this.setState({ [name] : value });
-  }
-
-  handleIntegerChange(event) {
-    const name = $(event.target).attr("name");
-    var value = $(event.target).val();
-    value = parseInt(value);
-    this.setState({ [name] : value });
-  }
-
-  handleDatetimeChange(dateTime, name) {
-    // Due to form input, birthday is not a moment but an event
-    const { errors } = this.state;
-    if (name == 'birthday') {
-      const name = $(dateTime.target).attr("name");
-      var value = $(dateTime.target).val();
-      if (value.length == 10) {
-        value = moment(value, "MM/DD/YYYY");
-        if (value.isValid()) {
-          delete errors['birthday'];
-          this.setState({ birthday: moment(value, "MM/DD/YYYY"), errors: errors });
-        }
-        else {
-          errors.birthday = "Invalid Birth Date"
-          this.setState({errors : errors });
-        }
-      }
-    // waiver date is a moment since we are using the datepicker
-    } else if (name == 'waiver_date') {
-      this.setState({ waiver_date: dateTime });
-    }
-  }
-
-  handleInstrumentFieldChange(event, instrument) {
-    const name = $(event.target).attr("name");
-    var value = $(event.target).val();
-    value = parseInt(value);
-    this.setState({
-      instruments: update(this.state.instruments, {[instrument]: {[name]: {$set: value}}}),
-    });
-  }
-
-  handleInstrumentClick(event) {
-    const { instruments, activeInstruments } = this.state;
-    const instrument = event.target.textContent;
-    const currentState = activeInstruments[instrument];
-    this.setState({
-      activeInstruments: update(this.state.activeInstruments, {[instrument]: {$set: !currentState}}),
-    });
-  }
-
-  handleAddressChange(event) {
-
-    function fillInAddress() {
-      var componentForm = {
-        street_number: 'short_name',
-        route: 'long_name',
-        locality: 'long_name',
-        administrative_area_level_1: 'short_name',
-        postal_code: 'short_name'
-      };
-
-      var place = autocomplete.getPlace();
-      var lat = place["geometry"]["location"]["lat"]();
-      var lng = place["geometry"]["location"]["lng"]();
-      this.setState({ lat: lat, lng: lng });
-
-      // Get each component of the address from the place details
-      // and fill the corresponding field on the form.
-      var street_number, street_name;
-      for (var i = 0; i < place.address_components.length; i++) {
-        var addressType = place.address_components[i].types[0];
-        if (componentForm[addressType]) {
-          var val = place.address_components[i][componentForm[addressType]];
-          switch(addressType) {
-            case "administrative_area_level_1":
-              val = STATES.indexOf(val);
-              document.getElementById(addressType).value = val;
-              this.setState({ state: val });
-              break;
-            case "street_number":
-              street_number = val;
-              break;
-            case "route":
-              street_name = val;
-              break;
-            case "locality":
-              document.getElementById(addressType).value = val;
-              this.setState({ city: val });
-              break;
-            case "postal_code":
-              document.getElementById(addressType).value = val;
-              this.setState({ zipcode: val });
-              break;
-          }
-        }
-      }
-      if (street_number && street_name) {
-        val = street_number + " " + street_name;
-        document.getElementById("address").value = val;
-        this.setState({ address: val });
-      }
-    }
-
-    var autocomplete = new google.maps.places.Autocomplete(document.getElementById("address"));
-    this.geolocate(autocomplete);
-    autocomplete.addListener("place_changed", fillInAddress.bind(this));
-    this.handleChange(event);
-  }
-
-  // Bias the autocomplete object to the user's geographical location,
-  // as supplied by the browser's 'navigator.geolocation' object.
-  geolocate(autocomplete) {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        var geolocation = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        var circle = new google.maps.Circle({
-          center: geolocation,
-          radius: position.coords.accuracy
-        });
-        autocomplete.setBounds(circle.getBounds());
-      });
-    }
-  }
-
-  openWaiver() {
-    this.setState({ showWaiverModal: true });
-  }
-
-  closeWaiver() {
-    this.setState({ showWaiverModal: false });
-  }
-
-  stopLoading() {
-    this.setState({ loading : false });
-  }
-
-  setAvailability() {
-    const { calendar } = this.refs.availability.refs
-    //TODO: not ideal way to do this.. figure out some other way
-    var eventArray = $(calendar).fullCalendar('clientEvents');
-    var availabilityArray = []
-    for (var i = 0; i < eventArray.length; i++) {
-      availabilityArray = availabilityArray.concat(range_to_array(eventArray[i]['start'], eventArray[i]['end']));
-    }
-    this.setState({
-      availability: availabilityArray,
-      loading: true
-    });
-  }
-
-  setInstruments() {
-    const { instruments, activeInstruments } = this.state;
-    var instrumentsObj = [];
-    for (let [instrumentName, active] of Object.entries(activeInstruments)) {
-      if (active == true) {
-        var instrument = Object.assign({}, {name: instrumentName}, instruments[instrumentName]);
-        instrumentsObj.push(instrument);
-      }
-    }
-    this.setState({ instruments_attributes: instrumentsObj });
   }
 
   /**
@@ -299,7 +82,7 @@ class StudentForm extends React.Component {
         student_email: this.state.student_email,
         student_phone: this.state.student_phone,
         address: this.state.address,
-        address_apt: this.state.address_apt,
+        address2: this.state.address2,
         state: this.state.state,
         zipcode: this.state.zipcode,
         location_preference: this.state.location_preference,
@@ -328,21 +111,21 @@ class StudentForm extends React.Component {
     * Creates a Stripe Customer on the Rails side
     * @param student_errs Object
     */
-  async createStripeCustomer(student_errs, address_errors) {
+  async createStripeUser(student_errs, address_errors) {
     const {
       card_number,
       cvc,
       exp_month,
       exp_year,
       cardholder_name,
-      stripe_address_line1,
-      stripe_address_line2,
-      stripe_address_city,
-      stripe_address_state,
-      stripe_address_zip,
+      stripe_address,
+      stripe_address2,
+      stripe_city,
+      stripe_state,
+      stripe_zipcode,
     } = this.state;
 
-    var validated_student_and_stripe = await this.validateStudentAndStripeCustomer(student_errs, address_errors);
+    var validated_student_and_stripe = await this.validateUserAndStripeCustomer(student_errs, address_errors);
 
     // Only create customer if stripe validations pass - do not create token if there are stripe errors
     if (validated_student_and_stripe) {
@@ -352,11 +135,11 @@ class StudentForm extends React.Component {
         exp_month: exp_month,
         exp_year: exp_year,
         name: cardholder_name,
-        address_line1: stripe_address_line1,
-        address_line2: stripe_address_line2,
-        address_city: stripe_address_city,
-        address_state: stripe_address_state,
-        address_zip: stripe_address_zip
+        address_line1: stripe_address,
+        address_line2: stripe_address2,
+        address_city: stripe_city,
+        address_state: stripe_state,
+        address_zip: stripe_zipcode
       }, this.stripeResponseHandler.bind(this));
     } else {
       toastr.error("There are errors with your form! <br> Please correct them before continuing!");
@@ -365,11 +148,11 @@ class StudentForm extends React.Component {
   }
 
   stripeResponseHandler(status, response) {
-    const reject = (response) => { console.log(response) };
+    const reject = (response) => { this.stopLoading()};
     const resolve = ((response) => { this.createStudent(response) });
 
     if (response.error) {
-      console.log(response.error);
+      this.stopLoading();
     } else {
       var params = {
         stripe_token: response.id,
@@ -383,86 +166,6 @@ class StudentForm extends React.Component {
       );
     }
   }
-
-   /**
-   * Sets the state of errors to be the errored fields returned from stripeValidateFields and validateStudentFields
-   * @param card_number
-   * @param exp_month, exp_year
-   * @param cvc
-   */
-  async validateStudentAndStripeCustomer(student_errs, address_errors) {
-
-    var card_errs = await this.stripeValidateFields();
-    var instrument_errors = await this.validateInstruments();
-
-    var error_info = {};
-    var validated = true;
-    for (var err_type in card_errs) {
-      //TODO: Find JS function to identify false values instead
-      if (!card_errs[err_type][0]) {
-        validated = false;
-        error_info[err_type] = card_errs[err_type][1];
-      }
-    }
-    // Checks to see if object is null
-    if (!(Object.keys(student_errs).length === 0) ||
-        !(Object.keys(instrument_errors).length === 0) ||
-        !(Object.keys(address_errors).length == 0)) {
-      validated = false;
-    }
-    error_info = Object.assign(error_info, student_errs, instrument_errors, address_errors);
-    this.setState({ errors: error_info });
-    return validated;
-  }
-
-  /**
-   * Front-end validation for instrument_attributes field
-   */
-  validateInstruments() {
-    const { instruments_attributes } = this.state;
-
-    var errors = {};
-
-    if (!(instruments_attributes.length)) {
-      errors.instruments = "Can't Be Blank";
-    } else {
-      for (var i = 0; i < instruments_attributes.length; i++) {
-        if ((instruments_attributes[i]['name'] == null) || (instruments_attributes[i]['proficiency'] == null) ||
-          (instruments_attributes[i]['years_played'] == null)) {
-            errors.instruments = "Can't Be Blank";
-        }
-      }
-    }
-    return errors;
-  }
-
-  /**
-   * Front-end validation for the address field
-   */
-  validateAddress(student_errs) {
-    const { lat, lng, address, address_apt, city, state, zipcode } = this.state;
-
-    var address_errors = {};
-
-    if (!lat && !lng) {
-      var geocoder = new google.maps.Geocoder();
-      var full_address = [address, address_apt, city, state, zipcode].join(" ");
-      geocoder.geocode({"address": full_address}, function(results, status) {
-        if (status === 'OK') {
-          var location = results[0]["geometry"]["location"];
-          var lat = location["lat"]();
-          var lng = location["lng"]();
-          this.setState({ lat: lat, lng: lng });
-        } else {
-          address_errors.address = "Invalid address";
-        }
-        this.createStripeCustomer(student_errs, address_errors);
-      }.bind(this));
-    } else {
-      this.createStripeCustomer(student_errs, address_errors);
-    }
-  }
-
 
   /**
    * Calls Stripe validations on the inputted card information
@@ -480,10 +183,10 @@ class StudentForm extends React.Component {
     var cvc_err = Stripe.card.validateCVC(cvc);
 
     card_errs.cardholder_name = [this.state.cardholder_name, "Can't be blank"];
-    card_errs.stripe_address_line1 = [this.state.stripe_address_line1, "Can't be blank"];
-    card_errs.stripe_address_city = [this.state.stripe_address_city, "Can't be blank"];
-    card_errs.stripe_address_state = [this.state.stripe_address_state, "Can't be blank"];
-    card_errs.stripe_address_zip = [this.state.stripe_address_zip, "Can't be blank"];
+    card_errs.stripe_address = [this.state.stripe_address, "Can't be blank"];
+    card_errs.stripe_city = [this.state.stripe_city, "Can't be blank"];
+    card_errs.stripe_state = [this.state.stripe_state, "Can't be blank"];
+    card_errs.stripe_zipcode = [this.state.stripe_zipcode, "Can't be blank"];
     card_errs.card_number = [num_err, "Please enter a valid card number"];
     card_errs.exp_month = [expiry_err, "Please enter a valid expiration date"];
     card_errs.cvc = [cvc_err, "Please enter a valid cvc number"];
@@ -500,7 +203,7 @@ class StudentForm extends React.Component {
     };
     var resolve = (response) => {
       this.stopLoading();
-      window.location = "/"
+      window.location = RouteConstants.student.lessons;
     };
     var params = {
       student: {
@@ -554,96 +257,6 @@ class StudentForm extends React.Component {
     await this.setAvailability();
     await this.setInstruments();
     await this.validateStudentFields();
-  }
-
-  renderOptions(type) {
-    var optionsArray = []
-    var retOptions = []
-    var i = 0;
-    var j = 0;
-    switch(type) {
-      case 'gender':
-        optionsArray = GENDERS;
-        break;
-      case 'school_level':
-        optionsArray = STUDENT_SCHOOL_LEVELS;
-        break;
-      case 'state':
-        optionsArray = STATES;
-        break;
-      case 'travel_distance':
-        optionsArray = TRAVEL_DISTANCES;
-        break;
-      case 'income_range':
-        optionsArray = INCOME_RANGES;
-        break;
-      case 'proficiency':
-        optionsArray = PROFICIENCY;
-        break;
-      case 'years_played':
-        optionsArray = YEARS_PLAYED;
-        break;
-      case 'household_number':
-        optionsArray = HOUSEHOLD_NUMBER;
-        j = 1;
-    }
-    for (; i < optionsArray.length; i++, j++) {
-      retOptions.push(<option value={j}>{optionsArray[i]}</option>);
-    }
-    return retOptions;
-  }
-
-  renderInstrumentButtons() {
-    const { activeInstruments } = this.state
-    var buttons = []
-    for (var i = 0; i < INSTRUMENTS.length; i++) {
-      var instrument = INSTRUMENTS[i]
-      var className = activeInstruments[instrument] ? 'button button--static-clicked button--sm':'button button--static button--sm';
-      buttons.push(<div className={className} onClick={(event) =>
-        this.handleInstrumentClick(event)}>{INSTRUMENTS[i]}</div>);
-    }
-    return buttons;
-  }
-
-  renderInstrumentFields(instrument) {
-    return (
-      <div key={instrument}>
-      <h4 className="instrument-title">{instrument}</h4>
-        <div className="form-row">
-          <FormGroup>
-            <ControlLabel>Proficiency</ControlLabel>
-            <FormControl
-              componentClass="select"
-              name="proficiency"
-              onChange={(event) => this.handleInstrumentFieldChange(event, instrument)}>
-              <option value="" disabled selected>Select a value</option>
-              {this.renderOptions('proficiency')}
-            </FormControl>
-          </FormGroup>
-          <FormGroup>
-            <ControlLabel>Years Played</ControlLabel>
-            <FormControl
-              componentClass="select"
-              name="years_played"
-              onChange={(event) => this.handleInstrumentFieldChange(event, instrument)}>
-              <option value="" disabled selected>Select a value</option>
-                {this.renderOptions('years_played')}
-            </FormControl>
-          </FormGroup>
-        </div>
-      </div>
-    );
-  }
-
-  renderInstrumentsFields() {
-    var instrumentsFields = []
-    const { activeInstruments } = this.state
-    for (var i = 0; i < INSTRUMENTS.length; i++) {
-      if (activeInstruments[INSTRUMENTS[i]] == true) {
-        instrumentsFields.push(this.renderInstrumentFields(INSTRUMENTS[i]));
-      }
-    }
-    return instrumentsFields;
   }
 
   renderWaiverModal() {
@@ -733,7 +346,7 @@ class StudentForm extends React.Component {
                   name="school_level"
                   onChange={(event) => this.handleIntegerChange(event)}>
                   <option value="" disabled selected>Select your class level</option>
-                  {this.renderOptions('school_level')}
+                  {this.renderOptions('student_school_level')}
                 </FormControl>
                 {this.displayErrorMessage("school_level")}
               </FormGroup>
@@ -755,63 +368,14 @@ class StudentForm extends React.Component {
                 validationState = { (name) => this.getValidationState(name) }
                 displayErrors   = { (name) => this.displayErrorMessage(name) } />
 
-              <FormGroup validationState={this.getValidationState("address")}>
-                <ControlLabel>Address</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  placeholder="Address"
-                  id="address"
-                  name="address"
-                  onChange={(event) => this.handleAddressChange(event)} />
-                {this.displayErrorMessage("address")}
-              </FormGroup>
-
-              <FormGroup validationState={this.getValidationState("address2")}>
-                <ControlLabel>Address Line 2 (optional)</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  placeholder="Address Line 2"
-                  name="address2"
-                  onChange={(event) => this.handleChange(event)}/>
-                {this.displayErrorMessage("address2")}
-              </FormGroup>
-
-              <div className="form-row">
-                <FormGroup validationState={this.getValidationState("city")}>
-                  <ControlLabel>City</ControlLabel>
-                  <FormControl
-                    componentClass="input"
-                    placeholder="City"
-                    name="city"
-                    id="locality"
-                    onChange={(event) => this.handleChange(event)}/>
-                  {this.displayErrorMessage("city")}
-                </FormGroup>
-
-                <FormGroup validationState={this.getValidationState("state")}>
-                  <ControlLabel>State</ControlLabel>
-                  <FormControl
-                    componentClass="select"
-                    name="state"
-                    id="administrative_area_level_1"
-                    onChange={(event) => this.handleIntegerChange(event)}>
-                    <option value="" disabled selected>Select your state</option>
-                    {this.renderOptions('state')}
-                  </FormControl>
-                {this.displayErrorMessage("state")}
-                </FormGroup>
-
-                <FormGroup validationState={this.getValidationState("zipcode")}>
-                  <ControlLabel>Zip Code</ControlLabel>
-                  <FormControl
-                    componentClass="input"
-                    placeholder="Zip Code"
-                    name="zipcode"
-                    id="postal_code"
-                    onChange={(event) => this.handleChange(event)}/>
-                  {this.displayErrorMessage("zipcode")}
-                </FormGroup>
-              </div>
+              <AddressForm
+                getValidationState={this.getValidationState.bind(this)}
+                displayErrorMessage={this.displayErrorMessage.bind(this)}
+                renderOptions={this.renderOptions.bind(this)}
+                handleIntegerChange={this.handleIntegerChange.bind(this)}
+                setState={this.setState.bind(this)}
+                handleChange={this.handleChange.bind(this)}
+                is_stripe_address={false} />
 
               <h2 className="section-title">Parent/Guardian Information</h2>
               <div className="form-row">
@@ -937,7 +501,7 @@ class StudentForm extends React.Component {
                 <ControlLabel>Location Preference</ControlLabel>
                   <Checkbox
                     name="location_preference"
-                    onChange={(event) => this.handleBooleanChange(event)}>
+                    onChange={(event) => this.handleCheckboxChange(event)}>
                     I am willing to host lessons at my home.
                   </Checkbox>
                 {this.displayErrorMessage("location_preference")}
@@ -1011,13 +575,13 @@ class StudentForm extends React.Component {
                 guilty to a crime (other than minor traffic offences)?</ControlLabel>
                 <Radio
                   name="criminal_charges"
-                  value={Boolean("true")}
+                  value={true}
                   onChange={(event) => this.handleBooleanChange(event)}>
                   Yes
                 </Radio>
                 <Radio
                   name="criminal_charges"
-                  value={Boolean("false")}
+                  value={false}
                   onChange={(event) => this.handleBooleanChange(event)}>
                   No
                 </Radio>
@@ -1079,57 +643,15 @@ class StudentForm extends React.Component {
                     {this.displayErrorMessage("cvc")}
                 </FormGroup>
               </div>
-              <FormGroup validationState={this.getValidationState("stripe_address_line1")}>
-                <ControlLabel>Billing Address Line 1</ControlLabel>
-                <FormControl
-                  componentClass="input"
-                  placeholder="Enter Billing Address Line 1"
-                  name="stripe_address_line1"
-                  onChange={(event) => this.handleChange(event)}/>
-                  {this.displayErrorMessage("stripe_address_line1")}
-              </FormGroup>
-              <div className="form-row">
-                <FormGroup validationState={this.getValidationState("stripe_address_line2")}>
-                  <ControlLabel>Billing Address Line 2 (optional)</ControlLabel>
-                  <FormControl
-                    componentClass="input"
-                    placeholder="Enter Billing Address Line 2"
-                    name="stripe_address_line2"
-                    onChange={(event) => this.handleChange(event)}/>
-                  {this.displayErrorMessage("stripe_address_line2")}
-                </FormGroup>
-                <FormGroup validationState={this.getValidationState("stripe_address_zip")}>
-                  <ControlLabel>Billing Zip Code</ControlLabel>
-                  <FormControl
-                    componentClass="input"
-                    placeholder="Enter Billing Zip Code"
-                    name="stripe_address_zip"
-                    onChange={(event) => this.handleChange(event)}/>
-                  {this.displayErrorMessage("stripe_address_zip")}
-                </FormGroup>
-              </div>
-              <div className="form-row">
-                <FormGroup validationState={this.getValidationState("stripe_address_city")}>
-                  <ControlLabel>Billing Address City</ControlLabel>
-                  <FormControl
-                    componentClass="input"
-                    placeholder="Enter Billing Address City"
-                    name="stripe_address_city"
-                    onChange={(event) => this.handleChange(event)}/>
-                  {this.displayErrorMessage("stripe_address_city")}
-                </FormGroup>
-                <FormGroup validationState={this.getValidationState("stripe_address_state")}>
-                  <ControlLabel>Billing Address State</ControlLabel>
-                  <FormControl
-                    componentClass="select"
-                    name="stripe_address_state"
-                    onChange={(event) => this.handleChange(event)}>
-                    <option value="" disabled selected>Select your state</option>
-                    {this.renderOptions('state')}
-                  </FormControl>
-                  {this.displayErrorMessage("stripe_address_state")}
-                </FormGroup>
-              </div>
+
+              <AddressForm
+                getValidationState={this.getValidationState.bind(this)}
+                displayErrorMessage={this.displayErrorMessage.bind(this)}
+                renderOptions={this.renderOptions.bind(this)}
+                handleIntegerChange={this.handleIntegerChange.bind(this)}
+                setState={this.setState.bind(this)}
+                handleChange={this.handleChange.bind(this)}
+                is_stripe_address={true} />
 
               {/*Application Page 6*/}
               <h2 className="section-title">Waiver</h2>

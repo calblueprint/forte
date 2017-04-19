@@ -7,6 +7,7 @@ class WaiverModal extends React.Component {
       teachForFree: React.PropTypes.bool,
     };
   }
+
   render () {
     const { isStudent, handleClose, teachForFree } = this.props;
     if (isStudent) {

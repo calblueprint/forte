@@ -34,8 +34,10 @@ class Api::StudentsController < Api::BaseController
     student = Student.find params[:id]
     if student.destroy
       render json: student
+    elsif !student.present?
+      error_message("This account has already been deleted.", status: :forbidden)
     else
-      unprocessable_response student
+      error_message("There was an error removing this account.", status: :forbidden)
     end
   end
 
@@ -115,9 +117,11 @@ class Api::StudentsController < Api::BaseController
       :student_email,
       :student_phone,
       :address,
-      :address_apt,
+      :address2,
       :state,
       :zipcode,
+      :lat,
+      :lng,
       :location_preference,
       :travel_distance,
       :income_range,
