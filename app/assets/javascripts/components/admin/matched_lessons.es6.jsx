@@ -171,13 +171,14 @@ class MatchingPastLessonRow extends React.Component {
   render() {
     const { lesson } = this.props;
     const start = moment(lesson.start_time);
+    const price = `$${parseFloat(lesson.price).toFixed(2)}`;
 
     return (
       <tr>
         <td>{start.format("LL")}</td>
         <td>{start.format("h:mm a")}</td>
         <td>{lesson.is_paid ? "Yes" : "No"}</td>
-        <td>${lesson.price}</td>
+        <td>{price}</td>
       </tr>
     );
   }
@@ -230,16 +231,15 @@ class MatchingUpcomingLessonRow extends React.Component {
   }
 
   render() {
-    const {
-      lesson,
-    } = this.props;
+    const { lesson } = this.props;
     const start = moment(lesson.start_time);
+    const price = `$${parseFloat(lesson.price).toFixed(2)}`;
 
     return (
       <tr>
         <td>{start.format("LL")}</td>
         <td>{start.format("h:mm a")}</td>
-        <td>${lesson.price}</td>
+        <td>{price}</td>
         <td>
           <Button bsStyle="link" className="matched-lessons-button"
             onClick={this.openCancelModal.bind(this)}>Cancel
