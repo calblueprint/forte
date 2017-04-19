@@ -4,6 +4,7 @@ class PayModal extends React.Component {
     super();
     this.state = {
       showNextScreen: false,
+      loading: false,
     };
   }
 
@@ -20,14 +21,17 @@ class PayModal extends React.Component {
   }
 
   makePayment() {
+    this.setState({ loading: true });
     const { handleClose, lesson } = this.props;
     const {
       price,
       teacher,
       student,
     } = lesson;
-    const resolve = (response) => { this.updateLessonPaid() };
-    const reject = (response) => { console.log(response) };
+    const resolve = (response) => {
+      this.updateLessonPaid();
+    };
+    const reject = (response) => console.log(response);
 
     var stripePrice = priceToStripePrice(price);
     var params = {
@@ -49,8 +53,11 @@ class PayModal extends React.Component {
     const resolve = (response) => {
       handleClose();
       fetchRecentLessons();
+      toastr.success("Payment was successful");
     };
-    const reject = (response) => { console.log(response) };
+    const reject = (response) => {
+      toastr.error(response.message);
+    };
 
     var params = {
       is_paid: true,
@@ -65,6 +72,13 @@ class PayModal extends React.Component {
   }
 
   renderPayModal() {
+    let loadingContainer;
+
+    if (this.state.loading) {
+      loadingContainer = <div className="loading-container">
+        <div className="loading"></div>
+      </div>
+    }
     const { handleClose, lesson } = this.props;
     const { showNextScreen } = this.state
     const {
@@ -75,6 +89,7 @@ class PayModal extends React.Component {
       return (
         <div>
           <Modal.Body>
+          {loadingContainer}
             <p>
               We will charge ${price} on your credit card and pay {teacher.first_name} {teacher.last_name}.
             </p>

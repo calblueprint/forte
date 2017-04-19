@@ -8,6 +8,7 @@ class MatchingModal extends React.Component {
       location: '',
       default_price: '0',
       errors: '',
+      loading: false,
     };
   }
 
@@ -78,6 +79,7 @@ class MatchingModal extends React.Component {
   }
 
   makeMatching() {
+    this.setState({ loading: true });
     const { student, teacher, instrument } = this.props;
     const { lessonTime, location, default_price } = this.state;
     route = ApiConstants.matchings.create;
@@ -93,8 +95,9 @@ class MatchingModal extends React.Component {
     };
     var resolve = (response) => {
       window.location = RouteConstants.admin.unmatched;
+      toastr.success("Matching was created successfully");
     };
-    var reject = (response) => console.log(response);
+    var reject = (response) => toastr.error(response.message);
     Requester.post(
       route,
       params,
@@ -115,6 +118,13 @@ class MatchingModal extends React.Component {
   }
 
   renderBody() {
+    let loadingContainer;
+
+    if (this.state.loading) {
+      loadingContainer = <div className="loading-container">
+        <div className="loading"></div>
+      </div>
+    }
     const { handleClose, student, teacher } = this.props;
     const { showNextScreen } = this.state;
     var overlappingAvailability = intersection(student.availability, teacher.availability);
@@ -143,6 +153,7 @@ class MatchingModal extends React.Component {
       return (
         <div>
           <Modal.Body>
+            {loadingContainer}
             Are you sure you wish to match student {student.full_name} with teacher {teacher.full_name}? Emails will
             be sent out to both of them notifying them of their match.
           </Modal.Body>

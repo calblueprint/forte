@@ -6,6 +6,7 @@ class RescheduleModal extends React.Component {
       showNextScreen: false,
       lessonStartTime: null,
       lessonEndTime: null,
+      loading: false,
     };
   }
 
@@ -35,6 +36,7 @@ class RescheduleModal extends React.Component {
   }
 
   handleRescheduleLesson() {
+    this.setState({ loading: true });
     const { lesson, handleClose, fetchUpcomingLessons } = this.props;
     const { lessonStartTime, lessonEndTime } = this.state;
 
@@ -48,8 +50,11 @@ class RescheduleModal extends React.Component {
     const resolve = (response) => {
       handleClose();
       fetchUpcomingLessons();
+      toastr.success("Lesson was successfully rescheduled");
     };
-    const reject = (response) => console.log(response);
+    const reject = (response) => {
+      toastr.error(response.message);
+    };
     Requester.update(
       route,
       params,
@@ -59,6 +64,13 @@ class RescheduleModal extends React.Component {
   }
 
   renderRescheduleModal() {
+    let loadingContainer;
+
+    if (this.state.loading) {
+      loadingContainer = <div className="loading-container">
+        <div className="loading"></div>
+      </div>
+    }
     const { handleClose, lesson } = this.props;
     const { showNextScreen, lessonStartTime } = this.state;
     var lessonTime = moment(lessonStartTime);
@@ -66,6 +78,7 @@ class RescheduleModal extends React.Component {
       return (
         <div>
           <Modal.Body>
+            {loadingContainer}
             Are you sure you wish to reschedule this lesson to {lessonTime.format('MMM DD hh:mm A')}?
           </Modal.Body>
           <Modal.Footer>

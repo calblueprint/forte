@@ -4,6 +4,7 @@ class CancelModal extends React.Component {
     super();
     this.state = {
       showNextScreen: false,
+      loading: false,
     };
   }
 
@@ -23,14 +24,19 @@ class CancelModal extends React.Component {
   handleConfirmClick() {
     //TODO: Check difference of current time and lesson time and charge
     //cancellation fee if necessary
+    this.setState({ loading: true });
     const { lesson, handleClose, fetchUpcomingLessons } = this.props;
 
     const route = ApiConstants.lessons.delete(lesson.id);
     const resolve = (response) => {
       handleClose();
       fetchUpcomingLessons();
+      toastr.success("Lesson was successfully cancelled");
     }
-    const reject = (response) => console.log(response);
+    const reject = (response) => {
+      toastr.error(response.message);
+    };
+
     Requester.delete(
       route,
       resolve,
@@ -39,6 +45,13 @@ class CancelModal extends React.Component {
   }
 
   renderCancelModal() {
+    let loadingContainer;
+
+    if (this.state.loading) {
+      loadingContainer = <div className="loading-container">
+        <div className="loading"></div>
+      </div>
+    }
     const { handleClose, lesson, isStudent } = this.props;
     const {
       price,
@@ -53,6 +66,7 @@ class CancelModal extends React.Component {
       return (
         <div>
           <Modal.Body>
+          {loadingContainer}
             <p>
               We will notify {name} of this week's cancelled lesson upon confirmation.
             </p>
