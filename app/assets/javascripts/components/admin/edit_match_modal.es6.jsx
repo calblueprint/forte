@@ -141,7 +141,6 @@ class EditMatchModal extends React.Component {
 
   render () {
     const { matching, student, teacher } = this.props;
-    let overlapAvail = intersection(student.availability, teacher.availability);
 
     return(
       <Modal show={this.props.show} onHide={this.props.handleClose}>
