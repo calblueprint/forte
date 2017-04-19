@@ -27,7 +27,7 @@ class MatchingCalendar extends React.Component {
     $(calendar).fullCalendar({
       header: false,
       defaultView: 'agendaWeek',
-      columnFormat: 'ddd M/D',
+      columnFormat: 'ddd',
       timezone: timezone,
       selectable: true,
       editable: true,

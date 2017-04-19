@@ -72,7 +72,7 @@ class UnmatchedPage extends React.Component {
           loading: false,
         });
       } else {
-        console.log(response);
+        this.setState({ loading: false });
       }
     };
   }
@@ -88,14 +88,14 @@ class UnmatchedPage extends React.Component {
       });
       var teacherRoute = ApiConstants.teachers.possibleTeachers(studentId, instrument.name);
       var teacherResolve = (response) => this.filterTeachersByDistance(response["teachers"]);
-      var teacherReject = (response) => console.log(response);
+      var teacherReject = (response) => this.setState({ loading: false });;
       Requester.get(
         teacherRoute,
         teacherResolve,
         teacherReject,
       );
     }).bind(this);
-    var studentReject = (response) => console.log(response);
+    var studentReject = (response) => this.setState({ loading: false });;
     Requester.get(
       studentRoute,
       studentResolve,

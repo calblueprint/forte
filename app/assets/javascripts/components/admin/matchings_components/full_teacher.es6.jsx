@@ -8,6 +8,7 @@ class FullTeacher extends React.Component {
 
   render () {
     const { teacher } = this.props
+    var teacherAvail = teacher.availability.slice();
     return (
       <div className="full-person">
         <TeacherInformation
@@ -17,7 +18,7 @@ class FullTeacher extends React.Component {
         <p>Note: Calendar is displayed in timezone <b>{teacher.timezone}</b></p>
         <Calendar
           isEditable={false}
-          events={availability_to_events(teacher.availability, teacher.timezone)} />
+          events={availability_to_events(teacherAvail, teacher.timezone)} />
       </div>
     );
   }

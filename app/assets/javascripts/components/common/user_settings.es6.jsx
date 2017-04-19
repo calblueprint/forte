@@ -155,7 +155,6 @@ class UserSettings extends BaseUserComponent {
         var full_address = [address, address2, city, state, zipcode].join(" ");
         geocoder.geocode({"address": full_address}, function(results, status) {
           if (status === 'OK') {
-            console.log("it was ok");
             var location = results[0]["geometry"]["location"];
             var lat = location["lat"]();
             var lng = location["lng"]();

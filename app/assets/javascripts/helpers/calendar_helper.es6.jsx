@@ -3,8 +3,10 @@ times */
 
 function range_to_array(start, end) {
   // store times in utc on the backend
+
   start = start.utc();
   end = end.utc();
+
   var startDay = start.day();
   var startHour = start.hour();
   var startMinute = start.minute();
@@ -17,13 +19,29 @@ function range_to_array(start, end) {
   translatedEnd = (endDay * 96) + (endHour * 4) + (endMinute/15);
 
   var retArray = []
-  for (i = translatedStart; i < translatedEnd; i++) {
-    retArray.push(i);
+
+  if (translatedStart > translatedEnd) {
+    translatedEnd = translatedEnd + 672;
   }
+
+  for (i = translatedStart; i < translatedEnd; i++) {
+    retArray.push(i % 672);
+  }
+
   return retArray
 }
 
 function availability_to_events(availability, timezone) {
+  var offset = moment.tz(timezone).utcOffset() * 4 / 60;
+
+  for (var i = 0; i < availability.length; i++) {
+    availability[i] += offset;
+
+    if (availability[i] < 0) {
+      availability[i] += 672;
+    }
+  }
+
   var events = [], rstart, rend;
   for (var i = 0; i < availability.length; i++) {
     rstart = availability[i];
@@ -41,11 +59,12 @@ function availability_to_events(availability, timezone) {
 }
 
 function number_to_moment(number, timezone) {
+
   var day = Math.floor(number/96);
   var hour = Math.floor((number%96)/4);
   var minute = ((number%96)%4)*15;
-  var m = moment().utc().startOf('week').add(day, 'days').add(hour, 'hours').add(minute, 'minutes');
-  return moment.tz(m, timezone);
+
+  return moment.tz(timezone).startOf('week').add(day, 'days').add(hour, 'hours').add(minute, 'minutes')
 }
 
 function get_unavailable_availability(availability) {
