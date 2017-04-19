@@ -190,11 +190,14 @@ class MatchingUpcomingLessonRow extends React.Component {
 
     this.state = {
       showCancelModal: false,
+      showRescheduleModal: false,
     };
   }
 
   openCancelModal() { this.setState({ showCancelModal: true }); }
   closeCancelModal() { this.setState({ showCancelModal: false }); }
+  openRescheduleModal() { this.setState({ showRescheduleModal: true }); }
+  closeRescheduleModal() { this.setState({ showRescheduleModal: false }); }
 
   renderCancelModal(lesson) {
     const { showCancelModal } = this.state;
@@ -204,6 +207,21 @@ class MatchingUpcomingLessonRow extends React.Component {
         <CancelModal
           lesson={lesson}
           handleClose={() => this.closeCancelModal()}
+          fetchUpcomingLessons={this.props.fetch}
+          isStudent={false}
+        />
+      );
+    }
+  }
+
+  renderRescheduleModal(lesson) {
+    const { showRescheduleModal } = this.state;
+
+    if (showRescheduleModal) {
+      return (
+        <RescheduleModal
+          lesson={lesson}
+          handleClose={() => this.closeRescheduleModal()}
           fetchUpcomingLessons={this.props.fetch}
           isStudent={false}
         />
@@ -222,9 +240,15 @@ class MatchingUpcomingLessonRow extends React.Component {
         <td>{start.format("LL")}</td>
         <td>{start.format("h:mm a")}</td>
         <td>${lesson.price}</td>
-        <td onClick={this.openCancelModal.bind(this)}>
-          <Button bsStyle="link" className="matched-lessons-cancel">Cancel Lesson</Button>
+        <td>
+          <Button bsStyle="link" className="matched-lessons-button"
+            onClick={this.openCancelModal.bind(this)}>Cancel
+          </Button>
+          <Button bsStyle="link" className="matched-lessons-button"
+            onClick={this.openRescheduleModal.bind(this)}>Reschedule
+          </Button>
           {this.renderCancelModal(lesson)}
+          {this.renderRescheduleModal(lesson)}
         </td>
       </tr>
     );
