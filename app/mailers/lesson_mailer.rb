@@ -18,8 +18,10 @@ class LessonMailer < ApplicationMailer
     @student = lesson.student
     @teacher = lesson.teacher
     instrument = @matching.instrument
-    mail subject: "Forte Lesson Cancellation | #{instrument}",
-         to: @student.student_email
+    if !(@student.student_email.to_s.lstrip.empty?)
+      mail subject: "Forte Lesson Cancellation | #{instrument}",
+           to: @student.student_email
+    end
   end
 
    def cancel_notify_parent(lesson)

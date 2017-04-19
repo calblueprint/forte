@@ -22,6 +22,8 @@ Rails.application.routes.draw do
     end
   end
 
+  post '/admins/add', to: 'admin#add_admin'
+
   ##################################################
   # Student
   ##################################################
@@ -59,6 +61,8 @@ Rails.application.routes.draw do
     post :send_contact_email
     get :about
     get :terms
+    get :donate
+    post :donation_notify_admin
   end
 
   ##################################################
@@ -86,7 +90,7 @@ Rails.application.routes.draw do
 
   ##################################################
   #
-  # Change Passwords
+  # Forgot Password
   #
   ##################################################
 
@@ -124,6 +128,20 @@ Rails.application.routes.draw do
   end
 
   ##################################################
+  #
+  # Update Password
+  #
+  ##################################################
+
+  devise_scope :student do
+    patch 'passwords/students/update_password/:id', to: 'authentication/students/passwords#update_password'
+  end
+
+  devise_scope :teacher do
+    patch 'passwords/teachers/update_password/:id', to: 'authentication/teachers/passwords#update_password'
+  end
+
+  ##################################################
   # Stripe
   ##################################################
   namespace :stripe do
@@ -133,6 +151,7 @@ Rails.application.routes.draw do
     post '/account', to: 'accounts#create_account'
     post '/verify_account', to: 'accounts#update_account'
     post '/change_account', to: 'accounts#change_account'
+    post '/donation_charge', to: 'charges#donation_charge'
   end
 
   ##################################################
@@ -176,7 +195,6 @@ Rails.application.routes.draw do
     post '/students/validate', to: 'students#validate'
     resources :students, only: [:index, :destroy, :show, :update]
 
-
     ##################################################
     # Teachers
     ##################################################
@@ -189,9 +207,4 @@ Rails.application.routes.draw do
     post '/teachers/validate', to: 'teachers#validate'
     resources :teachers, only: [:index, :destroy, :show, :update]
   end
-
-  ##################################################
-    # Admins
-  ##################################################
-  post '/admins/add', to: 'admin#add_admin'
 end

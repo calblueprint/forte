@@ -26,6 +26,11 @@
           teacher: '/passwords/teachers/reset_request',
           admin: '/passwords/admins/reset_request',
         },
+        update_password:
+        {
+         student: (id) =>  `/passwords/students/update_password/${id}`,
+         teacher: (id) => `/passwords/teachers/update_password/${id}`,
+        },
       }
     }
 
@@ -103,6 +108,7 @@
         verifyAccount: '/stripe/verify_account',
         changeAccount: '/stripe/change_account',
         charge: '/stripe/charge',
+        donationCharge: '/stripe/donation_charge',
       }
     }
 
@@ -110,6 +116,12 @@
       return {
         create: '/api/instruments',
         delete: (id) => `/api/instruments/${id}`,
+      }
+    }
+
+    get donations() {
+      return {
+        donationNotify: '/donation_notify_admin',
       }
     }
   }

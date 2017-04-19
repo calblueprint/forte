@@ -1,20 +1,16 @@
-class UserSettings extends React.Component {
+class UserSettings extends BaseUserComponent {
 
   constructor(props) {
     super(props);
-
-    this.state = {};
+    this.state = {
+      errors: {},
+    };
   }
 
-  handleChange(event) {
-    let target = $(event.target);
-    let val = target.val();
-
-    if (target.attr('name') == 'birthday' || target.attr('name') == 'stripe_account_holder_dob') {
-      val = moment(val);
-    }
-
-    this.setState({ [target.attr('name')] : val });
+  handleBirthdayChange(event) {
+    var name = $(event.target).attr("name");
+    var val = moment($(event.target).val());
+    this.setState({ [name] : val });
   }
 
   handleIntegerChange(event) {
@@ -59,9 +55,124 @@ class UserSettings extends React.Component {
     );
   }
 
+  updateStudentPassword(resolve, reject, student_id) {
+
+    const route = ApiConstants.authentication.update_password.student(student_id);
+    const params = {
+      student: this.state,
+    };
+
+    Requester.update(
+        route,
+        params,
+        resolve,
+        reject
+    );
+  }
+
+  updateTeacherPassword(resolve, reject, teacher_id) {
+
+    const route = ApiConstants.authentication.update_password.teacher(teacher_id);
+    const params = {
+      teacher: this.state,
+    };
+
+    Requester.update(
+        route,
+        params,
+        resolve,
+        reject
+    );
+  }
+
   attemptCardSave(resolve, reject) {
     this.setState({ editable: false });
     this.updateStripeCustomer(resolve, reject);
+  }
+
+  stripeValidateFields() {
+    const { card_number, exp_month, exp_year, cvc } = this.state;
+
+    var card_errs = {};
+
+    var num_err = Stripe.card.validateCardNumber(card_number);
+    var expiry_err = Stripe.card.validateExpiry(exp_month, exp_year);
+    var cvc_err = Stripe.card.validateCVC(cvc);
+
+    card_errs.stripe_address = [this.state.stripe_address, "Can't be blank"];
+    card_errs.stripe_city = [this.state.stripe_city, "Can't be blank"];
+    card_errs.stripe_state = [this.state.stripe_state, "Can't be blank"];
+    card_errs.stripe_zipcode = [this.state.stripe_zipcode, "Can't be blank"];
+    card_errs.card_number = [num_err, "Please enter a valid card number"];
+    card_errs.exp_month = [expiry_err, "Please enter a valid expiration date"];
+    card_errs.cvc = [cvc_err, "Please enter a valid cvc number"];
+
+    var validated = true;
+    var error_info = {};
+    for (var err_type in card_errs) {
+      if (!card_errs[err_type][0]) {
+        validated = false;
+        error_info[err_type] = card_errs[err_type][1];
+      }
+    }
+    this.setState({errors: error_info});
+    return validated;
+  }
+
+  attemptAddressSave(resolve, reject) {
+    this.setState({ editable: false });
+    this.validateAddress(resolve, reject);
+  }
+
+  validateAddress(resolve, reject) {
+    const { lat, lng, address, address2, city, state, zipcode } = this.state;
+
+    if (address || address2 || city || state || zipcode) {
+
+      var address_errs = {};
+      var error_info = {};
+      var validated = true;
+
+      address_errs.address = [address, "Can't be blank"];
+      address_errs.city = [city, "Can't be blank"];
+      address_errs.state = [state, "Can't be blank"];
+      address_errs.zipcode = [zipcode, "Please enter a valid card number"];
+      for (var err_type in address_errs) {
+        if (!address_errs[err_type][0]) {
+            validated = false;
+            error_info[err_type] = address_errs[err_type][1];
+        }
+      }
+
+      if (!validated) {
+        this.setState({errors: error_info});
+        toastr.error("There are errors with your form! <br> Please correct them before continuing!");
+        return;
+       }
+
+      if (!lat && !lng) {
+        var geocoder = new google.maps.Geocoder();
+        var full_address = [address, address2, city, state, zipcode].join(" ");
+        geocoder.geocode({"address": full_address}, function(results, status) {
+          if (status === 'OK') {
+            console.log("it was ok");
+            var location = results[0]["geometry"]["location"];
+            var lat = location["lat"]();
+            var lng = location["lng"]();
+            this.setState({ lat: lat, lng: lng });
+            this.attemptSave(resolve, reject);
+          } else {
+            error_info.address = "Invalid address";
+            this.setState({errors: error_info});
+            toastr.error("There are errors with your form! <br> Please correct them before continuing!");
+          }
+        }.bind(this));
+      } else {
+        this.attemptSave(resolve, reject);
+      }
+    } else {
+      this.attemptSave(resolve, reject);
+    }
   }
 
   async updateStripeCustomer(resolve, reject) {
@@ -71,25 +182,31 @@ class UserSettings extends React.Component {
       exp_month,
       exp_year,
       cardholder_name,
-      stripe_address_line1,
-      stripe_address_line2,
-      stripe_address_city,
-      stripe_address_state,
-      stripe_address_zip,
+      stripe_address,
+      stripe_address2,
+      stripe_city,
+      stripe_state,
+      stripe_zipcode,
     } = this.state;
 
-    Stripe.card.createToken({
-      number: card_number,
-      cvc: cvc,
-      exp_month: exp_month,
-      exp_year: exp_year,
-      name: cardholder_name,
-      address_line1: stripe_address_line1,
-      address_line2: stripe_address_line2,
-      address_city: stripe_address_city,
-      address_state: stripe_address_state,
-      address_zip: stripe_address_zip
-    }, this.stripeResponseHandler.bind(this, resolve, reject));
+    var validated_stripe = await this.stripeValidateFields();
+
+    if (validated_stripe) {
+      Stripe.card.createToken({
+        number: card_number,
+        cvc: cvc,
+        exp_month: exp_month,
+        exp_year: exp_year,
+        name: cardholder_name,
+        address_line1: stripe_address,
+        address_line2: stripe_address2,
+        address_city: stripe_city,
+        address_state: stripe_state,
+        address_zip: stripe_zipcode
+      }, this.stripeResponseHandler.bind(this, resolve, reject));
+    } else {
+      toastr.error("There are errors with your form! <br> Please correct them before continuing!");
+    }
   }
 
   stripeResponseHandler(success, fail, status, response) {
@@ -125,6 +242,44 @@ class UserSettings extends React.Component {
     this.updateStripeAccount(resolve, reject);
   }
 
+  stripeValidateTeacherFields(stripe_routing_number, stripe_account_number, stripe_country) {
+
+    var routing_num_err = Stripe.bankAccount.validateRoutingNumber(stripe_routing_number, stripe_country);
+    var account_num_err = Stripe.bankAccount.validateAccountNumber(stripe_account_number, stripe_country);
+    var routing_num_err_msg = (routing_num_err && !stripe_country) ? "Please make sure Bank Account Country is not blank" :  "Please enter a valid routing number";
+    var account_num_err_msg = (account_num_err && !stripe_country) ? "Please make sure Bank Account Country is not blank" : "Please enter a valid account number";
+
+    if (!stripe_country) {
+      routing_num_err = false;
+      account_num_err = false;
+    }
+
+    var payment_errs = {};
+
+    payment_errs.stripe_account_holder_name = [this.state.stripe_account_holder_name, "Can't be blank"];
+    payment_errs.stripe_account_holder_type = [this.state.stripe_account_holder_type, "Can't be blank"];
+    payment_errs.stripe_account_holder_dob = [this.state.stripe_account_holder_dob, "Can't be blank"];
+    payment_errs.stripe_address = [this.state.stripe_address, "Can't be blank"];
+    payment_errs.stripe_city = [this.state.stripe_city, "Can't be blank"];
+    payment_errs.stripe_state = [this.state.stripe_state, "Can't be blank"];
+    payment_errs.stripe_zipcode = [this.state.stripe_zipcode, "Can't be blank"];
+    payment_errs.stripe_ssn_last_4 = [this.state.stripe_ssn_last_4, "Can't be blank"];
+    payment_errs.stripe_country = [this.state.stripe_country, "Can't be blank"];
+    payment_errs.stripe_routing_number = [routing_num_err, routing_num_err_msg];
+    payment_errs.stripe_account_number = [account_num_err, account_num_err_msg];
+
+    var error_info = {};
+    var validated = true;
+    for (var err_type in payment_errs) {
+      if (!payment_errs[err_type][0]) {
+        validated = false;
+        error_info[err_type] = payment_errs[err_type][1];
+      }
+    }
+    this.setState({errors: error_info});
+    return validated;
+  }
+
   async updateStripeAccount(resolve, reject) {
     const {
       stripe_country,
@@ -134,15 +289,20 @@ class UserSettings extends React.Component {
       stripe_account_holder_type
     } = this.state;
 
-    Stripe.bankAccount.createToken({
-      country: "US",
-      currency: 'USD',
-      routing_number: stripe_routing_number,
-      account_number: stripe_account_number,
-      account_holder_name: stripe_account_holder_name,
-      account_holder_type: stripe_account_holder_type,
-    }, this.stripeAccountResponseHandler.bind(this, resolve, reject));
+    var validate_stripe_response = await this.stripeValidateTeacherFields(stripe_routing_number, stripe_account_number, stripe_country);
 
+    if (validate_stripe_response) {
+      Stripe.bankAccount.createToken({
+        country: stripe_country,
+        currency: 'USD',
+        routing_number: stripe_routing_number,
+        account_number: stripe_account_number,
+        account_holder_name: stripe_account_holder_name,
+        account_holder_type: stripe_account_holder_type,
+      }, this.stripeAccountResponseHandler.bind(this, resolve, reject));
+    } else {
+      toastr.error("There are errors with your form! <br> Please correct them before continuing!");
+    }
   }
 
   stripeAccountResponseHandler(success, fail, status, response) {
@@ -173,6 +333,69 @@ class UserSettings extends React.Component {
         resolve,
         reject
       );
+    }
+  }
+
+  openRemoveModal() { this.setState({ removeModalIsVisible: true }); }
+
+  closeRemoveModal() { this.setState({ removeModalIsVisible: false }); }
+
+  openAddModal() { this.setState({ addModalIsVisible: true }); }
+
+  closeAddModal() { this.setState({ addModalIsVisible: false }); }
+
+  renderRemoveModal(instrument) {
+    const { removeModalIsVisible } = this.state;
+
+    if (removeModalIsVisible) {
+      return (
+        <RemoveInstrumentModal
+          isVisible={removeModalIsVisible}
+          handleClose={() => this.closeRemoveModal()}
+          fetchInstruments={() => this.fetchInstruments()}
+          instrument={instrument}
+        />
+      );
+    }
+  }
+
+  renderAddModal() {
+    const { addModalIsVisible } = this.state;
+    const { instruments } = this.state.person;
+    const { person } = this.props;
+
+    if (addModalIsVisible) {
+      return (
+        <AddInstrumentModal
+          isVisible={addModalIsVisible}
+          handleClose={() => this.closeAddModal()}
+          fetchInstruments={() => this.fetchInstruments()}
+          instruments={instruments}
+          instrumentable={person}
+        />
+      )
+    }
+  }
+
+  renderInstrument(instrument) {
+    return (
+      <div className="instrument">
+        <div className="instrumentName">
+          {instrument.name}
+        </div>
+        <a className="link"
+          onClick={() => this.openRemoveModal()}>
+          [Remove]
+        </a>
+        {this.renderRemoveModal(instrument)}
+      </div>
+    );
+  }
+
+  renderInstruments() {
+    const { instruments } = this.state.person;
+    if (instruments) {
+      return instruments.map((instrument) => this.renderInstrument(instrument));
     }
   }
 }

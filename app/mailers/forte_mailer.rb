@@ -11,7 +11,7 @@ class ForteMailer < ApplicationMailer
   def student_signup_notify_student(student)
     @student = student
     name = student.full_name
-    if student.student_email
+    if !(student.student_email.to_s.lstrip.empty?)
       mail subject: "Forte Student Registration Confirmation | #{name}",
          to: student.student_email
     end
@@ -43,6 +43,14 @@ class ForteMailer < ApplicationMailer
     name = teacher.full_name
     mail subject: "Forte Teacher Registration Confirmation | #{name}",
          to: "fortemailer@gmail.com"
+  end
+
+  def donation_notify_admin(full_name, email, phone_number, message)
+    @full_name = full_name
+    @email = email
+    @phone_number = phone_number
+    @message = message
+    mail(to: "fortemailer@gmail.com", subject: "Forte Donation Received")
   end
 
 end

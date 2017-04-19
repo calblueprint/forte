@@ -18,6 +18,7 @@ class RescheduleCalendar extends React.Component {
   componentDidMount() {
     const { calendar } = this.refs;
     const { lesson } = this.props;
+
     var startTime = moment(lesson['start_time']);
     var endTime = moment(lesson['end_time']);
     $(calendar).fullCalendar({

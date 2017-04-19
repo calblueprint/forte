@@ -5,9 +5,34 @@ class HomePage extends React.Component {
 
     this.instruments = [
       "piano",
+      "percussion",
       "guitar",
+      "violin",
+      "flute",
+      "trumpet",
       "clarinet",
     ];
+
+    this.state = {
+      currentInstrumentIndex: 0,
+    }
+  }
+
+  instrumentLeftButtonClick() {
+    const { currentInstrumentIndex } = this.state;
+    if (currentInstrumentIndex >= 1) {
+      document.getElementById('instruments-inner-wrapper').style.marginLeft = `-${(currentInstrumentIndex - 1) * 340}px`;
+      this.setState({ currentInstrumentIndex: currentInstrumentIndex - 1 })
+    }
+  }
+
+  instrumentRightButtonClick() {
+    const { currentInstrumentIndex } = this.state;
+    let totalNumInstruments = this.instruments.length;
+    if (currentInstrumentIndex + 3 < totalNumInstruments) {
+      document.getElementById('instruments-inner-wrapper').style.marginLeft = `-${(currentInstrumentIndex + 1) * 340}px`;
+      this.setState({ currentInstrumentIndex: currentInstrumentIndex + 1 })
+    }
   }
 
   renderInstrument(instr, index) {
@@ -30,11 +55,38 @@ class HomePage extends React.Component {
     )
   }
 
-  render () {
-    let instruments = this.instruments.map((instrument, index) => {
+  renderInstruments() {
+    return this.instruments.map((instrument, index) => {
       return this.renderInstrument(instrument, index);
     });
+  }
 
+  renderLeftButton() {
+    const { currentInstrumentIndex } = this.state;
+    let className = "arrow-button"
+    if (currentInstrumentIndex == 0){
+      className += " button-disabled"
+    }
+    return (
+      <Glyphicon glyph="chevron-left" className={className} id="left-button"
+        onClick={() => this.instrumentLeftButtonClick()}/>
+    )
+  }
+
+  renderRightButton() {
+    const { currentInstrumentIndex } = this.state;
+    let totalNumInstruments = this.instruments.length;
+    let className = "arrow-button"
+    if (currentInstrumentIndex + 3 == totalNumInstruments){
+      className += " button-disabled"
+    }
+    return (
+      <Glyphicon glyph="chevron-right" className={className} id="right-button"
+        onClick={() => this.instrumentRightButtonClick()}/>
+    )
+  }
+
+  render () {
     return (
       <div className="page-wrapper">
         <Header />
@@ -58,8 +110,14 @@ class HomePage extends React.Component {
               Forte connects underserved youth with experienced musicians to provide
               access to affordable music lessons.
             </h6>
-            <div className="instruments-wrapper">
-              {instruments}
+            <div className="carousel-wrapper">
+              {this.renderLeftButton()}
+              <div className="instruments-wrapper">
+                <div className="instruments-inner-wrapper" id="instruments-inner-wrapper">
+                {this.renderInstruments()}
+                </div>
+              </div>
+              {this.renderRightButton()}
             </div>
             <div className="home-page__line-break">
             </div>
