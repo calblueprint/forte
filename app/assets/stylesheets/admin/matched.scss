@@ -5,30 +5,31 @@
 }
 
 .matching-item {
-  border: 1px solid $grey20;
+  border: 1px solid $grey15;
+  border-radius: 3px;
   margin: 10px 0px;
+  transition: 100ms;
   width: 100%;
+
+  &:hover {
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
+  }
 
   .matching-item-header {
     display: flex;
     flex-direction: row;
-    border-bottom: 1px solid $grey20;
     padding: 10px;
-    cursor: pointer;
+    padding-bottom: 0;
 
     .matching-item-header-item {
       display: block;
       text-decoration: none;
       padding: 10px;
-      width: 200px;
+      width: 33.33%;
       cursor: pointer;
 
       &:hover {
         background: $grey5;
-      }
-
-      &:first-child {
-        margin-right: 10px;
       }
 
       .header-label {
@@ -46,6 +47,28 @@
     }
   }
 
+  .matching-options {
+    align-self: flex-start;
+    margin-left: auto;
+
+    .dropdown-menu {
+      box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.07);
+      right: 0;
+      left: auto;
+      min-width: 0;
+      padding: 2px 0;
+    }
+
+    .divider {
+      margin: 5px 0;
+    }
+
+    ul.dropdown-menu li > a {
+      font-size: 13px;
+      padding: 4px 10px;
+    }
+  }
+
   .matching-item-content {
     display: flex;
     flex-flow: row wrap;
@@ -56,7 +79,7 @@
       font-size: 17px;
       line-height: 20px;
       padding: 5px 10px;
-      width: 33.33%;
+      width: 25%;
 
       &:first-of-type { padding-left: 0; }
       &:last-of-type { padding-right: 0; }
@@ -75,6 +98,75 @@
       }
     }
   }
+}
+
+.matching-summary {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  .matching-summary-item {
+    padding: 0 10px;
+    width: 33.33%;
+
+    &:first-of-type { padding-left: 0; }
+  }
+
+  .label {
+    color: $orange;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    padding: 0;
+    text-transform: uppercase;
+  }
+
+  .info {
+    margin: 0;
+  }
+}
+
+.matched-lessons-page {
+  padding-top: 30px;
+  max-width: 600px;
+  width: 100%;
+
+  .matching-summary {
+    margin-top: 15px;
+  }
+}
+
+.matched-lesson-table {
+  width: 100%;
+}
+
+.matched-lessons-tab {
+  color: $grey;
+  display: flex;
+  margin-bottom: 30px;
+  margin-top: 30px;
+
+  button {
+    background: white;
+    border-radius: 4px;
+    letter-spacing: 0;
+    padding: 6px 12px;
+    text-transform: initial;
+
+    &:hover {
+      background: $grey10;
+    }
+
+    &.active {
+      background: $orange;
+      color: white;
+    }
+  }
+}
+
+.matched-lessons-button {
+  padding: 0;
+  margin-right: 5px;
 }
 
 @media (max-width: 550px) {

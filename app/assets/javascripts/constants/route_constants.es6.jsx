@@ -18,6 +18,7 @@
         matched: '/admin/matched',
         unmatched: '/admin/unmatched',
         roster: '/admin/roster',
+        matchedLesson: (id) => `/admin/matched/${id}/lessons`,
         studentProfile: (id) => `/admin/roster/students/${id}`,
         teacherProfile: (id) => `/admin/roster/teachers/${id}`,
       }

@@ -1,7 +1,44 @@
 class Api::MatchingsController < Api::BaseController
+
   def index
     matchings = Matching.all
     render json: matchings
+  end
+
+  def matched_pairs
+    matchings = Matching.all.order(:id)
+    matching_info = []
+    matchings.each do |matching|
+      matching_info.push({
+        "match_info": matching,
+        "teacher": matching.teacher,
+        "student": matching.student
+      })
+    end
+
+    render json: matching_info,
+           root: false
+
+  end
+
+  def past_lessons
+    lessons = (Matching.find params[:id]).lessons
+                .where('end_time <= ?', DateTime.now)
+                .order(end_time: :desc)
+
+    render json: lessons,
+           each_serializer: MatchingLessonsSerializer,
+           root: false
+  end
+
+  def upcoming_lessons
+    lessons = (Matching.find params[:id]).lessons
+                .where('end_time > ?', DateTime.now)
+                .order(end_time: :asc)
+
+    render json: lessons,
+           each_serializer: MatchingLessonsSerializer,
+           root: false
   end
 
   def create
