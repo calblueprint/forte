@@ -2,7 +2,10 @@ class TeacherSettingsPage extends UserSettings {
 
   static get propTypes() {
     return {
-      teacher: React.PropTypes.object.isRequired,
+      fetchProfile: React.PropTypes.func.isRequired,
+      isAdmin: React.PropTypes.bool.isRequired,
+      person: React.PropTypes.object.isRequired,
+      id: React.PropTypes.number.isRequired,
     };
   }
 
@@ -109,7 +112,7 @@ class TeacherSettingsPage extends UserSettings {
   }
 
   render() {
-    const { person } = this.props;
+    const { person, isAdmin } = this.props;
 
     let s = this.state.person;
 
@@ -122,6 +125,53 @@ class TeacherSettingsPage extends UserSettings {
     let addInstrumentModal;
     if (s.instruments) {
       addInstrumentModal = this.renderAddModal();
+    }
+
+    // Render the password and payment fields if not admin
+    let passwordSection, paymentSection;
+
+    if (!isAdmin) {
+      passwordSection = (
+        <EditableInputGroup title="Change Your Password"
+                            handleChange={this.handleChange.bind(this)}
+                            attemptSave={this.updateTeacherPassword.bind(this)}
+                            fetchProfile={this.fetchProfile.bind(this)}
+                            personId={this.props.id}>
+          <EditableInput label="New Password" name="password" data={s.password} />
+          <EditableInput label="New Password Confirmation" name="password_confirmation" data={s.password_confirmation} />
+        </EditableInputGroup>
+      )
+
+      paymentSection = (
+        <div>
+          <h5 className="profile-edit-note">Note: You will need to fill out all the fields</h5>
+          <EditableInputGroup title="Payment"
+                                handleChange={this.handleChange.bind(this)}
+                                attemptSave={this.attemptStripeAccountSave.bind(this)}
+                                fetchProfile={this.fetchProfile.bind(this)}>
+              <EditableInput label="Bank Account Holder Name" name="stripe_account_holder_name" data={s.stripe_account_holder_name} error={this.state.errors}
+                specialHandler={this.handleBirthdayChange.bind(this)} />
+              <EditableInput label="Bank Account Holder DOB" name="stripe_account_holder_dob" data={s.stripe_account_holder_dob} error={this.state.errors} />
+              <EditableInput label="Bank Account Holder Type" name="stripe_account_holder_type" data={s.stripe_account_holder_type} specialHandler={this.handleChange.bind(this)} error={this.state.errors} />
+              <EditableInput label="Routing Number" name="stripe_routing_number" data={s.stripe_routing_number} error={this.state.errors} />
+              <EditableInput label="Bank Account Number" name="stripe_account_number" data={s.stripe_account_number} error={this.state.errors} />
+              <EditableInput
+                label="Billing Address"
+                name="address"
+                getValidationState={this.getValidationState.bind(this)}
+                displayErrorMessage={this.displayErrorMessage.bind(this)}
+                renderOptions={this.renderOptions.bind(this)}
+                handleIntegerChange={this.handleIntegerChange.bind(this)}
+                setState={this.setState.bind(this)}
+                handleChange={this.handleChange.bind(this)}
+                is_stripe_address={true}
+                data={s.stripe_address}
+                error={this.state.errors} />
+              <EditableInput label="Country" name="stripe_country" specialHandler={this.handleCountryChange.bind(this)} data={s.stripe_country} error={this.state.errors} />
+              <EditableInput label="Last 4 Digits SSN" name="stripe_ssn_last_4" data={s.stripe_ssn_last_4} error={this.state.errors} />
+            </EditableInputGroup>
+        </div>
+      )
     }
 
     return (
@@ -165,69 +215,37 @@ class TeacherSettingsPage extends UserSettings {
           data={s.travel_distance} specialHandler={this.handleIntegerChange.bind(this)} />
       </EditableInputGroup>
 
-      <EditableInputGroup title="Change Your Password"
-                            handleChange={this.handleChange.bind(this)}
-                            attemptSave={this.updateTeacherPassword.bind(this)}
-                            fetchProfile={this.fetchProfile.bind(this)}
-                            personId={this.props.id}>
-          <EditableInput label="New Password" name="password" data={s.password} />
-          <EditableInput label="New Password Confirmation" name="password_confirmation" data={s.password_confirmation} />
-        </EditableInputGroup>
+      { passwordSection }
 
       <h2 className="section-title">Musical Experience</h2>
-      {this.renderInstruments()}
+      { this.renderInstruments() }
       <Button className="button button--outline-orange button--sm marginTop-md"
         onClick={() => this.openAddModal()}>
         Add Another Instrument
       </Button>
-      {addInstrumentModal}
+      { addInstrumentModal }
 
       <h2 className="section-title">Scheduling</h2>
       <p className="form-input-description">Click and drag on the calendar to edit times that you're available.</p>
-      {this.renderCalendar(s)}
+      { this.renderCalendar(s) }
       <Button
         className="button button--outline-orange button--sm availability-save-btn"
         onClick={() => this.saveAvailability(s.availability)}>
         Save
       </Button>
 
-      <h5 className="profile-edit-note">Note: You will need to fill out all the fields</h5>
-      <EditableInputGroup title="Payment"
-                            handleChange={this.handleChange.bind(this)}
-                            attemptSave={this.attemptStripeAccountSave.bind(this)}
-                            fetchProfile={this.fetchProfile.bind(this)}>
-          <EditableInput label="Bank Account Holder Name" name="stripe_account_holder_name" data={s.stripe_account_holder_name} error={this.state.errors}
-            specialHandler={this.handleBirthdayChange.bind(this)} />
-          <EditableInput label="Bank Account Holder DOB" name="stripe_account_holder_dob" data={s.stripe_account_holder_dob} error={this.state.errors} />
-          <EditableInput label="Bank Account Holder Type" name="stripe_account_holder_type" data={s.stripe_account_holder_type} specialHandler={this.handleChange.bind(this)} error={this.state.errors} />
-          <EditableInput label="Routing Number" name="stripe_routing_number" data={s.stripe_routing_number} error={this.state.errors} />
-          <EditableInput label="Bank Account Number" name="stripe_account_number" data={s.stripe_account_number} error={this.state.errors} />
-          <EditableInput
-            label="Billing Address"
-            name="address"
-            getValidationState={this.getValidationState.bind(this)}
-            displayErrorMessage={this.displayErrorMessage.bind(this)}
-            renderOptions={this.renderOptions.bind(this)}
-            handleIntegerChange={this.handleIntegerChange.bind(this)}
-            setState={this.setState.bind(this)}
-            handleChange={this.handleChange.bind(this)}
-            is_stripe_address={true}
-            data={s.stripe_address}
-            error={this.state.errors} />
-          <EditableInput label="Country" name="stripe_country" specialHandler={this.handleCountryChange.bind(this)} data={s.stripe_country} error={this.state.errors} />
-          <EditableInput label="Last 4 Digits SSN" name="stripe_ssn_last_4" data={s.stripe_ssn_last_4} error={this.state.errors} />
-        </EditableInputGroup>
+      { paymentSection }
 
-        <EditableInputGroup title="Eligibility"
-                            handleChange={this.handleChange.bind(this)}
-                            attemptSave={this.attemptTeacherSave.bind(this)}
-                            fetchProfile={this.fetchProfile.bind(this)}>
-          <EditableInput label="Reference 1 First Name" name="reference1_first_name" data={s.reference1_first_name} />
-          <EditableInput label="Reference 1 Last Name" name="reference1_last_name" data={s.reference1_last_name} />
-          <EditableInput label="Reference 1 Relationship" name="reference1_relation" data={s.reference1_relation} />
-          <EditableInput label="Reference 1 Email" name="reference1_email" data={s.reference1_email} />
-          <EditableInput label="Reference 1 Phone" name="reference1_phone" data={s.reference1_phone} />
-        </EditableInputGroup>
+      <EditableInputGroup title="Eligibility"
+                          handleChange={this.handleChange.bind(this)}
+                          attemptSave={this.attemptTeacherSave.bind(this)}
+                          fetchProfile={this.fetchProfile.bind(this)}>
+        <EditableInput label="Reference 1 First Name" name="reference1_first_name" data={s.reference1_first_name} />
+        <EditableInput label="Reference 1 Last Name" name="reference1_last_name" data={s.reference1_last_name} />
+        <EditableInput label="Reference 1 Relationship" name="reference1_relation" data={s.reference1_relation} />
+        <EditableInput label="Reference 1 Email" name="reference1_email" data={s.reference1_email} />
+        <EditableInput label="Reference 1 Phone" name="reference1_phone" data={s.reference1_phone} />
+      </EditableInputGroup>
     </div>
     );
   }

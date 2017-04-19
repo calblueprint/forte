@@ -2,7 +2,10 @@ class StudentSettingsPage extends UserSettings {
 
   static get propTypes() {
     return {
-      student: React.PropTypes.object.isRequired,
+      fetchProfile: React.PropTypes.func.isRequired,
+      isAdmin: React.PropTypes.bool.isRequired,
+      person: React.PropTypes.object.isRequired,
+      id: React.PropTypes.number.isRequired,
     };
   }
 
@@ -129,13 +132,56 @@ class StudentSettingsPage extends UserSettings {
   }
 
   render() {
-    const { person } = this.props;
+    const { person, isAdmin } = this.props;
     let avail = availability_to_events(this.state.person.availability);
     let s = this.state.person;
     let addInstrumentModal;
 
     if (s.instruments) {
       addInstrumentModal = this.renderAddModal();
+    }
+
+    // Render the password and payment fields if not admin
+    let passwordSection, paymentSection;
+
+    if (!isAdmin) {
+      passwordSection = (
+        <EditableInputGroup title="Change Your Password"
+                            handleChange={this.handleChange.bind(this)}
+                            attemptSave={this.updateStudentPassword.bind(this)}
+                            fetchProfile={this.fetchProfile.bind(this)}
+                            personId={this.props.id}>
+          <EditableInput label="New Password" name="password" data={s.password} />
+          <EditableInput label="New Password Confirmation" name="password_confirmation" data={s.password_confirmation} />
+        </EditableInputGroup>
+      )
+
+      paymentSection = (
+        <div>
+          <h5 className="profile-edit-note">Note: You will need to fill out all the fields</h5>
+          <EditableInputGroup title="Payment"
+                              handleChange={this.handleChange.bind(this)}
+                              attemptSave={this.attemptCardSave.bind(this)}
+                              fetchProfile={this.fetchProfile.bind(this)}>
+            <EditableInput label="Card Number" name="card_number" data={s.card_number} error={this.state.errors} />
+            <EditableInput label="CVC" name="cvc" data={s.cvc} error={this.state.errors}/>
+            <EditableInput label="Expiration Month" name="exp_month" data={s.exp_month} error={this.state.errors}/>
+            <EditableInput label="Expiration Year" name="exp_year" data={s.exp_year} error={this.state.errors}/>
+            <EditableInput
+              label="Billing Address"
+              name="address"
+              getValidationState={this.getValidationState.bind(this)}
+              displayErrorMessage={this.displayErrorMessage.bind(this)}
+              renderOptions={this.renderOptions.bind(this)}
+              handleIntegerChange={this.handleIntegerChange.bind(this)}
+              setState={this.setState.bind(this)}
+              handleChange={this.handleChange.bind(this)}
+              is_stripe_address={true}
+              data={s.stripe_address}
+              error={this.state.errors} />
+          </EditableInputGroup>
+        </div>
+      )
     }
 
     return (
@@ -189,14 +235,7 @@ class StudentSettingsPage extends UserSettings {
           <EditableInput label="Parent/Guardian Email" name="email" data={s.email} />
         </EditableInputGroup>
 
-        <EditableInputGroup title="Change Your Password"
-                            handleChange={this.handleChange.bind(this)}
-                            attemptSave={this.updateStudentPassword.bind(this)}
-                            fetchProfile={this.fetchProfile.bind(this)}
-                            personId={this.props.id}>
-          <EditableInput label="New Password" name="password" data={s.password} />
-          <EditableInput label="New Password Confirmation" name="password_confirmation" data={s.password_confirmation} />
-        </EditableInputGroup>
+        { passwordSection }
 
         <h2 className="section-title">Musical Experience</h2>
         {this.renderInstruments()}
@@ -210,33 +249,12 @@ class StudentSettingsPage extends UserSettings {
         <p className="form-input-description">Click and drag on the calendar to edit times that you're available.</p>
         {this.renderCalendar(s)}
         <Button
-        className="button button--outline-orange button--sm availability-save-btn"
-        onClick={() => this.saveAvailability(s.availability)}>
-        Save
-      </Button>
+          className="button button--outline-orange button--sm availability-save-btn"
+          onClick={() => this.saveAvailability(s.availability)}>
+          Save
+        </Button>
 
-        <h5 className="profile-edit-note">Note: You will need to fill out all the fields</h5>
-        <EditableInputGroup title="Payment"
-                            handleChange={this.handleChange.bind(this)}
-                            attemptSave={this.attemptCardSave.bind(this)}
-                            fetchProfile={this.fetchProfile.bind(this)}>
-          <EditableInput label="Card Number" name="card_number" data={s.card_number} error={this.state.errors} />
-          <EditableInput label="CVC" name="cvc" data={s.cvc} error={this.state.errors}/>
-          <EditableInput label="Expiration Month" name="exp_month" data={s.exp_month} error={this.state.errors}/>
-          <EditableInput label="Expiration Year" name="exp_year" data={s.exp_year} error={this.state.errors}/>
-          <EditableInput
-            label="Billing Address"
-            name="address"
-            getValidationState={this.getValidationState.bind(this)}
-            displayErrorMessage={this.displayErrorMessage.bind(this)}
-            renderOptions={this.renderOptions.bind(this)}
-            handleIntegerChange={this.handleIntegerChange.bind(this)}
-            setState={this.setState.bind(this)}
-            handleChange={this.handleChange.bind(this)}
-            is_stripe_address={true}
-            data={s.stripe_address}
-            error={this.state.errors} />
-        </EditableInputGroup>
+        { paymentSection }
 
         <EditableInputGroup title="Eligibility"
                             handleChange={this.handleChange.bind(this)}

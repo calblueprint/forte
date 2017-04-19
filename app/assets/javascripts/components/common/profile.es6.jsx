@@ -4,7 +4,6 @@ class Profile extends React.Component {
     super(props);
 
     this.state = {
-      currTab: 1,
       person: {},
     };
   }
@@ -35,37 +34,42 @@ class Profile extends React.Component {
     Requester.get(route, resolve, reject);
   }
 
-  switchTab(num) {
-    this.setState({ currTab: num });
-  }
-
   renderActiveView() {
-    const { currTab, person } = this.state;
+    const { person } = this.state;
+    const { isAdmin, isStudent, id } = this.props;
     let view;
 
     if (!person) { return; }
 
-    switch(currTab) {
-      case 1:
-        if (this.props.isAdmin) {
-          view = <div>Admin view for profile not implemented yet</div>
+    if (isAdmin) {
+      if (isStudent) {
+        view = <StudentSettingsPage
+                 fetchProfile={this.fetchProfile.bind(this)}
+                 isAdmin={true}
+                 person={person}
+                 id={id} />
+      } else {
+        view = <TeacherSettingsPage
+                 fetchProfile={this.fetchProfile.bind(this)}
+                 isAdmin={true}
+                 person={person}
+                 id={id} />
+      }
 
-        } else if (this.props.isStudent) {
-          view = <StudentSettingsPage
-                   fetchProfile={this.fetchProfile.bind(this)}
-                   id={this.props.id}
-                   person={person} />
-        } else {
-          view = <TeacherSettingsPage
-                   fetchProfile={this.fetchProfile.bind(this)}
-                   id={this.props.id}
-                   person={person} />
-        }
-        break;
-
-      case 2:
-        view = <div>Nothing yet</div>
-        break;
+    } else {
+      if (isStudent) {
+        view = <StudentSettingsPage
+                 fetchProfile={this.fetchProfile.bind(this)}
+                 isAdmin={false}
+                 person={person}
+                 id={id} />
+      } else {
+        view = <TeacherSettingsPage
+                 fetchProfile={this.fetchProfile.bind(this)}
+                 isAdmin={false}
+                 person={person}
+                 id={id} />
+      }
     }
 
     return view;
@@ -100,20 +104,10 @@ class Profile extends React.Component {
   }
 
   render() {
-    const { person, currTab } = this.state;
+    const { person } = this.state;
     const { isStudent, isAdmin } = this.props;
     const personType = isStudent ? "Student" : "Teacher";
     let header = isAdmin ? <AdminHeader /> : <UserHeader />;
-    let lessonTab;
-
-    if (isAdmin) {
-      lessonTab = (
-        <li className={"tab " + (currTab == 2 ? "active" : "inactive")}
-          onClick={() => this.switchTab(2)}>
-          Lessons
-        </li>
-      )
-    }
 
     return (
       <div className="page-wrapper profile-page">
@@ -130,10 +124,8 @@ class Profile extends React.Component {
           <div className="cover-tabs">
             <div className="container">
               <ul className="profile-tabs-container">
-                <li className={"tab " + (currTab == 1 ? "active" : "inactive")}
-                  onClick={() => this.switchTab(1)}>
-                  {personType} Info</li>
-                { lessonTab }
+                <li className="tab active">{personType} Info</li>
+                { /*  This space is here for future tab additions to profile page. */ }
               </ul>
             </div>
           </div>
