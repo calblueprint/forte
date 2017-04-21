@@ -129,6 +129,28 @@ class MatchingModal extends React.Component {
     const { showNextScreen } = this.state;
     var overlappingAvailability = intersection(student.availability, teacher.availability);
 
+    if (teacher.location_preference) {
+      locationOptions = (
+        <div>
+          <option
+            value={teacher.full_address}>
+            Teacher's House
+          </option>
+          <option
+            value={student.full_address}>
+            Student's House
+          </option>
+        </div>
+      );
+    } else {
+      locationOptions = (
+        <option
+          value={student.full_address}>
+          Student's House
+        </option>
+      );
+    }
+
     let defaultPrice, teachForFreeInfo;
     if (!teacher.teach_for_free) {
       defaultPrice =
@@ -181,14 +203,7 @@ class MatchingModal extends React.Component {
                 name="location"
                 onChange={(event) => this.handleChange(event)}>
                 <option value="" disabled selected>Select a lesson location</option>
-                <option
-                  value={teacher.full_address}>
-                  Teacher's House
-                </option>
-                <option
-                  value={student.full_address}>
-                  Student's House
-                </option>
+                {locationOptions}
               </FormControl>
             </FormGroup>
             {teachForFreeInfo}
