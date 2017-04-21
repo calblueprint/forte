@@ -115,7 +115,12 @@ class UnmatchedPage extends React.Component {
   }
 
   studentBackButton(event) {
-    this.setState({ fullStudent: false, fullTeacher: false });
+    this.setState({
+      fullStudent: false,
+      fullTeacher: false,
+      teachers: null,
+      instrument: null,
+    });
   }
 
   teacherBackButton(event) {
