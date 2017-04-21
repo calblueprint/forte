@@ -25,6 +25,7 @@
   }
 
   &.toast-success {
+    z-index: 1500;
     background: #2ecc71;
     color: white;
   }
