@@ -91,7 +91,8 @@ class MatchingModal extends React.Component {
         location: location,
         lesson_time: lessonTime,
         default_price: parseInt(default_price),
-      }
+      },
+      timezone: student.timezone,
     };
     var resolve = (response) => {
       window.location = RouteConstants.admin.unmatched;

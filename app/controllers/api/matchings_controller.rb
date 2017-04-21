@@ -44,12 +44,14 @@ class Api::MatchingsController < Api::BaseController
   def create
     matching = Matching.new matching_params
     if matching.save
+      timezone = Timezone[params[:timezone]]
       4.times do |n|
-        start_time = Date.today.monday + (n+1).weeks + (matching_params[:lesson_time][0]*15).minutes
+        start_time = Date.today.sunday + (n+1).weeks + (matching_params[:lesson_time][0]*15).minutes
+        start_time = timezone.local_to_utc(start_time)
         lesson = Lesson.create(
           start_time: start_time,
-          end_time: start_time + 45.minutes,
-          price: 15.0,
+          end_time: start_time + (matching_params[:lesson_time].length*15).minutes,
+          price: matching_params[:default_price],
           is_paid: false,
           matching_id: matching.id,
         )

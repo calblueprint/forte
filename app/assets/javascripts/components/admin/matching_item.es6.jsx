@@ -58,7 +58,7 @@ class MatchingItem extends React.Component {
 
   render() {
     const { matching } = this.props;
-    let startTime = moment(matching.match_info.lesson_time[0]);
+    let startTime = number_to_moment(matching.match_info.lesson_time[0], matching.student.timezone);
     let studentName = `${matching.student.first_name} ${matching.student.last_name}`;
     let teacherName = `${matching.teacher.first_name} ${matching.teacher.last_name}`;
     let price = `$${parseFloat(matching.match_info.default_price).toFixed(2)}`;
