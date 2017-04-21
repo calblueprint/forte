@@ -17,6 +17,7 @@ class LessonCard extends React.Component {
       lesson: React.PropTypes.object,
       fetchUpcomingLessons: React.PropTypes.func,
       fetchRecentLessons: React.PropTypes.func,
+      is_last_lesson: React.PropTypes.bool,
     };
   }
 
@@ -116,13 +117,13 @@ class LessonCard extends React.Component {
   renderButtons() {
     let cancelBtn, rescheduleBtn, feedbackBtn, payBtn;
     const storedRecent = JSON.parse(localStorage.getItem("recentLesson"));
-    const { lesson, isStudent } = this.props;
+    const { lesson, isStudent, is_last_lesson } = this.props;
     const { start_time, is_paid, student_feedback } = lesson;
 
     var now = moment();
     var date = moment(start_time);
 
-    if (date > now) {
+    if (date > now && !is_last_lesson) {
       cancelBtn =
         <div>
           <Button className="button button--outline-orange button--sm" onClick={() => this.openCancelModal()}>
@@ -141,7 +142,7 @@ class LessonCard extends React.Component {
     }
 
     if (now >= date) {
-      if (isStudent && !is_paid) {
+      if (isStudent && !is_paid && parseInt(lesson.price) !== 0) {
         payBtn =
           <div>
             <Button className="button button--outline-orange button--sm" onClick={() => this.openPayModal()}>

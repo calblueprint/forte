@@ -127,24 +127,33 @@ class StudentLessonsPage extends React.Component {
     );
   }
 
-  renderLessonCard(lesson) {
+  renderLessonCard(lesson, is_last_lesson) {
     return (
       <LessonCard
         isStudent={true}
         studentId={this.props.studentId}
         fetchUpcomingLessons={() => this.fetchUpcomingLessons()}
         fetchRecentLessons={() => this.fetchRecentLessons()}
-        lesson={lesson} />
+        lesson={lesson}
+        is_last_lesson={is_last_lesson} />
     );
   }
 
   renderLessonCards(filter) {
     const { upcomingLessons, recentLessons } = this.state;
     if (filter === "upcoming" && upcomingLessons) {
-      return upcomingLessons.map((lesson) => this.renderLessonCard(lesson));
+      var lessonCards = [];
+      for (var i = 0; i < upcomingLessons.length; i++) {
+        var is_last_lesson = false;
+        if (i == upcomingLessons.length - 1) {
+          is_last_lesson = true;
+        }
+        lessonCards.push(this.renderLessonCard(upcomingLessons[i], is_last_lesson));
+      }
+      return lessonCards;
     } else {
       if (recentLessons) {
-        return recentLessons.map((lesson) => this.renderLessonCard(lesson));
+        return recentLessons.map((lesson) => this.renderLessonCard(lesson, false));
       }
     }
   }
