@@ -15,6 +15,9 @@ class RosterPage extends React.Component {
     this.fetchPeople();
   }
 
+  /**
+   * Fetch all the students and teachers
+   */
   fetchPeople() {
     const route = ApiConstants.searchables.roster;
     const resolve = (response) => {
@@ -29,6 +32,9 @@ class RosterPage extends React.Component {
     );
   }
 
+  /**
+   * Changes the filter for the student/teacher
+   */
   filter(type) {
     this.setState({
       filter: type,
@@ -38,12 +44,21 @@ class RosterPage extends React.Component {
     this.loadFilteredPeople(this.state.searchInput, type);
   }
 
+  /**
+   * Changes the searchInput state when users type into the search box.
+   * @param event Object React Event
+   */
   onSearchChange(event) {
     var input = $(event.target).val();
     this.setState({ searchInput: input });
     this.loadFilteredPeople(input, this.state.filter);
   }
 
+  /**
+   * Load the roster based on which filter/search input is entered or selected.
+   * @param input String search input from the search box
+   * @param filter String either all/student/teacher
+   */
   loadFilteredPeople(input, filter) {
     if (input == "") {
       if (filter == "All") {
@@ -107,6 +122,10 @@ class RosterPage extends React.Component {
     }
   }
 
+  /**
+   * Renders all the filter buttons
+   * @param label String changes the outline of the button based on which filter is selected
+   */
   renderFilterButton(label) {
     let btnType = (label == this.state.filter) ? "solid" : "outline";
 
@@ -116,6 +135,9 @@ class RosterPage extends React.Component {
     )
   }
 
+  /**
+   * Renders the add admin functionality.
+   */
   renderAddAdminButton() {
     return (
       <Button className="add-admin-btn"
@@ -131,6 +153,9 @@ class RosterPage extends React.Component {
     this.setState({ addAdminModal: false });
   }
 
+  /**
+   * Renders the add admin modal
+   */
   renderAddAdminModal() {
     const { addAdminModal } = this.state;
     if (addAdminModal) {

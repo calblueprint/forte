@@ -1,3 +1,6 @@
+/**
+ * @prop matchings - array of all the matchings
+ */
 class MatchedPage extends React.Component {
 
   static get propTypes() {
@@ -17,6 +20,9 @@ class MatchedPage extends React.Component {
     this.fetchMatchings();
   }
 
+  /**
+   * Retrieves all the matchings of the page
+   */
   fetchMatchings() {
     const route = ApiConstants.matchings.pairs;
     const resolve = (response) => this.setState({ matchings: response });
@@ -25,6 +31,9 @@ class MatchedPage extends React.Component {
     Requester.get(route, resolve, reject);
   }
 
+  /**
+   * Renders the matchings.
+   */
   renderMatchings() {
     const { matchings } = this.state;
 

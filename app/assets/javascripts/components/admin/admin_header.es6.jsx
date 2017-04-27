@@ -1,5 +1,8 @@
 class AdminHeader extends React.Component {
 
+  /**
+   * Handle logout on click for admins.
+   */
   logout() {
     const resolve = (response) => window.location = "/";
     const reject = (response) => console.log(response);

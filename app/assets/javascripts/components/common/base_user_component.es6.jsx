@@ -29,18 +29,30 @@ class BaseUserComponent extends React.Component {
     this.setState({ instruments: instruments });
   }
 
+  /**
+   * Returns the validation state of a given field name
+   * @param name String field name that is passed through to access the errors object
+   */
   getValidationState(name) {
     if (this.state.errors[name]) {
       return 'error';
     }
   }
 
+  /**
+   * Returns a bootstrap help block if an error for the field name exists
+   * @param name String field name that is passed through to access the errors object
+   */
   displayErrorMessage(name) {
     if (this.state.errors[name]) {
       return <HelpBlock className="error-message">{this.state.errors[name]}</HelpBlock>;
     }
   }
 
+  /**
+   * Renders the option drop down based on which field it is
+   * @param type String field name that is passed to switch the constants array.
+   */
   renderOptions(type) {
     var optionsArray = []
     var retOptions = []
@@ -95,6 +107,7 @@ class BaseUserComponent extends React.Component {
         }
         return retOptions
     }
+    // used for household_number as the option value did not match up with the array
     for (; i < optionsArray.length; i++, j++) {
       retOptions.push(<option value={j}>{optionsArray[i]}</option>);
     }
@@ -113,6 +126,10 @@ class BaseUserComponent extends React.Component {
     return buttons;
   }
 
+  /**
+   * Returns the validation state of a given field name
+   * @param instrument String instrument name.
+   */
   renderInstrumentFields(instrument) {
     return (
       <div key={instrument}>
@@ -143,6 +160,9 @@ class BaseUserComponent extends React.Component {
     );
   }
 
+  /**
+   * Returns the instrument fields array for rendering.
+   */
   renderInstrumentsFields() {
     var instrumentsFields = []
     const { activeInstruments } = this.state
@@ -154,6 +174,11 @@ class BaseUserComponent extends React.Component {
     return instrumentsFields;
   }
 
+  /**
+   * Handles changes for dateTime values
+   * @param dateTime Moment
+   * @param name String fieldname that's passed to the method
+   */
   handleDatetimeChange(dateTime, name) {
      // Due to form input, birthday is not a moment but an event
     const { errors } = this.state;
@@ -191,12 +216,20 @@ class BaseUserComponent extends React.Component {
     }
   }
 
+  /**
+   * Handles changes for setting the state.
+   * @param event Object React event
+   */
   handleChange(event) {
     var name = $(event.target).attr("name");
     var value = $(event.target).val();
     this.setState({ [name] : value });
   }
 
+  /**
+   * Handles changes for setting the state for boolean fields.
+   * @param event Object React event
+   */
   handleBooleanChange(event) {
     const name = $(event.target).attr("name");
     var value = $(event.target).val();
@@ -204,6 +237,10 @@ class BaseUserComponent extends React.Component {
     this.setState({ [name] : value });
   }
 
+  /**
+   * Handles changes for setting the state for integer fields.
+   * @param event Object React event
+   */
   handleIntegerChange(event) {
     const name = $(event.target).attr("name");
     var value = $(event.target).val();
@@ -211,6 +248,10 @@ class BaseUserComponent extends React.Component {
     this.setState({ [name] : value });
   }
 
+  /**
+   * Handles changes for setting the state for single checkbox fields.
+   * @param event Object React event
+   */
   handleCheckboxChange(event) {
     const name = $(event.target).attr("name");
     var value = this.state[name];
@@ -218,6 +259,11 @@ class BaseUserComponent extends React.Component {
     this.setState({ [name] : value });
   }
 
+  /**
+   * Handles changes for setting the state for instrument fields.
+   * @param event Object React event
+   * @param instrument String name of the instrument being set
+   */
   handleInstrumentFieldChange(event, instrument) {
     const name = $(event.target).attr("name");
     var value = $(event.target).val();
@@ -227,6 +273,10 @@ class BaseUserComponent extends React.Component {
     });
   }
 
+  /**
+   * Handles changes for clicking a given instrument
+   * @param event Object React event
+   */
   handleInstrumentClick(event) {
     const { instruments, activeInstruments } = this.state;
     const instrument = event.target.textContent;
@@ -236,6 +286,10 @@ class BaseUserComponent extends React.Component {
     });
   }
 
+  /**
+   * Handles changes for setting the state for country fields.
+   * @param event Object React event
+   */
   handleCountryChange(event) {
     const name = $(event.target).attr("name");
     var value = $(event.target).val();
@@ -248,6 +302,9 @@ class BaseUserComponent extends React.Component {
     }
   }
 
+  /**
+   * Creates the instrument attributes field with all of the instruments that are selected
+   */
   setInstruments() {
     const { instruments, activeInstruments } = this.state;
     var instrumentsObj = [];
@@ -260,6 +317,9 @@ class BaseUserComponent extends React.Component {
     this.setState({ instruments_attributes: instrumentsObj });
   }
 
+  /**
+   * Sets the availability for a student/teacher using UTC conversions.
+   */
   setAvailability() {
     const { calendar } = this.refs.availability.refs
     //TODO: not ideal way to do this.. figure out some other way
@@ -282,10 +342,12 @@ class BaseUserComponent extends React.Component {
 
     var errors = {};
 
+    // sets the errors object if there are no instruments selected
     if (!(instruments_attributes.length)) {
       errors.instruments = "Can't Be Blank";
     } else {
       for (var i = 0; i < instruments_attributes.length; i++) {
+        // checks to see if any of the instrument fields are null
         if ((instruments_attributes[i]['name'] == null) || (instruments_attributes[i]['proficiency'] == null) ||
           (instruments_attributes[i]['years_played'] == null)) {
             errors.instruments = "Can't Be Blank";
@@ -295,6 +357,11 @@ class BaseUserComponent extends React.Component {
     return errors;
   }
 
+  /**
+   * Handles changes for setting the state for instrument fields.
+   * @param user_errs Object errors passed from the validation of the students from Rails Backend
+   * @param address_errors Object errors passed from Google autocomplete/address validations
+   */
   async validateUserAndStripeCustomer(user_errs, address_errors) {
 
     var card_errs = await this.stripeValidateFields();
@@ -321,7 +388,8 @@ class BaseUserComponent extends React.Component {
   }
 
   /**
-   * Front-end validation for the address field
+   * Front-end validation for the address field and conversion for lat/lng if autocomplete isn't used
+   * @param user_errs Object errors passed from the validation of the students from Rails Backend
    */
   validateAddress(user_errs) {
     const { lat, lng, address, address2, city, state, zipcode } = this.state;
@@ -347,14 +415,23 @@ class BaseUserComponent extends React.Component {
     }
   }
 
+  /**
+   * Opens the waiver modal.
+   */
   openWaiver() {
     this.setState({ showWaiverModal: true });
   }
 
+  /**
+   * Closes the waiver modal.
+   */
   closeWaiver() {
     this.setState({ showWaiverModal: false });
   }
 
+  /**
+   * Stops the loading gif.
+   */
   stopLoading() {
     this.setState({ loading : false });
   }

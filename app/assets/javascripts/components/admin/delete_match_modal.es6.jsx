@@ -1,3 +1,10 @@
+/**
+ * @prop show          - show the modal
+ * @prop handleClose   - function to close the modal
+ * @prop matching      - matching object
+ * @prop studentName   - student name
+ * @prop teacherName   - teacher name
+ */
 class DeleteMatchModal extends React.Component {
 
   static get propTypes() {
@@ -10,6 +17,9 @@ class DeleteMatchModal extends React.Component {
     };
   }
 
+  /**
+   * Handle delete of a given matching
+   */
   handleDelete() {
     const { matching } = this.props;
     const route = ApiConstants.matchings.delete(matching.id);

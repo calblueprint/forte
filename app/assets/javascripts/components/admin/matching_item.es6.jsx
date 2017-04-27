@@ -1,3 +1,8 @@
+/**
+ * @prop matching       - the given matching
+ * @prop fetchMatchings - function to fetch all the matchings
+ * @prop key            - unused prop
+ */
 class MatchingItem extends React.Component {
 
   static get propTypes() {
@@ -23,6 +28,9 @@ class MatchingItem extends React.Component {
   showDeleteModal() { this.setState({ showDeleteModal: true, }); }
   hideDeleteModal() { this.setState({ showDeleteModal: false, }); }
 
+  /**
+   * Render the delete matching modal.
+   */
   renderDeleteModal() {
     const { matching } = this.props;
     let studentName = `${matching.student.first_name} ${matching.student.last_name}`;
@@ -40,6 +48,9 @@ class MatchingItem extends React.Component {
     }
   }
 
+  /**
+   * Render the edit matching modal.
+   */
   renderEditModal() {
     const { matching } = this.props;
     const { student, teacher } = matching;
@@ -80,6 +91,12 @@ class MatchingItem extends React.Component {
     );
   }
 
+  /**
+   * Sets the new lesson times.
+   * @param label String label of the content
+   * @param text String text of the field.
+   * @param id String id of the student/teacher
+   */
   renderHeaderItem(label, text, id) {
     let link;
     if (label == "Student") {

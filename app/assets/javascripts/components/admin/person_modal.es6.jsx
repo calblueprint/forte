@@ -1,3 +1,7 @@
+/**
+ * @prop handleClose  - function to close the modal
+ * @prop person       - either a student/teacher
+ */
 class PersonModal extends React.Component {
 
   static get propTypes() {
@@ -7,6 +11,9 @@ class PersonModal extends React.Component {
     };
   }
 
+  /**
+   * Render the information of the student/teacher
+   */
   renderInformation() {
     const { person } = this.props;
     //TODO: better way to check if person is student/teacher

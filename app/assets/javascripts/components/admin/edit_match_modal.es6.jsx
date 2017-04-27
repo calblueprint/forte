@@ -1,3 +1,8 @@
+/**
+ * @prop show          - show the modal
+ * @prop handleClose   - function to close the modal
+ * @prop matching      - matching object
+ */
 class EditMatchModal extends React.Component {
 
   static get propTypes() {
@@ -76,18 +81,27 @@ class EditMatchModal extends React.Component {
 
   }
 
+  /**
+   * Handles changes for setting the state.
+   * @param event Object React event
+   */
   handleChange(event) {
     this.setState({
       [$(event.target).attr("name")] : $(event.target).val(),
     });
   }
 
+  /**
+   * Sets the new lesson times.
+   * @param event Object React event
+   */
   setLessonTime(event) {
     let { start, end } = event;
     let new_start = moment(start);
     let new_end = moment(end);
     const offset = moment().tz(this.props.student.timezone).utcOffset();
 
+    // need to add the timezone offset to maintain the timezone, since the calendar returns UTC times.
     new_start = new_start.add(-offset, 'minutes');
     new_end = new_end.add(-offset, 'minutes');
     let updatedLessonTime = range_to_array(new_start, new_end);
@@ -95,6 +109,9 @@ class EditMatchModal extends React.Component {
     this.setState({ lesson_time: updatedLessonTime });
   }
 
+  /**
+   * Handles edits for the matchings
+   */
   handleEdit() {
     const { id } = this.props.matching;
 
@@ -115,6 +132,9 @@ class EditMatchModal extends React.Component {
     Requester.update(route, params, resolve, reject);
   }
 
+  /**
+   * Renders the summary information.
+   */
   renderSummary() {
     const { student, teacher } = this.props;
 

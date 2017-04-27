@@ -19,6 +19,9 @@ class UnmatchedPage extends React.Component {
     this.loadStudents();
   }
 
+  /**
+   * Loads all the unmatched students
+   */
   loadStudents() {
     var route = ApiConstants.students.unmatched;
     var resolve = (response) => this.setState({ students: response["students"] });
@@ -30,6 +33,11 @@ class UnmatchedPage extends React.Component {
     );
   }
 
+  /**
+   * Load the roster based on which filter/search input is entered or selected.
+   * @param distances Object distances object returned from google maps API call to apply distance logic.
+   * @param teachers Array teachers array
+   */
   processGoogleMapsResponse(distances, teachers) {
     var moreThanTwenty = '20 miles or more';
     var travelDistances = {'I am not willing to travel': 0, 'Up to 5 miles': 5, 'Up to 10 miles': 10, 'Up to 20 miles': 20}

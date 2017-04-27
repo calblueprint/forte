@@ -1,3 +1,8 @@
+/**
+ * @prop filter       - string filter of either All/Student/Teacher
+ * @prop person       - either a student/teacher object
+ * @prop fetchPeople  - function to fetch all the people
+ */
 class RosterTableRow extends React.Component {
 
   static get propTypes() {
@@ -16,6 +21,9 @@ class RosterTableRow extends React.Component {
     }
   }
 
+  /**
+   * Links the profile to the admin student/teacher profile
+   */
   linkToProfile() {
     const id = this.props.person.id;
     const isStudent = this.props.person.customer_id ? true : false
@@ -38,6 +46,11 @@ class RosterTableRow extends React.Component {
     this.setState({showDeleteUserModal: false});
   }
 
+  /**
+   * Renders the delete user modal
+   * @param id String id of the teacher/student to delete
+   * @param type String either student/teacher type
+   */
   renderDeleteUserModal(id, type) {
     const {showDeleteUserModal} = this.state;
     if (showDeleteUserModal) {

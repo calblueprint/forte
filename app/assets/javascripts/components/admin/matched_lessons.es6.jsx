@@ -1,3 +1,8 @@
+/**
+ * @prop matching  - matching object
+ * @prop student   - student object
+ * @prop teacher   - teacher object
+ */
 class MatchedLessons extends React.Component {
 
   static get propTypes() {
@@ -26,6 +31,9 @@ class MatchedLessons extends React.Component {
     this.fetchUpcomingLessons();
   }
 
+  /**
+   * Get the past lessons
+   */
   fetchPastLessons() {
     const { matching } = this.props;
 
@@ -36,6 +44,9 @@ class MatchedLessons extends React.Component {
     Requester.get(route, resolve, reject);
   }
 
+  /**
+   * Get the upcoming lessons.
+   */
   fetchUpcomingLessons() {
     const { matching } = this.props;
 
@@ -46,10 +57,17 @@ class MatchedLessons extends React.Component {
     Requester.get(route, resolve, reject);
   }
 
+  /**
+   * Sets the new lesson times.
+   * @param nextTab String tab to switch to
+   */
   switchTab(nextTab) {
     this.setState({ tab: nextTab, });
   }
 
+  /**
+   * Renders the past lessons table
+   */
   renderPastTable() {
     const { pastLessons } = this.state;
     let items;
@@ -77,6 +95,9 @@ class MatchedLessons extends React.Component {
     )
   }
 
+  /**
+   * Renders the upcoming lessons table
+   */
   renderUpcomingTable() {
     const { upcomingLessons } = this.state;
     let items;
@@ -107,6 +128,9 @@ class MatchedLessons extends React.Component {
     )
   }
 
+  /**
+   * Renders student/teacher lessons
+   */
   renderSummary() {
     const { student, teacher } = this.props;
 
@@ -200,6 +224,10 @@ class MatchingUpcomingLessonRow extends React.Component {
   openRescheduleModal() { this.setState({ showRescheduleModal: true }); }
   closeRescheduleModal() { this.setState({ showRescheduleModal: false }); }
 
+  /**
+   * Cancels the lesson
+   * @param lesson Object the lesson to be cancelled.
+   */
   renderCancelModal(lesson) {
     const { showCancelModal } = this.state;
 
@@ -215,6 +243,10 @@ class MatchingUpcomingLessonRow extends React.Component {
     }
   }
 
+  /**
+   * Reschedule the given lesson
+   * @param lesson Object the lesson object to be rescheduled.
+   */
   renderRescheduleModal(lesson) {
     const { showRescheduleModal } = this.state;
 

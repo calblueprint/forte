@@ -1,3 +1,9 @@
+/**
+ * @prop type        - string for if it's student or a teacher.
+ * @prop id          - id of the student/teacher to delete
+ * @prop handleClose - function to close the modal
+ * @prop refresh     - function to refresh the matching page on delete.
+ */
 class DeleteUserModal extends React.Component {
 
   constructor(props) {
@@ -12,7 +18,9 @@ class DeleteUserModal extends React.Component {
       refresh: React.PropTypes.func,
     };
   }
-
+  /**
+   * Deletes the given student/teacher on the roster page
+   */
   deleteUser() {
     const { handleClose } = this.props;
     var reject = (response) => {
