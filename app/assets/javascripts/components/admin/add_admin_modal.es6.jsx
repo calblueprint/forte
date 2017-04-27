@@ -1,3 +1,8 @@
+/**
+ * Component to add new admin accounts
+ * @prop handleClose - Function to handling the closing of this modal
+ */
+
 class AddAdminModal extends React.Component {
 
   constructor(props) {
@@ -14,6 +19,11 @@ class AddAdminModal extends React.Component {
     };
   }
 
+  /**
+   * Given an email, makes a new admin account. If this was successful, a success
+   * message will pop up. Else, an error message will pop up.
+   * @param email String
+   */ 
   addAdmin(email) { 
     const { handleClose } = this.props;
     var reject = (response) => {

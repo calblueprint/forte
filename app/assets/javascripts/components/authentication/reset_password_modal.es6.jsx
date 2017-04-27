@@ -1,3 +1,9 @@
+/**
+ * Component to reset password
+ * @prop type        - Specifying account type: student, teacher, or admin
+ * @prop handleClose - Function to handling the closing of this modal
+ */
+
 class ResetPasswordModal extends React.Component {
 
   constructor(props) {
@@ -15,6 +21,12 @@ class ResetPasswordModal extends React.Component {
     };
   }
 
+  /**
+   * Given the email and account type, tries to send an email with a generated
+   * secret token that allows users to reset their passwords. If resetting was
+   * successful, a success message will pop up and they will be redirected to the
+   * home page. Else, an error message will pop up.
+   */
   resetPassword() {
     const { handleClose } = this.props;
     var reject = (response) => {
@@ -63,6 +75,10 @@ class ResetPasswordModal extends React.Component {
     }
   }
 
+  /**
+   * Checks to see if there are any errors from any actions taken on this page.
+   * If so, this function will render and display them.
+   */
   renderError() {
     const { error } = this.state;
     if (error) {

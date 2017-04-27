@@ -25,8 +25,13 @@ class LoginPage extends React.Component {
     }
   }
 
+  /** 
+   * Given the account type (i.e. student, teacher, or admin), their email, and their
+   * password, tries to log in with their account credentials. If login was successful,
+   * reroutes user to their respective home pages. Else, an error message will pop up.
+   */
   login() {
-    var reject = (response) => this.setState({ errors: response.error }); // why is this one just error?
+    var reject = (response) => this.setState({ errors: response.error });
     var paramsObject = {
       email: this.state.email,
       password: this.state.password,
@@ -55,6 +60,10 @@ class LoginPage extends React.Component {
     );
   }
 
+  /**
+   * Checks to see if there are any errors from any actions taken on this page.
+   * If so, this function will render and display them.
+   */
   renderErrors() {
     const { errors } = this.state;
     if (errors != '') {
@@ -66,19 +75,26 @@ class LoginPage extends React.Component {
     };
   }
 
+  // Intermediary step to opening the reset password modal
   openResetPassword() {
     this.setState({ resetPasswordModal: true });
   }
 
+  // Intermediary step to closeing the reset password modal
   closeResetPassword() {
     this.setState( { resetPasswordModal: false });
   }
 
+  /** 
+   * If openResetPassword is triggered, this renders the modal to allow users to reset
+   * their passwords.
+   */
   renderResetPasswordModal() {
     const { resetPasswordModal } = this.state;
     if (resetPasswordModal) {
       return ( 
-        <ResetPasswordModal type={this.props.type} handleClose = {() => this.closeResetPassword() } />
+        <ResetPasswordModal type = {this.props.type}
+                     handleClose = {() => this.closeResetPassword() } />
       );
     }
   }

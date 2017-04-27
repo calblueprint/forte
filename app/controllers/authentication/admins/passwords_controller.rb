@@ -1,5 +1,6 @@
 class Authentication::Admins::PasswordsController < Devise::PasswordsController
 
+  # Given an email address, sends an email with a link to reset one's password
   def send_token
     user = Admin.find_by_email(params[:email])
     if user.present?
@@ -12,7 +13,7 @@ class Authentication::Admins::PasswordsController < Devise::PasswordsController
     end
   end
 
-  # Resetting password with token
+  # Resets password after token is generated and sent to user.
   def reset_password
     resource = Admin.reset_password_by_token(reset_password_params)
     if resource.errors.messages.blank?
@@ -33,10 +34,12 @@ class Authentication::Admins::PasswordsController < Devise::PasswordsController
 
   private
 
+  # Required parameter needed to send a reset password email
   def send_token_params
     params.permit(:email)
   end
 
+  # Required parameters needed to reset a user's password
   def reset_password_params
     params.require(:admin).permit(:password, :password_confirmation, :reset_password_token)
   end

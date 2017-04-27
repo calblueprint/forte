@@ -1,6 +1,7 @@
 class Authentication::Teachers::PasswordsController < Devise::PasswordsController
   before_action :authenticate_teacher!, except: [:send_token, :reset_password]
 
+  # Given an email address, sends an email with a link to reset one's password
   def send_token
     user = Teacher.find_by_email(params[:email])
     if user.present?
@@ -13,7 +14,7 @@ class Authentication::Teachers::PasswordsController < Devise::PasswordsControlle
     end
   end
 
-  # Resetting password with token
+  # Resets password after token is generated and sent to user
   def reset_password
     resource = Teacher.reset_password_by_token(reset_password_params)
     if resource.errors.messages.blank?
@@ -31,6 +32,7 @@ class Authentication::Teachers::PasswordsController < Devise::PasswordsControlle
     end
   end
 
+  # Change password on the edit profile page
   def update_password
     @teacher = Teacher.find(params[:id])
     if params[:teacher][:password] != params[:teacher][:password_confirmation]
@@ -48,14 +50,17 @@ class Authentication::Teachers::PasswordsController < Devise::PasswordsControlle
 
   private
 
+  # Required parameter needed to send a reset password email
   def send_token_params
     params.permit(:email)
   end
 
+  # Required parameters needed to reset a user's password
   def reset_password_params
     params.require(:teacher).permit(:password, :password_confirmation, :reset_password_token)
   end
 
+  # Required parameters needed to change a user's password
   def teacher_params
     params.require(:teacher).permit(:password, :password_confirmation)
   end
