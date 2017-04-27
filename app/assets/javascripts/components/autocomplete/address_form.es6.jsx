@@ -1,3 +1,11 @@
+/** 
+  * @prop getValidationState  - function to get the validation state of the parent component
+  * @prop displayErrorMessage - function to display any errors
+  * @prop renderOptions       - function to render dropdown fields
+  * @prop handleIntegerChange - function to handle integer change
+  * @prop is_stripe_address   - true if this is a Stripe address
+  * @prop className           - if exists, formats this component for us in an editable input
+  */
 class AddressForm extends React.Component {
 
   static get propTypes() {
@@ -13,13 +21,20 @@ class AddressForm extends React.Component {
     }
   }
 
+  /**
+    * Wrapper function for setState that handles Stripe addresses
+    * @param name string  
+    * @param value string
+    */
   addState(name, value) {
-    if (this.props.is_stripe_address) {
-      var name = "stripe_" + name;
-    }
+    name = this.getId(name);
     this.props.setState({ [name]: value });
   }
 
+  /**
+    * If this is a stripe address, prepends 'stripe_' to the name
+    * @param name string
+    */
   getId(name) {
     if (this.props.is_stripe_address) {
       return "stripe_" + name;
@@ -28,10 +43,19 @@ class AddressForm extends React.Component {
     }
   }
 
+  /** 
+    * Generates the autocomplete listener 
+    * @param event Object the event that triggered this function
+    */
   handleAddressChange(event) {
     const { setState, handleChange } = this.props;
 
+    /** 
+      * When an autocomplete suggestion is selected, fills in the
+      * address form fields
+      */
     function fillInAddress() {
+      // Autocomplete components to fetch
       var componentForm = {
         street_number: 'short_name',
         route: 'long_name',
@@ -39,18 +63,16 @@ class AddressForm extends React.Component {
         administrative_area_level_1: 'short_name',
         postal_code: 'short_name'
       };
-
+      // Retrieve the autocomplete suggestion that was selected
       var place = autocomplete.getPlace();
-
+      // If this is not a stripe address, get the latitute and longitude
       if (!this.props.is_stripe_address) {
         var lat = place["geometry"]["location"]["lat"]();
         var lng = place["geometry"]["location"]["lng"]();
         setState({ lat: lat, lng: lng });        
       }
-
-
       // Get each component of the address from the place details
-      // and fill the corresponding field on the form.
+      // and fill the corresponding field on the form
       var street_number, street_name, setStateId;
       for (var i = 0; i < place.address_components.length; i++) {
         var addressType = place.address_components[i].types[0];
@@ -85,15 +107,20 @@ class AddressForm extends React.Component {
         this.addState("address", val)
       }
     }
-
+    // Create the autocomplete object and bind it to the address field
     var autocomplete = new google.maps.places.Autocomplete(document.getElementById(this.getId("address")));
+    // Bias the location of the autocomplete object
     this.geolocate(autocomplete);
+    // Add a listener to fill in address components when a suggestion is selected
     autocomplete.addListener("place_changed", fillInAddress.bind(this));
     handleChange(event);
   }
 
-  // Bias the autocomplete object to the user's geographical location,
-  // as supplied by the browser's 'navigator.geolocation' object.
+  /** 
+    * Bias the autocomplete object to the user's geographical location,
+    * as supplied by the browser's 'navigator.geolocation' object
+    * @param autocomplete Object Google Maps autocomplete object
+    */
   geolocate(autocomplete) {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {

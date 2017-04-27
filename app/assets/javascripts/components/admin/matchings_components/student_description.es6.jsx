@@ -1,3 +1,7 @@
+/**
+  * @prop student - student object that this description is for
+  * @prop onClick - function that handles selecting an instrument to match
+  */
 class StudentDescription extends React.Component {
 
   static get PropTypes() {

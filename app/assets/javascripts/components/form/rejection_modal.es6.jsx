@@ -1,3 +1,6 @@
+/**
+  * @prop handleClose - function to handle closing this modal
+  */
 class RejectionModal extends React.Component {
 
   static get propTypes() {

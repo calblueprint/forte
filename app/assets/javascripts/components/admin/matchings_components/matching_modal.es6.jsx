@@ -1,3 +1,9 @@
+/**
+ * @prop handleClose - function to handle closing this modal
+ * @prop student     - student object that is being matched
+ * @prop teacher     - teacher object that is being matched
+ * @prop instrument  - instrument object that this pair is being matched for
+ */
 class MatchingModal extends React.Component {
 
   constructor() {
@@ -21,6 +27,7 @@ class MatchingModal extends React.Component {
     };
   }
 
+  /** Validates all selections, then allows admin to proceed */
   async handleNext() {
     await this.setState({ errors: '' });
     await this.validateForm();
@@ -31,6 +38,7 @@ class MatchingModal extends React.Component {
     }
   }
 
+  /** If admin clicks back, resets the state */
   handleBack() {
     this.setState({
       showNextScreen: false,
@@ -46,29 +54,38 @@ class MatchingModal extends React.Component {
     this.setState({ [name] : value });
   }
 
+  /** Validates the location and default price */
   validateForm() {
     const { location, default_price } = this.state;
+    // Make sure the admin selected a location
     if (location == '') {
       this.setState({ errors: "Please choose a location for the lesson."});
     }
+    // Make sure the admin specified a default price
     if (default_price == '') {
       this.setState({ errors: "Please choose a default price for the lesson."});
     }
     return true;
   }
 
+  /**
+    * Validate the selected lesson time, then set the lesson time
+    */
   setLessonTime() {
     const { calendar } = this.refs.calendar.refs;
+    // Get the selected times from the calendar
     var eventArray = $(calendar).fullCalendar('clientEvents', (event) => {
       if (event.rendering == 'background') {
         return false;
       }
       return true;
     });
+    // Make sure admin did not select more than one lesson time
     if (eventArray.length != 1) {
       this.setState({ errors: "Make sure only one lesson time is selected." });
       return false;
     }
+    // Check to make sure lesson length is valid
     var lessonTime = range_to_array(eventArray[0]['start'], eventArray[0]['end']);
     if (lessonTime.length < 2 || lessonTime.length > 4) {
       this.setState({ errors: "Make sure the lesson is 30-60 minutes long." });
@@ -78,6 +95,7 @@ class MatchingModal extends React.Component {
     return true;
   }
 
+  /** Attempt to create a matching object in the backend */ 
   makeMatching() {
     this.setState({ loading: true });
     const { student, teacher, instrument } = this.props;
@@ -120,7 +138,6 @@ class MatchingModal extends React.Component {
 
   renderBody() {
     let loadingContainer;
-
     if (this.state.loading) {
       loadingContainer = <div className="loading-container">
         <div className="loading"></div>
@@ -128,8 +145,9 @@ class MatchingModal extends React.Component {
     }
     const { handleClose, student, teacher } = this.props;
     const { showNextScreen } = this.state;
+    // Get the student and teacher's overlapping availability
     var overlappingAvailability = intersection(student.availability, teacher.availability);
-
+    // If teacher has offered to host lessons, add the teacher's house as a location option
     if (teacher.location_preference) {
       locationOptions = (
         <div>
@@ -151,7 +169,7 @@ class MatchingModal extends React.Component {
         </option>
       );
     }
-
+    // If teacher is not teaching for free, add a default price field
     let defaultPrice, teachForFreeInfo;
     if (!teacher.teach_for_free) {
       defaultPrice =
@@ -171,7 +189,7 @@ class MatchingModal extends React.Component {
     } else {
       teachForFreeInfo = <h4>This teacher has decided to teach for free!</h4>
     }
-
+    // If the admin has clicked match, render a modal asking for confirmation
     if (showNextScreen) {
       return (
         <div>

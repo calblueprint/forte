@@ -1,3 +1,8 @@
+/**
+  * @prop handleClose  - function to handle closing this modal
+  * @prop isStudent    - true if this modal is on the student form
+  * @prop teachForFree - true if this modal is on the teacher form and the teacher agreed to teacher for free
+  */
 class WaiverModal extends React.Component {
 
   static get propTypes() {

@@ -1,3 +1,7 @@
+/**
+  * @prop teacher - teacher object that this description is for
+  * @prop onClick - function to handle choosing this teacher to match
+  */
 class TeacherDescription extends React.Component {
 
   static get PropTypes() {

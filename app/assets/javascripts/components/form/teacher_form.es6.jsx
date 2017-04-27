@@ -1,4 +1,5 @@
 class TeacherForm extends BaseUserComponent {
+
   constructor() {
     super();
     this.state = {
@@ -59,7 +60,7 @@ class TeacherForm extends BaseUserComponent {
     }
   }
 
-  /* Back-end Validtions for Teacher Fields */
+  /* Backend validations for teacher fields */
   validateTeacherFields() {
     var reject = (response) => { this.validateAddress(response) };
     var resolve = (response) => { this.validateAddress({}) };
@@ -113,7 +114,12 @@ class TeacherForm extends BaseUserComponent {
     );
   }
 
-  async createStripeUser(teacher_errs, address_errors) {
+  /**
+    * Creates a Stripe Token on the Rails side
+    * @param teacher_errs Object errors passed from the Rails backend
+    * @param address_errs Object errors passed from address validation
+    */
+  async createStripeUser(teacher_errs, address_errs) {
     const {
       stripe_country,
       stripe_routing_number,
@@ -124,7 +130,7 @@ class TeacherForm extends BaseUserComponent {
     } = this.state;
 
     if (!teach_for_free) {
-      var validate_stripe_response = await this.validateUserAndStripeCustomer(teacher_errs, address_errors);
+      var validate_stripe_response = await this.validateUserAndStripeCustomer(teacher_errs, address_errs);
 
       // Only create customer if stripe validations pass - do not create token if there are stripe errors
       if (validate_stripe_response) {
@@ -143,10 +149,10 @@ class TeacherForm extends BaseUserComponent {
     } else {
       var instrument_errs = await this.validateInstruments();
       if (!(Object.keys(instrument_errs).length === 0) ||
-          !(Object.keys(address_errors).length === 0) ||
+          !(Object.keys(address_errs).length === 0) ||
           !(Object.keys(teacher_errs).length === 0)) {
         toastr.error("There are errors with your form! <br> Please correct them before continuing!");
-        var error_info = Object.assign({}, teacher_errs, address_errors, instrument_errs);
+        var error_info = Object.assign({}, teacher_errs, address_errs, instrument_errs);
         this.setState({ errors: error_info });
         this.stopLoading();
       } else {
@@ -155,6 +161,11 @@ class TeacherForm extends BaseUserComponent {
     }
   }
 
+  /** 
+    * On successful Stripe validation, sends parameters to the backend
+    * @param status string unused
+    * @param response Object response received from Stripe
+    */
   stripeResponseHandler(status, response) {
     const reject = (response) => { this.stopLoading() };
     const resolve = ((response) => { this.createTeacher(response) });
@@ -176,12 +187,7 @@ class TeacherForm extends BaseUserComponent {
     }
   }
 
-  /**
-   * Calls Stripe validations on the inputted payment information
-   * @param stripe_routing_number
-   * @param stripe_account_number
-   * @param stripe_country
-   */
+  /** Calls Stripe validations on the inputted payment information */
   stripeValidateFields() {
     const { stripe_routing_number, stripe_account_number, stripe_country } = this.state;
 
@@ -213,6 +219,10 @@ class TeacherForm extends BaseUserComponent {
     return payment_errs;
   }
 
+  /**
+    * Sends the payment info to the backend for validation
+    * @param teacher Object teacher object returned from the backend
+    */
   verifyStripeAccount(teacher) {
     const {
       stripe_account_holder_type,
@@ -256,6 +266,10 @@ class TeacherForm extends BaseUserComponent {
     );
   }
 
+  /**
+    * Sends the inputted info the backend
+    * @param accountResponse Object holds the account information returned from Stripe (null if teacher is teaching for free)
+    */
   createTeacher(accountResponse) {
     const { teach_for_free } = this.state;
     var reject = (response) => {
@@ -329,7 +343,7 @@ class TeacherForm extends BaseUserComponent {
     );
   }
 
-  // createTeacher is called after stripeResponseHandler resolves.
+  /** Validates the inputted info then sends it the backend */
   async submitForm() {
     const { criminal_charges } = this.state;
 
@@ -342,14 +356,17 @@ class TeacherForm extends BaseUserComponent {
     }
   }
 
+  /** Triggers the rejection modal to be rendered */
   openRejectionModal() {
     this.setState({ showRejectionModal: true });
   }
 
+  /** Closes the rejection modal */
   closeRejectionModal() {
     window.location = '/';
   }
 
+  /** Renders the rejection modal */
   renderRejectionModal() {
     const { showRejectionModal } = this.state;
     if (showRejectionModal) {
@@ -359,6 +376,7 @@ class TeacherForm extends BaseUserComponent {
     }
   }
 
+  /** Renders the waiver modal */
   renderWaiverModal() {
     const { showWaiverModal, teach_for_free } = this.state;
     if (showWaiverModal == true) {

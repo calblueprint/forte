@@ -1,3 +1,7 @@
+/**
+  * @prop teacher      - teacher object that this component corresponds to
+  * @prop showCategory - true if this component will display all information
+  */
 class TeacherInformation extends React.Component {
 
   static get propTypes() {

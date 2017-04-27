@@ -1,4 +1,5 @@
 class StudentForm extends BaseUserComponent {
+
   constructor() {
     super();
     this.state = {
@@ -54,9 +55,7 @@ class StudentForm extends BaseUserComponent {
     }
   }
 
-  /**
-    * Validates fields for student form fields
-    */
+  /** Backend validations for student form fields */
   async validateStudentFields() {
     var reject = (response) => { this.validateAddress(response) };
     var resolve = (response) => { this.validateAddress({}) };
@@ -109,9 +108,10 @@ class StudentForm extends BaseUserComponent {
 
   /**
     * Creates a Stripe Customer on the Rails side
-    * @param student_errs Object
+    * @param student_errs Object errors passed from the Rails backend
+    * @param address_errs Object errors passed from address validation
     */
-  async createStripeUser(student_errs, address_errors) {
+  async createStripeUser(student_errs, address_errs) {
     const {
       card_number,
       cvc,
@@ -125,7 +125,7 @@ class StudentForm extends BaseUserComponent {
       stripe_zipcode,
     } = this.state;
 
-    var validated_student_and_stripe = await this.validateUserAndStripeCustomer(student_errs, address_errors);
+    var validated_student_and_stripe = await this.validateUserAndStripeCustomer(student_errs, address_errs);
 
     // Only create customer if stripe validations pass - do not create token if there are stripe errors
     if (validated_student_and_stripe) {
@@ -147,6 +147,11 @@ class StudentForm extends BaseUserComponent {
     }
   }
 
+  /** 
+    * On successful Stripe validation, sends parameters to the backend
+    * @param status string unused
+    * @param response Object response received from Stripe
+    */
   stripeResponseHandler(status, response) {
     const reject = (response) => { this.stopLoading()};
     const resolve = ((response) => { this.createStudent(response) });
@@ -167,12 +172,7 @@ class StudentForm extends BaseUserComponent {
     }
   }
 
-  /**
-   * Calls Stripe validations on the inputted card information
-   * @param card_number
-   * @param exp_month, exp_year
-   * @param cvc
-   */
+  /** Calls Stripe validations on the inputted card information */
   stripeValidateFields() {
     const { card_number, exp_month, exp_year, cvc } = this.state;
 
@@ -193,6 +193,7 @@ class StudentForm extends BaseUserComponent {
     return card_errs;
   }
 
+  /** Sends the inputted parameters to the backend */
   createStudent(customer) {
     var reject = (response) => {
       this.setState({
@@ -252,13 +253,14 @@ class StudentForm extends BaseUserComponent {
     );
   }
 
-  // createStudent is called after stripeResponseHandler resolves.
+  /** Validates the inputted info then sends it the backend */
   async submitForm() {
     await this.setAvailability();
     await this.setInstruments();
     await this.validateStudentFields();
   }
 
+  /** Renders the waiver modal */
   renderWaiverModal() {
     const { showWaiverModal } = this.state;
     if (showWaiverModal == true) {
