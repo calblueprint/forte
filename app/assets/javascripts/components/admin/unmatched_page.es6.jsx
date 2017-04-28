@@ -34,7 +34,7 @@ class UnmatchedPage extends React.Component {
   }
 
   /**
-   * Load the roster based on which filter/search input is entered or selected.
+   * Takes in a Google maps response and returns an array of valid teacheders
    * @param distances Object distances object returned from google maps API call to apply distance logic.
    * @param teachers Array teachers array
    */
@@ -57,6 +57,10 @@ class UnmatchedPage extends React.Component {
     return validTeachers;
   }
 
+  /**
+   * Takes a list of possible teachers and asynchronously sets the state to the valid teachers.
+   * @param teachers Array teachers array
+   */
   filterTeachersByDistance(teachers) {
     var destinations = [];
     for (i = 0; i < teachers.length; i+=1) {
@@ -85,6 +89,11 @@ class UnmatchedPage extends React.Component {
     };
   }
 
+  /**
+   * Responds to selection of a student. An instrument must be chosen with the student.
+   * @param studentId String student id
+   * @param instrument Object the selected instrument
+   */
   studentOnClick(studentId, instrument) {
     var studentRoute = ApiConstants.students.show(studentId)
     var studentResolve = ((response) => {
@@ -111,6 +120,11 @@ class UnmatchedPage extends React.Component {
     );
   }
 
+  /**
+   * Responds to selection of a teacher.
+   * @param teacher_id String teacher id
+   * @param instrument Object the selected instrument
+   */
   teacherOnClick(teacher_id, instrument) {
     var route = ApiConstants.teachers.show(teacher_id)
     var resolve = (response) => this.setState({fullTeacher: true, teacher: response.teacher});
@@ -122,6 +136,9 @@ class UnmatchedPage extends React.Component {
     );
   }
 
+  /**
+   * Responds to the deselection of a student. 
+   */
   studentBackButton(event) {
     this.setState({
       fullStudent: false,
@@ -131,18 +148,30 @@ class UnmatchedPage extends React.Component {
     });
   }
 
+  /**
+   * Responds to the deselection of a teacher. 
+   */
   teacherBackButton(event) {
     this.setState({ fullTeacher: false });
   }
 
+  /**
+   * Responds to the "Match" button. 
+   */
   openMatchingModal(person) {
     this.setState({ showMatchingModal: true });
   }
 
+  /**
+   * Closes matching modal.
+   */
   closeMatchingModal() {
     this.setState({ showMatchingModal: false });
   }
-
+  
+  /**
+   * Renders matching modal.
+   */
   renderMatchingModal() {
     const { showMatchingModal, student, teacher, instrument } = this.state;
     if (showMatchingModal) {
@@ -156,6 +185,9 @@ class UnmatchedPage extends React.Component {
     }
   }
 
+  /**
+   * Responds the left half of the screen, the student portion. 
+   */
   renderStudentPart() {
     const { fullStudent, student, students, instrument } = this.state;
     const emptyPane = <div className="pane-container"/>;
@@ -202,6 +234,9 @@ class UnmatchedPage extends React.Component {
     }
   }
 
+  /**
+   * Responds the right half of the screen, the teacher portion. 
+   */
   renderTeacherPart() {
     const { fullTeacher, fullStudent, teacher, teachers, instrument } = this.state;
     const emptyPane =
@@ -256,6 +291,9 @@ class UnmatchedPage extends React.Component {
     }
   }
 
+  /**
+   * Renders screen.
+   */
   render () {
     let footer, loadingContainer;
 
