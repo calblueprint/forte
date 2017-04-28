@@ -1,11 +1,18 @@
+/**
+ * Page to allow teachers to change user settings
+ * @prop fetchProfile - callback function to refresh profile with updated fields
+ * @prop isAdmin      - whether an admin is accessing the settings page
+ * @prop person       - object of teacher information
+ * @prop id           - id of teacher
+ */
 class TeacherSettingsPage extends UserSettings {
 
   static get propTypes() {
     return {
-      fetchProfile: React.PropTypes.func.isRequired,
-      isAdmin: React.PropTypes.bool.isRequired,
-      person: React.PropTypes.object.isRequired,
-      id: React.PropTypes.number.isRequired,
+      fetchProfile : React.PropTypes.func.isRequired,
+      isAdmin      : React.PropTypes.bool.isRequired,
+      person       : React.PropTypes.object.isRequired,
+      id           : React.PropTypes.number.isRequired,
     };
   }
 
@@ -36,11 +43,17 @@ class TeacherSettingsPage extends UserSettings {
     }
   }
 
+  /**
+   * Fetches the profile and instruments on load
+   */
   componentDidMount() {
     this.fetchProfile();
     this.fetchInstruments();
   }
 
+  /**
+   * Fetches the teacher profile from backend
+   */
   fetchProfile() {
     let route = ApiConstants.teachers.show(this.props.id);
 
@@ -56,6 +69,9 @@ class TeacherSettingsPage extends UserSettings {
     Requester.get(route, resolve, reject);
   }
 
+  /**
+   * Fetches the teacher's instruments from backend
+   */
   fetchInstruments() {
     const route = ApiConstants.teachers.instruments(this.props.id);
     const resolve = (response) => {
@@ -71,7 +87,10 @@ class TeacherSettingsPage extends UserSettings {
     );
   }
 
-  saveAvailability(inputDate) {
+  /**
+   * Saves the updated availability from calendar
+   */
+  saveAvailability() {
     const { calendar } = this.refs.settingsAvailability.refs
     var eventArray = $(calendar).fullCalendar('clientEvents');
 
@@ -98,6 +117,10 @@ class TeacherSettingsPage extends UserSettings {
     );
   }
 
+  /**
+   * Renders the avaibility calendar
+   * @param s - the teacher object being edited
+   */
   renderCalendar(s) {
     var calendar;
     if (s.availability.length !== 0) {
@@ -127,7 +150,10 @@ class TeacherSettingsPage extends UserSettings {
       addInstrumentModal = this.renderAddModal();
     }
 
-    // Render the password and payment fields if not admin
+    /**
+     * If an admin is accessing the teacher settings page, don't show them the
+     * change password or payment section.
+     */
     let passwordSection, paymentSection;
 
     if (!isAdmin) {

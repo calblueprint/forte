@@ -9,6 +9,9 @@ class EditableSelect extends React.Component {
         super(props);
     }
 
+    /**
+     * Updates the current props when the parent sends updated props.
+     */
     shouldComponentUpdate(nextProps, nextState) {
         return (this.props.editable != nextProps.editable ||
             this.props.data != nextProps.data);
@@ -38,7 +41,7 @@ class EditableSelect extends React.Component {
 }
 
 EditableSelect.propTypes = {
-    data          : React.PropTypes.string,
-    label         : React.PropTypes.string.isRequired,
-    editable      : React.PropTypes.bool.isRequired
+    data     : React.PropTypes.string,
+    label    : React.PropTypes.string.isRequired,
+    editable : React.PropTypes.bool.isRequired,
 };

@@ -1,4 +1,14 @@
+/**
+ * A wrapper class for multiple EditableInput components so that
+ * the @prop editable can be selectively toggled for just its children
+ * @prop title        - title of the section
+ * @prop fetchProfile - callback function to refresh profile data
+ * @prop attemptSave  - callback function to save updated fields
+ * @prop handleChange - callback function to listen to input changes
+ * @prop personId     - id of the user being edited
+ */
 class EditableInputGroup extends React.Component {
+
   constructor(props) {
     super(props);
 
@@ -7,15 +17,25 @@ class EditableInputGroup extends React.Component {
     };
   }
 
+  /**
+   * Toggles the inputs between editable state
+   */
   toggleEdit() {
     this.setState({ editable : !this.state.editable });
   }
 
+  /**
+   * Cancels the editable state and refetches student profile
+   */
   cancel() {
     this.toggleEdit();
     this.props.fetchProfile();
   }
 
+  /**
+   * Attempts to save updated form data to backend and disables
+   * editable state on success.
+   */
   attemptSave() {
     const resolve = () => {
       this.setState({ editable: false });
@@ -39,6 +59,10 @@ class EditableInputGroup extends React.Component {
     }
   }
 
+  /**
+   * Renders each of the EditableInput children and attaches the
+   * correct handler to each one.
+   */
   render() {
     let inputs = this.props.children.map((child, index) => {
       let handler;

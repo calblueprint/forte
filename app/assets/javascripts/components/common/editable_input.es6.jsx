@@ -1,19 +1,34 @@
 /**
- * @prop label          - label of field to show
- * @prop name           - name of input component
- * @prop data           - current input for label
- * @prop editable       - true if fields are editable
- * @prop handleChange   - callback function when form inputs change
- * @prop specialHandler - callback for special input types
+ * @prop label               - label of field to show
+ * @prop name                - name of input component
+ * @prop data                - current input for label
+ * @prop editable            - true if fields are editable
+ * @prop handleChange        - callback function when form inputs change
+ * @prop specialHandler      - callback for special input types
+ * @prop handleIntegerChange - callback function for integer changes
+ * @prop error               - object that contains error details
+ * @prop getValidationState  - callback to validate inputs
+ * @prop displayErrorMessage - callback to display error messages
+ * @prop renderOptions       - callback for different renderings in parent
+ * @prop setState            - callback function to set state in parent
+ * @prop is_stripe_address   - true if address is valid in Stripe
  */
 
 class EditableInput extends BaseUserComponent {
+
+  /**
+   * Displays the error message if one exists
+   */
   displayErrorMessage(name) {
     if (this.props.error && this.props.error[name] !== null) {
       return <HelpBlock className="error-message">{this.props.error[name]}</HelpBlock>;
     }
   }
-  
+
+  /**
+   * If @prop editable is true, renders the correct input depending on
+   * the input's name. If @prop editable is false, just renders the label
+   */
   render() {
     let inputVal;
     let errorVal;
@@ -134,15 +149,17 @@ class EditableInput extends BaseUserComponent {
 }
 
 EditableInput.propTypes = {
-  label        : React.PropTypes.string.isRequired,
-  name         : React.PropTypes.string.isRequired,
-  editable     : React.PropTypes.bool,
-  handleChange : React.PropTypes.func,
-  error        : React.PropTypes.object,
-  getValidationState: React.PropTypes.func,
-  displayErrorMessage: React.PropTypes.func,
-  renderOptions: React.PropTypes.func,
-  handleIntegerChange: React.PropTypes.func,
-  setState: React.PropTypes.func,
-  is_stripe_address: React.PropTypes.bool, 
+  label               : React.PropTypes.string.isRequired,
+  name                : React.PropTypes.string.isRequired,
+  data                : React.PropTypes.string,
+  editable            : React.PropTypes.bool,
+  handleChange        : React.PropTypes.func,
+  specialHandler      : React.PropTypes.func,
+  error               : React.PropTypes.object,
+  getValidationState  : React.PropTypes.func,
+  displayErrorMessage : React.PropTypes.func,
+  renderOptions       : React.PropTypes.func,
+  handleIntegerChange : React.PropTypes.func,
+  setState            : React.PropTypes.func,
+  is_stripe_address   : React.PropTypes.bool,
 };

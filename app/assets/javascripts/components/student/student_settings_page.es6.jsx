@@ -1,11 +1,18 @@
+/**
+ * Page to allow students to change user settings
+ * @prop fetchProfile - callback function to refresh profile with updated fields
+ * @prop isAdmin      - whether an admin is accessing the settings page
+ * @prop person       - object of student information
+ * @prop id           - id of student
+ */
 class StudentSettingsPage extends UserSettings {
 
   static get propTypes() {
     return {
-      fetchProfile: React.PropTypes.func.isRequired,
-      isAdmin: React.PropTypes.bool.isRequired,
-      person: React.PropTypes.object.isRequired,
-      id: React.PropTypes.number.isRequired,
+      fetchProfile : React.PropTypes.func.isRequired,
+      isAdmin      : React.PropTypes.bool.isRequired,
+      person       : React.PropTypes.object.isRequired,
+      id           : React.PropTypes.number.isRequired,
     };
   }
 
@@ -31,11 +38,17 @@ class StudentSettingsPage extends UserSettings {
     }
   }
 
+  /**
+   * Fetches the profile and instruments on load
+   */
   componentDidMount() {
     this.fetchProfile();
     this.fetchInstruments();
   }
 
+  /**
+   * Fetches the student profile from backend
+   */
   fetchProfile() {
     let route = ApiConstants.students.show(this.props.id);
 
@@ -51,6 +64,10 @@ class StudentSettingsPage extends UserSettings {
     Requester.get(route, resolve, reject);
   }
 
+  /**
+   * Shows the removeInstrument modal
+   * @param instrument - the instrument to be deleted
+   */
   renderRemoveModal(instrument) {
     const { removeModalIsVisible } = this.state;
 
@@ -66,6 +83,9 @@ class StudentSettingsPage extends UserSettings {
     }
   }
 
+  /**
+   * Fetches the student's instruments from backend
+   */
   fetchInstruments() {
     const route = ApiConstants.students.instruments(this.props.id);
     const resolve = (response) => {
@@ -81,17 +101,21 @@ class StudentSettingsPage extends UserSettings {
     );
   }
 
-  renderAvailability() {
-    // TODO:
-  }
-
+  /**
+   * Handler for waiver date change
+   * @param moment - the moment time object
+   * @param name   - the name of the input field
+   */
   handleDatetimeChange(moment, name) {
     if (name == 'waiver_date') {
       this.setState({ waiver_date: moment });
     }
   }
 
-  saveAvailability(inputDate) {
+  /**
+   * Saves the updated availability from calendar
+   */
+  saveAvailability() {
     const { calendar } = this.refs.settingsAvailability.refs
     var eventArray = $(calendar).fullCalendar('clientEvents');
 
@@ -118,6 +142,10 @@ class StudentSettingsPage extends UserSettings {
     );
   }
 
+  /**
+   * Renders the avaibility calendar
+   * @param s - the student object being edited
+   */
   renderCalendar(s) {
     var calendar;
     if (s.availability.length !== 0) {
@@ -141,8 +169,11 @@ class StudentSettingsPage extends UserSettings {
       addInstrumentModal = this.renderAddModal();
     }
 
-    // Render the password and payment fields if not admin
-    let passwordSection, paymentSection;
+    /**
+     * If an admin is accessing the student settings page, don't show them the
+     * change password or payment section.
+     */
+   let passwordSection, paymentSection;
 
     if (!isAdmin) {
       passwordSection = (

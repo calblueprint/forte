@@ -1,3 +1,9 @@
+/**
+ * Displays the user profile for student or teacher
+ * @prop id        - id of the student or teacher to fetch profile information
+ * @prop isAdmin   - whether an Admin is accessing the profile
+ * @prop isStudent - whether the profile being accessed is a student or teacher
+ */
 class Profile extends React.Component {
 
   constructor(props) {
@@ -8,10 +14,16 @@ class Profile extends React.Component {
     };
   }
 
+  /**
+   * Fetches the profile once the component mounts
+   */
   componentDidMount() {
     this.fetchProfile(this.props.id);
   }
 
+  /**
+   * Fetches the profile from the backend
+   */
   fetchProfile() {
     const { isStudent } = this.props;
     let route;
@@ -34,6 +46,10 @@ class Profile extends React.Component {
     Requester.get(route, resolve, reject);
   }
 
+  /**
+   * Renders the correct child setting component based on the
+   * user type.
+   */
   renderActiveView() {
     const { person } = this.state;
     const { isAdmin, isStudent, id } = this.props;
@@ -75,6 +91,9 @@ class Profile extends React.Component {
     return view;
   }
 
+  /**
+   * Renders the information box on the left column of the profile page
+   */
   renderQuickInfoBoxText() {
     const { person } = this.state;
     const age = moment().diff(person.birthday, "years");
@@ -145,3 +164,9 @@ class Profile extends React.Component {
     );
   }
 }
+
+Profile.propTypes = {
+  id        : React.PropTypes.number.isRequired,
+  isAdmin   : React.PropTypes.bool.isRequired,
+  isStudent : React.PropTypes.bool.isRequired,
+};

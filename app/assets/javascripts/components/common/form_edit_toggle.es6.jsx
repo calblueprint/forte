@@ -5,6 +5,10 @@
  */
 class FormEditToggle extends React.Component {
 
+  /**
+   * Renders the correct buttons for EditableInput depending
+   * on the editable state
+   */
   render() {
     var buttonContainer;
     if (this.props.editable) {
@@ -32,5 +36,7 @@ class FormEditToggle extends React.Component {
 }
 
 FormEditToggle.propTypes = {
-  editable : React.PropTypes.bool.isRequired
+  editable : React.PropTypes.bool.isRequired,
+  update   : React.PropTypes.func,
+  save     : React.PropTypes.func,
 };
