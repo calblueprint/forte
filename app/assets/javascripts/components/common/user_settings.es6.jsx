@@ -7,12 +7,20 @@ class UserSettings extends BaseUserComponent {
     };
   }
 
+  /**
+   * Handles change of birthday field
+   * @param event Object on change event
+   */
   handleBirthdayChange(event) {
     var name = $(event.target).attr("name");
     var val = moment($(event.target).val());
     this.setState({ [name] : val });
   }
 
+  /**
+   * Handles change of dropdown fields
+   * @param event Object on change event
+   */
   handleIntegerChange(event) {
     let name = $(event.target).attr("name");
     if (name === "teacher_school_level") {
@@ -23,6 +31,11 @@ class UserSettings extends BaseUserComponent {
     this.setState({ [name] : value });
   }
 
+  /**
+   * Attempts to save changes and update student
+   * @param resolve Object
+   * @param reject Object
+   */
   attemptSave(resolve, reject) {
     let status;
 
@@ -39,6 +52,11 @@ class UserSettings extends BaseUserComponent {
     );
   }
 
+  /**
+   * Attempts to save changes and update teacher
+   * @param resolve Object
+   * @param reject Object
+   */
   attemptTeacherSave(resolve, reject) {
     let status;
 
@@ -55,6 +73,12 @@ class UserSettings extends BaseUserComponent {
     );
   }
 
+  /**
+   * Handles update student password
+   * @param resolve Object
+   * @param reject Object
+   * @param student_id String id of the student to be updated
+   */
   updateStudentPassword(resolve, reject, student_id) {
 
     const route = ApiConstants.authentication.update_password.student(student_id);
@@ -70,6 +94,12 @@ class UserSettings extends BaseUserComponent {
     );
   }
 
+  /**
+   * Handles update teacher password
+   * @param resolve Object
+   * @param reject Object
+   * @param teacher_id String id of the teacher to be updated
+   */
   updateTeacherPassword(resolve, reject, teacher_id) {
 
     const route = ApiConstants.authentication.update_password.teacher(teacher_id);
@@ -85,11 +115,19 @@ class UserSettings extends BaseUserComponent {
     );
   }
 
+  /**
+   * Attempts to save changes and update student payment information
+   * @param resolve Object
+   * @param reject Object
+   */
   attemptCardSave(resolve, reject) {
     this.setState({ editable: false });
     this.updateStripeCustomer(resolve, reject);
   }
 
+  /**
+   * Stripe validations for student payment information
+   */
   stripeValidateFields() {
     const { card_number, exp_month, exp_year, cvc } = this.state;
 
@@ -119,11 +157,21 @@ class UserSettings extends BaseUserComponent {
     return validated;
   }
 
+  /**
+   * Attempts to save address
+   * @param resolve Object
+   * @param reject Object
+   */
   attemptAddressSave(resolve, reject) {
     this.setState({ editable: false });
     this.validateAddress(resolve, reject);
   }
 
+  /**
+   * Validate address fields
+   * @param resolve Object
+   * @param reject Object
+   */
   validateAddress(resolve, reject) {
     const { lat, lng, address, address2, city, state, zipcode } = this.state;
 
@@ -174,6 +222,11 @@ class UserSettings extends BaseUserComponent {
     }
   }
 
+  /**
+   * Attempts to update Stripe Customer associated with student
+   * @param resolve Object
+   * @param reject Object
+   */
   async updateStripeCustomer(resolve, reject) {
     const {
       card_number,
@@ -208,6 +261,13 @@ class UserSettings extends BaseUserComponent {
     }
   }
 
+  /**
+   * Handles Stripe response
+   * @param success Object
+   * @param fail Object
+   * @param status Object
+   * @param response Object
+   */
   stripeResponseHandler(success, fail, status, response) {
     const reject = (response) => {
       console.log(response);
@@ -236,11 +296,22 @@ class UserSettings extends BaseUserComponent {
     }
   }
 
+  /**
+   * Attempts to save changes to Stripe Account associated with teacher
+   * @param resolve Object
+   * @param reject Object
+   */
   attemptStripeAccountSave(resolve, reject) {
     this.setState({ editable: false });
     this.updateStripeAccount(resolve, reject);
   }
 
+  /**
+   * Stripe validations for teacher bank account information
+   * @param stripe_routing_number String routing number to be validated
+   * @param stripe_account_numer String account number to be validated
+   * @param stripe_country String country to be validated
+   */
   stripeValidateTeacherFields(stripe_routing_number, stripe_account_number, stripe_country) {
 
     var routing_num_err = Stripe.bankAccount.validateRoutingNumber(stripe_routing_number, stripe_country);
@@ -279,6 +350,11 @@ class UserSettings extends BaseUserComponent {
     return validated;
   }
 
+  /**
+   * Update Stripe Account associated with teacher
+   * @param resolve Object
+   * @param reject Object
+   */
   async updateStripeAccount(resolve, reject) {
     const {
       stripe_country,
@@ -304,6 +380,13 @@ class UserSettings extends BaseUserComponent {
     }
   }
 
+  /**
+   * Stripe response handler for Stripe Account
+   * @param success Object
+   * @param fail Object
+   * @param status Object
+   * @param response Object
+   */
   stripeAccountResponseHandler(success, fail, status, response) {
     const reject = (response) => {
       console.log(response);
@@ -343,6 +426,10 @@ class UserSettings extends BaseUserComponent {
 
   closeAddModal() { this.setState({ addModalIsVisible: false }); }
 
+  /**
+   * Renders modal to remove an instrument
+   * @param instrument Object instrument to be removed
+   */
   renderRemoveModal(instrument) {
     const { removeModalIsVisible } = this.state;
 
@@ -358,6 +445,9 @@ class UserSettings extends BaseUserComponent {
     }
   }
 
+  /**
+   * Renders modal to add an instrument
+   */
   renderAddModal() {
     const { addModalIsVisible } = this.state;
     const { instruments } = this.state.person;
@@ -376,6 +466,10 @@ class UserSettings extends BaseUserComponent {
     }
   }
 
+  /**
+   * Renders instrument
+   * @param instrument Object instrument to be rendered
+   */
   renderInstrument(instrument) {
     return (
       <div className="instrument">
@@ -391,6 +485,9 @@ class UserSettings extends BaseUserComponent {
     );
   }
 
+  /**
+   * Renders all instruments for the person
+   */
   renderInstruments() {
     const { instruments } = this.state.person;
     if (instruments) {

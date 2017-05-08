@@ -1,3 +1,9 @@
+/**
+ * @prop fetchUpcomingLessons - function to retrieve upcoming lessons
+ * @prop handleClose          - function to close reschedule modal
+ * @prop lesson               - lesson Object
+ * @prop isStudent            - true if user is student
+ */
 class RescheduleModal extends React.Component {
 
   constructor() {
@@ -19,15 +25,24 @@ class RescheduleModal extends React.Component {
     };
   }
 
+  /**
+   * Handles showing next screen
+   */
   handleNext() {
     this.setLessonTime();
     this.setState({ showNextScreen: true });
   }
 
+  /**
+   * Handles showing last screen
+   */
   handleBack() {
     this.setState({ showNextScreen: false });
   }
 
+  /**
+   * Sets new lesson time based on user calendar input
+   */
   setLessonTime() {
     const { calendar } = this.refs.rescheduler.refs;
     var eventArray = $(calendar).fullCalendar('clientEvents');
@@ -35,6 +50,9 @@ class RescheduleModal extends React.Component {
     this.setState({ lessonEndTime: moment(eventArray[0]['end']) });
   }
 
+  /**
+   * Handles lesson rescheduling by updating the lesson start and end time
+   */
   handleRescheduleLesson() {
     this.setState({ loading: true });
     const { lesson, handleClose, fetchUpcomingLessons } = this.props;
@@ -63,6 +81,9 @@ class RescheduleModal extends React.Component {
     );
   }
 
+  /**
+   * Creates reschedule modal with reschedule calendar
+   */
   renderRescheduleModal() {
     let loadingContainer;
 

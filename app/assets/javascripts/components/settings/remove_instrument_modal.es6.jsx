@@ -1,3 +1,9 @@
+/**
+ * @prop handleClose      - function to close remove instrument modal
+ * @prop fetchInstruments - function to retrieve instruments
+ * @prop instruments      - Object of all available instruments
+ * @prop isVisible        - true if visible
+ */
 class RemoveInstrumentModal extends React.Component {
 
   constructor() {
@@ -16,10 +22,16 @@ class RemoveInstrumentModal extends React.Component {
     };
   }
 
+  /**
+   * Handles transition to next screen
+   */
   handleNext() {
     this.setState({ showNextScreen: true });
   }
 
+  /**
+   * Handles on click of confirm button
+   */
   handleConfirmClick() {
     const { instrument, handleClose, fetchInstruments } = this.props;
 
@@ -36,6 +48,9 @@ class RemoveInstrumentModal extends React.Component {
     );
   }
 
+  /**
+   * Renders modal to remove an instrument
+   */
   renderRemoveModal() {
     const { handleClose, instrument} = this.props;
     const { showNextScreen } = this.state;

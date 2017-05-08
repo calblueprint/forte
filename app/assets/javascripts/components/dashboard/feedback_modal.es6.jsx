@@ -25,6 +25,9 @@ class FeedbackModal extends React.Component {
     this.setState({ [name] : value });
   }
 
+  /**
+   * Submit student feedback for a lesson
+   */
   submitFeedback() {
     const route = ApiConstants.lessons.update(this.props.lesson.id);
     const params = {
@@ -43,6 +46,9 @@ class FeedbackModal extends React.Component {
     )
   }
 
+  /**
+   * Create feedback input modal to request and collect user feedback
+   */
   renderFeedbackInput() {
     const lessonTime = moment(this.props.lesson.start_time).format("dddd, MMM Do");
     return (
@@ -74,6 +80,9 @@ class FeedbackModal extends React.Component {
     )
   }
 
+  /**
+   * Show user that their feedback was received once feedback has been submitted
+   */
   renderSuccessView() {
     const imgUrl = ImageConstants.instruments.all;
 

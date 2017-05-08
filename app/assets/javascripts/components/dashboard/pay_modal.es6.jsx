@@ -1,3 +1,8 @@
+/**
+ * @prop handleClose        - function to close pay modal
+ * @prop lesson             - lesson Object
+ * @prop fetchRecentLessons - function to retrieve recent lessons
+ */
 class PayModal extends React.Component {
 
   constructor() {
@@ -16,10 +21,16 @@ class PayModal extends React.Component {
     };
   }
 
+  /**
+   * Handles showing next screen
+   */
   handleNext() {
     this.setState({ showNextScreen: true });
   }
 
+  /**
+   * Creates a Stripe charge on the student and sends the payment to the teacher
+   */
   makePayment() {
     this.setState({ loading: true });
     const { handleClose, lesson } = this.props;
@@ -48,6 +59,9 @@ class PayModal extends React.Component {
     );
   }
 
+  /**
+   * Makes update that lesson was paid for and notifies user upon success
+   */
   updateLessonPaid() {
     const { handleClose, lesson, fetchRecentLessons } = this.props;
     const resolve = (response) => {
@@ -71,6 +85,9 @@ class PayModal extends React.Component {
     );
   }
 
+  /**
+   * Creates pay modal to confirm the lesson payment
+   */
   renderPayModal() {
     let loadingContainer;
 

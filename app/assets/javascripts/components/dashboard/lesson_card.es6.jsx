@@ -1,3 +1,11 @@
+/**
+ * @prop isStudent            - true if is user is student
+ * @prop studentId            - ID of student
+ * @prop lesson               - lesson Object
+ * @prop fetchUpcomingLessons - function to retrieve upcoming lessons
+ * @prop fetchRecentLessons   - function to retrieve recent lessons
+ * @prop is_last_lesson       - true if this lesson is the last
+ */
 class LessonCard extends React.Component {
 
   constructor(props) {
@@ -21,6 +29,7 @@ class LessonCard extends React.Component {
     };
   }
 
+  // Functions to handle opening and closing of modals associated with each lesson: Cancel, Reschedule, and Pay Modal
   openCancelModal() {
     this.setState({ showCancelModal: true });
   }
@@ -53,6 +62,9 @@ class LessonCard extends React.Component {
     this.setState({ showFeedbackModal: false });
   }
 
+  /**
+   * Renders CancelModal component
+   */
   renderCancelModal() {
     const { isStudent, lesson, fetchUpcomingLessons } = this.props;
     const { showCancelModal } = this.state;
@@ -69,6 +81,9 @@ class LessonCard extends React.Component {
     }
   }
 
+  /**
+   * Renders RescheduleModal component
+   */
   renderRescheduleModal() {
     const { isStudent, lesson, fetchUpcomingLessons } = this.props;
     const { showRescheduleModal } = this.state;
@@ -84,6 +99,9 @@ class LessonCard extends React.Component {
     }
   }
 
+  /**
+   * Renders PayModal component
+   */
   renderPayModal() {
     const { lesson, fetchRecentLessons } = this.props;
     const { showPayModal } = this.state;
@@ -98,6 +116,9 @@ class LessonCard extends React.Component {
     }
   }
 
+  /**
+   * Renders FeedbackModal component
+   */
   renderFeedbackModal() {
     const { fetchRecentLessons } = this.props;
     const { showFeedbackModal } = this.state;
@@ -114,6 +135,9 @@ class LessonCard extends React.Component {
     }
   }
 
+  /**
+   * Render appropriate buttons for each modal
+   */
   renderButtons() {
     let cancelBtn, rescheduleBtn, feedbackBtn, payBtn;
     const storedRecent = JSON.parse(localStorage.getItem("recentLesson"));

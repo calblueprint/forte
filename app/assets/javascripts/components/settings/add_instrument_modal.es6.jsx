@@ -1,3 +1,10 @@
+/**
+ * @prop handleClose      - function to close add instrument modal
+ * @prop fetchInstruments - function to retrieve instruments
+ * @prop instruments      - Object of all available instruments
+ * @prop instrumentable   - Object used to create instrument
+ * @prop isVisible        - true if visible
+ */
 class AddInstrumentModal extends React.Component {
 
   constructor() {
@@ -20,6 +27,9 @@ class AddInstrumentModal extends React.Component {
     };
   }
 
+  /**
+   * Handles on click of confirm button
+   */
   handleConfirmClick() {
     const { instrument, handleClose, fetchInstruments, instrumentable } = this.props;
     const { instrumentToAdd, proficiency, yearsPlayed, isPrimary } = this.state;
@@ -64,6 +74,10 @@ class AddInstrumentModal extends React.Component {
     this.setState({ [name] : INSTRUMENTS[value] });
   }
 
+  /**
+   * Handles on change of instrument field
+   * @param event Object the on change event
+   */
   handleInstrumentFieldChange(event) {
     const name = $(event.target).attr("name");
     let value = $(event.target).val()
@@ -71,11 +85,19 @@ class AddInstrumentModal extends React.Component {
     this.setState({ [name] : value });
   }
 
+  /**
+   * Gets the validation state of the field
+   * @param name String field name
+   */
   getValidationState(name) {
     if (this.state[name] === null) return 'error'
     else return 'success';
   }
 
+  /**
+   * Renders options from constants
+   * @param type String type to render options for
+   */
   renderOptions(type) {
     const { instruments } = this.props;
     const existingInstrumentsArray = instruments.map((instrument) => (instrument.name))
@@ -103,7 +125,9 @@ class AddInstrumentModal extends React.Component {
     return retOptions;
   }
 
-
+  /**
+   * Renders modal to add a new instrument
+   */
   renderAddModal() {
     const { handleClose } = this.props;
     const { instrumentToAdd, proficiency, yearsPlayed, isPrimary } = this.state;

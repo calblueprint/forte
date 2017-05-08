@@ -1,3 +1,9 @@
+/**
+ * @prop handleClose          - function to close cancel modal
+ * @prop fetchUpcomingLessons - function to fetch upcoming lessons for matching
+ * @prop lesson               - lesson object
+ * @prop isStudent            - true if user is student
+ */
 class CancelModal extends React.Component {
 
   constructor() {
@@ -21,6 +27,9 @@ class CancelModal extends React.Component {
     this.setState({ showNextScreen: true });
   }
 
+  /**
+   * Called when user confirms lesson cancellation
+   */
   handleConfirmClick() {
     //TODO: Check difference of current time and lesson time and charge
     //cancellation fee if necessary
@@ -44,6 +53,9 @@ class CancelModal extends React.Component {
     );
   }
 
+  /**
+   * Creates the cancel modal
+   */
   renderCancelModal() {
     let loadingContainer;
 
