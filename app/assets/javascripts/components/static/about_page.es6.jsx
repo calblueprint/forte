@@ -29,6 +29,34 @@ class AboutPage extends React.Component {
           Richard graduated from UCLA and currently lives in Los Angeles.`
       },
       {
+        name: 'Patrick Whitrock',
+        position: 'CTO',
+        image: ImageConstants.headshots.patrick,
+        bio: `From banging on pots and pans to playing timpani at Lincoln Center, music has always
+          been an important part of Patrick's life. As a classically trained percussionist, he has
+          performed as a soloist and as a member of an ensemble at some of New York's most
+          prestigious venues. His passion for music led him to a music degree from New York
+          University and a career supporting songwriters in the music publishing industry.
+
+          As a former product manager turned software engineer in New York City, Patrick strives to
+          empower others to enrich their lives through music.`
+      },
+      {
+        name: 'Andrew Hasel',
+        position: 'Marketing',
+        image: ImageConstants.headshots.andrew,
+        bio: `Andrew was born into music as his mother started him on the piano at 5 and cello at 9.
+          As a cellist, he performed numerous times at Carnegie Hall and Lincoln Center with
+          orchestras such as the Metropolitan Youth Orchestra of New York and Gemini Youth Orchestra.
+          In high school, he performed in New York’s All-State Symphony, and continued playing in
+          college where he graduated from The University of Southern California. Andrew is currently a
+          cellist in the Los Angeles Doctors Symphony Orchestra, a community orchestra that supports
+          important medical causes and offers high-quality affordable concerts to the diverse
+          communities in Southern California.
+
+          Andrew currently lives in Los Angeles, CA.`
+      },
+      {
         name: 'Rocky Yip',
         position: 'Director of Campus Recruitment',
         image: ImageConstants.headshots.rocky,
