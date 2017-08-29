@@ -43,7 +43,7 @@ class AboutPage extends React.Component {
       },
       {
         name: 'Andrew Hasel',
-        position: 'Marketing',
+        position: 'CMO',
         image: ImageConstants.headshots.andrew,
         bio: `Andrew was born into music as his mother started him on the piano at 5 and cello at 9.
           As a cellist, he performed numerous times at Carnegie Hall and Lincoln Center with
