@@ -6,6 +6,7 @@ class AboutPage extends React.Component {
       {
         name: 'Daniel Kim',
         position: 'Co-founder & CEO',
+        email: 'daniel@forteacademy.org',
         image: ImageConstants.headshots.daniel,
         bio: `At his high school, Daniel created a service organization that performed chamber music for
           the underprivileged. In similar spirit, his team launched Forte seven years later as a nonprofit
@@ -19,6 +20,7 @@ class AboutPage extends React.Component {
       {
         name: 'Richard Donahue',
         position: 'Co-founder & CFO',
+        email: 'richard@forteacademy.org',
         image: ImageConstants.headshots.richard,
         bio: `Since childhood, Richard has explored music through a variety of avenues including teaching,
           composing, conducting and performing.  Whether playing oboe on Bizet\'s Carmen Suite in Venice,
@@ -31,6 +33,7 @@ class AboutPage extends React.Component {
       {
         name: 'Patrick Whitrock',
         position: 'CTO',
+        email: 'patrick@forteacademy.org',
         image: ImageConstants.headshots.patrick,
         bio: `From banging on pots and pans to playing timpani at Lincoln Center, music has always
           been an important part of Patrick's life. As a classically trained percussionist, he has
@@ -44,6 +47,7 @@ class AboutPage extends React.Component {
       {
         name: 'Andrew Hasel',
         position: 'CMO',
+        email: 'andrew@forteacademy.org',
         image: ImageConstants.headshots.andrew,
         bio: `Andrew was born into music as his mother started him on the piano at 5 and cello at 9.
           As a cellist, he performed numerous times at Carnegie Hall and Lincoln Center with
@@ -59,6 +63,7 @@ class AboutPage extends React.Component {
       {
         name: 'Rocky Yip',
         position: 'Director of Campus Recruitment',
+        email: 'rocky@forteacademy.org',
         image: ImageConstants.headshots.rocky,
         bio: `What started out as a mandatory class turned into a lifelong musical interest when Rocky picked
             up the clarinet at age 12.  Since then, he has since enjoyed competing in music festivals and
