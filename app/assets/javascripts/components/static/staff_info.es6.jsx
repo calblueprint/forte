@@ -1,5 +1,5 @@
 class StaffInfo extends React.Component {
-  
+
   constructor(props) {
     super(props);
   }
@@ -16,7 +16,7 @@ class StaffInfo extends React.Component {
       <Popover id="popover-positioned-top" title={`${person.name} | ${person.position}`}>
         {person.bio}
       </Popover>
-    ) 
+    )
 
     return(
       <div className="section__individual-container">
@@ -29,6 +29,9 @@ class StaffInfo extends React.Component {
           </h4>
           <h5 className="section__position">
             {person.position}
+          </h5>
+          <h5 className="section__email">
+            {person.email}
           </h5>
         </div>
       </div>
