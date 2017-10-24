@@ -38,6 +38,7 @@ group :development, :test do
   gem 'quiet_assets'
   gem 'factory_girl_rails'
   gem 'rubocop'
+  gem 'pry-rails'
 end
 
 group :development do
