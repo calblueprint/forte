@@ -1,20 +1,4 @@
-# == Schema Information
-#
-# Table name: matchings
-#
-#  id            :integer          not null, primary key
-#  instrument    :string           not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  student_id    :integer
-#  teacher_id    :integer
-#  lesson_time   :integer          default([]), not null, is an Array
-#  location      :string
-#  default_price :decimal(, )
-#
-
 class Matching < ActiveRecord::Base
-
   validates :instrument, presence: true
   validates :student_id, presence: true
   validates :teacher_id, presence: true
@@ -36,5 +20,4 @@ class Matching < ActiveRecord::Base
       end
     end
   end
-
 end
