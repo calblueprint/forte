@@ -95,4 +95,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
 
   config.react.addons = true
+
+  config.action_mailer.show_previews = true
+  config.action_mailer.preview_path = "#{Forte::Application.root}/spec/mailers/previews"
 end
