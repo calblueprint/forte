@@ -1,58 +1,6 @@
-# == Schema Information
-#
-# Table name: students
-#
-#  id                     :integer          not null, primary key
-#  city                   :string
-#  first_name             :string
-#  last_name              :string
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  email                  :string           default(""), not null
-#  encrypted_password     :string           default(""), not null
-#  reset_password_token   :string
-#  reset_password_sent_at :datetime
-#  remember_created_at    :datetime
-#  sign_in_count          :integer          default(0), not null
-#  current_sign_in_at     :datetime
-#  last_sign_in_at        :datetime
-#  current_sign_in_ip     :inet
-#  last_sign_in_ip        :inet
-#  availability           :integer          default([]), is an Array
-#  gender                 :integer
-#  birthday               :datetime
-#  school                 :string
-#  school_level           :integer
-#  guardian_first_name    :string
-#  guardian_last_name     :string
-#  guardian_phone         :string
-#  introduction           :text
-#  lesson_experience      :text
-#  performance_experience :text
-#  student_email          :string
-#  student_phone          :string
-#  address                :string
-#  address2               :string
-#  state                  :integer
-#  zipcode                :integer
-#  location_preference    :boolean
-#  travel_distance        :integer
-#  income_range           :integer
-#  household_number       :integer
-#  disciplinary_action    :boolean
-#  criminal_charges       :boolean
-#  waiver_signature       :string
-#  waiver_date            :datetime
-#  customer_id            :string
-#  lat                    :decimal(, )
-#  lng                    :decimal(, )
-#  timezone               :string
-#
-
 class Student < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
   include PgSearch
+
   multisearchable :against => [:last_name, :first_name, :email]
 
   devise :database_authenticatable, :registerable,
@@ -93,8 +41,7 @@ class Student < ActiveRecord::Base
 
   accepts_nested_attributes_for :instruments
 
-  # If any of the enums here change, make sure to change constants.es6.jsx file
-  # too
+  # If any of the enums here change, make sure to change constants.es6.jsx file too
   enum school_level: [ :Kindergarten, :'1st grade', :'2nd grade', :'3rd grade',
                       :'4th grade', :'5th grade', :'6th grade', :'7th grade',
                       :'8th grade', :'9th grade', :'10th grade', :'11th grade',
@@ -120,7 +67,6 @@ class Student < ActiveRecord::Base
     "#{address} #{address2} #{city}, #{state} #{zipcode}"
   end
 
-
   def submit_signup
     self.timezone = Timezone.lookup(self.lat, self.lng)
     self.save()
@@ -130,5 +76,4 @@ class Student < ActiveRecord::Base
     ForteMailer.student_signup_notify_admin(self).deliver_now
     ForteMailer.student_signup_notify_parent(self).deliver_now
   end
-
 end
