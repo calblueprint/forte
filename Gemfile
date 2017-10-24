@@ -32,15 +32,11 @@ gem 'date_validator'
 gem 'fullcalendar-rails'
 gem 'toastr-rails'
 
-group :development, :staging, :test do
-end
-
 group :development, :test do
   gem 'awesome_print'
   gem 'better_errors'
   gem 'quiet_assets'
   gem 'factory_girl_rails'
-  gem 'rspec-rails'
   gem 'rubocop'
 end
 
@@ -56,16 +52,15 @@ group :test do
   gem 'capybara', '~> 2.4.4'
   gem 'guard-rspec'
   gem 'launchy'
+  gem 'rspec-rails'
 end
 
 group :production, :staging do
   gem 'rails_12factor'
 end
 
-
 source "https://rails-assets.org" do
   gem 'rails-assets-react-datetime'
   gem 'rails-assets-moment'
   gem 'rails-assets-moment-timezone'
 end
-
