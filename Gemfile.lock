@@ -190,6 +190,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-rails (0.3.6)
+      pry (>= 0.10.4)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     rack (1.6.4)
@@ -349,6 +351,7 @@ DEPENDENCIES
   nokogiri
   pg (= 0.18.4)
   pg_search (= 1.0.5)
+  pry-rails
   quiet_assets
   rails (= 4.2.4)
   rails-assets-moment!
@@ -371,4 +374,4 @@ RUBY VERSION
    ruby 2.2.5p319
 
 BUNDLED WITH
-   1.13.1
+   1.15.4
