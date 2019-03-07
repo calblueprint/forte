@@ -4,7 +4,7 @@ class Footer extends React.Component {
     return (
       <div className="footer">
         <div className="footer__links-container">
-          <span>© 2017 Forte Academy, Inc.</span>
+          <span>© 2019 Forte Academy, Inc.</span>
           <span>    ·    </span>
           <a className="link" href={RouteConstants.staticPages.terms}>Terms & Privacy</a>
           <span>    ·    </span>
